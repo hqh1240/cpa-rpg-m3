@@ -318,6 +318,18 @@
     level10: { name: "十级簿记", desc: "角色等级达到 10 级", type: "成长", reward: { gold: 100, exp: 100, skillPoints: 2 } },
     level20: { name: "科目专家", desc: "角色等级达到 20 级", type: "成长", reward: { gold: 200, exp: 200, skillPoints: 3 } },
     level30: { name: "注会贤者", desc: "角色等级达到 30 级", type: "成长", reward: { gold: 400, exp: 400, skillPoints: 4 } },
+    kill10: { name: "怪物清道夫", desc: "累计击败 10 只普通怪物", type: "战斗", reward: { gold: 150, exp: 150, skillPoints: 2 } },
+    answer50: { name: "百炼成钢", desc: "累计答对 50 道题", type: "学习", reward: { gold: 120, exp: 120, skillPoints: 2 } },
+    answer100: { name: "千题不怠", desc: "累计答对 100 道题", type: "学习", reward: { gold: 250, exp: 250, skillPoints: 3 } },
+    streak10: { name: "十连学霸", desc: "连续答对 10 道题", type: "学习", reward: { gold: 100, exp: 100, skillPoints: 2 } },
+    coverage60: { name: "考纲过半", desc: "考纲覆盖率达到 60%", type: "学习", reward: { gold: 120, exp: 120, skillPoints: 2 } },
+    coverage90: { name: "考纲制霸", desc: "考纲覆盖率达到 90%", type: "学习", reward: { gold: 300, exp: 300, skillPoints: 3 } },
+    chest10: { name: "宝箱收藏家", desc: "开启 10 个宝箱", type: "探索", reward: { gold: 120, exp: 100, skillPoints: 2 } },
+    rooms15: { name: "房间巡礼", desc: "访问 15 个室内场景", type: "探索", reward: { gold: 150, exp: 120, skillPoints: 2 } },
+    level25: { name: "领域高手", desc: "角色等级达到 25 级", type: "成长", reward: { gold: 300, exp: 300, skillPoints: 3 } },
+    level40: { name: "注会传奇", desc: "角色等级达到 40 级", type: "成长", reward: { gold: 500, exp: 500, skillPoints: 4 } },
+    task25: { name: "任务大师", desc: "完成 25 个任务", type: "成长", reward: { gold: 300, exp: 300, skillPoints: 3 } },
+    weekly20: { name: "周报常客", desc: "单周完成 20 道题", type: "学习", reward: { gold: 100, exp: 100, skillPoints: 2 } },
     all_zone_bosses: { name: "五域讨伐", desc: "击败审计、财管、税法、经济法和战略区域 Boss", type: "区域", reward: { gold: 300, exp: 300, skillPoints: 3 } },
     final_clear: { name: "六域平衡", desc: "击败六域失衡之主，完成最终试炼", type: "终局", reward: { gold: 500, exp: 500, skillPoints: 5 } }
   };
@@ -370,6 +382,7 @@
     wrongQuestions: [],
     answered: 0,
     correct: 0,
+    quizStreak: 0,
     openedChests: [],
     visitedRooms: [],
     questStep: 0,
@@ -511,6 +524,7 @@
   if (!state.achievements) state.achievements = [];
   if (!Array.isArray(state.levelTitles)) state.levelTitles = [];
   if (state.mainStep === undefined) state.mainStep = 0;
+  if (state.quizStreak === undefined) state.quizStreak = 0;
   if (!Array.isArray(state.visitedRooms)) state.visitedRooms = [];
   if (!state.collectCount) state.collectCount = 0;
   if (!state.tasks.some((t) => t.id === "defeat_ink")) {
@@ -737,18 +751,30 @@
     swot_call: { id: "swot_call", name: "SWOT召唤", mp: 10, desc: "SWOT攻击×1.3", point: "SWOT", power: 1.3 },
     five_force: { id: "five_force", name: "五力结界", mp: 12, desc: "五力攻击×1.4", point: "五力模型", power: 1.4 },
     value_chain: { id: "value_chain", name: "价值链斩", mp: 14, desc: "价值链攻击×1.5", point: "价值链", power: 1.5 },
-    m_a_fusion: { id: "m_a_fusion", name: "并购融合", mp: 18, desc: "并购攻击×1.8", point: "并购战略", power: 1.8 }
+    m_a_fusion: { id: "m_a_fusion", name: "并购融合", mp: 18, desc: "并购攻击×1.8", point: "并购战略", power: 1.8 },
+    ledger_guard: { id: "ledger_guard", name: "账簿护盾", mp: 14, desc: "账簿攻击×1.4", point: "账簿", power: 1.4 },
+    report_verdict: { id: "report_verdict", name: "报表裁决", mp: 22, desc: "报表攻击×2.0", point: "报表", power: 2.0 },
+    risk_strike: { id: "risk_strike", name: "风险突袭", mp: 16, desc: "审计风险攻击×1.6", point: "审计风险", power: 1.6 },
+    materiality_judge: { id: "materiality_judge", name: "重要性裁断", mp: 20, desc: "重要性攻击×2.0", point: "审计重要性", power: 2.0 },
+    npv_judgment: { id: "npv_judgment", name: "净现值裁决", mp: 16, desc: "净现值攻击×1.6", point: "资本预算", power: 1.6 },
+    duPont_blade: { id: "duPont_blade", name: "杜邦利刃", mp: 20, desc: "财务分析攻击×2.0", point: "财务分析", power: 2.0 },
+    vat_refund: { id: "vat_refund", name: "进项回流", mp: 16, desc: "增值税攻击×1.6", point: "增值税", power: 1.6 },
+    land_tax_wave: { id: "land_tax_wave", name: "土地增值税浪", mp: 20, desc: "土地增值税攻击×2.0", point: "土地增值税", power: 2.0 },
+    board_guard: { id: "board_guard", name: "董事会之盾", mp: 16, desc: "公司治理攻击×1.6", point: "公司治理", power: 1.6 },
+    bankruptcy_order: { id: "bankruptcy_order", name: "破产序曲", mp: 20, desc: "破产法攻击×2.0", point: "破产法", power: 2.0 },
+    bcg_star: { id: "bcg_star", name: "明星矩阵", mp: 16, desc: "波士顿矩阵攻击×1.6", point: "波士顿矩阵", power: 1.6 },
+    balanced_score: { id: "balanced_score", name: "平衡计分斩", mp: 20, desc: "平衡计分卡攻击×2.0", point: "平衡计分卡", power: 2.0 }
   };
 
   const SKILLS = ALL_SKILLS;
 
   const JOBS = {
-    accountant: { id: "accountant", name: "簿记剑士", subject: "会计", skills: ["lending_slash", "trial_balance", "subject_switch", "entry_combo", "consolidation"], atk: 2, def: 0, mp: 0, desc: "均衡稳定，会计基础" },
-    auditor: { id: "auditor", name: "审计法师", subject: "审计", skills: ["audit_adjust", "evidence_check", "control_test", "opinion_judge"], atk: 0, def: 2, mp: 10, desc: "证据与控制" },
-    finance: { id: "finance", name: "财管游侠", subject: "财管", skills: ["time_value", "capital_cost", "leverage_strike", "budget_blast"], atk: 2, def: 0, mp: 0, desc: "高回报计算" },
-    tax: { id: "tax", name: "税法弓手", subject: "税法", skills: ["vat_arrow", "cit_storm", "iit_burn", "tax_incentive"], atk: 1, def: 0, mp: 4, desc: "远程与持续伤害" },
-    law: { id: "law", name: "经济法祭司", subject: "经济法", skills: ["company_law", "contract_guard", "securities_bless", "bankruptcy_cleanse"], atk: 0, def: 2, mp: 6, desc: "护盾与治疗" },
-    strategy: { id: "strategy", name: "战略召唤师", subject: "战略", skills: ["swot_call", "five_force", "value_chain", "m_a_fusion"], atk: 0, def: 0, mp: 12, desc: "多单位与全局" }
+    accountant: { id: "accountant", name: "簿记剑士", subject: "会计", skills: ["lending_slash", "trial_balance", "subject_switch", "entry_combo", "consolidation", "ledger_guard", "report_verdict"], atk: 2, def: 0, mp: 0, desc: "均衡稳定，会计基础" },
+    auditor: { id: "auditor", name: "审计法师", subject: "审计", skills: ["audit_adjust", "evidence_check", "control_test", "opinion_judge", "risk_strike", "materiality_judge"], atk: 0, def: 2, mp: 10, desc: "证据与控制" },
+    finance: { id: "finance", name: "财管游侠", subject: "财管", skills: ["time_value", "capital_cost", "leverage_strike", "budget_blast", "npv_judgment", "duPont_blade"], atk: 2, def: 0, mp: 0, desc: "高回报计算" },
+    tax: { id: "tax", name: "税法弓手", subject: "税法", skills: ["vat_arrow", "cit_storm", "iit_burn", "tax_incentive", "vat_refund", "land_tax_wave"], atk: 1, def: 0, mp: 4, desc: "远程与持续伤害" },
+    law: { id: "law", name: "经济法祭司", subject: "经济法", skills: ["company_law", "contract_guard", "securities_bless", "bankruptcy_cleanse", "board_guard", "bankruptcy_order"], atk: 0, def: 2, mp: 6, desc: "护盾与治疗" },
+    strategy: { id: "strategy", name: "战略召唤师", subject: "战略", skills: ["swot_call", "five_force", "value_chain", "m_a_fusion", "bcg_star", "balanced_score"], atk: 0, def: 0, mp: 12, desc: "多单位与全局" }
   };
 
   const PLAYER_DIR_COL = { down: 0, right: 1, left: 2, up: 3 };
@@ -3489,6 +3515,26 @@
     ctx.save();
     ctx.translate(shakeX, shakeY);
     drawRegionBattleBackground();
+    const m = state.battle.monster;
+    if (state.battle.bossEnteredAt) {
+      const enterAge = now - state.battle.bossEnteredAt;
+      if (enterAge >= 0 && enterAge < 1800) {
+        const fadeIn = Math.min(1, enterAge / 220);
+        const fadeOut = enterAge > 1450 ? (1800 - enterAge) / 350 : 1;
+        ctx.fillStyle = `rgba(8, 5, 3, ${0.48 * fadeIn})`;
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = `rgba(255, 228, 154, ${0.95 * fadeIn * fadeOut})`;
+        ctx.font = "bold 46px 'Microsoft YaHei'";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(m.label, W / 2, H * 0.32);
+        ctx.fillStyle = `rgba(255, 244, 214, ${0.72 * fadeIn * fadeOut})`;
+        ctx.font = "bold 17px 'Microsoft YaHei'";
+        ctx.fillText("区域失衡之源 · 主线决战", W / 2, H * 0.32 + 52);
+        ctx.textAlign = "left";
+        ctx.textBaseline = "alphabetic";
+      }
+    }
     if (assets.playerSword && assets.playerSword._box) {
       const frame = animFrame(assets.playerSword, 10);
       drawTintedFrame(assets.playerSword, 120 + playerDx, 300, 160, 160, frame, JOB_TINT[state.jobs.current] || JOB_TINT.accountant);
@@ -3525,7 +3571,6 @@
       ctx.fillStyle = "rgba(255, 80, 60, 0.25)";
       ctx.fillRect(120, 300, 160, 160);
     }
-    const m = state.battle.monster;
     const dw = m.isBoss ? 216 : 162;
     const dh = m.isBoss ? 216 : 162;
     drawMonsterSprite(m, 590 + monsterDx + monsterHitDx, m.isBoss ? 260 : 330, dw, dh, m.isBoss);
@@ -3738,6 +3783,7 @@
         state.room = entity.target;
         if (!state.visitedRooms.includes(entity.target)) {
           state.visitedRooms.push(entity.target);
+          if (state.visitedRooms.length >= 15) unlockAchievement("rooms15");
           const roomTask = ROOM_TASK_MAP[entity.target];
           if (roomTask) updateTask(roomTask, 1);
         }
@@ -3958,6 +4004,7 @@
     if (state.openedChests.includes(chest.id)) return;
     state.openedChests.push(chest.id);
     if (state.openedChests.length >= 2) unlockAchievement("open_chest2");
+    if (state.openedChests.length >= 10) unlockAchievement("chest10");
     state.player.gold += chest.reward;
     if (chest.id === "chest_2" && state.weapon.id === "pencil_sword") {
       state.weapon = { id: "compounding_dagger", name: "复利匕首", atk: 8 };
@@ -4042,6 +4089,8 @@
     maybeLevelUp();
     save();
     updateHUD();
+    const doneCount = state.tasks.filter((t) => t.done).length;
+    if (doneCount >= 25) unlockAchievement("task25");
     sfx("win");
     if (silent) {
       showToast("任务交付完成：" + task.title);
@@ -5049,6 +5098,7 @@
       comboActive: false,
       critFlashUntil: 0,
       phaseFlashUntil: 0,
+      bossEnteredAt: isBoss ? Date.now() : 0,
       anim: {
         playerAttack: 0,
         monsterHit: 0,
@@ -5487,6 +5537,7 @@
       if (!b.isBoss && b.monster.id === "monster_1") updateTask("defeat_crane", 1);
       unlockAchievement("first_battle");
       if ((state.monstersKilled || 0) >= 3) unlockAchievement("beat_3");
+      if ((state.monstersKilled || 0) >= 10) unlockAchievement("kill10");
       if (b.monster.id === "boss_1") unlockAchievement("beat_boss");
       maybeLevelUp();
       save();
@@ -5549,6 +5600,8 @@
       if (p.level >= 10) unlockAchievement("level10");
       if (p.level >= 20) unlockAchievement("level20");
       if (p.level >= 30) unlockAchievement("level30");
+      if (p.level >= 25) unlockAchievement("level25");
+      if (p.level >= 40) unlockAchievement("level40");
     }
   }
 
@@ -5600,6 +5653,7 @@
     openModal(`
       <div class="modal-box">
         <div class="modal-title">知识试炼</div>
+        <div class="quiz-timer" id="quizTimer">45s</div>
         <div class="quiz-question">
           <span class="quiz-point">考点 · ${q.point}</span>
           <div class="quiz-text">${q.q}</div>
@@ -5607,11 +5661,43 @@
         <div class="quiz-options">${optionsHtml}</div>
       </div>
     `);
+    startQuizTimer();
+  }
+
+  function startQuizTimer() {
+    const quiz = state.quiz;
+    if (!quiz) return;
+    if (quiz.timer) clearInterval(quiz.timer);
+    quiz.timeLeft = 45;
+    quiz.resolved = false;
+    const el = document.getElementById("quizTimer");
+    quiz.timer = setInterval(() => {
+      if (!state.quiz || state.quiz !== quiz) {
+        clearInterval(quiz.timer);
+        return;
+      }
+      quiz.timeLeft -= 0.25;
+      const secs = Math.max(0, Math.ceil(quiz.timeLeft));
+      if (el) el.textContent = secs + "s";
+      modal.classList.toggle("quiz-danger", secs <= 5);
+      if (quiz.timeLeft <= 0) {
+        clearInterval(quiz.timer);
+        quiz.timer = null;
+        if (!quiz.resolved) resolveAnswer(-1);
+      }
+    }, 250);
   }
 
   function resolveAnswer(selected) {
     const quiz = state.quiz;
     if (!quiz) return;
+    if (quiz.resolved) return;
+    quiz.resolved = true;
+    if (quiz.timer) {
+      clearInterval(quiz.timer);
+      quiz.timer = null;
+    }
+    modal.classList.remove("quiz-danger");
     const q = quiz.q;
     const correct = selected === q.answer;
     state.answered += 1;
@@ -5628,6 +5714,7 @@
     if (correct) state.pointCorrect[q.point] = (state.pointCorrect[q.point] || 0) + 1;
     if (correct) {
       state.correct += 1;
+      state.quizStreak = (state.quizStreak || 0) + 1;
       state.week.correct = (state.week.correct || 0) + 1;
       const subject = pointSubject(q.point);
       state.week.subjects[subject] = (state.week.subjects[subject] || 0) + 1;
@@ -5636,6 +5723,13 @@
         updateTask("answer10", 1);
         if (POINT_QUIZ_TASK[q.point]) updateTask(POINT_QUIZ_TASK[q.point], 1);
         if (state.correct >= 10) unlockAchievement("answer10");
+        if (state.correct >= 50) unlockAchievement("answer50");
+        if (state.correct >= 100) unlockAchievement("answer100");
+        if (state.quizStreak >= 10) unlockAchievement("streak10");
+        if (state.week.answered >= 20) unlockAchievement("weekly20");
+        const coverage = Math.round((Object.keys(state.pointProgress).length / Math.max(1, POINTS.length)) * 100);
+        if (coverage >= 60) unlockAchievement("coverage60");
+        if (coverage >= 90) unlockAchievement("coverage90");
       const rec = state.reviewMap[q.id];
       if (rec && state.wrongQuestions.includes(q.id)) {
         rec.count += 1;
@@ -5647,6 +5741,7 @@
         }
       }
     } else {
+      state.quizStreak = 0;
       if (!state.reviewMap[q.id]) state.reviewMap[q.id] = { count: 0, mastered: false, next: Date.now() + 86400000 };
       const rec = state.reviewMap[q.id];
       rec.count = 0;
@@ -6497,6 +6592,8 @@
     get state() {
       return state;
     },
+    skills: ALL_SKILLS,
+    jobs: JOBS,
     entities,
     auditEntities: AUDIT_ENTITIES,
     capitalEntities: CAPITAL_ENTITIES,
@@ -6512,6 +6609,7 @@
     openBook,
     openReport,
     openTasks,
+    openAchievements,
     openEquip,
     openSkillTree,
     openCraft,
