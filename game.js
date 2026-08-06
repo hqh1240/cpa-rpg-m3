@@ -4321,12 +4321,19 @@
     ];
     const rows = items
       .map(
-        (item) => `
-          <div class="book-card" style="display:flex;justify-content:space-between;align-items:center;gap:10px;" data-tip="${item.name}：${item.desc} · ${item.price} G">
+        (item) => {
+          const compare = item.id === "compounding_dagger"
+            ? ` · 当前 ${state.weapon.name} ATK ${getWeaponAtk()} → 8`
+            : item.id === "audit_light_armor"
+              ? ` · 当前 ${state.armor.name} DEF ${getArmorDef()} → 4`
+              : "";
+          return `
+          <div class="book-card" style="display:flex;justify-content:space-between;align-items:center;gap:10px;" data-tip="${item.name}：${item.desc}${compare} · ${item.price} G">
             <div><b>${item.name}</b><br><span class="caption">${item.desc} · ${item.price} G${item.disabled ? " · 已拥有" : ""}</span></div>
             ${item.disabled ? "" : `<button class="pixel-btn small" data-action="shop-buy" data-item="${item.id}">购买</button>`}
           </div>
-        `
+        `;
+        }
       )
       .join("");
     openModal(`
@@ -5814,7 +5821,11 @@
       return;
     }
     const wrong = state.wrongQuestions.map((id) => QUESTIONS.find((q) => q.id === id)).filter(Boolean);
-    if (!wrong.length) {
+    const masteredIds = Object.entries(state.reviewMap || {})
+      .filter(([id, rec]) => rec.mastered && !state.wrongQuestions.includes(Number(id)))
+      .map(([id]) => Number(id));
+    const mastered = masteredIds.map((id) => QUESTIONS.find((q) => q.id === id)).filter(Boolean);
+    if (!wrong.length && !mastered.length) {
       openModal(`
         <div class="modal-box">
           <div class="modal-title">错题本 · 已清零</div>
@@ -5828,37 +5839,49 @@
       `);
       return;
     }
-    const groups = {};
-    wrong.forEach((q) => {
-      if (!groups[q.point]) groups[q.point] = [];
-      groups[q.point].push(q);
-    });
-    const list = Object.entries(groups)
-      .map(([point, qs]) => {
-        const items = qs
-          .map((q) => {
-            const rec = state.reviewMap[q.id] || { count: 0 };
-            const status = rec.count >= 2 ? "已掌握" : `待复习 · 已复习 ${rec.count} 次`;
-            return `
-              <div class="book-card">
-                <div><span class="book-point">${point}</span><span class="book-status">${status}</span></div>
-                <div style="margin:6px 0;font-weight:900;">${q.q}</div>
-                <div class="caption">${q.explain}</div>
-                <div class="modal-actions">
-                  <button class="pixel-btn small" data-action="review-question" data-id="${q.id}">复习本题</button>
-                </div>
-              </div>
-            `;
-          })
-          .join("");
-        return `<div style="margin-bottom:12px;"><b>${point}</b> · ${qs.length} 题${items}</div>`;
-      })
+    const columns = [
+      {
+        title: "未掌握",
+        items: wrong.filter((q) => {
+          const rec = state.reviewMap[q.id];
+          return !rec || rec.count < 1;
+        })
+      },
+      {
+        title: "模糊",
+        items: wrong.filter((q) => {
+          const rec = state.reviewMap[q.id];
+          return rec && rec.count >= 1 && !rec.mastered;
+        })
+      },
+      { title: "已掌握", items: mastered }
+    ];
+    const renderBookItems = (items, locked) => items.length
+      ? items.map((q) => {
+          const rec = state.reviewMap[q.id] || { count: 0 };
+          return `
+            <div class="book-card">
+              <div><span class="book-point">${q.point}</span><span class="book-status">${locked ? "已掌握" : `复习 ${rec.count} 次`}</span></div>
+              <div style="margin:6px 0;font-weight:900;">${q.q}</div>
+              <div class="caption">${q.explain}</div>
+              ${locked ? "" : `<div class="modal-actions"><button class="pixel-btn small" data-action="review-question" data-id="${q.id}">复习本题</button></div>`}
+            </div>
+          `;
+        }).join("")
+      : `<div class="book-card caption">暂无</div>`;
+    const columnsHtml = columns
+      .map((col) => `
+        <div class="book-column">
+          <div class="book-column-title">${col.title} · ${col.items.length}</div>
+          ${renderBookItems(col.items, col.title === "已掌握")}
+        </div>
+      `)
       .join("");
     openModal(`
       <div class="modal-box">
         <div class="modal-title">错题本 · ${wrong.length} 道</div>
-        <div class="modal-text">按考点分组，已掌握题目会保留解析供快速回顾。</div>
-        ${list}
+        <div class="modal-text">按复习状态分为未掌握、模糊和已掌握，便于针对性复习。</div>
+        <div class="book-columns">${columnsHtml}</div>
         <div class="modal-actions">
           <button class="pixel-btn" data-action="challenge-start" data-mode="wrong">错题专练</button>
           <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">智能复习</button>
@@ -6685,6 +6708,7 @@
     openAchievements,
     openEquip,
     openSkillTree,
+    openShop,
     openCraft,
     openEnhance,
     openPartner,
