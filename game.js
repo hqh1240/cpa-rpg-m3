@@ -1976,6 +1976,7 @@
     plan_subject: "<b>科目偏好</b><br>切换学习计划抽取题目的科目范围",
     weekly_report: "<b>学习周报</b><br>查看本周答题、正确率、最强科目和时长",
     download_weekly: "<b>下载周报</b><br>生成学习周报图片并保存",
+    share_weekly: "<b>复制分享文案</b><br>生成学习周报文字摘要并复制",
     point_map: "<b>考纲导航</b><br>按科目查看考点并针对性答题",
     point_quiz: "<b>考点练习</b><br>开始一道当前考点的题目",
     job_quiz: "<b>职业推荐</b><br>通过偏好题推荐适合你的 CPA 职业",
@@ -2068,6 +2069,7 @@
       job_recommend_continue: "confirm",
       weekly_report: "cursor",
       download_weekly: "confirm",
+      share_weekly: "confirm",
       settings: "cursor",
       settings_back: "cancel",
       achievements: "confirm",
@@ -5943,6 +5945,7 @@
         <div class="report-grid">${historyCards}</div>
         <div class="modal-actions">
           <button class="pixel-btn" data-action="download-weekly">下载周报</button>
+          <button class="pixel-btn secondary" data-action="share-weekly">复制分享文案</button>
           <button class="pixel-btn secondary" data-action="close">返回</button>
         </div>
       </div>
@@ -6319,6 +6322,17 @@
       a.download = "cpa_rpg_weekly_report.png";
       a.click();
       showToast("学习周报已下载");
+    } else if (action === "share-weekly") {
+      const week = state.week;
+      const acc = week.answered ? Math.round((week.correct / week.answered) * 100) : 0;
+      const subjects = Object.entries(week.subjects || {}).sort((a, b) => b[1] - a[1]);
+      const strong = subjects[0] ? subjects[0][0] : "暂无";
+      const text = `【注会纪元 · 学习周报】\n本周答题 ${week.answered} 题 · 正确率 ${acc}%\n最强科目：${strong}\n学习时长：${formatDuration(week.playSeconds)}\n一起来边玩边学CPA！`;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast("分享文案已复制")).catch(() => showToast("复制失败，请手动复制"));
+      } else {
+        showToast("当前环境不支持自动复制");
+      }
     } else if (action === "plan-target") {
       state.plan.dailyTarget = Number(dataset.target) || 5;
       state.daily.target = state.plan.dailyTarget;
