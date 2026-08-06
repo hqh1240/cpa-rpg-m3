@@ -67,6 +67,14 @@ button {
   background: rgba(37, 28, 22, 0.92);
 }
 
+.panel,
+.panel-light {
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.10),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.20),
+    0 6px 0 rgba(0, 0, 0, 0.24);
+}
+
 .panel-light,
 .pixel-btn.secondary {
   border-image: url("assets/sunnyside/ui/panel_light.png") 3 fill / 3px;
@@ -838,6 +846,7 @@ button {
 .quest-card {
   width: 240px;
   padding: 10px 14px;
+  border-left: 5px solid #f2c95f;
 }
 
 .quest-title {
@@ -854,6 +863,10 @@ button {
   grid-template-rows: repeat(7, 1fr);
   gap: 2px;
   padding: 8px;
+  background: rgba(23, 18, 14, 0.94);
+  border: 3px solid transparent;
+  border-image: url("assets/sunnyside/ui/panel_light.png") 3 fill / 3px;
+  box-shadow: inset 0 0 0 2px rgba(242, 201, 95, 0.14);
 }
 
 .map-buttons {
@@ -879,6 +892,21 @@ button {
   background: rgba(12, 9, 7, 0.52);
   padding: 24px;
   z-index: 30;
+}
+
+#modal.battle-mode {
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(8, 6, 4, 0.28);
+  padding: 14px 20px 22px;
+}
+
+#modal.battle-mode .modal-box {
+  width: min(760px, 94vw);
+  max-height: 56vh;
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.40),
+    0 -6px 0 rgba(0, 0, 0, 0.32);
 }
 
 .modal-box {

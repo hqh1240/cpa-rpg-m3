@@ -1844,12 +1844,15 @@
   function openModal(html) {
     modal.innerHTML = html;
     modal.classList.remove("hidden");
+    if (state.screen === "battle") modal.classList.add("battle-mode");
+    else modal.classList.remove("battle-mode");
     decorateModalButtons();
   }
 
   function closeModal() {
     hideTooltip();
     modal.classList.add("hidden");
+    modal.classList.remove("battle-mode");
     modal.innerHTML = "";
   }
 
@@ -2301,14 +2304,39 @@
 
   function drawEntityLabel(entity) {
     const x = entity.x + 12;
-    const y = entity.y - 28;
+    const y = entity.y - 36;
     const hasDeliver = state.tasks.some((t) => t.deliverable && t.deliverNpc === entity.id);
-    const label = (hasDeliver ? "？" : "") + entity.label;
-    ctx.fillStyle = "rgba(20, 14, 10, 0.85)";
-    ctx.fillRect(x - 4, y - 20, 46, 18);
-    ctx.fillStyle = "#ffe49a";
+    const label = entity.label;
     ctx.font = "bold 12px 'Microsoft YaHei'";
-    ctx.fillText(label, x, y - 9);
+    const textWidth = ctx.measureText(label).width;
+    const w = Math.min(150, textWidth + 18);
+    const h = 22;
+    const bx = x - w / 2;
+    const by = y - h;
+    ctx.save();
+    ctx.fillStyle = "rgba(23, 18, 14, 0.90)";
+    ctx.strokeStyle = "rgba(242, 201, 95, 0.70)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(bx, by, w, h, 4);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = hasDeliver ? "#ffd66b" : "#fff2d0";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(label, x, by + h / 2 + 1);
+    if (hasDeliver) {
+      ctx.fillStyle = "#f2c95f";
+      ctx.beginPath();
+      ctx.arc(bx + w - 7, by - 4, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#241a14";
+      ctx.font = "bold 9px 'Microsoft YaHei'";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("!", bx + w - 7, by - 4);
+    }
+    ctx.restore();
   }
 
   function drawMonsterSprite(m, x, y, w, h, isBoss) {
@@ -2419,6 +2447,13 @@
 
   function updateHUD() {
     const p = state.player;
+    const goldMissing = ["defeat3", "chest2", "collect3"].filter((id) => {
+      const task = state.tasks.find((t) => t.id === id);
+      return !task || !task.done;
+    });
+    const mainlineHint = goldMissing.length
+      ? "主线：击败 3 只怪物 · 开启 2 个宝箱 · 采集 3 次材料"
+      : "主线：前往天平衡碑，挑战合并报表巨像";
     const effectiveMaxMp = p.maxMp + getJobBonus("mp");
     document.getElementById("hpBar").style.width = Math.max(0, (p.hp / p.maxHp) * 100) + "%";
     document.getElementById("mpBar").style.width = Math.max(0, (p.mp / effectiveMaxMp) * 100) + "%";
@@ -2426,7 +2461,17 @@
     document.getElementById("mpText").textContent = p.mp + "/" + effectiveMaxMp;
     document.getElementById("goldText").textContent = p.gold + " G";
     document.getElementById("questText").textContent =
-      state.gameCompleted ? "主线：六域已平衡，记账大陆恢复秩序" : state.bossKilled ? "主线：击败合并报表巨像，恢复记账大陆的平衡" : "主线：前往天平衡碑，调查借贷失衡";
+      state.gameCompleted ? "主线：六域已平衡，记账大陆恢复秩序" : state.bossKilled ? "主线：击败合并报表巨像，恢复记账大陆的平衡" : mainlineHint;
+    const zoneNames = {
+      gold_field: "金算原野 · 分录镇",
+      audit_tower: "审计铁堡",
+      capital_forest: "资本密林",
+      tax_wasteland: "税率荒原",
+      law_temple: "法条神殿",
+      strategy_star: "战略星塔"
+    };
+    const subEl = document.querySelector(".hero-sub");
+    if (subEl) subEl.textContent = state.room ? (ROOMS[state.room]?.name || "室内场景") : (zoneNames[state.zone] || state.zone);
     updateMinimap();
   }
 
@@ -3128,7 +3173,7 @@
       ctx.fillRect(640, 250, 40, 20);
     }
 
-    drawFormalRoomFurniture(roomId);
+    // 室内家具由各房间的程序化布局绘制，避免额外 tileset 叠加造成花块。
 
     ctx.fillStyle = "rgba(255, 230, 180, 0.12)";
     ctx.fillRect(0, 78, W, 14);
@@ -3384,6 +3429,21 @@
       const frame = Math.floor(playerAtkAge / 42) % 9;
       drawTintedEffect(assets.dust, frame, 360, 330, 96, 64, "rgba(255, 244, 214, 0.85)");
     }
+    if (playerAtkAge >= 0 && playerAtkAge < 220) {
+      const progress = Math.min(1, playerAtkAge / 220);
+      ctx.strokeStyle = `rgba(255, 224, 102, ${0.65 * (1 - progress)})`;
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(210 + progress * 130, 330);
+      ctx.lineTo(210 + progress * 300, 330);
+      ctx.stroke();
+      ctx.strokeStyle = `rgba(255, 255, 255, ${0.45 * (1 - progress)})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(210 + progress * 150, 318);
+      ctx.lineTo(210 + progress * 280, 342);
+      ctx.stroke();
+    }
     if (playerHitAge >= 0 && playerHitAge < 220) {
       ctx.fillStyle = "rgba(255, 80, 60, 0.25)";
       ctx.fillRect(120, 300, 160, 160);
@@ -3519,7 +3579,7 @@
 
   function nearestEntity() {
     let best = null;
-    let bestDist = 60;
+    let bestDist = 80;
     getActiveEntities().forEach((e) => {
       if (e.type === "chest" && state.openedChests.includes(e.id)) return;
       if (e.type === "monster" && (state.monstersKilledIds || []).includes(e.id)) return;
@@ -3570,6 +3630,17 @@
       } else if (entity.type === "monster") {
         startBattle(entity, false);
       } else if (entity.type === "boss") {
+        if (entity.id === "boss_1" && !state._unlockAll) {
+          const required = ["defeat3", "chest2", "collect3"];
+          const missing = required.filter((id) => {
+            const task = state.tasks.find((t) => t.id === id);
+            return !task || !task.done;
+          });
+          if (missing.length) {
+            showToast("主线尚未完成：先击败 3 只怪物、开启 2 个宝箱、采集 3 次材料");
+            return;
+          }
+        }
         if (entity.id === "final_boss" && !state.strategyCleared) {
           showToast("先肃清战略星塔的战略迷雾兽和并购巨像");
           return;
@@ -6047,7 +6118,7 @@
       const x = ((e.clientX - rect.left) * W) / rect.width;
       const y = ((e.clientY - rect.top) * H) / rect.height;
       let best = null;
-      let bestDist = 45;
+      let bestDist = 80;
       getActiveEntities().forEach((entity) => {
         if (entity.type === "chest" && state.openedChests.includes(entity.id)) return;
         if (entity.type === "monster" && (state.monstersKilledIds || []).includes(entity.id)) return;
@@ -6073,7 +6144,7 @@
       const x = ((e.clientX - rect.left) * W) / rect.width;
       const y = ((e.clientY - rect.top) * H) / rect.height;
       let best = null;
-      let bestDist = 42;
+      let bestDist = 70;
       getActiveEntities().forEach((entity) => {
         if (entity.type === "chest" && state.openedChests.includes(entity.id)) return;
         if (entity.type === "monster" && (state.monstersKilledIds || []).includes(entity.id)) return;
