@@ -153,6 +153,7 @@ const QUESTIONS = [
 
 if (window.QUESTIONS_EXTRA) QUESTIONS.push(...window.QUESTIONS_EXTRA);
 if (window.QUESTIONS_M3) QUESTIONS.push(...window.QUESTIONS_M3);
+if (window.QUESTIONS_M4) QUESTIONS.push(...window.QUESTIONS_M4);
 
 const POINTS = [...new Set(QUESTIONS.map((q) => q.point))];
 

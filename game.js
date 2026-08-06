@@ -194,6 +194,8 @@
     战略: ["SWOT", "五力模型", "价值链", "并购战略", "公司战略类型", "平衡计分卡", "波士顿矩阵", "风险管理", "风险类型"]
   };
 
+  const REVIEW_INTERVALS = [1, 2, 4, 7, 15, 30];
+
   const ROOM_TASK_MAP = {
     audit_meeting: "audit_rooms_task",
     audit_evidence: "audit_rooms_task",
@@ -1585,6 +1587,23 @@
     }
     return "综合";
   }
+
+  function inferQuestionDifficulty(q) {
+    const text = String(q.point) + String(q.q);
+    if (/合并报表|每股收益|企业价值|土地增值税|破产|证券|并购|平衡计分卡|波士顿/.test(text)) return "expert";
+    if (/凭证|账簿|会计等式|借贷方向|科目分类|试算平衡|审计目标|审计证据|货币时间价值|风险与报酬|增值税|公司法|合同法|票据法|SWOT|五力|价值链/.test(text)) return "basic";
+    return "advanced";
+  }
+
+  function ensureQuestionMetadata() {
+    QUESTIONS.forEach((q) => {
+      if (!q.subject) q.subject = pointSubject(q.point);
+      if (!q.difficulty) q.difficulty = inferQuestionDifficulty(q);
+      if (!q.type) q.type = "single";
+    });
+  }
+
+  ensureQuestionMetadata();
 
   function getMonsterType(id) {
     if (id === "monster_1") return "paper_crane";
@@ -5718,7 +5737,7 @@
         <div class="modal-title">知识试炼</div>
         <div class="quiz-timer" id="quizTimer">45s</div>
         <div class="quiz-question">
-          <span class="quiz-point">考点 · ${q.point}</span>
+          <span class="quiz-point">考点 · ${q.point}${q.type === "judge" ? " · 判断题" : q.type === "multiple" ? " · 多选题" : ""}</span>
           <div class="quiz-text">${q.q}</div>
         </div>
         <div class="quiz-options">${optionsHtml}</div>
@@ -5799,7 +5818,9 @@
       const rec = state.reviewMap[q.id];
       if (rec && state.wrongQuestions.includes(q.id)) {
         rec.count += 1;
-        if (rec.count >= 2) {
+        const interval = REVIEW_INTERVALS[Math.min(rec.count - 1, REVIEW_INTERVALS.length - 1)];
+        rec.next = Date.now() + interval * 86400000;
+        if (rec.count >= 5) {
             state.wrongQuestions = state.wrongQuestions.filter((id) => id !== q.id);
             rec.mastered = true;
             unlockAchievement("wrong_zero");
@@ -6743,6 +6764,7 @@
     interact,
     playerBattleAction,
     resolveAnswer,
+    openQuiz,
     maybeLevelUp,
     openBook,
     openReport,
