@@ -305,6 +305,14 @@
     8: "通关 · 六域平衡"
   };
 
+  const ZONE_CLEARED_FLAG = {
+    audit_tower: "auditCleared",
+    capital_forest: "capitalCleared",
+    tax_wasteland: "taxCleared",
+    law_temple: "lawCleared",
+    strategy_star: "strategyCleared"
+  };
+
   const ACHIEVEMENTS = {
     first_battle: { name: "初战告捷", desc: "完成第一场战斗", type: "战斗", reward: { gold: 20 } },
     beat_3: { name: "三连斩", desc: "击败 3 只普通怪物", type: "战斗", reward: { gold: 50 } },
@@ -1962,6 +1970,7 @@
     continue: "<b>继续冒险</b><br>读取当前自动保存的进度",
     about: "<b>关于</b><br>查看版本、构建和素材说明",
     check_update: "<b>检查更新</b><br>通过 version.json 检查是否有新版本",
+    ending: "<b>查看结局</b><br>观看通关结局与六域平衡总结",
     close: "<b>返回</b><br>关闭当前窗口",
     battle_attack: "<b>攻击</b><br>普通伤害，有一定概率触发暴击",
     battle_skill: "<b>技能</b><br>触发 CPA 知识题，答对后伤害大幅提升",
@@ -2023,6 +2032,7 @@
       continue: "right",
       about: "cursor",
       check_update: "cursor",
+      ending: "confirm",
       close: "cancel",
       learn: "cursor",
       shop: "confirm",
@@ -2420,8 +2430,11 @@
     const x = entity.x + 12;
     const y = entity.y - 34;
     const hasDeliver = state.tasks.some((t) => t.deliverable && t.deliverNpc === entity.id);
+    const zoneFlag = ZONE_CLEARED_FLAG[state.zone];
+    const zoneClear = zoneFlag && state[zoneFlag] && entity.type === "door";
     const label = entity.label;
     ctx.font = "bold 12px 'Microsoft YaHei'";
+    const textWidth = ctx.measureText(label).width;
     ctx.save();
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -2429,10 +2442,15 @@
     ctx.fillText(label, x + 1, y + 1);
     ctx.fillStyle = hasDeliver ? "#ffd66b" : "#fff2d0";
     ctx.fillText(label, x, y);
+    if (zoneClear) {
+      ctx.fillStyle = "#4fc46f";
+      ctx.beginPath();
+      ctx.arc(x - textWidth / 2 - 8, y, 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
     if (hasDeliver) {
       ctx.fillStyle = "#f2c95f";
       ctx.beginPath();
-      const textWidth = ctx.measureText(label).width;
       ctx.arc(x + textWidth / 2 + 9, y, 4, 0, Math.PI * 2);
       ctx.fill();
     }
@@ -5551,6 +5569,7 @@
           <div class="info-card">${b.monster.id === "final_boss" ? "你击败了六域失衡之主。会计、审计、财管、税法、经济法和战略六域重新平衡，记账大陆恢复了秩序。" : b.monster.id === "boss_1" ? "你击败了合并报表巨像。小分：借贷重新平衡了，谢谢你，会计勇者。<br>下一站：审计铁堡。完整区域的冒险将在后续版本解锁。" : ZONE_BOSS_STATE[b.monster.id] ? `你击败了${b.monster.label}。${REGION_BOSS_INTRO[b.monster.id]?.text || "区域秩序正在恢复。"}` : state.zone === "strategy_star" ? "战略星塔的迷雾正在消散，你已接近六域平衡。" : state.zone === "law_temple" ? "法条神殿的规则正在恢复，继续巩固经济法知识。" : state.zone === "tax_wasteland" ? "税率荒原的申报秩序正在恢复，继续掌握税法规则。" : state.zone === "capital_forest" ? "资本密林中的财务异常正在消退，继续深化财管知识。" : state.zone === "audit_tower" ? "审计铁堡的证据链正在恢复，继续检查剩余异常。" : "继续探索金算原野。"}</div>
           <div class="modal-actions">
             <button class="pixel-btn" data-action="close">返回地图</button>
+            ${b.monster.id === "final_boss" ? '<button class="pixel-btn secondary" data-action="ending">查看结局</button>' : ""}
           </div>
         </div>
       `);
@@ -6018,6 +6037,37 @@
     });
   }
 
+  function showEnding() {
+    const subjects = [
+      { name: "会计", color: "#d4a017" },
+      { name: "审计", color: "#4169e1" },
+      { name: "财管", color: "#2e8b57" },
+      { name: "税法", color: "#e4572e" },
+      { name: "经济法", color: "#6b5b95" },
+      { name: "战略", color: "#3a8fb7" }
+    ];
+    openModal(`
+      <div class="modal-box ending">
+        <div class="modal-title">注会纪元 · 通关结局</div>
+        <div class="result-banner correct">六域平衡 · 记账大陆恢复秩序</div>
+        <div class="ending-story">
+          你从金算原野的第一笔分录出发，穿过审计铁堡的证据链，算清了资本密林的现金流，恢复了税率荒原的申报规则，
+          重立法条神殿的法典，也在战略星塔完成了最终决策。六科知识重新相连，六域失衡之主倒下，记账大陆恢复平衡。
+        </div>
+        <div class="title-subjects">
+          ${subjects.map((s) => `<span class="subject-chip" style="background:${s.color};">${s.name}</span>`).join("")}
+        </div>
+        <div class="ending-stats">
+          等级 ${state.player.level} · 成就 ${state.achievements.length}/${Object.keys(ACHIEVEMENTS).length} · 题库 ${QUESTIONS.length} 题
+        </div>
+        <div class="modal-actions">
+          <button class="pixel-btn" data-action="close">继续探索</button>
+          <button class="pixel-btn secondary" data-action="title">返回标题</button>
+        </div>
+      </div>
+    `);
+  }
+
   function openAbout() {
     openModal(`
       <div class="modal-box">
@@ -6114,6 +6164,7 @@
     if (action === "start") startGame();
     else if (action === "continue") continueGame();
     else if (action === "about") openAbout();
+    else if (action === "ending") showEnding();
     else if (action === "check-update") checkForUpdates();
     else if (action === "close") {
       closeModal();
@@ -6642,6 +6693,7 @@
     openWeeklyReport,
     openPointMap,
     openJobQuiz,
+    showEnding,
     advanceMainStory,
     activateRegionTasks,
     openSettings,

@@ -40,3 +40,9 @@
 - URL: https://github.com/RonenNess/RPGUI
 - License: zlib license, commercial use allowed, see `assets/ui/rpgui/LICENSE.txt`
 - Used for formal panels, buttons, progress bars, icons, and battle modal frames under `assets/ui/rpgui/`.
+
+## Keyboard hint icons
+
+- Source: `mengge_game_ui_icons`, included in the user-provided `G:\豆包下载文件\RPG游戏UI资源合集.zip`
+- Used for HUD keyboard hints under `assets/ui/keys/`.
+- Note: confirm original pack license before commercial distribution.
