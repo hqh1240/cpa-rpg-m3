@@ -1842,12 +1842,24 @@
 
   async function loadAssets() {
     const base = "assets/sunnyside/";
-    assets.scene = await loadImage(base + "scene.png");
-    assets.tileset = await loadImage(base + "tileset.png");
-    assets.tinyTilemap = await loadImage("assets/tiles/kenney_tiny_town/Tilemap/tilemap.png");
-    assets.formalTileset = await loadImage("assets/tiles/formal_dungeon.png");
-    assets.interior = await loadImage("assets/rooms/interior.png");
-    assets.interiorTileset = await loadImage("assets/rooms/interior_tileset.png");
+    const tasks = [];
+    const coreFiles = {
+      scene: base + "scene.png",
+      tileset: base + "tileset.png",
+      tinyTilemap: "assets/tiles/kenney_tiny_town/Tilemap/tilemap.png",
+      formalTileset: "assets/tiles/formal_dungeon.png",
+      interior: "assets/rooms/interior.png",
+      interiorTileset: "assets/rooms/interior_tileset.png",
+      playerIdle: base + "chars/player_idle.png",
+      playerWalk: base + "chars/player_walk.png",
+      playerSword: base + "chars/player_sword.png",
+      goblinIdle: base + "monsters/goblin_idle.png",
+      goblinAttack: base + "monsters/goblin_attack.png",
+      dust: "assets/effects/dust.png"
+    };
+    for (const [key, src] of Object.entries(coreFiles)) {
+      tasks.push(loadImage(src).then((img) => () => { assets[key] = img; }));
+    }
     const battleBgs = {
       gold_field: "assets/battle_bg/gold_field.png",
       audit_archive: "assets/battle_bg/audit_archive.png",
@@ -1856,13 +1868,8 @@
       town_court: "assets/battle_bg/town_court.png"
     };
     for (const [key, src] of Object.entries(battleBgs)) {
-      assets.battleBgs[key] = await loadImage(src);
+      tasks.push(loadImage(src).then((img) => () => { assets.battleBgs[key] = img; }));
     }
-    assets.playerIdle = await loadImage(base + "chars/player_idle.png");
-    assets.playerWalk = await loadImage(base + "chars/player_walk.png");
-    assets.playerSword = await loadImage(base + "chars/player_sword.png");
-    assets.goblinIdle = await loadImage(base + "monsters/goblin_idle.png");
-    assets.goblinAttack = await loadImage(base + "monsters/goblin_attack.png");
     const propFiles = {
       chest: "chest.png",
       chestOpen: "chest_open.png",
@@ -1873,18 +1880,19 @@
       torch: "torch.png"
     };
     for (const [key, file] of Object.entries(propFiles)) {
-      assets.props[key] = await loadImage("assets/props/" + file);
+      tasks.push(loadImage("assets/props/" + file).then((img) => () => { assets.props[key] = img; }));
     }
-    assets.dust = await loadImage("assets/effects/dust.png");
-    assets.dust._frameWidth = 16;
-    assets.dust._frames = 9;
     for (const jobId of Object.keys(JOBS)) {
-      assets.playerSheets[jobId] = await loadImage("assets/characters/player_" + jobId + ".png");
+      tasks.push(loadImage("assets/characters/player_" + jobId + ".png").then((img) => () => { assets.playerSheets[jobId] = img; }));
     }
     for (const monsterId of Object.keys(MONSTER_SPRITE)) {
       const monsterAssetId = MONSTER_SPRITE[monsterId] || monsterId;
-      assets.monsterSheets[monsterId] = await loadImage("assets/monsters/monster_" + monsterAssetId + ".png");
+      tasks.push(loadImage("assets/monsters/monster_" + monsterAssetId + ".png").then((img) => () => { assets.monsterSheets[monsterId] = img; }));
     }
+    const setters = await Promise.all(tasks);
+    setters.forEach((fn) => fn());
+    assets.dust._frameWidth = 16;
+    assets.dust._frames = 9;
     assets.playerIdle._box = { x: 42, y: 21, w: 13, h: 18 };
     assets.playerWalk._box = { x: 42, y: 22, w: 13, h: 17 };
     assets.playerSword._box = { x: 38, y: 20, w: 17, h: 19 };
@@ -6527,7 +6535,16 @@
     canvas.addEventListener("pointerleave", hideTooltip);
   }
 
+  let fpsFrames = 0;
+  let fpsLast = performance.now();
+
   function loop(t) {
+    fpsFrames += 1;
+    if (t - fpsLast >= 500) {
+      document.body.dataset.fps = Math.round((fpsFrames * 1000) / Math.max(1, t - fpsLast));
+      fpsFrames = 0;
+      fpsLast = t;
+    }
     const dt = Math.min(0.05, (t - lastTime) / 1000 || 0.016);
     lastTime = t;
     if (state.screen === "map") updateMap(dt);
