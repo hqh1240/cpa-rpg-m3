@@ -358,6 +358,7 @@
       gold: 40,
       attack: 16,
       defense: 9,
+      skillPoints: 2,
       facing: "down",
       moveTarget: null
     },
@@ -392,6 +393,7 @@
     correct: 0,
     quizStreak: 0,
     openedChests: [],
+    collectedMaterialIds: [],
     visitedRooms: [],
     questStep: 0,
     mainStep: 0,
@@ -441,6 +443,7 @@
   if (!state.partner.exp) state.partner.exp = 0;
   if (!state.partner.expNext) state.partner.expNext = 50;
   if (!state.partner.skill) state.partner.skill = "记账祝福";
+  if (state.player.skillPoints === undefined) state.player.skillPoints = state.skillPoints || 0;
   if (!state.player.facing) state.player.facing = "down";
   if (state.player.moveTarget === undefined) state.player.moveTarget = null;
   if (!state.reviewMap) state.reviewMap = {};
@@ -534,6 +537,7 @@
   if (state.mainStep === undefined) state.mainStep = 0;
   if (state.quizStreak === undefined) state.quizStreak = 0;
   if (!Array.isArray(state.visitedRooms)) state.visitedRooms = [];
+  if (!Array.isArray(state.collectedMaterialIds)) state.collectedMaterialIds = [];
   if (!state.collectCount) state.collectCount = 0;
   if (!state.tasks.some((t) => t.id === "defeat_ink")) {
     const inkTask = defaultState().tasks.find((t) => t.id === "defeat_ink");
@@ -1661,6 +1665,7 @@
       const eb = entityBody(e);
       if (!eb) continue;
       if (e.type === "chest" && state.openedChests.includes(e.id)) continue;
+      if (e.type === "collect" && state.collectedMaterialIds.includes(e.id)) continue;
       if (e.type === "monster" && (state.monstersKilledIds || []).includes(e.id)) continue;
       if (e.type === "boss" && (!isBossUnlocked(e) || isBossDefeated(e))) continue;
       if (rectsOverlap(body, eb)) return false;
@@ -1916,6 +1921,16 @@
     assets.goblinIdle._frames = 8;
     assets.goblinAttack._frameWidth = 96;
     assets.goblinAttack._frames = 9;
+    for (const [key, img] of Object.entries(assets.battleBgs)) {
+      if (!img || !img.width) continue;
+      const clean = document.createElement("canvas");
+      clean.width = img.width;
+      clean.height = Math.round(img.height * 0.84);
+      const c = clean.getContext("2d");
+      c.imageSmoothingEnabled = false;
+      c.drawImage(img, 0, 0, img.width, clean.height, 0, 0, clean.width, clean.height);
+      assets.battleBgs[key] = clean;
+    }
   }
 
   function loadSave() {
@@ -2600,6 +2615,7 @@
       ...getActiveEntities()
         .filter((e) => {
           if (e.type === "chest" && state.openedChests.includes(e.id)) return false;
+          if (e.type === "collect" && state.collectedMaterialIds.includes(e.id)) return false;
           if (e.type === "monster" && (state.monstersKilledIds || []).includes(e.id)) return false;
           if (e.type === "boss" && (!isBossUnlocked(e) || isBossDefeated(e))) return false;
           return true;
@@ -2656,8 +2672,10 @@
       else if (e.type === "sign") drawSign(e);
       else if (e.type === "stone") drawStone(e.x, e.y);
       else if (e.type === "collect") {
-        drawCollect(e);
-        drawEntityLabel(e);
+        if (!state.collectedMaterialIds.includes(e.id)) {
+          drawCollect(e);
+          drawEntityLabel(e);
+        }
       } else if (e.type === "portal" || e.type === "zone_gate") {
         drawPortal(e);
         drawEntityLabel(e);
@@ -3719,6 +3737,7 @@
     let bestDist = 80;
     getActiveEntities().forEach((e) => {
       if (e.type === "chest" && state.openedChests.includes(e.id)) return;
+      if (e.type === "collect" && state.collectedMaterialIds.includes(e.id)) return;
       if (e.type === "monster" && (state.monstersKilledIds || []).includes(e.id)) return;
       if (e.type === "boss" && (!isBossUnlocked(e) || isBossDefeated(e))) return;
       const d = distance(state.player, e);
@@ -3873,6 +3892,11 @@
     }
 
     function collectMaterial(entity) {
+      if (state.collectedMaterialIds.includes(entity.id)) {
+        showToast("该采集点已经采集过了");
+        return;
+      }
+      state.collectedMaterialIds.push(entity.id);
       state.inventory.materials[entity.material] = (state.inventory.materials[entity.material] || 0) + entity.amount;
       state.collectCount += 1;
       if (state.collectCount >= 10) unlockAchievement("collect10");
@@ -5102,12 +5126,13 @@
     state.screen = "battle";
     playBgm(BGM_BATTLE);
     const regionInfo = BATTLE_REGIONS[getMonsterType(monster.id)] || BATTLE_REGIONS.paper_crane;
+    const battleMonster = { ...monster };
     state.battle = {
-      monster,
+      monster: battleMonster,
       isBoss,
       region: regionInfo,
-      hp: monster.hp,
-      maxHp: monster.hp,
+      hp: battleMonster.hp,
+      maxHp: battleMonster.hp,
       turn: 1,
       feedback: "",
       effects: [],
@@ -5661,7 +5686,22 @@
     if (unlocked.length) showToast(unlocked.join(" · "), 3000);
   }
 
+  function shuffleQuestion(q) {
+    const options = q.options.map((opt, i) => ({ opt, i }));
+    for (let i = options.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [options[i], options[j]] = [options[j], options[i]];
+    }
+    return {
+      ...q,
+      options: options.map((o) => o.opt),
+      answer: options.findIndex((o) => o.i === q.answer)
+    };
+  }
+
   function openQuiz(q) {
+    q = shuffleQuestion(q);
+    if (state.quiz) state.quiz.q = q;
     const letters = ["A", "B", "C", "D"];
     const optionsHtml = q.options
       .map(
@@ -6569,6 +6609,7 @@
       let bestDist = 80;
       getActiveEntities().forEach((entity) => {
         if (entity.type === "chest" && state.openedChests.includes(entity.id)) return;
+        if (entity.type === "collect" && state.collectedMaterialIds.includes(entity.id)) return;
         if (entity.type === "monster" && (state.monstersKilledIds || []).includes(entity.id)) return;
         if (entity.type === "boss" && (!isBossUnlocked(entity) || isBossDefeated(entity))) return;
         const d = Math.hypot(entity.x + 16 - x, entity.y + 20 - y);
@@ -6595,6 +6636,7 @@
       let bestDist = 70;
       getActiveEntities().forEach((entity) => {
         if (entity.type === "chest" && state.openedChests.includes(entity.id)) return;
+        if (entity.type === "collect" && state.collectedMaterialIds.includes(entity.id)) return;
         if (entity.type === "monster" && (state.monstersKilledIds || []).includes(entity.id)) return;
         if (entity.type === "boss" && (!isBossUnlocked(entity) || isBossDefeated(entity))) return;
         const d = Math.hypot(entity.x + 16 - x, entity.y + 20 - y);
