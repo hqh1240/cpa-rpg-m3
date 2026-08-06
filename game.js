@@ -1389,12 +1389,6 @@
           if (!src) continue;
           ctx.drawImage(assets.tinyTilemap, src.col * 17, src.row * 17, TILE, TILE, px, py, TILE, TILE);
         }
-        if (code === 2) {
-          ctx.fillStyle = "rgba(255,255,255,0.2)";
-          const phase = (Date.now() / 280 + x + y) % 4;
-          ctx.fillRect(px + phase, py + 11, 3, 2);
-          ctx.fillRect(px + 9, py + 4, 3, 2);
-        }
       }
     }
     if (formalMode) drawFormalBuildings();
@@ -2449,10 +2443,6 @@
         ctx.restore();
       } else {
         drawTintedFrame(img, x, y, w, h, frame, tint);
-        if (facing === "up") {
-          ctx.fillStyle = "rgba(20, 28, 42, 0.18)";
-          ctx.fillRect(x + Math.round(w * 0.18), y + Math.round(h * 0.34), Math.round(w * 0.64), Math.round(h * 0.42));
-        }
       }
       ctx.fillStyle = "rgba(30, 20, 10, 0.22)";
       ctx.beginPath();
@@ -2520,31 +2510,15 @@
     // 地图标签禁止矩形边框，详见 docs/UI_GUIDELINES.md
     const x = entity.x + 12;
     const y = entity.y - 34;
-    const hasDeliver = state.tasks.some((t) => t.deliverable && t.deliverNpc === entity.id);
-    const zoneFlag = ZONE_CLEARED_FLAG[state.zone];
-    const zoneClear = zoneFlag && state[zoneFlag] && entity.type === "door";
     const label = entity.label;
     ctx.font = "bold 12px 'Microsoft YaHei'";
-    const textWidth = ctx.measureText(label).width;
     ctx.save();
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "rgba(18, 13, 10, 0.92)";
     ctx.fillText(label, x + 1, y + 1);
-    ctx.fillStyle = hasDeliver ? "#ffd66b" : "#fff2d0";
+    ctx.fillStyle = "#fff2d0";
     ctx.fillText(label, x, y);
-    if (zoneClear) {
-      ctx.fillStyle = "#4fc46f";
-      ctx.beginPath();
-      ctx.arc(x - textWidth / 2 - 8, y, 4, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    if (hasDeliver) {
-      ctx.fillStyle = "#f2c95f";
-      ctx.beginPath();
-      ctx.arc(x + textWidth / 2 + 9, y, 4, 0, Math.PI * 2);
-      ctx.fill();
-    }
     ctx.restore();
   }
 
@@ -2723,9 +2697,12 @@
       drawPlayerSprite(state.player.x - 28, state.player.y - 64, 56, 56);
       return;
     }
-    if (state.zone === "gold_field" && assets.scene) drawSceneCover();
-    drawTileMap();
-    drawDecorations();
+    if (state.zone === "gold_field" && assets.scene) {
+      drawSceneCover();
+    } else {
+      drawTileMap();
+      drawDecorations();
+    }
     const zoneTints = {
       audit_tower: "rgba(65, 105, 225, 0.08)",
       capital_forest: "rgba(46, 139, 87, 0.10)",
@@ -3447,14 +3424,11 @@
   function drawPlayerIndicator(x, y) {
     ctx.fillStyle = "rgba(255, 228, 154, 0.95)";
     ctx.beginPath();
-    ctx.moveTo(x - 9, y - 2);
-    ctx.lineTo(x + 9, y - 2);
-    ctx.lineTo(x, y + 14);
+    ctx.moveTo(x - 7, y - 2);
+    ctx.lineTo(x + 7, y - 2);
+    ctx.lineTo(x, y + 11);
     ctx.closePath();
     ctx.fill();
-    ctx.strokeStyle = "#6d4327";
-    ctx.lineWidth = 2;
-    ctx.stroke();
   }
 
   function drawPartner(x, y) {

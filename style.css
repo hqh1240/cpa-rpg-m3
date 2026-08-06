@@ -158,14 +158,13 @@ button {
 .avatar {
   width: 48px;
   height: 48px;
-  background: #6d4327;
-  border: 3px solid transparent;
-  border-image: url("assets/sunnyside/ui/panel_white.png") 3 fill / 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 900;
-  font-size: 22px;
+  flex: 0 0 auto;
+  background-image: url("assets/sunnyside/chars/player_idle.png");
+  background-size: 1728px 128px;
+  background-position: -95px -36px;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 .hero-name {
