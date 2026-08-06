@@ -1298,3 +1298,42 @@ button {
 #modal.battle-mode .modal-box {
   border-image: url("assets/ui/rpgui/border-image-golden2.png") 16 fill / 12px;
 }
+
+.point-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.point-chip {
+  min-height: 34px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.equip-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.9fr) minmax(0, 1.1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.equip-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.equip-slot-name {
+  margin-top: 8px;
+  font-weight: 900;
+  color: #7d3d2a;
+}
+
+@media (max-width: 820px) {
+  .equip-layout {
+    grid-template-columns: 1fr;
+  }
+}

@@ -263,6 +263,48 @@
     }
   };
 
+  const MAIN_STORY = {
+    1: [
+      { speaker: "小分", text: "怪物、宝箱和材料都查过了。天平衡碑上的合并报表巨像已经苏醒，它会把你的答案变成攻击。" },
+      { speaker: "老会计", text: "去吧。报表不只是数字，更是六域平衡的根基。" }
+    ],
+    2: [
+      { speaker: "小分", text: "你击败了合并报表巨像！审计铁堡的传送门已经开启，证据链正在等待修复。" }
+    ],
+    3: [
+      { speaker: "审计统领", text: "审计铁堡肃清了。凭证巨像倒下后，资本密林里新的财务异常开始浮出水面。" }
+    ],
+    4: [
+      { speaker: "财管导师", text: "资本密林恢复了。税率荒原的申报秩序正在被税章巨像压垮。" }
+    ],
+    5: [
+      { speaker: "税务官", text: "税率荒原恢复了。法条神殿的规则被法槌裁决者篡改，六域开始失去最后的秩序。" }
+    ],
+    6: [
+      { speaker: "法务官", text: "法条神殿恢复了。战略星塔里的并购霸主封锁了最终试炼的路。" }
+    ],
+    7: [
+      { speaker: "战略官", text: "战略星塔已肃清。小分、审计统领、财管导师、税务官、法务官正在为你送来最后的祝福。" },
+      { speaker: "小分", text: "六域的力量已经齐聚，去击败六域失衡之主，让记账大陆重新平衡。" }
+    ],
+    8: [
+      { speaker: "小分", text: "六域重新平衡了！你完成了从第一笔分录到最终战略的全部试炼。" },
+      { speaker: "老会计", text: "这就是注会纪元。恭喜你，真正的会计勇者。" }
+    ]
+  };
+
+  const MAIN_STEP_LABELS = {
+    0: "金算原野 · 调查借贷失衡",
+    1: "金算原野 · 直面合并报表巨像",
+    2: "审计铁堡 · 修复证据链",
+    3: "资本密林 · 重铸财务秩序",
+    4: "税率荒原 · 恢复申报规则",
+    5: "法条神殿 · 重立法典",
+    6: "战略星塔 · 肃清并购霸主",
+    7: "终局试炼 · 六域失衡之主",
+    8: "通关 · 六域平衡"
+  };
+
   const ACHIEVEMENTS = {
     first_battle: { name: "初战告捷", desc: "完成第一场战斗", type: "战斗", reward: { gold: 20 } },
     beat_3: { name: "三连斩", desc: "击败 3 只普通怪物", type: "战斗", reward: { gold: 50 } },
@@ -331,6 +373,7 @@
     openedChests: [],
     visitedRooms: [],
     questStep: 0,
+    mainStep: 0,
     tasks: [
       { id: "main", title: "调查借贷失衡", desc: "击败合并报表巨像，恢复天平衡碑的平衡", progress: 0, target: 1, done: false },
       { id: "defeat3", title: "击败扭曲怪物", desc: "击败 3 只普通怪物", progress: 0, target: 3, done: false },
@@ -467,6 +510,7 @@
   }
   if (!state.achievements) state.achievements = [];
   if (!Array.isArray(state.levelTitles)) state.levelTitles = [];
+  if (state.mainStep === undefined) state.mainStep = 0;
   if (!Array.isArray(state.visitedRooms)) state.visitedRooms = [];
   if (!state.collectCount) state.collectCount = 0;
   if (!state.tasks.some((t) => t.id === "defeat_ink")) {
@@ -1475,6 +1519,28 @@
     return [...source].sort(() => Math.random() - 0.5).slice(0, Math.max(1, count));
   }
 
+  function getSmartReviewQuestions(count) {
+    const now = Date.now();
+    const wrongIds = state.wrongQuestions || [];
+    const due = wrongIds
+      .map((id) => QUESTIONS.find((q) => q.id === id))
+      .filter(Boolean)
+      .filter((q) => {
+        const rec = state.reviewMap[q.id];
+        return !rec || !rec.next || rec.next <= now;
+      });
+    const pool = due.length ? due : wrongIds.map((id) => QUESTIONS.find((q) => q.id === id)).filter(Boolean);
+    if (pool.length < count) {
+      const weak = [...POINTS]
+        .sort((a, b) => (state.pointProgress[a] || 0) - (state.pointProgress[b] || 0))
+        .flatMap((point) => QUESTIONS.filter((q) => q.point === point))
+        .filter((q) => !pool.some((x) => x.id === q.id));
+      pool.push(...weak);
+    }
+    const source = pool.length ? pool : QUESTIONS;
+    return [...source].sort(() => Math.random() - 0.5).slice(0, Math.max(1, count));
+  }
+
   function pointSubject(point) {
     for (const [subject, points] of Object.entries(PLAN_SUBJECT_POINTS)) {
       if (points.includes(point)) return subject;
@@ -1854,6 +1920,7 @@
     modal.classList.add("hidden");
     modal.classList.remove("battle-mode");
     modal.innerHTML = "";
+    if (state._pendingMainStory) setTimeout(flushPendingStory, 120);
   }
 
   const ACTION_TIP = {
@@ -1883,6 +1950,11 @@
     plan_subject: "<b>科目偏好</b><br>切换学习计划抽取题目的科目范围",
     weekly_report: "<b>学习周报</b><br>查看本周答题、正确率、最强科目和时长",
     download_weekly: "<b>下载周报</b><br>生成学习周报图片并保存",
+    point_map: "<b>考纲导航</b><br>按科目查看考点并针对性答题",
+    point_quiz: "<b>考点练习</b><br>开始一道当前考点的题目",
+    job_quiz: "<b>职业推荐</b><br>通过偏好题推荐适合你的 CPA 职业",
+    job_quiz_answer: "<b>选择答案</b><br>根据偏好累计职业得分",
+    job_recommend_continue: "<b>确认推荐</b><br>进入装备与技能查看推荐职业",
     book: "<b>错题本</b><br>按考点复习错题",
     report: "<b>学习报告</b><br>查看正确率、考纲覆盖和薄弱点",
     settings: "<b>设置</b><br>音频、存档和震动设置"
@@ -1963,6 +2035,11 @@
       plan: "cursor",
       plan_target: "right",
       plan_subject: "confirm",
+      point_map: "cursor",
+      point_quiz: "confirm",
+      job_quiz: "cursor",
+      job_quiz_answer: "confirm",
+      job_recommend_continue: "confirm",
       weekly_report: "cursor",
       download_weekly: "confirm",
       settings: "cursor",
@@ -3906,6 +3983,28 @@
     ensureTaskFields();
   }
 
+  function advanceMainStory(step) {
+    if (state.mainStep >= step) return;
+    state.mainStep = step;
+    save();
+    const lines = MAIN_STORY[step];
+    if (!lines) return;
+    if (state._unlockAll) return;
+    if (modal.classList.contains("hidden")) {
+      playStory(lines, () => {});
+    } else {
+      state._pendingMainStory = lines;
+      showToast("主线剧情已推进：" + (MAIN_STEP_LABELS[step] || "新章节"));
+    }
+  }
+
+  function flushPendingStory() {
+    if (!state._pendingMainStory) return;
+    const lines = state._pendingMainStory;
+    state._pendingMainStory = null;
+    playStory(lines, () => {});
+  }
+
   function updateTask(taskId, amount) {
     const task = state.tasks.find((t) => t.id === taskId);
     if (!task || task.done) return;
@@ -3921,6 +4020,13 @@
           showToast("任务完成：" + task.title + "，请前往对应 NPC 交付");
         }
       }
+    }
+    if (["defeat3", "chest2", "collect3"].includes(taskId) && !state.bossKilled) {
+      const ready = ["defeat3", "chest2", "collect3"].every((id) => {
+        const t = state.tasks.find((x) => x.id === id);
+        return t && t.done;
+      });
+      if (ready) advanceMainStory(1);
     }
   }
 
@@ -3998,20 +4104,38 @@
     openModal(`
       <div class="modal-box">
         <div class="modal-title">装备与技能</div>
-        <div class="modal-text">
-          职业：${job.name}（${job.subject}）<br>
-          武器：${state.weapon.name}（ATK +${getWeaponAtk()} · 强化 ${state.equipmentLevels.weapon}）<br>
-          防具：${state.armor.name}（DEF +${getArmorDef()} · 强化 ${state.equipmentLevels.armor}）<br>
-          基础攻击：${state.player.attack + getWeaponAtk() + getJobBonus("atk")} · 基础防御：${state.player.defense + getArmorDef() + getJobBonus("def")}<br>
-          技能点：${state.player.skillPoints}
+        <div class="equip-layout">
+          <div class="equip-column">
+            <div class="book-card">
+              <span class="book-point">武器槽</span>
+              <div class="equip-slot-name">${state.weapon.name}</div>
+              <div class="caption">ATK +${getWeaponAtk()} · 强化 ${state.equipmentLevels.weapon}</div>
+            </div>
+            <div class="book-card">
+              <span class="book-point">防具槽</span>
+              <div class="equip-slot-name">${state.armor.name}</div>
+              <div class="caption">DEF +${getArmorDef()} · 强化 ${state.equipmentLevels.armor}</div>
+            </div>
+            <div class="book-card">
+              <div class="equip-slot-name">角色属性</div>
+              <div class="caption">攻击 ${state.player.attack + getWeaponAtk() + getJobBonus("atk")} · 防御 ${state.player.defense + getArmorDef() + getJobBonus("def")}</div>
+              <div class="caption">技能点 ${state.player.skillPoints} · 职业 ${job.name}（${job.subject}）</div>
+            </div>
+            <div class="modal-actions">
+              <button class="pixel-btn" data-action="enhance">装备强化</button>
+            </div>
+          </div>
+          <div class="equip-column">
+            <div class="book-card">
+              <span class="book-point">职业</span>
+              ${jobButtons}
+            </div>
+            <div class="book-card">
+              <span class="book-point">当前职业技能</span>
+              ${skillRows}
+            </div>
+          </div>
         </div>
-        <div class="modal-actions">
-          <button class="pixel-btn" data-action="enhance">装备强化</button>
-        </div>
-        <div style="margin-top:14px;font-weight:900;">职业</div>
-        ${jobButtons}
-        <div style="margin-top:14px;font-weight:900;">当前职业技能</div>
-        ${skillRows}
         <div class="modal-actions"><button class="pixel-btn" data-action="close">返回</button></div>
       </div>
     `);
@@ -4515,6 +4639,111 @@
     `);
   }
 
+  function openPointMap() {
+    const sections = Object.entries(PLAN_SUBJECT_POINTS)
+      .map(([subject, points]) => {
+        const chips = points
+          .map((point) => `<button class="pixel-btn small point-chip" data-action="point-quiz" data-point="${point}">${point}</button>`)
+          .join("");
+        return `
+          <div class="book-card">
+            <span class="book-point">${subject}</span>
+            <div class="point-grid">${chips}</div>
+          </div>
+        `;
+      })
+      .join("");
+    openModal(`
+      <div class="modal-box">
+        <div class="modal-title">考纲导航</div>
+        <div class="info-card">按科目浏览 CPA 考点，点击考点可直接开始 1 道题进行针对性复习。</div>
+        ${sections}
+        <div class="modal-actions"><button class="pixel-btn" data-action="close">返回</button></div>
+      </div>
+    `);
+  }
+
+  const JOB_QUESTIONS = [
+    {
+      q: "你更喜欢哪种学习方式？",
+      options: [
+        { label: "逐笔核对分录与规则", value: "accountant,law" },
+        { label: "用数字和模型做计算", value: "finance,tax" },
+        { label: "检查证据、识别风险", value: "auditor" },
+        { label: "从全局看趋势和决策", value: "strategy" }
+      ]
+    },
+    {
+      q: "战斗中你更倾向于？",
+      options: [
+        { label: "均衡攻击，稳定推进", value: "accountant" },
+        { label: "高伤害输出", value: "finance,tax" },
+        { label: "防御、护盾和控制", value: "auditor,law" },
+        { label: "召唤与全局影响", value: "strategy" }
+      ]
+    },
+    {
+      q: "你希望职业技能偏向哪个方向？",
+      options: [
+        { label: "会计基础与分录连击", value: "accountant" },
+        { label: "审计证据与控制测试", value: "auditor" },
+        { label: "财管计算与资本预算", value: "finance" },
+        { label: "税法远程与税收优惠", value: "tax" },
+        { label: "经济法护盾与规则", value: "law" },
+        { label: "战略决策与全局指挥", value: "strategy" }
+      ]
+    }
+  ];
+
+  function openJobQuiz() {
+    const scores = {};
+    for (const jobId of Object.keys(JOBS)) scores[jobId] = 0;
+    state.jobQuiz = { idx: 0, scores };
+    renderJobQuestion();
+  }
+
+  function renderJobQuestion() {
+    const quiz = state.jobQuiz;
+    if (!quiz) return;
+    const item = JOB_QUESTIONS[quiz.idx];
+    const options = item.options
+      .map((opt, i) => `<button class="pixel-btn option" data-action="job-quiz-answer" data-value="${opt.value}"><span class="tag">${String.fromCharCode(65 + i)}</span>${opt.label}</button>`)
+      .join("");
+    openModal(`
+      <div class="modal-box">
+        <div class="modal-title">职业推荐 · 第 ${quiz.idx + 1}/${JOB_QUESTIONS.length} 题</div>
+        <div class="info-card">${item.q}</div>
+        <div class="quiz-options">${options}</div>
+      </div>
+    `);
+  }
+
+  function finishJobQuiz() {
+    const quiz = state.jobQuiz;
+    if (!quiz) return;
+    const sorted = Object.entries(quiz.scores).sort((a, b) => b[1] - a[1]);
+    const best = sorted[0][0];
+    const job = JOBS[best];
+    if (state.jobs.unlocked.includes(best)) {
+      state.jobs.current = best;
+      save();
+    }
+    openModal(`
+      <div class="modal-box">
+        <div class="modal-title">推荐职业 · ${job.name}</div>
+        <div class="info-card">
+          ${job.desc}<br><br>
+          ${state.jobs.unlocked.includes(best) ? "已为你切换到该职业。" : "该职业尚未解锁，可在后续区域通过商店或剧情解锁后切换。"}
+        </div>
+        <div class="modal-actions">
+          <button class="pixel-btn" data-action="job-recommend-continue">进入装备与技能</button>
+          <button class="pixel-btn secondary" data-action="close">返回</button>
+        </div>
+      </div>
+    `);
+    state.jobQuiz = null;
+  }
+
   function openChallengeSetup() {
     if (!isSystemUnlocked("challenge")) {
       showToast(systemLockTip("challenge", "复习挑战") + " 解锁");
@@ -4557,6 +4786,8 @@
       if (!questions.length) questions = getRandomQuestions(5);
     } else if (mode === "plan") {
       questions = getPlanQuestions(state.plan.dailyTarget || 5);
+    } else if (mode === "smart") {
+      questions = getSmartReviewQuestions(state.plan.dailyTarget || 5);
     } else {
       questions = getRandomQuestions(5);
     }
@@ -5275,6 +5506,13 @@
           </div>
         </div>
       `);
+      if (state.gameCompleted) advanceMainStory(8);
+      else if (state.strategyCleared) advanceMainStory(7);
+      else if (state.lawCleared) advanceMainStory(6);
+      else if (state.taxCleared) advanceMainStory(5);
+      else if (state.capitalCleared) advanceMainStory(4);
+      else if (state.auditCleared) advanceMainStory(3);
+      else if (state.bossKilled) advanceMainStory(2);
     }
     state.screen = "map";
     playZoneBgm(state.zone || "gold_field");
@@ -5468,6 +5706,7 @@
           <div class="modal-text">当前没有待复习错题。继续保持学习节奏，把每次答错都变成掌握点。</div>
           <div class="modal-actions">
             <button class="pixel-btn" data-action="challenge-start" data-mode="mock">模拟考 5 题</button>
+            <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">智能复习</button>
             <button class="pixel-btn secondary" data-action="close">返回</button>
           </div>
         </div>
@@ -5507,6 +5746,7 @@
         ${list}
         <div class="modal-actions">
           <button class="pixel-btn" data-action="challenge-start" data-mode="wrong">错题专练</button>
+          <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">智能复习</button>
           <button class="pixel-btn secondary" data-action="close">返回</button>
         </div>
       </div>
@@ -5550,7 +5790,7 @@
       <div class="modal-box">
         <div class="modal-title">学习报告 · ${getCurrentJob().name}</div>
         <div class="modal-text">
-          六域主线：${state.gameCompleted ? "已通关" : state.bossKilled ? "审计铁堡已开启" : "金算原野主线中"} · 称号：${getLevelTitle(p.level) || "见习勇者"} · 今日目标 ${state.daily.answered}/${state.daily.target}
+          六域主线：${MAIN_STEP_LABELS[state.mainStep] || (state.gameCompleted ? "已通关" : "金算原野主线中")} · 称号：${getLevelTitle(p.level) || "见习勇者"} · 今日目标 ${state.daily.answered}/${state.daily.target}
         </div>
         <div class="report-grid">
           <div class="report-card"><div class="num">${p.level}</div><div>等级</div></div>
@@ -5577,6 +5817,8 @@
           ${menuButton("复习挑战", "challenge", "challenge")}
           <button class="pixel-btn secondary" data-action="plan">学习计划</button>
           <button class="pixel-btn secondary" data-action="weekly-report">学习周报</button>
+          <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">智能复习</button>
+          <button class="pixel-btn secondary" data-action="point-map">考纲导航</button>
         </div>
       </div>
     `);
@@ -5804,6 +6046,19 @@
       learnSkill(dataset.skill, dataset.from);
     } else if (action === "switch-job") {
       switchJob(dataset.job);
+    } else if (action === "job-quiz") {
+      openJobQuiz();
+    } else if (action === "job-quiz-answer") {
+      const quiz = state.jobQuiz;
+      if (!quiz) return;
+      for (const jobId of dataset.value.split(",")) {
+        quiz.scores[jobId] = (quiz.scores[jobId] || 0) + 1;
+      }
+      quiz.idx += 1;
+      if (quiz.idx >= JOB_QUESTIONS.length) finishJobQuiz();
+      else renderJobQuestion();
+    } else if (action === "job-recommend-continue") {
+      openEquip();
     } else if (action === "job-story-continue") {
       openEquip();
     } else if (action === "battle-item") {
@@ -5830,6 +6085,8 @@
             ${menuButton("复习挑战", "challenge", "challenge")}
             <button class="pixel-btn secondary" data-action="plan">学习计划</button>
             <button class="pixel-btn secondary" data-action="weekly-report">学习周报</button>
+            <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">智能复习</button>
+            <button class="pixel-btn secondary" data-action="point-map">考纲导航</button>
             <button class="pixel-btn secondary" data-action="settings">设置</button>
             <button class="pixel-btn secondary" data-action="achievements">成就</button>
             <button class="pixel-btn secondary" data-action="tasks">任务</button>
@@ -5837,6 +6094,7 @@
             ${menuButton("技能树", "skill-tree", "skill")}
             ${menuButton("打造", "craft", "craft")}
             ${menuButton("错题本", "book", "book")}
+            <button class="pixel-btn secondary" data-action="job-quiz">职业推荐</button>
             <button class="pixel-btn secondary" data-action="report">学习报告</button>
             <button class="pixel-btn secondary" data-action="toggle-sound">音效：${state.soundEnabled ? "开" : "关"}</button>
             <button class="pixel-btn secondary" data-action="title">返回标题</button>
@@ -5957,6 +6215,14 @@
       startChallenge(dataset.mode);
     } else if (action === "plan") {
       openPlan();
+    } else if (action === "point-map") {
+      openPointMap();
+    } else if (action === "point-quiz") {
+      const q = getQuestionsByPoint(dataset.point, 1)[0];
+      if (q) {
+        state.quiz = { q, callback: () => showToast("考点复习完成：" + dataset.point) };
+        openQuiz(q);
+      }
     } else if (action === "weekly-report") {
       openWeeklyReport();
     } else if (action === "download-weekly") {
@@ -6254,6 +6520,9 @@
     openChallengeSetup,
     openPlan,
     openWeeklyReport,
+    openPointMap,
+    openJobQuiz,
+    advanceMainStory,
     activateRegionTasks,
     openSettings,
     startChallenge,
