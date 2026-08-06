@@ -32,3 +32,11 @@
   - `assets/props/`
   - `assets/effects/`
 - Note: confirm and retain the original asset pack license/authorization before commercial distribution.
+
+## Formal RPG UI
+
+- Source: RPGUI (RPG gui for web games), included in the user-provided `G:\豆包下载文件\RPG游戏UI资源合集.zip`
+- Author: Ronen Ness
+- URL: https://github.com/RonenNess/RPGUI
+- License: zlib license, commercial use allowed, see `assets/ui/rpgui/LICENSE.txt`
+- Used for formal panels, buttons, progress bars, icons, and battle modal frames under `assets/ui/rpgui/`.

@@ -1889,10 +1889,10 @@
   };
 
   const UI_ICON_SRC = {
-    sword: "assets/sunnyside/ui/sword.png",
+    sword: "assets/ui/rpgui/sword.png",
     axe: "assets/sunnyside/ui/axe.png",
     hammer: "assets/sunnyside/ui/hammer.png",
-    confirm: "assets/sunnyside/ui/confirm.png",
+    confirm: "assets/ui/rpgui/checkbox-on.png",
     cancel: "assets/sunnyside/ui/cancel.png",
     left: "assets/sunnyside/ui/arrow_left.png",
     right: "assets/sunnyside/ui/arrow_right.png",
