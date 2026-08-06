@@ -383,6 +383,17 @@ button {
   font-weight: 900;
 }
 
+.boss-mechanic {
+  margin-top: 10px;
+  padding: 9px 11px;
+  border: 2px solid rgba(255, 122, 87, 0.55);
+  background: rgba(111, 44, 27, 0.28);
+  color: #ffd7b0;
+  font-size: 13px;
+  line-height: 1.6;
+  font-weight: 900;
+}
+
 .battle-weak {
   display: flex;
   flex-wrap: wrap;
@@ -976,6 +987,11 @@ button {
 
 .option.wrong {
   background: #f8d7cc;
+}
+
+.option.multi-option.selected {
+  background: #e4f0d2;
+  box-shadow: inset 0 0 0 4px #2f7a35;
 }
 
 .feedback {

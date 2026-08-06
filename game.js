@@ -129,6 +129,18 @@
     strategy_boss: { title: "战略星塔 · 区域决战", text: "并购霸主把战略决策扭曲成无序扩张。击败它，为最终试炼打开通路。" }
   };
 
+  const FINAL_BOSS_WEAK_POINTS = ["报表", "审计证据", "资本预算", "企业所得税", "证券法", "并购战略"];
+
+  const BOSS_MECHANICS = {
+    boss_1: { name: "报表错乱", desc: "阶段 2 起答错伤害衰减，阶段 3 攻击再次提升" },
+    audit_boss: { name: "审计标记", desc: "阶段 2 起为玩家附着审计标记，下一题答错会受到反噬" },
+    capital_boss: { name: "现金流虹吸", desc: "阶段 2 起每回合消耗玩家 MP" },
+    tax_boss: { name: "申报限时", desc: "阶段 2 起答题时间缩短" },
+    law_boss: { name: "法条护盾", desc: "阶段 2 起减免玩家造成的伤害" },
+    strategy_boss: { name: "连环扩张", desc: "阶段 2 起普通攻击附带追加伤害" },
+    final_boss: { name: "六域失衡", desc: "阶段 2 起每回合轮换六科弱点" }
+  };
+
   const REGION_TASK_GROUPS = {
     audit_tower: [
       { id: "audit_boss_task", title: "审计铁堡讨伐", desc: "击败区域 Boss 凭证巨像，修复审计证据链", progress: 0, target: 1, done: false, deliverNpc: "audit_npc", reward: { gold: 80, exp: 90, skillPoints: 2 } },
@@ -376,6 +388,7 @@
     reviewMap: {},
     pointProgress: {},
     pointCorrect: {},
+    quizHistory: [],
     examHistory: [],
     monstersKilled: 0,
     bossKilled: false,
@@ -451,6 +464,7 @@
   if (!state.reviewMap) state.reviewMap = {};
   if (!state.pointProgress) state.pointProgress = {};
   if (!state.pointCorrect) state.pointCorrect = {};
+  if (!Array.isArray(state.quizHistory)) state.quizHistory = [];
   if (!state.examHistory) state.examHistory = [];
   if (!state.plan) state.plan = { enabled: true, dailyTarget: 5, subjects: [] };
   if (state.plan.enabled === undefined) state.plan.enabled = true;
@@ -1579,6 +1593,46 @@
     }
     const source = pool.length ? pool : QUESTIONS;
     return [...source].sort(() => Math.random() - 0.5).slice(0, Math.max(1, count));
+  }
+
+  const DIFFICULTY_ORDER = { basic: 0, advanced: 1, expert: 2 };
+
+  function getAdaptiveQuestions(count) {
+    const target = Math.max(1, count);
+    const recentIds = new Set(
+      (state.quizHistory || [])
+        .slice(-Math.max(6, Math.ceil(target * 1.5)))
+        .map((entry) => entry.id)
+    );
+    const pointAccuracy = (point) => {
+      const total = state.pointProgress[point] || 0;
+      if (!total) return -1;
+      return (state.pointCorrect[point] || 0) / total;
+    };
+    const points = [...POINTS].sort((a, b) => pointAccuracy(a) - pointAccuracy(b));
+    const selected = [];
+    const usedIds = new Set(recentIds);
+    for (const point of points) {
+      if (selected.length >= target) break;
+      const pointQuestions = QUESTIONS
+        .filter((q) => q.point === point && !usedIds.has(q.id))
+        .sort((a, b) => DIFFICULTY_ORDER[a.difficulty] - DIFFICULTY_ORDER[b.difficulty]);
+      for (const q of pointQuestions) {
+        if (selected.length >= target) break;
+        selected.push(q);
+        usedIds.add(q.id);
+      }
+    }
+    if (selected.length < target) {
+      const fill = [...QUESTIONS]
+        .filter((q) => !usedIds.has(q.id))
+        .sort(() => Math.random() - 0.5);
+      for (const q of fill) {
+        if (selected.length >= target) break;
+        selected.push(q);
+      }
+    }
+    return selected.length ? selected : getRandomQuestions(target);
   }
 
   function pointSubject(point) {
@@ -4872,6 +4926,7 @@
         <div class="modal-actions">
           <button class="pixel-btn" data-action="challenge-start" data-mode="wrong">错题专练</button>
           <button class="pixel-btn secondary" data-action="challenge-start" data-mode="weak">薄弱点专练</button>
+          <button class="pixel-btn secondary" data-action="challenge-start" data-mode="adaptive">自适应训练</button>
           <button class="pixel-btn secondary" data-action="challenge-start" data-mode="mock">模拟考 5 题</button>
         </div>
         <div class="modal-actions">
@@ -4898,6 +4953,8 @@
       }
       questions = [...pool].sort(() => Math.random() - 0.5).slice(0, 5);
       if (!questions.length) questions = getRandomQuestions(5);
+    } else if (mode === "adaptive") {
+      questions = getAdaptiveQuestions(5);
     } else if (mode === "plan") {
       questions = getPlanQuestions(state.plan.dailyTarget || 5);
     } else if (mode === "smart") {
@@ -5159,6 +5216,10 @@
       bossPhase: 1,
       phase2: false,
       phase3: false,
+      bossMechanicInfo: null,
+      auditMarkActive: false,
+      strategySurge: false,
+      finalWeakIndex: null,
       partnerBlessUsed: false,
       combo: 0,
       comboActive: false,
@@ -5189,8 +5250,12 @@
     const hpPct = Math.max(0, Math.min(100, Math.round((b.hp / b.maxHp) * 100)));
     const maxMp = state.player.maxMp + getJobBonus("mp");
     const phaseLabel = b.isBoss
-      ? b.bossPhase === 3 ? "最终阶段 · 借贷失衡" : b.bossPhase === 2 ? "阶段 2 · 报表错乱" : "阶段 1"
+      ? b.bossPhase === 3 ? "最终阶段 · 借贷失衡" : b.bossPhase === 2 ? "阶段 2 · " + (b.bossMechanicInfo ? b.bossMechanicInfo.name : "报表错乱") : "阶段 1"
       : "普通遭遇";
+    const weakPoint =
+      b.isBoss && b.bossMechanicInfo && b.bossMechanicInfo.key === "final_boss" && b.finalWeakIndex !== null
+        ? FINAL_BOSS_WEAK_POINTS[b.finalWeakIndex]
+        : m.point;
     openModal(`
       <div class="modal-box">
         <div class="battle-panel">
@@ -5201,8 +5266,9 @@
             </div>
             <div class="battle-tag">战斗</div>
           </div>
+          ${b.bossMechanicInfo ? `<div class="boss-mechanic">${b.bossMechanicInfo.name} · ${b.bossMechanicInfo.desc}</div>` : ""}
           <div class="battle-weak">
-            <span>弱点：${m.point}</span>
+            <span>弱点：${weakPoint}</span>
             <span>攻击 ${state.player.attack + getWeaponAtk() + getJobBonus("atk")}</span>
             <span>防御 ${state.player.defense + getArmorDef() + getJobBonus("def")}</span>
           </div>
@@ -5306,7 +5372,11 @@
     }
     state.player.mp -= skill.mp;
     state.pendingSkill = skill;
-    const q = getQuestionsByPoint(skill.point, 1)[0] || getRandomQuestions(1)[0];
+    const weakPoint =
+      state.battle && state.battle.bossMechanicInfo && state.battle.bossMechanicInfo.key === "final_boss" && state.battle.finalWeakIndex !== null
+        ? FINAL_BOSS_WEAK_POINTS[state.battle.finalWeakIndex]
+        : skill.point;
+    const q = getQuestionsByPoint(weakPoint, 1)[0] || getRandomQuestions(1)[0];
     state.quiz = {
       q,
       callback: (correct) => {
@@ -5384,11 +5454,15 @@
       enemyTurn();
       return;
     }
-    enemyTurn();
   }
 
   function applyPlayerDamage(dmg, label, critical = false) {
     dmg = Math.max(1, Math.round(dmg));
+    const hasLawShield = state.battle && state.battle.bossMechanicInfo && state.battle.bossMechanicInfo.key === "law_boss";
+    if (hasLawShield) {
+      dmg = Math.max(1, Math.round(dmg * 0.75));
+      label = "法条护盾抵消部分伤害，" + label;
+    }
     state.battle.hp -= dmg;
     addEffect("-" + dmg, 720, 300, "#ffd166");
     state.battle.shakeUntil = Date.now() + 180;
@@ -5455,9 +5529,13 @@
       state.battle.bossPhase = 2;
       state.battle.phaseFlashUntil = Date.now() + 700;
       state.battle.monster.attack += 5;
-      state.battle.feedback += `<br>${bossName}进入第二阶段：报表错乱！攻击力提升。`;
+      const mechanic = BOSS_MECHANICS[state.battle.monster.id];
+      if (mechanic) {
+        state.battle.bossMechanicInfo = { ...mechanic, key: state.battle.monster.id };
+      }
+      state.battle.feedback += `<br>${bossName}进入第二阶段${state.battle.bossMechanicInfo ? "：" + state.battle.bossMechanicInfo.name : "：报表错乱"}！攻击力提升。${state.battle.bossMechanicInfo ? " 专属机制：" + state.battle.bossMechanicInfo.desc : ""}`;
       sfx("wrong");
-      showToast(`${bossName}进入第二阶段：报表错乱`);
+      showToast(`${bossName}进入第二阶段${state.battle.bossMechanicInfo ? "：" + state.battle.bossMechanicInfo.name : "：报表错乱"}`);
     }
     if (
       state.battle.isBoss &&
@@ -5473,13 +5551,18 @@
       sfx("wrong");
       showToast(`${bossName}进入最终阶段：借贷失衡`);
     }
+    if (state.battle.isBoss && state.battle.bossMechanicInfo) {
+      applyBossMechanicTurnEffects();
+    }
     const dmg = Math.max(1, state.battle.monster.attack - state.player.defense - getArmorDef() - getJobBonus("def") + Math.floor(Math.random() * 4) - 2);
-    state.player.hp -= dmg;
-    addEffect("-" + dmg, 220, 360, "#ff6b6b");
+    const surgeBonus = state.battle.strategySurge ? 4 : 0;
+    const finalDmg = dmg + surgeBonus;
+    state.player.hp -= finalDmg;
+    addEffect("-" + finalDmg, 220, 360, "#ff6b6b");
     state.battle.shakeUntil = Date.now() + 180;
     state.battle.anim.monsterAttack = Date.now();
     state.battle.anim.playerHit = Date.now() + 120;
-    state.battle.feedback += "<br>怪物反击，受到 " + dmg + " 伤害。";
+    state.battle.feedback += "<br>怪物反击，受到 " + finalDmg + " 伤害。" + (surgeBonus ? " 连环扩张追加伤害。" : "");
     if (state.player.hp <= 0) {
       state.player.hp = Math.round(state.player.maxHp * 0.5);
       showToast("战斗失败，回到存档点恢复 50% HP");
@@ -5494,6 +5577,25 @@
     }
     updateHUD();
     openBattleModal();
+  }
+
+  function applyBossMechanicTurnEffects() {
+    const b = state.battle;
+    const key = b.bossMechanicInfo && b.bossMechanicInfo.key;
+    if (key === "capital_boss") {
+      const drain = Math.min(4, state.player.mp);
+      state.player.mp = Math.max(0, state.player.mp - drain);
+      b.feedback += `<br>现金流虹吸消耗 ${drain} MP。`;
+    } else if (key === "audit_boss") {
+      b.auditMarkActive = true;
+      b.feedback += "<br>审计标记已附着，下一题答错将受到反噬。";
+    } else if (key === "strategy_boss") {
+      b.strategySurge = true;
+      b.feedback += "<br>连环扩张启动，普通攻击附带追加伤害。";
+    } else if (key === "final_boss") {
+      b.finalWeakIndex = (b.turn - 1) % FINAL_BOSS_WEAK_POINTS.length;
+      b.feedback += `<br>六域失衡，当前弱点转向：${FINAL_BOSS_WEAK_POINTS[b.finalWeakIndex]}。`;
+    }
   }
 
   function endBattle(win) {
@@ -5711,21 +5813,38 @@
       const j = Math.floor(Math.random() * (i + 1));
       [options[i], options[j]] = [options[j], options[i]];
     }
+    const answer = q.type === "multiple"
+      ? options
+          .map((o, newIndex) => ({ o, newIndex }))
+          .filter((item) => Array.isArray(q.answer) && q.answer.includes(item.o.i))
+          .map((item) => item.newIndex)
+          .sort((a, b) => a - b)
+      : options.findIndex((o) => o.i === q.answer);
     return {
       ...q,
       options: options.map((o) => o.opt),
-      answer: options.findIndex((o) => o.i === q.answer)
+      answer
     };
+  }
+
+  function isCorrectAnswer(selected, answer) {
+    if (Array.isArray(answer)) {
+      const selectedList = Array.isArray(selected) ? selected : [];
+      return selectedList.length === answer.length && answer.every((index) => selectedList.includes(index));
+    }
+    return selected === answer;
   }
 
   function openQuiz(q) {
     q = shuffleQuestion(q);
     if (state.quiz) state.quiz.q = q;
+    const isMulti = q.type === "multiple";
+    const timeLimit = getQuizTimeLimit();
     const letters = ["A", "B", "C", "D"];
     const optionsHtml = q.options
       .map(
         (opt, i) => `
-          <button class="option" data-answer="${i}">
+          <button class="option${isMulti ? " multi-option" : ""}" data-answer="${i}"${isMulti ? ' data-multi="1"' : ""}>
             <span class="tag">${letters[i]}</span>
             ${opt}
           </button>
@@ -5735,22 +5854,29 @@
     openModal(`
       <div class="modal-box">
         <div class="modal-title">知识试炼</div>
-        <div class="quiz-timer" id="quizTimer">45s</div>
+        <div class="quiz-timer" id="quizTimer">${timeLimit}s</div>
         <div class="quiz-question">
           <span class="quiz-point">考点 · ${q.point}${q.type === "judge" ? " · 判断题" : q.type === "multiple" ? " · 多选题" : ""}</span>
           <div class="quiz-text">${q.q}</div>
         </div>
         <div class="quiz-options">${optionsHtml}</div>
+        ${isMulti ? `<div class="modal-actions"><button class="pixel-btn" data-action="quiz-confirm">确认答案</button></div>` : ""}
       </div>
     `);
     startQuizTimer();
+  }
+
+  function getQuizTimeLimit() {
+    const b = state.battle;
+    if (b && b.isBoss && b.bossMechanicInfo && b.bossMechanicInfo.key === "tax_boss") return 25;
+    return 45;
   }
 
   function startQuizTimer() {
     const quiz = state.quiz;
     if (!quiz) return;
     if (quiz.timer) clearInterval(quiz.timer);
-    quiz.timeLeft = 45;
+    quiz.timeLeft = getQuizTimeLimit();
     quiz.resolved = false;
     const el = document.getElementById("quizTimer");
     quiz.timer = setInterval(() => {
@@ -5765,7 +5891,7 @@
       if (quiz.timeLeft <= 0) {
         clearInterval(quiz.timer);
         quiz.timer = null;
-        if (!quiz.resolved) resolveAnswer(-1);
+        if (!quiz.resolved) resolveAnswer(quiz.q.type === "multiple" ? [] : -1);
       }
     }, 250);
   }
@@ -5781,8 +5907,12 @@
     }
     modal.classList.remove("quiz-danger");
     const q = quiz.q;
-    const correct = selected === q.answer;
+    if (q.type === "multiple" && !Array.isArray(selected)) selected = [];
+    const correct = isCorrectAnswer(selected, q.answer);
     state.answered += 1;
+    state.quizHistory = state.quizHistory || [];
+    state.quizHistory.push({ id: q.id, correct, at: Date.now() });
+    if (state.quizHistory.length > 60) state.quizHistory = state.quizHistory.slice(-60);
     state.week.answered = (state.week.answered || 0) + 1;
     state.daily.answered += 1;
     if (!state.daily.done && state.daily.answered >= state.daily.target) {
@@ -5835,18 +5965,27 @@
       rec.mastered = false;
       rec.next = Date.now() + 86400000;
       if (!state.wrongQuestions.includes(q.id)) state.wrongQuestions.push(q.id);
+      if (state.battle && state.battle.bossMechanicInfo && state.battle.bossMechanicInfo.key === "audit_boss" && state.battle.auditMarkActive) {
+        state.battle.auditMarkActive = false;
+        state.player.hp = Math.max(1, state.player.hp - 6);
+        state.battle.feedback += "<br>审计标记反噬，受到 6 点伤害。";
+      }
     }
     sfx(correct ? "correct" : "wrong");
     save();
 
     const letters = ["A", "B", "C", "D"];
+    const selectedList = Array.isArray(selected) ? selected : [selected];
+    const answerList = Array.isArray(q.answer) ? q.answer : [q.answer];
+    const isChosen = (i) => selectedList.includes(i);
+    const isAnswer = (i) => answerList.includes(i);
     const optionsHtml = q.options
       .map((opt, i) => {
         let cls = "option";
-        if (i === q.answer) cls += " correct";
-        else if (i === selected && !correct) cls += " wrong";
-        const mark = i === q.answer ? "正确答案" : i === selected ? "你的选择" : "";
-        return `<div class="${cls} answer-item"><span class="tag">${letters[i]}</span><span>${opt}</span><span class="answer-mark${i === selected && !correct ? " wrong-mark" : ""}">${mark}</span></div>`;
+        if (isAnswer(i)) cls += " correct";
+        else if (isChosen(i) && !correct) cls += " wrong";
+        const mark = isAnswer(i) ? "正确答案" : isChosen(i) ? "你的选择" : "";
+        return `<div class="${cls} answer-item"><span class="tag">${letters[i]}</span><span>${opt}</span><span class="answer-mark${isChosen(i) && !correct && !isAnswer(i) ? " wrong-mark" : ""}">${mark}</span></div>`;
       })
       .join("");
 
@@ -6302,6 +6441,13 @@
       if (boss) startBattle(boss, true);
     } else if (action === "enter-audit-tower") {
       changeZone("audit_tower");
+    } else if (action === "quiz-confirm") {
+      const quiz = state.quiz;
+      if (!quiz || quiz.q.type !== "multiple") return;
+      const selected = Array.from(modal.querySelectorAll(".option.selected"))
+        .map((el) => Number(el.dataset.answer));
+      state._lastQuizCorrect = isCorrectAnswer(selected, quiz.q.answer);
+      resolveAnswer(selected);
     } else if (action === "quiz-continue") {
       continueQuiz();
     } else if (action === "book") {
@@ -6605,6 +6751,10 @@
     modal.addEventListener("click", (e) => {
       const answerBtn = e.target.closest("[data-answer]");
       if (!answerBtn || !state.quiz) return;
+      if (state.quiz.q.type === "multiple") {
+        answerBtn.classList.toggle("selected");
+        return;
+      }
       state._lastQuizCorrect = Number(answerBtn.dataset.answer) === state.quiz.q.answer;
       resolveAnswer(Number(answerBtn.dataset.answer));
     });
