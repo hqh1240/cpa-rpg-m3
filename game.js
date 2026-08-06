@@ -2406,38 +2406,25 @@
   }
 
   function drawEntityLabel(entity) {
+    // 地图标签禁止矩形边框，详见 docs/UI_GUIDELINES.md
     const x = entity.x + 12;
-    const y = entity.y - 36;
+    const y = entity.y - 34;
     const hasDeliver = state.tasks.some((t) => t.deliverable && t.deliverNpc === entity.id);
     const label = entity.label;
     ctx.font = "bold 12px 'Microsoft YaHei'";
-    const textWidth = ctx.measureText(label).width;
-    const w = Math.min(150, textWidth + 18);
-    const h = 22;
-    const bx = x - w / 2;
-    const by = y - h;
     ctx.save();
-    ctx.fillStyle = "rgba(23, 18, 14, 0.90)";
-    ctx.strokeStyle = "rgba(242, 201, 95, 0.70)";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.roundRect(bx, by, w, h, 4);
-    ctx.fill();
-    ctx.stroke();
-    ctx.fillStyle = hasDeliver ? "#ffd66b" : "#fff2d0";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText(label, x, by + h / 2 + 1);
+    ctx.fillStyle = "rgba(18, 13, 10, 0.92)";
+    ctx.fillText(label, x + 1, y + 1);
+    ctx.fillStyle = hasDeliver ? "#ffd66b" : "#fff2d0";
+    ctx.fillText(label, x, y);
     if (hasDeliver) {
       ctx.fillStyle = "#f2c95f";
       ctx.beginPath();
-      ctx.arc(bx + w - 7, by - 4, 5, 0, Math.PI * 2);
+      const textWidth = ctx.measureText(label).width;
+      ctx.arc(x + textWidth / 2 + 9, y, 4, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = "#241a14";
-      ctx.font = "bold 9px 'Microsoft YaHei'";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText("!", bx + w - 7, by - 4);
     }
     ctx.restore();
   }

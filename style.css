@@ -1312,6 +1312,16 @@ button {
   font-size: 12px;
 }
 
+.quest-card {
+  border: 0;
+  border-image: none;
+  border-left: 5px solid #f2c95f;
+  background: rgba(37, 28, 22, 0.94);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.10),
+    0 5px 0 rgba(0, 0, 0, 0.22);
+}
+
 .equip-layout {
   display: grid;
   grid-template-columns: minmax(240px, 0.9fr) minmax(0, 1.1fr);
