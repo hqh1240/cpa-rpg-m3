@@ -5530,7 +5530,7 @@
       save();
       updateHUD();
       openModal(`
-        <div class="modal-box">
+        <div class="modal-box victory">
           <div class="modal-title">战斗胜利</div>
           <div class="result-banner correct">击败 ${b.monster.label}</div>
           <div class="reward-grid">
@@ -5717,6 +5717,9 @@
         const coverage = Math.round((Object.keys(state.pointProgress).length / Math.max(1, POINTS.length)) * 100);
         if (coverage >= 60) unlockAchievement("coverage60");
         if (coverage >= 90) unlockAchievement("coverage90");
+      state.player.exp += 2;
+      state._lastLearningGain = 2;
+      maybeLevelUp();
       const rec = state.reviewMap[q.id];
       if (rec && state.wrongQuestions.includes(q.id)) {
         rec.count += 1;
@@ -5754,6 +5757,7 @@
       <div class="modal-box">
         <div class="modal-title">知识试炼 · 结果</div>
         <div class="result-banner ${correct ? "correct" : "wrong"}">${correct ? "回答正确" : "回答错误"} · 已计入学习记录</div>
+        ${correct ? `<div class="learning-gain">学习经验 +${state._lastLearningGain || 2}</div>` : ""}
         <div class="answer-review">
           <div class="answer-list">${optionsHtml}</div>
           <div class="feedback-card feedback">${q.explain}</div>
