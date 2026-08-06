@@ -2,6 +2,7 @@
   "name": "cpa-rpg-m3",
   "version": "0.9.0",
   "build": "M3 Phase 3 Preview",
+  "pwa": true,
   "date": "2026-08-06",
-  "generated": "2026-08-06T08:33:07.156Z"
+  "generated": "2026-08-06T09:26:50.429Z"
 }

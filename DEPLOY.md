@@ -10,6 +10,8 @@ npm run build
 
 2. 将 `release/cpa_rpg_m3_web` 整个目录上传到静态托管服务。
 
+发布目录包含 `manifest.webmanifest` 和 `sw.js`，支持 PWA 安装与离线缓存。首次完整加载后，Chrome/Edge 可将其安装到桌面或开始菜单。
+
 ## 推荐托管
 
 - GitHub Pages

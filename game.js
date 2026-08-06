@@ -19,6 +19,8 @@
   const SAVE_KEY = "cpa_rpg_m2_save_v1";
   const GAME_VERSION = "0.9.0";
   const BUILD_LABEL = "M3 Phase 1 · 2026-08-06";
+  let deferredInstallPrompt = null;
+  let pwaInstalled = false;
 
   const assets = {
     scene: null,
@@ -2089,7 +2091,8 @@
     job_recommend_continue: "<b>确认推荐</b><br>进入装备与技能查看推荐职业",
     book: "<b>错题本</b><br>按考点复习错题",
     report: "<b>学习报告</b><br>查看正确率、考纲覆盖和薄弱点",
-    settings: "<b>设置</b><br>音频、存档和震动设置"
+    settings: "<b>设置</b><br>音频、存档和震动设置",
+    install_pwa: "<b>安装游戏</b><br>将游戏安装到桌面或开始菜单"
   };
 
   const UI_ICON_SRC = {
@@ -5047,6 +5050,7 @@
           <button class="pixel-btn secondary" data-action="export-save">导出存档</button>
           <button class="pixel-btn secondary" data-action="import-save">导入存档</button>
           <button class="pixel-btn secondary" data-action="reset">重置存档</button>
+          ${installPwaButton()}
         </div>
         <div class="modal-actions"><button class="pixel-btn" data-action="close">返回</button></div>
       </div>
@@ -6327,6 +6331,26 @@
     }
   }
 
+  function installPwaButton() {
+    if (!deferredInstallPrompt || pwaInstalled) return "";
+    return '<button class="pixel-btn secondary" data-action="install-pwa">安装游戏</button>';
+  }
+
+  function installPwa() {
+    if (!deferredInstallPrompt) {
+      showToast("当前浏览器暂不支持安装，请使用 Chrome/Edge 打开线上版本");
+      return;
+    }
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.then((choice) => {
+      if (choice.outcome === "accepted") {
+        pwaInstalled = true;
+        showToast("游戏已开始安装");
+      }
+      deferredInstallPrompt = null;
+    });
+  }
+
   function showTitle() {
     state.screen = "title";
     hud.classList.add("hidden");
@@ -6348,6 +6372,7 @@
           <button class="pixel-btn secondary" data-action="continue">继续冒险</button>
           <button class="pixel-btn secondary" data-action="report">学习报告</button>
           <button class="pixel-btn secondary" data-action="toggle-sound">音效：${state.soundEnabled ? "开" : "关"}</button>
+          ${installPwaButton()}
           <button class="pixel-btn secondary" data-action="about">关于</button>
         </div>
       </div>
@@ -6389,6 +6414,7 @@
     else if (action === "about") openAbout();
     else if (action === "ending") showEnding();
     else if (action === "check-update") checkForUpdates();
+    else if (action === "install-pwa") installPwa();
     else if (action === "close") {
       closeModal();
       if (state.screen === "battle") openBattleModal();
@@ -6701,6 +6727,20 @@
   }
 
   function bindEvents() {
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+    });
+    window.addEventListener("appinstalled", () => {
+      pwaInstalled = true;
+      deferredInstallPrompt = null;
+      showToast("游戏已安装，可从桌面或开始菜单启动");
+    });
+    if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(() => {});
+      });
+    }
     document.addEventListener("keydown", (e) => {
       keys[e.key] = true;
       const key = e.key.toLowerCase();
@@ -6937,6 +6977,8 @@
     openSettings,
     startChallenge,
     switchJob,
+    installPwa,
+    pwaState: () => ({ installable: !!deferredInstallPrompt, installed: pwaInstalled }),
     closeModal,
     quiz: () => state.quiz,
     battle: () => state.battle
