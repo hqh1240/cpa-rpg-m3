@@ -1,4 +1,4 @@
-const CACHE_VERSION = "cpa-rpg-pwa-v1";
+const CACHE_VERSION = "cpa-rpg-pwa-v2";
 const CORE_FILES = [
   "./",
   "./index.html",
@@ -11,7 +11,12 @@ const CORE_FILES = [
   "./questions_m4.js",
   "./manifest.webmanifest",
   "./assets/pwa/pwa-icon-192.png",
-  "./assets/pwa/pwa-icon-512.png"
+  "./assets/pwa/pwa-icon-512.png",
+  "./assets/tiles/formal_audit.png",
+  "./assets/tiles/formal_capital.png",
+  "./assets/tiles/formal_tax.png",
+  "./assets/tiles/formal_law.png",
+  "./assets/tiles/formal_strategy.png"
 ];
 
 self.addEventListener("install", (event) => {

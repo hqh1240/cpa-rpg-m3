@@ -27,6 +27,7 @@
     tileset: null,
     tinyTilemap: null,
     formalTileset: null,
+    formalTilesets: {},
     interior: null,
     interiorTileset: null,
     battleBgs: {},
@@ -1356,14 +1357,21 @@
   }
 
   function drawFormalTile(tx, ty, dx, dy) {
+    const img = getFormalTileset();
+    if (!img) return;
     ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(assets.formalTileset, tx * TILE, ty * TILE, TILE, TILE, dx, dy, TILE, TILE);
+    ctx.drawImage(img, tx * TILE, ty * TILE, TILE, TILE, dx, dy, TILE, TILE);
   }
 
   function drawFormalTileScaled(tx, ty, dx, dy, scale = 3) {
-    if (!assets.formalTileset) return;
+    const img = getFormalTileset();
+    if (!img) return;
     ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(assets.formalTileset, tx * TILE, ty * TILE, TILE, TILE, dx, dy, TILE * scale, TILE * scale);
+    ctx.drawImage(img, tx * TILE, ty * TILE, TILE, TILE, dx, dy, TILE * scale, TILE * scale);
+  }
+
+  function getFormalTileset() {
+    return (state.zone && assets.formalTilesets[state.zone]) || assets.formalTileset;
   }
 
   function drawTileMap() {
@@ -1372,7 +1380,7 @@
       return;
     }
     const officialOverlay = state.zone === "gold_field" && !!assets.scene;
-    const formalMode = !officialOverlay && !!assets.formalTileset;
+    const formalMode = !officialOverlay && !!getFormalTileset();
     ctx.imageSmoothingEnabled = false;
     for (let y = 0; y < MAP_H; y++) {
       for (let x = 0; x < MAP_W; x++) {
@@ -1420,7 +1428,7 @@
   }
 
   function drawFormalBuildings() {
-    if (!assets.formalTileset) return;
+    if (!getFormalTileset()) return;
     ctx.imageSmoothingEnabled = false;
     for (const region of getCurrentBuildingRegions()) {
       const width = region.x1 - region.x0 + 1;
@@ -1941,6 +1949,16 @@
     };
     for (const [key, src] of Object.entries(coreFiles)) {
       tasks.push(loadImage(src).then((img) => () => { assets[key] = img; }));
+    }
+    const themeTilesets = {
+      audit_tower: "assets/tiles/formal_audit.png",
+      capital_forest: "assets/tiles/formal_capital.png",
+      tax_wasteland: "assets/tiles/formal_tax.png",
+      law_temple: "assets/tiles/formal_law.png",
+      strategy_star: "assets/tiles/formal_strategy.png"
+    };
+    for (const [zone, src] of Object.entries(themeTilesets)) {
+      tasks.push(loadImage(src).then((img) => () => { assets.formalTilesets[zone] = img; }));
     }
     const battleBgs = {
       gold_field: "assets/battle_bg/gold_field.png",
@@ -2483,7 +2501,7 @@
   }
 
   function drawStone(x, y) {
-    if (assets.formalTileset) {
+    if (getFormalTileset()) {
       ctx.fillStyle = "rgba(30, 20, 10, 0.2)";
       ctx.beginPath();
       ctx.ellipse(x + 14, y + 28, 22, 7, 0, 0, Math.PI * 2);
@@ -2606,7 +2624,7 @@
   function drawSign(e) {
     const x = e.x;
     const y = e.y;
-    if (assets.formalTileset) {
+    if (getFormalTileset()) {
       ctx.fillStyle = "rgba(30, 20, 10, 0.2)";
       ctx.beginPath();
       ctx.ellipse(x + 14, y + 28, 16, 5, 0, 0, Math.PI * 2);
@@ -2819,7 +2837,7 @@
     const x = e.x;
     const y = e.y;
     const t = Date.now() / 300;
-    if (assets.formalTileset) {
+    if (getFormalTileset()) {
       ctx.globalAlpha = 0.75 + 0.25 * Math.sin(t);
       ctx.fillStyle = "rgba(120, 180, 255, 0.2)";
       ctx.beginPath();
@@ -2851,7 +2869,7 @@
   function drawLandmark(e) {
     const x = e.x;
     const y = e.y;
-    if (assets.formalTileset) {
+    if (getFormalTileset()) {
       ctx.fillStyle = "rgba(30, 20, 10, 0.2)";
       ctx.fillRect(x + 4, y + 32, 28, 4);
       drawFormalTileScaled(0, 8, x - 24, y - 40, 4);
@@ -3369,7 +3387,7 @@
   }
 
   function drawDoor(e) {
-    if (assets.formalTileset) {
+    if (getFormalTileset()) {
       drawFormalTileScaled(1, 8, e.x - 16, e.y - 32, 3);
       return;
     }
@@ -3382,7 +3400,7 @@
   }
 
   function drawExit(e) {
-    if (assets.formalTileset) {
+    if (getFormalTileset()) {
       drawFormalTileScaled(2, 8, e.x - 16, e.y - 32, 3);
       ctx.fillStyle = "#f2c95f";
       ctx.beginPath();
@@ -3473,7 +3491,7 @@
     grad.addColorStop(1, colors[1]);
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, W, H);
-    if (assets.formalTileset) {
+    if (getFormalTileset()) {
       const floorTiles = {
         accounting: { tx: 9, ty: 6 },
         auditing: { tx: 1, ty: 4 },
