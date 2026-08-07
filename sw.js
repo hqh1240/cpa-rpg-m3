@@ -1,4 +1,4 @@
-const CACHE_VERSION = "cpa-rpg-pwa-v4";
+const CACHE_VERSION = "cpa-rpg-pwa-v5";
 const CORE_FILES = [
   "./",
   "./index.html",

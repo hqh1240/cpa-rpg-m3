@@ -17,8 +17,12 @@ CPA_RPG_M2_Demo/
     systems/
       achievements.js     # 成就解锁与奖励
       audio.js            # 音效、BGM、WebAudio
+      playerGrowth.js     # 升级、称号、伙伴经验
       quests.js           # 任务进度与交付
+      quiz.js             # 抽题、洗牌、判题、限时
       save.js             # localStorage 存档
+    render/
+      battle.js           # 战斗面板、技能选择、道具选择
   tests/
     smoke.mjs             # file:// 冒烟测试
     pwa.mjs               # PWA 安装与离线测试
@@ -65,6 +69,6 @@ npm run dev
 
 ## 后续拆分计划
 
-1. 将战斗、答题、玩家成长拆到 `src/systems/`。
-2. 将地图、战斗、UI 渲染拆到独立渲染模块。
+1. 将战斗结算、答题结果、学习记录继续拆到独立系统模块。
+2. 将地图、主界面、战斗以外的 UI 渲染拆到 `src/render/`。
 3. 增加类型检查、Lint、单元测试和 CI 自动部署。

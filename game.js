@@ -761,6 +761,246 @@
     return { unlockAchievement };
   }
 
+  // src/systems/playerGrowth.js
+  function createPlayerGrowthSystem(deps) {
+    const {
+      getState,
+      save,
+      sfx: sfx2,
+      showLevelUpToast,
+      notifySystemUnlocks,
+      showToast,
+      unlockAchievement
+    } = deps;
+    function getLevelTitle(level) {
+      if (level >= 50) return "\u516D\u57DF\u5B97\u5E08";
+      if (level >= 40) return "\u6CE8\u4F1A\u4F20\u5947";
+      if (level >= 30) return "\u6CE8\u4F1A\u8D24\u8005";
+      if (level >= 20) return "\u79D1\u76EE\u4E13\u5BB6";
+      if (level >= 15) return "\u9886\u57DF\u7CBE\u82F1";
+      if (level >= 10) return "\u4F1A\u8BA1\u65B0\u661F";
+      if (level >= 5) return "\u521D\u7EA7\u7C3F\u8BB0";
+      return "";
+    }
+    function maybeLevelUp() {
+      const state = getState();
+      const p = state.player;
+      let leveled = false;
+      while (p.exp >= p.expNext) {
+        leveled = true;
+        p.exp -= p.expNext;
+        p.level += 1;
+        p.expNext = Math.round(100 * Math.pow(p.level, 1.5));
+        p.maxHp += 12;
+        p.maxMp += 6;
+        p.attack += 3;
+        p.defense += 2;
+        p.skillPoints += 1;
+        p.hp = p.maxHp;
+        p.mp = p.maxMp;
+        sfx2("levelup");
+        showLevelUpToast(p.level);
+      }
+      if (leveled) {
+        notifySystemUnlocks();
+        const title = getLevelTitle(p.level);
+        if (title && !state.levelTitles.includes(title)) {
+          state.levelTitles.push(title);
+          showToast("\u89E3\u9501\u79F0\u53F7\uFF1A" + title, 2400);
+        }
+        if (p.level >= 10) unlockAchievement("level10");
+        if (p.level >= 20) unlockAchievement("level20");
+        if (p.level >= 30) unlockAchievement("level30");
+        if (p.level >= 25) unlockAchievement("level25");
+        if (p.level >= 40) unlockAchievement("level40");
+      }
+    }
+    function gainPartnerExp(amount) {
+      const state = getState();
+      const partner = state.partner;
+      partner.exp += amount;
+      while (partner.exp >= partner.expNext) {
+        partner.exp -= partner.expNext;
+        partner.level += 1;
+        partner.expNext = Math.round(50 * Math.pow(partner.level, 1.3));
+        partner.maxHp += 10;
+        partner.hp = partner.maxHp;
+        partner.atk += 1;
+        partner.mood = Math.min(100, partner.mood + 3);
+        showToast("\u8BB0\u8D26\u7CBE\u7075\u5347\u7EA7 Lv." + partner.level);
+      }
+      save();
+    }
+    return { maybeLevelUp, getLevelTitle, gainPartnerExp };
+  }
+
+  // src/systems/quiz.js
+  var DIFFICULTY_ORDER = { basic: 0, advanced: 1, expert: 2 };
+  function createQuizSystem(deps) {
+    const { getState, getRandomQuestions: getRandomQuestions2 } = deps;
+    function getAdaptiveQuestions(count) {
+      const state = getState();
+      const target = Math.max(1, count);
+      const recentIds = new Set(
+        (state.quizHistory || []).slice(-Math.max(6, Math.ceil(target * 1.5))).map((entry) => entry.id)
+      );
+      const pointAccuracy = (point) => {
+        const total = state.pointProgress[point] || 0;
+        if (!total) return -1;
+        return (state.pointCorrect[point] || 0) / total;
+      };
+      const points = [...POINTS].sort((a, b) => pointAccuracy(a) - pointAccuracy(b));
+      const selected = [];
+      const usedIds = new Set(recentIds);
+      for (const point of points) {
+        if (selected.length >= target) break;
+        const pointQuestions = QUESTIONS.filter((q) => q.point === point && !usedIds.has(q.id)).sort((a, b) => DIFFICULTY_ORDER[a.difficulty] - DIFFICULTY_ORDER[b.difficulty]);
+        for (const q of pointQuestions) {
+          if (selected.length >= target) break;
+          selected.push(q);
+          usedIds.add(q.id);
+        }
+      }
+      if (selected.length < target) {
+        const fill = [...QUESTIONS].filter((q) => !usedIds.has(q.id)).sort(() => Math.random() - 0.5);
+        for (const q of fill) {
+          if (selected.length >= target) break;
+          selected.push(q);
+        }
+      }
+      return selected.length ? selected : getRandomQuestions2(target);
+    }
+    function shuffleQuestion(q) {
+      const options = q.options.map((opt, i) => ({ opt, i }));
+      for (let i = options.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [options[i], options[j]] = [options[j], options[i]];
+      }
+      const answer = q.type === "multiple" ? options.map((o, newIndex) => ({ o, newIndex })).filter((item) => Array.isArray(q.answer) && q.answer.includes(item.o.i)).map((item) => item.newIndex).sort((a, b) => a - b) : options.findIndex((o) => o.i === q.answer);
+      return {
+        ...q,
+        options: options.map((o) => o.opt),
+        answer
+      };
+    }
+    function isCorrectAnswer(selected, answer) {
+      if (Array.isArray(answer)) {
+        const selectedList = Array.isArray(selected) ? selected : [];
+        return selectedList.length === answer.length && answer.every((index) => selectedList.includes(index));
+      }
+      return selected === answer;
+    }
+    function getQuizTimeLimit() {
+      const b = getState().battle;
+      if (b && b.isBoss && b.bossMechanicInfo && b.bossMechanicInfo.key === "tax_boss") return 25;
+      return 45;
+    }
+    return { getAdaptiveQuestions, shuffleQuestion, isCorrectAnswer, getQuizTimeLimit };
+  }
+
+  // src/render/battle.js
+  function createBattleUi(deps) {
+    const {
+      getState,
+      openModal,
+      getJobBonus,
+      getWeaponAtk,
+      getArmorDef,
+      iconBtn,
+      isSystemUnlocked,
+      uiIcon,
+      getCurrentJobSkills,
+      FINAL_BOSS_WEAK_POINTS
+    } = deps;
+    function openBattleModal() {
+      const state = getState();
+      const b = state.battle;
+      const m = b.monster;
+      const hpPct = Math.max(0, Math.min(100, Math.round(b.hp / b.maxHp * 100)));
+      const maxMp = state.player.maxMp + getJobBonus("mp");
+      const phaseLabel = b.isBoss ? b.bossPhase === 3 ? "\u6700\u7EC8\u9636\u6BB5 \xB7 \u501F\u8D37\u5931\u8861" : b.bossPhase === 2 ? "\u9636\u6BB5 2 \xB7 " + (b.bossMechanicInfo ? b.bossMechanicInfo.name : "\u62A5\u8868\u9519\u4E71") : "\u9636\u6BB5 1" : "\u666E\u901A\u906D\u9047";
+      const weakPoint = b.isBoss && b.bossMechanicInfo && b.bossMechanicInfo.key === "final_boss" && b.finalWeakIndex !== null ? FINAL_BOSS_WEAK_POINTS[b.finalWeakIndex] : m.point;
+      openModal(`
+      <div class="modal-box">
+        <div class="battle-panel">
+          <div class="battle-head">
+            <div>
+              <div class="battle-title">${m.label}${b.isBoss ? " \xB7 BOSS" : ""}</div>
+              <div class="battle-sub">${b.region.label} \xB7 \u56DE\u5408 ${b.turn} \xB7 \u73A9\u5BB6\u56DE\u5408 \xB7 ${phaseLabel}</div>
+            </div>
+            <div class="battle-tag">\u6218\u6597</div>
+          </div>
+          ${b.bossMechanicInfo ? `<div class="boss-mechanic">${b.bossMechanicInfo.name} \xB7 ${b.bossMechanicInfo.desc}</div>` : ""}
+          <div class="battle-weak">
+            <span>\u5F31\u70B9\uFF1A${weakPoint}</span>
+            <span>\u653B\u51FB ${state.player.attack + getWeaponAtk() + getJobBonus("atk")}</span>
+            <span>\u9632\u5FA1 ${state.player.defense + getArmorDef() + getJobBonus("def")}</span>
+          </div>
+          <div class="battle-stats">
+            <div class="battle-stat"><span>\u602A\u7269 HP</span><b>${b.hp} / ${b.maxHp}</b></div>
+            <div class="battle-stat"><span>\u89D2\u8272 HP</span><b>${state.player.hp} / ${state.player.maxHp}</b></div>
+            <div class="battle-stat"><span>\u89D2\u8272 MP</span><b>${state.player.mp} / ${maxMp}</b></div>
+            <div class="battle-stat"><span>\u4F19\u4F34 HP</span><b>${state.partner.hp} / ${state.partner.maxHp}</b></div>
+            <div class="battle-stat"><span>\u4F19\u4F34\u597D\u611F</span><b>${state.partner.mood} / 100</b></div>
+            <div class="battle-stat"><span>\u7B54\u9898\u8FDE\u51FB</span><b>${b.comboActive ? "\u5DF2\u89E6\u53D1" : `${b.combo || 0} / 3`}</b></div>
+          </div>
+          ${b.feedback ? `<div class="feedback">${b.feedback}</div>` : ""}
+          <div class="action-grid">
+            ${iconBtn("\u653B\u51FB", "battle-attack", {}, { icon: "sword" })}
+            ${iconBtn(isSystemUnlocked("skill") ? "\u6280\u80FD" : "\u6280\u80FD Lv.3", "battle-skill", {}, { icon: "hammer", disabled: !isSystemUnlocked("skill") })}
+            ${iconBtn("\u836F\u6C34", "battle-item", {}, { icon: "confirm", cls: "secondary" })}
+            ${iconBtn("\u9003\u8DD1", "battle-run", {}, { icon: "cancel", cls: "secondary" })}
+          </div>
+        </div>
+      </div>
+    `);
+    }
+    function openSkillSelect() {
+      const skills = getCurrentJobSkills().map(
+        (s) => `
+          <button class="pixel-btn skill-card" data-action="skill-use" data-skill="${s.id}">
+            <span class="skill-head">${uiIcon("hammer")}<b>${s.name}</b><small>${s.mp} MP</small></span>
+            <small>${s.desc}</small>
+          </button>
+        `
+      ).join("");
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u9009\u62E9\u6280\u80FD</div>
+        <div class="info-card">\u6280\u80FD\u4F1A\u89E6\u53D1\u77E5\u8BC6\u8BD5\u70BC\u3002\u7B54\u5BF9\u540E\u6280\u80FD\u6548\u679C\u5927\u5E45\u63D0\u5347\uFF0C\u4F19\u4F34\u597D\u611F\u9AD8\u65F6\u8FD8\u4F1A\u83B7\u5F97\u8BB0\u8D26\u795D\u798F\u3002</div>
+        <div class="skill-grid">${skills}</div>
+        <div class="modal-actions">
+          <button class="pixel-btn secondary" data-action="battle-cancel">\u8FD4\u56DE\u6218\u6597</button>
+        </div>
+      </div>
+    `);
+    }
+    function openItemSelect() {
+      const state = getState();
+      const hp = state.inventory.hpPotion || 0;
+      const mp = state.inventory.mpPotion || 0;
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u9009\u62E9\u9053\u5177</div>
+        <div class="info-card">\u5728\u6218\u6597\u4E2D\u4F7F\u7528\u9053\u5177\u4F1A\u6D88\u8017\u5F53\u524D\u56DE\u5408\uFF0C\u968F\u540E\u602A\u7269\u5C06\u53D1\u8D77\u53CD\u51FB\u3002</div>
+        <div class="item-count">\u80CC\u5305\uFF1A\u56DE\u590D\u836F\u6C34 \xD7 ${hp} \xB7 \u4EE5\u592A\u4E4B\u9732 \xD7 ${mp}</div>
+        <div class="action-grid">
+          <button class="pixel-btn item-card" data-action="use-item" data-item="hp_potion">
+            ${uiIcon("confirm")}<b>\u4F7F\u7528\u56DE\u590D\u836F\u6C34</b><small>\u6062\u590D 30 HP \xB7 \u5F53\u524D \xD7 ${hp}</small>
+          </button>
+          <button class="pixel-btn item-card secondary" data-action="use-item" data-item="mp_potion">
+            ${uiIcon("confirm")}<b>\u4F7F\u7528\u4EE5\u592A\u4E4B\u9732</b><small>\u6062\u590D 30 MP \xB7 \u5F53\u524D \xD7 ${mp}</small>
+          </button>
+        </div>
+        <div class="modal-actions">
+          <button class="pixel-btn secondary" data-action="battle-cancel">\u8FD4\u56DE\u6218\u6597</button>
+        </div>
+      </div>
+    `);
+    }
+    return { openBattleModal, openSkillSelect, openItemSelect };
+  }
+
   // src/game.js
   (() => {
     "use strict";
@@ -1094,6 +1334,36 @@
     });
     let state = loadSave() || defaultState();
     bindAudio(() => state);
+    const quizSystem = createQuizSystem({
+      getState: () => state,
+      getRandomQuestions
+    });
+    const { getAdaptiveQuestions, shuffleQuestion, isCorrectAnswer, getQuizTimeLimit } = quizSystem;
+    const battleUi = createBattleUi({
+      getState: () => state,
+      openModal,
+      getJobBonus,
+      getWeaponAtk,
+      getArmorDef,
+      iconBtn,
+      isSystemUnlocked,
+      uiIcon,
+      getCurrentJobSkills,
+      FINAL_BOSS_WEAK_POINTS
+    });
+    const { openBattleModal, openSkillSelect, openItemSelect } = battleUi;
+    let unlockAchievementRef = () => {
+    };
+    const playerGrowthSystem = createPlayerGrowthSystem({
+      getState: () => state,
+      save,
+      sfx,
+      showLevelUpToast,
+      notifySystemUnlocks,
+      showToast,
+      unlockAchievement: (id) => unlockAchievementRef(id)
+    });
+    const { maybeLevelUp, getLevelTitle, gainPartnerExp } = playerGrowthSystem;
     const achievementSystem = createAchievementSystem({
       getState: () => state,
       save,
@@ -1103,6 +1373,7 @@
       showAchievementToast
     });
     const { unlockAchievement } = achievementSystem;
+    unlockAchievementRef = unlockAchievement;
     const questSystem = createQuestSystem({
       getState: () => state,
       save,
@@ -2131,38 +2402,6 @@
       }
       const source = pool.length ? pool : QUESTIONS;
       return [...source].sort(() => Math.random() - 0.5).slice(0, Math.max(1, count));
-    }
-    const DIFFICULTY_ORDER = { basic: 0, advanced: 1, expert: 2 };
-    function getAdaptiveQuestions(count) {
-      const target = Math.max(1, count);
-      const recentIds = new Set(
-        (state.quizHistory || []).slice(-Math.max(6, Math.ceil(target * 1.5))).map((entry) => entry.id)
-      );
-      const pointAccuracy = (point) => {
-        const total = state.pointProgress[point] || 0;
-        if (!total) return -1;
-        return (state.pointCorrect[point] || 0) / total;
-      };
-      const points = [...POINTS].sort((a, b) => pointAccuracy(a) - pointAccuracy(b));
-      const selected = [];
-      const usedIds = new Set(recentIds);
-      for (const point of points) {
-        if (selected.length >= target) break;
-        const pointQuestions = QUESTIONS.filter((q) => q.point === point && !usedIds.has(q.id)).sort((a, b) => DIFFICULTY_ORDER[a.difficulty] - DIFFICULTY_ORDER[b.difficulty]);
-        for (const q of pointQuestions) {
-          if (selected.length >= target) break;
-          selected.push(q);
-          usedIds.add(q.id);
-        }
-      }
-      if (selected.length < target) {
-        const fill = [...QUESTIONS].filter((q) => !usedIds.has(q.id)).sort(() => Math.random() - 0.5);
-        for (const q of fill) {
-          if (selected.length >= target) break;
-          selected.push(q);
-        }
-      }
-      return selected.length ? selected : getRandomQuestions(target);
     }
     function pointSubject(point) {
       for (const [subject, points] of Object.entries(PLAN_SUBJECT_POINTS)) {
@@ -5326,90 +5565,6 @@
         touchControls.classList.remove("hidden");
       }
     }
-    function openBattleModal() {
-      const b = state.battle;
-      const m = b.monster;
-      const hpPct = Math.max(0, Math.min(100, Math.round(b.hp / b.maxHp * 100)));
-      const maxMp = state.player.maxMp + getJobBonus("mp");
-      const phaseLabel = b.isBoss ? b.bossPhase === 3 ? "\u6700\u7EC8\u9636\u6BB5 \xB7 \u501F\u8D37\u5931\u8861" : b.bossPhase === 2 ? "\u9636\u6BB5 2 \xB7 " + (b.bossMechanicInfo ? b.bossMechanicInfo.name : "\u62A5\u8868\u9519\u4E71") : "\u9636\u6BB5 1" : "\u666E\u901A\u906D\u9047";
-      const weakPoint = b.isBoss && b.bossMechanicInfo && b.bossMechanicInfo.key === "final_boss" && b.finalWeakIndex !== null ? FINAL_BOSS_WEAK_POINTS[b.finalWeakIndex] : m.point;
-      openModal(`
-      <div class="modal-box">
-        <div class="battle-panel">
-          <div class="battle-head">
-            <div>
-              <div class="battle-title">${m.label}${b.isBoss ? " \xB7 BOSS" : ""}</div>
-              <div class="battle-sub">${b.region.label} \xB7 \u56DE\u5408 ${b.turn} \xB7 \u73A9\u5BB6\u56DE\u5408 \xB7 ${phaseLabel}</div>
-            </div>
-            <div class="battle-tag">\u6218\u6597</div>
-          </div>
-          ${b.bossMechanicInfo ? `<div class="boss-mechanic">${b.bossMechanicInfo.name} \xB7 ${b.bossMechanicInfo.desc}</div>` : ""}
-          <div class="battle-weak">
-            <span>\u5F31\u70B9\uFF1A${weakPoint}</span>
-            <span>\u653B\u51FB ${state.player.attack + getWeaponAtk() + getJobBonus("atk")}</span>
-            <span>\u9632\u5FA1 ${state.player.defense + getArmorDef() + getJobBonus("def")}</span>
-          </div>
-          <div class="battle-stats">
-            <div class="battle-stat"><span>\u602A\u7269 HP</span><b>${b.hp} / ${b.maxHp}</b></div>
-            <div class="battle-stat"><span>\u89D2\u8272 HP</span><b>${state.player.hp} / ${state.player.maxHp}</b></div>
-            <div class="battle-stat"><span>\u89D2\u8272 MP</span><b>${state.player.mp} / ${maxMp}</b></div>
-            <div class="battle-stat"><span>\u4F19\u4F34 HP</span><b>${state.partner.hp} / ${state.partner.maxHp}</b></div>
-            <div class="battle-stat"><span>\u4F19\u4F34\u597D\u611F</span><b>${state.partner.mood} / 100</b></div>
-            <div class="battle-stat"><span>\u7B54\u9898\u8FDE\u51FB</span><b>${b.comboActive ? "\u5DF2\u89E6\u53D1" : `${b.combo || 0} / 3`}</b></div>
-          </div>
-          ${b.feedback ? `<div class="feedback">${b.feedback}</div>` : ""}
-          <div class="action-grid">
-            ${iconBtn("\u653B\u51FB", "battle-attack", {}, { icon: "sword" })}
-            ${iconBtn(isSystemUnlocked("skill") ? "\u6280\u80FD" : "\u6280\u80FD Lv.3", "battle-skill", {}, { icon: "hammer", disabled: !isSystemUnlocked("skill") })}
-            ${iconBtn("\u836F\u6C34", "battle-item", {}, { icon: "confirm", cls: "secondary" })}
-            ${iconBtn("\u9003\u8DD1", "battle-run", {}, { icon: "cancel", cls: "secondary" })}
-          </div>
-        </div>
-      </div>
-    `);
-    }
-    function openSkillSelect() {
-      const skills = getCurrentJobSkills().map(
-        (s) => `
-          <button class="pixel-btn skill-card" data-action="skill-use" data-skill="${s.id}">
-            <span class="skill-head">${uiIcon("hammer")}<b>${s.name}</b><small>${s.mp} MP</small></span>
-            <small>${s.desc}</small>
-          </button>
-        `
-      ).join("");
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u9009\u62E9\u6280\u80FD</div>
-        <div class="info-card">\u6280\u80FD\u4F1A\u89E6\u53D1\u77E5\u8BC6\u8BD5\u70BC\u3002\u7B54\u5BF9\u540E\u6280\u80FD\u6548\u679C\u5927\u5E45\u63D0\u5347\uFF0C\u4F19\u4F34\u597D\u611F\u9AD8\u65F6\u8FD8\u4F1A\u83B7\u5F97\u8BB0\u8D26\u795D\u798F\u3002</div>
-        <div class="skill-grid">${skills}</div>
-        <div class="modal-actions">
-          <button class="pixel-btn secondary" data-action="battle-cancel">\u8FD4\u56DE\u6218\u6597</button>
-        </div>
-      </div>
-    `);
-    }
-    function openItemSelect() {
-      const hp = state.inventory.hpPotion || 0;
-      const mp = state.inventory.mpPotion || 0;
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u9009\u62E9\u9053\u5177</div>
-        <div class="info-card">\u5728\u6218\u6597\u4E2D\u4F7F\u7528\u9053\u5177\u4F1A\u6D88\u8017\u5F53\u524D\u56DE\u5408\uFF0C\u968F\u540E\u602A\u7269\u5C06\u53D1\u8D77\u53CD\u51FB\u3002</div>
-        <div class="item-count">\u80CC\u5305\uFF1A\u56DE\u590D\u836F\u6C34 \xD7 ${hp} \xB7 \u4EE5\u592A\u4E4B\u9732 \xD7 ${mp}</div>
-        <div class="action-grid">
-          <button class="pixel-btn item-card" data-action="use-item" data-item="hp_potion">
-            ${uiIcon("confirm")}<b>\u4F7F\u7528\u56DE\u590D\u836F\u6C34</b><small>\u6062\u590D 30 HP \xB7 \u5F53\u524D \xD7 ${hp}</small>
-          </button>
-          <button class="pixel-btn item-card secondary" data-action="use-item" data-item="mp_potion">
-            ${uiIcon("confirm")}<b>\u4F7F\u7528\u4EE5\u592A\u4E4B\u9732</b><small>\u6062\u590D 30 MP \xB7 \u5F53\u524D \xD7 ${mp}</small>
-          </button>
-        </div>
-        <div class="modal-actions">
-          <button class="pixel-btn secondary" data-action="battle-cancel">\u8FD4\u56DE\u6218\u6597</button>
-        </div>
-      </div>
-    `);
-    }
     function useItem(itemId) {
       if (itemId === "hp_potion") {
         if ((state.inventory.hpPotion || 0) <= 0) {
@@ -5564,21 +5719,6 @@
       addEffect("-" + dmg, 760, 330, "#ffe9a8");
       state.battle.anim.monsterHit = Date.now();
       return dmg;
-    }
-    function gainPartnerExp(amount) {
-      const partner = state.partner;
-      partner.exp += amount;
-      while (partner.exp >= partner.expNext) {
-        partner.exp -= partner.expNext;
-        partner.level += 1;
-        partner.expNext = Math.round(50 * Math.pow(partner.level, 1.3));
-        partner.maxHp += 10;
-        partner.hp = partner.maxHp;
-        partner.atk += 1;
-        partner.mood = Math.min(100, partner.mood + 3);
-        showToast("\u8BB0\u8D26\u7CBE\u7075\u5347\u7EA7 Lv." + partner.level);
-      }
-      save();
     }
     function enemyTurn() {
       state.battle.turn += 1;
@@ -5790,48 +5930,6 @@
       hud.classList.remove("hidden");
       showTouchIfCoarse();
     }
-    function maybeLevelUp() {
-      const p = state.player;
-      let leveled = false;
-      while (p.exp >= p.expNext) {
-        leveled = true;
-        p.exp -= p.expNext;
-        p.level += 1;
-        p.expNext = Math.round(100 * Math.pow(p.level, 1.5));
-        p.maxHp += 12;
-        p.maxMp += 6;
-        p.attack += 3;
-        p.defense += 2;
-        p.skillPoints += 1;
-        p.hp = p.maxHp;
-        p.mp = p.maxMp;
-        sfx("levelup");
-        showLevelUpToast(p.level);
-      }
-      if (leveled) {
-        notifySystemUnlocks();
-        const title = getLevelTitle(p.level);
-        if (title && !state.levelTitles.includes(title)) {
-          state.levelTitles.push(title);
-          showToast("\u89E3\u9501\u79F0\u53F7\uFF1A" + title, 2400);
-        }
-        if (p.level >= 10) unlockAchievement("level10");
-        if (p.level >= 20) unlockAchievement("level20");
-        if (p.level >= 30) unlockAchievement("level30");
-        if (p.level >= 25) unlockAchievement("level25");
-        if (p.level >= 40) unlockAchievement("level40");
-      }
-    }
-    function getLevelTitle(level) {
-      if (level >= 50) return "\u516D\u57DF\u5B97\u5E08";
-      if (level >= 40) return "\u6CE8\u4F1A\u4F20\u5947";
-      if (level >= 30) return "\u6CE8\u4F1A\u8D24\u8005";
-      if (level >= 20) return "\u79D1\u76EE\u4E13\u5BB6";
-      if (level >= 15) return "\u9886\u57DF\u7CBE\u82F1";
-      if (level >= 10) return "\u4F1A\u8BA1\u65B0\u661F";
-      if (level >= 5) return "\u521D\u7EA7\u7C3F\u8BB0";
-      return "";
-    }
     function notifySystemUnlocks() {
       const lv = state.player.level;
       const names = {
@@ -5852,26 +5950,6 @@
         }
       }
       if (unlocked.length) showToast(unlocked.join(" \xB7 "), 3e3);
-    }
-    function shuffleQuestion(q) {
-      const options = q.options.map((opt, i) => ({ opt, i }));
-      for (let i = options.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [options[i], options[j]] = [options[j], options[i]];
-      }
-      const answer = q.type === "multiple" ? options.map((o, newIndex) => ({ o, newIndex })).filter((item) => Array.isArray(q.answer) && q.answer.includes(item.o.i)).map((item) => item.newIndex).sort((a, b) => a - b) : options.findIndex((o) => o.i === q.answer);
-      return {
-        ...q,
-        options: options.map((o) => o.opt),
-        answer
-      };
-    }
-    function isCorrectAnswer(selected, answer) {
-      if (Array.isArray(answer)) {
-        const selectedList = Array.isArray(selected) ? selected : [];
-        return selectedList.length === answer.length && answer.every((index) => selectedList.includes(index));
-      }
-      return selected === answer;
     }
     function openQuiz(q) {
       q = shuffleQuestion(q);
@@ -5900,11 +5978,6 @@
       </div>
     `);
       startQuizTimer();
-    }
-    function getQuizTimeLimit() {
-      const b = state.battle;
-      if (b && b.isBoss && b.bossMechanicInfo && b.bossMechanicInfo.key === "tax_boss") return 25;
-      return 45;
     }
     function startQuizTimer() {
       const quiz = state.quiz;
