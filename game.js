@@ -408,6 +408,359 @@
     return h ? `${h}\u5C0F\u65F6${m}\u5206` : `${m}\u5206\u949F`;
   }
 
+  // src/data/achievements.js
+  var ACHIEVEMENTS = {
+    first_battle: { name: "\u521D\u6218\u544A\u6377", desc: "\u5B8C\u6210\u7B2C\u4E00\u573A\u6218\u6597", type: "\u6218\u6597", reward: { gold: 20 } },
+    beat_3: { name: "\u4E09\u8FDE\u65A9", desc: "\u51FB\u8D25 3 \u53EA\u666E\u901A\u602A\u7269", type: "\u6218\u6597", reward: { gold: 50 } },
+    beat_boss: { name: "\u5929\u5E73\u8861\u8861", desc: "\u51FB\u8D25\u5408\u5E76\u62A5\u8868\u5DE8\u50CF", type: "\u6218\u6597", reward: { gold: 100, exp: 100, skillPoints: 2 } },
+    answer10: { name: "\u7B54\u9898\u65B0\u624B", desc: "\u7D2F\u8BA1\u7B54\u5BF9 10 \u9053\u9898", type: "\u5B66\u4E60", reward: { exp: 50 } },
+    wrong_zero: { name: "\u9519\u9898\u6E05\u96F6", desc: "\u5C06\u4E00\u9053\u9519\u9898\u590D\u4E60\u81F3\u638C\u63E1", type: "\u5B66\u4E60", reward: { gold: 30 } },
+    collect10: { name: "\u6750\u6599\u8FBE\u4EBA", desc: "\u91C7\u96C6 10 \u6B21\u6750\u6599", type: "\u63A2\u7D22", reward: { gold: 40 } },
+    open_chest2: { name: "\u5F00\u7BB1\u6709\u559C", desc: "\u5F00\u542F 2 \u4E2A\u5B9D\u7BB1", type: "\u63A2\u7D22", reward: { gold: 30 } },
+    enhance1: { name: "\u5F3A\u5316\u5165\u95E8", desc: "\u5F3A\u5316\u4EFB\u610F\u88C5\u5907 1 \u6B21", type: "\u6210\u957F", reward: { skillPoints: 1 } },
+    all_jobs: { name: "\u804C\u4E1A\u6536\u85CF\u5BB6", desc: "\u89E3\u9501\u5168\u90E8\u804C\u4E1A", type: "\u6210\u957F", reward: { gold: 200, skillPoints: 3 } },
+    level10: { name: "\u5341\u7EA7\u7C3F\u8BB0", desc: "\u89D2\u8272\u7B49\u7EA7\u8FBE\u5230 10 \u7EA7", type: "\u6210\u957F", reward: { gold: 100, exp: 100, skillPoints: 2 } },
+    level20: { name: "\u79D1\u76EE\u4E13\u5BB6", desc: "\u89D2\u8272\u7B49\u7EA7\u8FBE\u5230 20 \u7EA7", type: "\u6210\u957F", reward: { gold: 200, exp: 200, skillPoints: 3 } },
+    level30: { name: "\u6CE8\u4F1A\u8D24\u8005", desc: "\u89D2\u8272\u7B49\u7EA7\u8FBE\u5230 30 \u7EA7", type: "\u6210\u957F", reward: { gold: 400, exp: 400, skillPoints: 4 } },
+    kill10: { name: "\u602A\u7269\u6E05\u9053\u592B", desc: "\u7D2F\u8BA1\u51FB\u8D25 10 \u53EA\u666E\u901A\u602A\u7269", type: "\u6218\u6597", reward: { gold: 150, exp: 150, skillPoints: 2 } },
+    answer50: { name: "\u767E\u70BC\u6210\u94A2", desc: "\u7D2F\u8BA1\u7B54\u5BF9 50 \u9053\u9898", type: "\u5B66\u4E60", reward: { gold: 120, exp: 120, skillPoints: 2 } },
+    answer100: { name: "\u5343\u9898\u4E0D\u6020", desc: "\u7D2F\u8BA1\u7B54\u5BF9 100 \u9053\u9898", type: "\u5B66\u4E60", reward: { gold: 250, exp: 250, skillPoints: 3 } },
+    streak10: { name: "\u5341\u8FDE\u5B66\u9738", desc: "\u8FDE\u7EED\u7B54\u5BF9 10 \u9053\u9898", type: "\u5B66\u4E60", reward: { gold: 100, exp: 100, skillPoints: 2 } },
+    coverage60: { name: "\u8003\u7EB2\u8FC7\u534A", desc: "\u8003\u7EB2\u8986\u76D6\u7387\u8FBE\u5230 60%", type: "\u5B66\u4E60", reward: { gold: 120, exp: 120, skillPoints: 2 } },
+    coverage90: { name: "\u8003\u7EB2\u5236\u9738", desc: "\u8003\u7EB2\u8986\u76D6\u7387\u8FBE\u5230 90%", type: "\u5B66\u4E60", reward: { gold: 300, exp: 300, skillPoints: 3 } },
+    chest10: { name: "\u5B9D\u7BB1\u6536\u85CF\u5BB6", desc: "\u5F00\u542F 10 \u4E2A\u5B9D\u7BB1", type: "\u63A2\u7D22", reward: { gold: 120, exp: 100, skillPoints: 2 } },
+    rooms15: { name: "\u623F\u95F4\u5DE1\u793C", desc: "\u8BBF\u95EE 15 \u4E2A\u5BA4\u5185\u573A\u666F", type: "\u63A2\u7D22", reward: { gold: 150, exp: 120, skillPoints: 2 } },
+    level25: { name: "\u9886\u57DF\u9AD8\u624B", desc: "\u89D2\u8272\u7B49\u7EA7\u8FBE\u5230 25 \u7EA7", type: "\u6210\u957F", reward: { gold: 300, exp: 300, skillPoints: 3 } },
+    level40: { name: "\u6CE8\u4F1A\u4F20\u5947", desc: "\u89D2\u8272\u7B49\u7EA7\u8FBE\u5230 40 \u7EA7", type: "\u6210\u957F", reward: { gold: 500, exp: 500, skillPoints: 4 } },
+    task25: { name: "\u4EFB\u52A1\u5927\u5E08", desc: "\u5B8C\u6210 25 \u4E2A\u4EFB\u52A1", type: "\u6210\u957F", reward: { gold: 300, exp: 300, skillPoints: 3 } },
+    weekly20: { name: "\u5468\u62A5\u5E38\u5BA2", desc: "\u5355\u5468\u5B8C\u6210 20 \u9053\u9898", type: "\u5B66\u4E60", reward: { gold: 100, exp: 100, skillPoints: 2 } },
+    all_zone_bosses: { name: "\u4E94\u57DF\u8BA8\u4F10", desc: "\u51FB\u8D25\u5BA1\u8BA1\u3001\u8D22\u7BA1\u3001\u7A0E\u6CD5\u3001\u7ECF\u6D4E\u6CD5\u548C\u6218\u7565\u533A\u57DF Boss", type: "\u533A\u57DF", reward: { gold: 300, exp: 300, skillPoints: 3 } },
+    final_clear: { name: "\u516D\u57DF\u5E73\u8861", desc: "\u51FB\u8D25\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\uFF0C\u5B8C\u6210\u6700\u7EC8\u8BD5\u70BC", type: "\u7EC8\u5C40", reward: { gold: 500, exp: 500, skillPoints: 5 } }
+  };
+
+  // src/systems/save.js
+  function loadSave() {
+    try {
+      const raw = localStorage.getItem(SAVE_KEY);
+      const parsed = raw ? JSON.parse(raw) : null;
+      if (parsed && typeof parsed === "object" && (!parsed.saveVersion || parsed.saveVersion < 3)) {
+        parsed.saveVersion = 3;
+      }
+      return parsed;
+    } catch (e) {
+      return null;
+    }
+  }
+  function persistSave(state) {
+    try {
+      state.saveVersion = 3;
+      localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+    } catch (e) {
+    }
+  }
+  function clearSave() {
+    try {
+      localStorage.removeItem(SAVE_KEY);
+    } catch (e) {
+    }
+  }
+
+  // src/systems/audio.js
+  var BGM_MAP = "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES02.ogg";
+  var BGM_BATTLE = "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES08.ogg";
+  var KENNEY_SFX = {
+    click: "assets/audio/kenney_ui-audio/Audio/click1.ogg",
+    switch: "assets/audio/kenney_ui-audio/Audio/switch1.ogg",
+    hover: "assets/audio/kenney_ui-audio/Audio/rollover1.ogg",
+    door: "assets/audio/kenney_rpg-audio/Audio/doorOpen_1.ogg",
+    doorClose: "assets/audio/kenney_rpg-audio/Audio/doorClose_1.ogg",
+    chest: "assets/audio/kenney_rpg-audio/Audio/metalLatch.ogg",
+    collect: "assets/audio/kenney_rpg-audio/Audio/handleSmallLeather.ogg",
+    gold: "assets/audio/kenney_rpg-audio/Audio/handleCoins.ogg",
+    book: "assets/audio/kenney_rpg-audio/Audio/bookOpen.ogg",
+    hit: "assets/audio/kenney_rpg-audio/Audio/metalClick.ogg",
+    skill: "assets/audio/kenney_rpg-audio/Audio/knifeSlice.ogg",
+    item: "assets/audio/kenney_rpg-audio/Audio/handleCoins2.ogg",
+    correct: "assets/audio/kenney_ui-audio/Audio/click3.ogg",
+    wrong: "assets/audio/kenney_rpg-audio/Audio/creak2.ogg",
+    craft: "assets/audio/kenney_rpg-audio/Audio/chop.ogg",
+    enhance: "assets/audio/kenney_rpg-audio/Audio/metalClick.ogg",
+    footstep: "assets/audio/kenney_rpg-audio/Audio/footstep00.ogg",
+    levelup: "assets/audio/kenney_music-jingles/Audio/Hit jingles/jingles_HIT00.ogg",
+    win: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES00.ogg"
+  };
+  var BGM_BY_ZONE = {
+    gold_field: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES02.ogg",
+    audit_tower: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES08.ogg",
+    capital_forest: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES04.ogg",
+    tax_wasteland: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES06.ogg",
+    law_temple: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES10.ogg",
+    strategy_star: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES12.ogg"
+  };
+  var getAudioState = () => ({ soundEnabled: true, settings: {} });
+  var audioCtx = null;
+  var bgmTimer = null;
+  var bgmAudio = null;
+  var audioCache = {};
+  function bindAudio(getState) {
+    getAudioState = getState;
+  }
+  function ensureAudio() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    return audioCtx;
+  }
+  function tone(freq, duration, type = "square", gain = 0.035, when = 0) {
+    const s = getAudioState();
+    if (!s.soundEnabled || s.settings.sfxEnabled === false) return;
+    try {
+      const ctx = ensureAudio();
+      const vol = gain * s.settings.volume * s.settings.sfxVolume;
+      const t = ctx.currentTime + when;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      g.gain.setValueAtTime(1e-4, t);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+      g.gain.exponentialRampToValueAtTime(1e-4, t + duration);
+      osc.connect(g);
+      g.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + duration + 0.02);
+    } catch (e) {
+    }
+  }
+  function playKenneySfx(kind) {
+    const s = getAudioState();
+    if (!s.soundEnabled || s.settings.sfxEnabled === false) return false;
+    const src = KENNEY_SFX[kind];
+    if (!src) return false;
+    try {
+      if (!audioCache[kind]) {
+        const cached = new Audio(src);
+        cached.preload = "auto";
+        audioCache[kind] = cached;
+      }
+      const audio = audioCache[kind];
+      audio.currentTime = 0;
+      audio.volume = Math.max(0.06, (s.settings.volume || 0.8) * (s.settings.sfxVolume || 0.8) * 0.65);
+      const playPromise = audio.play();
+      if (playPromise && playPromise.catch) playPromise.catch(() => {
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  function sfx(kind) {
+    if (playKenneySfx(kind)) return;
+    if (kind === "click") tone(520, 0.06, "square", 0.02);
+    else if (kind === "hit") tone(180, 0.12, "sawtooth", 0.035);
+    else if (kind === "correct") {
+      tone(523.25, 0.12, "square", 0.035);
+      tone(659.25, 0.16, "square", 0.035, 0.1);
+    } else if (kind === "wrong") {
+      tone(220, 0.2, "sawtooth", 0.03);
+      tone(160, 0.25, "sawtooth", 0.03, 0.08);
+    } else if (kind === "gold") {
+      tone(880, 0.08, "square", 0.03);
+      tone(1320, 0.1, "square", 0.03, 0.07);
+    } else if (kind === "levelup") {
+      [392, 523.25, 659.25, 783.99].forEach((f, i) => tone(f, 0.18, "triangle", 0.04, i * 0.12));
+    } else if (kind === "win") {
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone(f, 0.22, "triangle", 0.04, i * 0.14));
+    }
+  }
+  function playBgm(src) {
+    const s = getAudioState();
+    if (!s.soundEnabled || s.settings.musicEnabled === false) return;
+    if (bgmAudio && bgmAudio.src && bgmAudio.src.endsWith(src)) {
+      if (bgmAudio.paused) bgmAudio.play().catch(() => {
+      });
+      return;
+    }
+    stopBgm();
+    try {
+      bgmAudio = new Audio(src);
+      bgmAudio.loop = true;
+      bgmAudio.volume = Math.max(0.08, (s.settings.volume || 0.8) * (s.settings.musicVolume || 0.5) * 0.55);
+      const promise = bgmAudio.play();
+      if (promise && promise.catch) promise.catch(() => {
+      });
+    } catch (e) {
+    }
+  }
+  function playZoneBgm(zone) {
+    playBgm(BGM_BY_ZONE[zone] || BGM_MAP);
+  }
+  function stopBgm() {
+    if (bgmTimer) {
+      clearInterval(bgmTimer);
+      bgmTimer = null;
+    }
+    if (bgmAudio) {
+      try {
+        bgmAudio.pause();
+      } catch (e) {
+      }
+      bgmAudio = null;
+    }
+  }
+
+  // src/data/regionTasks.js
+  var REGION_TASK_GROUPS = {
+    audit_tower: [
+      { id: "audit_boss_task", title: "\u5BA1\u8BA1\u94C1\u5821\u8BA8\u4F10", desc: "\u51FB\u8D25\u533A\u57DF Boss \u51ED\u8BC1\u5DE8\u50CF\uFF0C\u4FEE\u590D\u5BA1\u8BA1\u8BC1\u636E\u94FE", progress: 0, target: 1, done: false, deliverNpc: "audit_npc", reward: { gold: 80, exp: 90, skillPoints: 2 } },
+      { id: "audit_quiz_task", title: "\u5BA1\u8BA1\u9898\u89E3", desc: "\u7B54\u5BF9 3 \u9053\u5BA1\u8BA1\u9886\u57DF\u9898\u76EE", progress: 0, target: 3, done: false, deliverNpc: "audit_npc", reward: { gold: 50, exp: 60, skillPoints: 1 } },
+      { id: "audit_rooms_task", title: "\u8BC1\u636E\u5E93\u5DE1\u67E5", desc: "\u63A2\u7D22\u5BA1\u8BA1\u94C1\u5821 3 \u4E2A\u5BA4\u5185\u573A\u666F", progress: 0, target: 3, done: false, deliverNpc: "audit_npc", reward: { gold: 45, exp: 50, skillPoints: 1 } },
+      { id: "audit_monster_task", title: "\u5BA1\u8BA1\u8083\u6E05", desc: "\u51FB\u8D25\u5BA1\u8BA1\u94C1\u5821 2 \u53EA\u666E\u901A\u602A\u7269", progress: 0, target: 2, done: false, deliverNpc: "audit_npc", reward: { gold: 60, exp: 70, skillPoints: 1 } }
+    ],
+    capital_forest: [
+      { id: "capital_boss_task", title: "\u8D44\u672C\u5BC6\u6797\u8BA8\u4F10", desc: "\u51FB\u8D25\u533A\u57DF Boss \u4F30\u503C\u6811\u738B\uFF0C\u6062\u590D\u8D22\u52A1\u5206\u6790\u79E9\u5E8F", progress: 0, target: 1, done: false, deliverNpc: "capital_npc", reward: { gold: 90, exp: 100, skillPoints: 2 } },
+      { id: "capital_quiz_task", title: "\u8D22\u7BA1\u9898\u89E3", desc: "\u7B54\u5BF9 3 \u9053\u8D22\u52A1\u6210\u672C\u7BA1\u7406\u9898\u76EE", progress: 0, target: 3, done: false, deliverNpc: "capital_npc", reward: { gold: 55, exp: 65, skillPoints: 1 } },
+      { id: "capital_rooms_task", title: "\u8D44\u672C\u6C99\u76D8\u5DE1\u793C", desc: "\u63A2\u7D22\u8D44\u672C\u5BC6\u6797 3 \u4E2A\u5BA4\u5185\u573A\u666F", progress: 0, target: 3, done: false, deliverNpc: "capital_npc", reward: { gold: 50, exp: 55, skillPoints: 1 } },
+      { id: "capital_monster_task", title: "\u8D44\u672C\u8083\u6E05", desc: "\u51FB\u8D25\u8D44\u672C\u5BC6\u6797 2 \u53EA\u666E\u901A\u602A\u7269", progress: 0, target: 2, done: false, deliverNpc: "capital_npc", reward: { gold: 65, exp: 75, skillPoints: 1 } }
+    ],
+    tax_wasteland: [
+      { id: "tax_boss_task", title: "\u7A0E\u7387\u8352\u539F\u8BA8\u4F10", desc: "\u51FB\u8D25\u533A\u57DF Boss \u7A0E\u7AE0\u5DE8\u50CF\uFF0C\u6062\u590D\u7EB3\u7A0E\u7533\u62A5\u79E9\u5E8F", progress: 0, target: 1, done: false, deliverNpc: "tax_npc", reward: { gold: 100, exp: 110, skillPoints: 2 } },
+      { id: "tax_quiz_task", title: "\u7A0E\u6CD5\u9898\u89E3", desc: "\u7B54\u5BF9 3 \u9053\u7A0E\u6CD5\u9886\u57DF\u9898\u76EE", progress: 0, target: 3, done: false, deliverNpc: "tax_npc", reward: { gold: 60, exp: 70, skillPoints: 1 } },
+      { id: "tax_rooms_task", title: "\u7533\u62A5\u5385\u5DE1\u67E5", desc: "\u63A2\u7D22\u7A0E\u7387\u8352\u539F 3 \u4E2A\u5BA4\u5185\u573A\u666F", progress: 0, target: 3, done: false, deliverNpc: "tax_npc", reward: { gold: 55, exp: 60, skillPoints: 1 } },
+      { id: "tax_monster_task", title: "\u7A0E\u7387\u8083\u6E05", desc: "\u51FB\u8D25\u7A0E\u7387\u8352\u539F 2 \u53EA\u666E\u901A\u602A\u7269", progress: 0, target: 2, done: false, deliverNpc: "tax_npc", reward: { gold: 70, exp: 80, skillPoints: 1 } }
+    ],
+    law_temple: [
+      { id: "law_boss_task", title: "\u6CD5\u6761\u795E\u6BBF\u8BA8\u4F10", desc: "\u51FB\u8D25\u533A\u57DF Boss \u6CD5\u69CC\u88C1\u51B3\u8005\uFF0C\u6062\u590D\u6CD5\u5F8B\u89C4\u5219", progress: 0, target: 1, done: false, deliverNpc: "law_npc", reward: { gold: 110, exp: 120, skillPoints: 2 } },
+      { id: "law_quiz_task", title: "\u7ECF\u6D4E\u6CD5\u9898\u89E3", desc: "\u7B54\u5BF9 3 \u9053\u7ECF\u6D4E\u6CD5\u9886\u57DF\u9898\u76EE", progress: 0, target: 3, done: false, deliverNpc: "law_npc", reward: { gold: 65, exp: 75, skillPoints: 1 } },
+      { id: "law_rooms_task", title: "\u6CD5\u6761\u5377\u5B97\u5DE1\u9605", desc: "\u63A2\u7D22\u6CD5\u6761\u795E\u6BBF 3 \u4E2A\u5BA4\u5185\u573A\u666F", progress: 0, target: 3, done: false, deliverNpc: "law_npc", reward: { gold: 60, exp: 65, skillPoints: 1 } },
+      { id: "law_monster_task", title: "\u6CD5\u6761\u8083\u6E05", desc: "\u51FB\u8D25\u6CD5\u6761\u795E\u6BBF 2 \u53EA\u666E\u901A\u602A\u7269", progress: 0, target: 2, done: false, deliverNpc: "law_npc", reward: { gold: 75, exp: 85, skillPoints: 1 } }
+    ],
+    strategy_star: [
+      { id: "strategy_boss_task", title: "\u6218\u7565\u661F\u5854\u8BA8\u4F10", desc: "\u51FB\u8D25\u533A\u57DF Boss \u5E76\u8D2D\u9738\u4E3B\uFF0C\u7A33\u56FA\u6218\u7565\u51B3\u7B56", progress: 0, target: 1, done: false, deliverNpc: "strategy_npc", reward: { gold: 120, exp: 130, skillPoints: 2 } },
+      { id: "strategy_quiz_task", title: "\u6218\u7565\u9898\u89E3", desc: "\u7B54\u5BF9 3 \u9053\u6218\u7565\u4E0E\u98CE\u9669\u7BA1\u7406\u9898\u76EE", progress: 0, target: 3, done: false, deliverNpc: "strategy_npc", reward: { gold: 70, exp: 80, skillPoints: 1 } },
+      { id: "strategy_rooms_task", title: "\u6218\u7565\u6C99\u76D8\u5DE1\u793C", desc: "\u63A2\u7D22\u6218\u7565\u661F\u5854 3 \u4E2A\u5BA4\u5185\u573A\u666F", progress: 0, target: 3, done: false, deliverNpc: "strategy_npc", reward: { gold: 65, exp: 70, skillPoints: 1 } },
+      { id: "strategy_monster_task", title: "\u6218\u7565\u8083\u6E05", desc: "\u51FB\u8D25\u6218\u7565\u661F\u5854 2 \u53EA\u666E\u901A\u602A\u7269", progress: 0, target: 2, done: false, deliverNpc: "strategy_npc", reward: { gold: 80, exp: 90, skillPoints: 1 } }
+    ]
+  };
+
+  // src/systems/quests.js
+  function createQuestSystem(deps) {
+    const {
+      getState,
+      save,
+      updateHUD,
+      showToast,
+      advanceMainStory,
+      maybeLevelUp,
+      unlockAchievement,
+      sfx: sfx2,
+      openModal,
+      ensureTaskFields
+    } = deps;
+    function activateRegionTasks(zone) {
+      const group = REGION_TASK_GROUPS[zone];
+      if (!group) return;
+      const state = getState();
+      group.forEach((task) => {
+        if (!state.tasks.some((t) => t.id === task.id)) state.tasks.push({ ...task });
+      });
+      ensureTaskFields();
+    }
+    function updateTask(taskId, amount) {
+      const state = getState();
+      const task = state.tasks.find((t) => t.id === taskId);
+      if (!task || task.done) return;
+      task.progress = Math.min(task.target, task.progress + amount);
+      if (task.progress >= task.target) {
+        if (!task.deliverable && !task.done) {
+          if (!task.deliverNpc) {
+            deliverTask(task.id);
+          } else {
+            task.deliverable = true;
+            save();
+            updateHUD();
+            showToast("\u4EFB\u52A1\u5B8C\u6210\uFF1A" + task.title + "\uFF0C\u8BF7\u524D\u5F80\u5BF9\u5E94 NPC \u4EA4\u4ED8");
+          }
+        }
+      }
+      if (["defeat3", "chest2", "collect3"].includes(taskId) && !state.bossKilled) {
+        const ready = ["defeat3", "chest2", "collect3"].every((id) => {
+          const t = state.tasks.find((x) => x.id === id);
+          return t && t.done;
+        });
+        if (ready) advanceMainStory(1);
+      }
+    }
+    function deliverTask(taskId, silent = false) {
+      const state = getState();
+      const task = state.tasks.find((t) => t.id === taskId);
+      if (!task || task.done) return;
+      task.deliverable = false;
+      task.done = true;
+      const reward = task.reward || { gold: 30, exp: 40, skillPoints: 1 };
+      state.player.gold += reward.gold;
+      state.player.exp += reward.exp;
+      state.player.skillPoints += reward.skillPoints;
+      maybeLevelUp();
+      save();
+      updateHUD();
+      const doneCount = state.tasks.filter((t) => t.done).length;
+      if (doneCount >= 25) unlockAchievement("task25");
+      sfx2("win");
+      if (silent) {
+        showToast("\u4EFB\u52A1\u4EA4\u4ED8\u5B8C\u6210\uFF1A" + task.title);
+        return;
+      }
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u4EFB\u52A1\u4EA4\u4ED8\u5B8C\u6210</div>
+        <div class="result-banner correct">${task.title}</div>
+        <div class="reward-grid">
+          <div class="report-card"><div class="num">${reward.gold} G</div><div>\u91D1\u5E01</div></div>
+          <div class="report-card"><div class="num">${reward.exp}</div><div>\u7ECF\u9A8C</div></div>
+          <div class="report-card"><div class="num">+${reward.skillPoints}</div><div>\u6280\u80FD\u70B9</div></div>
+        </div>
+        <div class="info-card">${task.desc}</div>
+        <div class="modal-actions">
+          <button class="pixel-btn" data-action="close">\u8FD4\u56DE</button>
+          <button class="pixel-btn secondary" data-action="npc-return" data-npc="${task.deliverNpc || ""}">\u7EE7\u7EED\u4E0E NPC \u5BF9\u8BDD</button>
+        </div>
+      </div>
+    `);
+    }
+    return { activateRegionTasks, updateTask, deliverTask };
+  }
+
+  // src/systems/achievements.js
+  function createAchievementSystem(deps) {
+    const {
+      getState,
+      save,
+      updateHUD,
+      maybeLevelUp,
+      sfx: sfx2,
+      showAchievementToast
+    } = deps;
+    function unlockAchievement(id) {
+      const state = getState();
+      if (state.achievements.includes(id)) return;
+      const a = ACHIEVEMENTS[id];
+      if (!a) return;
+      state.achievements.push(id);
+      const r = a.reward || {};
+      if (r.gold) state.player.gold += r.gold;
+      if (r.exp) state.player.exp += r.exp;
+      if (r.skillPoints) state.player.skillPoints += r.skillPoints;
+      maybeLevelUp();
+      save();
+      updateHUD();
+      sfx2("win");
+      showAchievementToast(a);
+    }
+    return { unlockAchievement };
+  }
+
   // src/game.js
   (() => {
     "use strict";
@@ -510,38 +863,6 @@
       law_boss: { name: "\u6CD5\u6761\u62A4\u76FE", desc: "\u9636\u6BB5 2 \u8D77\u51CF\u514D\u73A9\u5BB6\u9020\u6210\u7684\u4F24\u5BB3" },
       strategy_boss: { name: "\u8FDE\u73AF\u6269\u5F20", desc: "\u9636\u6BB5 2 \u8D77\u666E\u901A\u653B\u51FB\u9644\u5E26\u8FFD\u52A0\u4F24\u5BB3" },
       final_boss: { name: "\u516D\u57DF\u5931\u8861", desc: "\u9636\u6BB5 2 \u8D77\u6BCF\u56DE\u5408\u8F6E\u6362\u516D\u79D1\u5F31\u70B9" }
-    };
-    const REGION_TASK_GROUPS = {
-      audit_tower: [
-        { id: "audit_boss_task", title: "\u5BA1\u8BA1\u94C1\u5821\u8BA8\u4F10", desc: "\u51FB\u8D25\u533A\u57DF Boss \u51ED\u8BC1\u5DE8\u50CF\uFF0C\u4FEE\u590D\u5BA1\u8BA1\u8BC1\u636E\u94FE", progress: 0, target: 1, done: false, deliverNpc: "audit_npc", reward: { gold: 80, exp: 90, skillPoints: 2 } },
-        { id: "audit_quiz_task", title: "\u5BA1\u8BA1\u9898\u89E3", desc: "\u7B54\u5BF9 3 \u9053\u5BA1\u8BA1\u9886\u57DF\u9898\u76EE", progress: 0, target: 3, done: false, deliverNpc: "audit_npc", reward: { gold: 50, exp: 60, skillPoints: 1 } },
-        { id: "audit_rooms_task", title: "\u8BC1\u636E\u5E93\u5DE1\u67E5", desc: "\u63A2\u7D22\u5BA1\u8BA1\u94C1\u5821 3 \u4E2A\u5BA4\u5185\u573A\u666F", progress: 0, target: 3, done: false, deliverNpc: "audit_npc", reward: { gold: 45, exp: 50, skillPoints: 1 } },
-        { id: "audit_monster_task", title: "\u5BA1\u8BA1\u8083\u6E05", desc: "\u51FB\u8D25\u5BA1\u8BA1\u94C1\u5821 2 \u53EA\u666E\u901A\u602A\u7269", progress: 0, target: 2, done: false, deliverNpc: "audit_npc", reward: { gold: 60, exp: 70, skillPoints: 1 } }
-      ],
-      capital_forest: [
-        { id: "capital_boss_task", title: "\u8D44\u672C\u5BC6\u6797\u8BA8\u4F10", desc: "\u51FB\u8D25\u533A\u57DF Boss \u4F30\u503C\u6811\u738B\uFF0C\u6062\u590D\u8D22\u52A1\u5206\u6790\u79E9\u5E8F", progress: 0, target: 1, done: false, deliverNpc: "capital_npc", reward: { gold: 90, exp: 100, skillPoints: 2 } },
-        { id: "capital_quiz_task", title: "\u8D22\u7BA1\u9898\u89E3", desc: "\u7B54\u5BF9 3 \u9053\u8D22\u52A1\u6210\u672C\u7BA1\u7406\u9898\u76EE", progress: 0, target: 3, done: false, deliverNpc: "capital_npc", reward: { gold: 55, exp: 65, skillPoints: 1 } },
-        { id: "capital_rooms_task", title: "\u8D44\u672C\u6C99\u76D8\u5DE1\u793C", desc: "\u63A2\u7D22\u8D44\u672C\u5BC6\u6797 3 \u4E2A\u5BA4\u5185\u573A\u666F", progress: 0, target: 3, done: false, deliverNpc: "capital_npc", reward: { gold: 50, exp: 55, skillPoints: 1 } },
-        { id: "capital_monster_task", title: "\u8D44\u672C\u8083\u6E05", desc: "\u51FB\u8D25\u8D44\u672C\u5BC6\u6797 2 \u53EA\u666E\u901A\u602A\u7269", progress: 0, target: 2, done: false, deliverNpc: "capital_npc", reward: { gold: 65, exp: 75, skillPoints: 1 } }
-      ],
-      tax_wasteland: [
-        { id: "tax_boss_task", title: "\u7A0E\u7387\u8352\u539F\u8BA8\u4F10", desc: "\u51FB\u8D25\u533A\u57DF Boss \u7A0E\u7AE0\u5DE8\u50CF\uFF0C\u6062\u590D\u7EB3\u7A0E\u7533\u62A5\u79E9\u5E8F", progress: 0, target: 1, done: false, deliverNpc: "tax_npc", reward: { gold: 100, exp: 110, skillPoints: 2 } },
-        { id: "tax_quiz_task", title: "\u7A0E\u6CD5\u9898\u89E3", desc: "\u7B54\u5BF9 3 \u9053\u7A0E\u6CD5\u9886\u57DF\u9898\u76EE", progress: 0, target: 3, done: false, deliverNpc: "tax_npc", reward: { gold: 60, exp: 70, skillPoints: 1 } },
-        { id: "tax_rooms_task", title: "\u7533\u62A5\u5385\u5DE1\u67E5", desc: "\u63A2\u7D22\u7A0E\u7387\u8352\u539F 3 \u4E2A\u5BA4\u5185\u573A\u666F", progress: 0, target: 3, done: false, deliverNpc: "tax_npc", reward: { gold: 55, exp: 60, skillPoints: 1 } },
-        { id: "tax_monster_task", title: "\u7A0E\u7387\u8083\u6E05", desc: "\u51FB\u8D25\u7A0E\u7387\u8352\u539F 2 \u53EA\u666E\u901A\u602A\u7269", progress: 0, target: 2, done: false, deliverNpc: "tax_npc", reward: { gold: 70, exp: 80, skillPoints: 1 } }
-      ],
-      law_temple: [
-        { id: "law_boss_task", title: "\u6CD5\u6761\u795E\u6BBF\u8BA8\u4F10", desc: "\u51FB\u8D25\u533A\u57DF Boss \u6CD5\u69CC\u88C1\u51B3\u8005\uFF0C\u6062\u590D\u6CD5\u5F8B\u89C4\u5219", progress: 0, target: 1, done: false, deliverNpc: "law_npc", reward: { gold: 110, exp: 120, skillPoints: 2 } },
-        { id: "law_quiz_task", title: "\u7ECF\u6D4E\u6CD5\u9898\u89E3", desc: "\u7B54\u5BF9 3 \u9053\u7ECF\u6D4E\u6CD5\u9886\u57DF\u9898\u76EE", progress: 0, target: 3, done: false, deliverNpc: "law_npc", reward: { gold: 65, exp: 75, skillPoints: 1 } },
-        { id: "law_rooms_task", title: "\u6CD5\u6761\u5377\u5B97\u5DE1\u9605", desc: "\u63A2\u7D22\u6CD5\u6761\u795E\u6BBF 3 \u4E2A\u5BA4\u5185\u573A\u666F", progress: 0, target: 3, done: false, deliverNpc: "law_npc", reward: { gold: 60, exp: 65, skillPoints: 1 } },
-        { id: "law_monster_task", title: "\u6CD5\u6761\u8083\u6E05", desc: "\u51FB\u8D25\u6CD5\u6761\u795E\u6BBF 2 \u53EA\u666E\u901A\u602A\u7269", progress: 0, target: 2, done: false, deliverNpc: "law_npc", reward: { gold: 75, exp: 85, skillPoints: 1 } }
-      ],
-      strategy_star: [
-        { id: "strategy_boss_task", title: "\u6218\u7565\u661F\u5854\u8BA8\u4F10", desc: "\u51FB\u8D25\u533A\u57DF Boss \u5E76\u8D2D\u9738\u4E3B\uFF0C\u7A33\u56FA\u6218\u7565\u51B3\u7B56", progress: 0, target: 1, done: false, deliverNpc: "strategy_npc", reward: { gold: 120, exp: 130, skillPoints: 2 } },
-        { id: "strategy_quiz_task", title: "\u6218\u7565\u9898\u89E3", desc: "\u7B54\u5BF9 3 \u9053\u6218\u7565\u4E0E\u98CE\u9669\u7BA1\u7406\u9898\u76EE", progress: 0, target: 3, done: false, deliverNpc: "strategy_npc", reward: { gold: 70, exp: 80, skillPoints: 1 } },
-        { id: "strategy_rooms_task", title: "\u6218\u7565\u6C99\u76D8\u5DE1\u793C", desc: "\u63A2\u7D22\u6218\u7565\u661F\u5854 3 \u4E2A\u5BA4\u5185\u573A\u666F", progress: 0, target: 3, done: false, deliverNpc: "strategy_npc", reward: { gold: 65, exp: 70, skillPoints: 1 } },
-        { id: "strategy_monster_task", title: "\u6218\u7565\u8083\u6E05", desc: "\u51FB\u8D25\u6218\u7565\u661F\u5854 2 \u53EA\u666E\u901A\u602A\u7269", progress: 0, target: 2, done: false, deliverNpc: "strategy_npc", reward: { gold: 80, exp: 90, skillPoints: 1 } }
-      ]
     };
     const POINT_QUIZ_TASK = {
       \u5BA1\u8BA1\u8BC1\u636E: "audit_quiz_task",
@@ -687,34 +1008,6 @@
       law_temple: "lawCleared",
       strategy_star: "strategyCleared"
     };
-    const ACHIEVEMENTS = {
-      first_battle: { name: "\u521D\u6218\u544A\u6377", desc: "\u5B8C\u6210\u7B2C\u4E00\u573A\u6218\u6597", type: "\u6218\u6597", reward: { gold: 20 } },
-      beat_3: { name: "\u4E09\u8FDE\u65A9", desc: "\u51FB\u8D25 3 \u53EA\u666E\u901A\u602A\u7269", type: "\u6218\u6597", reward: { gold: 50 } },
-      beat_boss: { name: "\u5929\u5E73\u8861\u8861", desc: "\u51FB\u8D25\u5408\u5E76\u62A5\u8868\u5DE8\u50CF", type: "\u6218\u6597", reward: { gold: 100, exp: 100, skillPoints: 2 } },
-      answer10: { name: "\u7B54\u9898\u65B0\u624B", desc: "\u7D2F\u8BA1\u7B54\u5BF9 10 \u9053\u9898", type: "\u5B66\u4E60", reward: { exp: 50 } },
-      wrong_zero: { name: "\u9519\u9898\u6E05\u96F6", desc: "\u5C06\u4E00\u9053\u9519\u9898\u590D\u4E60\u81F3\u638C\u63E1", type: "\u5B66\u4E60", reward: { gold: 30 } },
-      collect10: { name: "\u6750\u6599\u8FBE\u4EBA", desc: "\u91C7\u96C6 10 \u6B21\u6750\u6599", type: "\u63A2\u7D22", reward: { gold: 40 } },
-      open_chest2: { name: "\u5F00\u7BB1\u6709\u559C", desc: "\u5F00\u542F 2 \u4E2A\u5B9D\u7BB1", type: "\u63A2\u7D22", reward: { gold: 30 } },
-      enhance1: { name: "\u5F3A\u5316\u5165\u95E8", desc: "\u5F3A\u5316\u4EFB\u610F\u88C5\u5907 1 \u6B21", type: "\u6210\u957F", reward: { skillPoints: 1 } },
-      all_jobs: { name: "\u804C\u4E1A\u6536\u85CF\u5BB6", desc: "\u89E3\u9501\u5168\u90E8\u804C\u4E1A", type: "\u6210\u957F", reward: { gold: 200, skillPoints: 3 } },
-      level10: { name: "\u5341\u7EA7\u7C3F\u8BB0", desc: "\u89D2\u8272\u7B49\u7EA7\u8FBE\u5230 10 \u7EA7", type: "\u6210\u957F", reward: { gold: 100, exp: 100, skillPoints: 2 } },
-      level20: { name: "\u79D1\u76EE\u4E13\u5BB6", desc: "\u89D2\u8272\u7B49\u7EA7\u8FBE\u5230 20 \u7EA7", type: "\u6210\u957F", reward: { gold: 200, exp: 200, skillPoints: 3 } },
-      level30: { name: "\u6CE8\u4F1A\u8D24\u8005", desc: "\u89D2\u8272\u7B49\u7EA7\u8FBE\u5230 30 \u7EA7", type: "\u6210\u957F", reward: { gold: 400, exp: 400, skillPoints: 4 } },
-      kill10: { name: "\u602A\u7269\u6E05\u9053\u592B", desc: "\u7D2F\u8BA1\u51FB\u8D25 10 \u53EA\u666E\u901A\u602A\u7269", type: "\u6218\u6597", reward: { gold: 150, exp: 150, skillPoints: 2 } },
-      answer50: { name: "\u767E\u70BC\u6210\u94A2", desc: "\u7D2F\u8BA1\u7B54\u5BF9 50 \u9053\u9898", type: "\u5B66\u4E60", reward: { gold: 120, exp: 120, skillPoints: 2 } },
-      answer100: { name: "\u5343\u9898\u4E0D\u6020", desc: "\u7D2F\u8BA1\u7B54\u5BF9 100 \u9053\u9898", type: "\u5B66\u4E60", reward: { gold: 250, exp: 250, skillPoints: 3 } },
-      streak10: { name: "\u5341\u8FDE\u5B66\u9738", desc: "\u8FDE\u7EED\u7B54\u5BF9 10 \u9053\u9898", type: "\u5B66\u4E60", reward: { gold: 100, exp: 100, skillPoints: 2 } },
-      coverage60: { name: "\u8003\u7EB2\u8FC7\u534A", desc: "\u8003\u7EB2\u8986\u76D6\u7387\u8FBE\u5230 60%", type: "\u5B66\u4E60", reward: { gold: 120, exp: 120, skillPoints: 2 } },
-      coverage90: { name: "\u8003\u7EB2\u5236\u9738", desc: "\u8003\u7EB2\u8986\u76D6\u7387\u8FBE\u5230 90%", type: "\u5B66\u4E60", reward: { gold: 300, exp: 300, skillPoints: 3 } },
-      chest10: { name: "\u5B9D\u7BB1\u6536\u85CF\u5BB6", desc: "\u5F00\u542F 10 \u4E2A\u5B9D\u7BB1", type: "\u63A2\u7D22", reward: { gold: 120, exp: 100, skillPoints: 2 } },
-      rooms15: { name: "\u623F\u95F4\u5DE1\u793C", desc: "\u8BBF\u95EE 15 \u4E2A\u5BA4\u5185\u573A\u666F", type: "\u63A2\u7D22", reward: { gold: 150, exp: 120, skillPoints: 2 } },
-      level25: { name: "\u9886\u57DF\u9AD8\u624B", desc: "\u89D2\u8272\u7B49\u7EA7\u8FBE\u5230 25 \u7EA7", type: "\u6210\u957F", reward: { gold: 300, exp: 300, skillPoints: 3 } },
-      level40: { name: "\u6CE8\u4F1A\u4F20\u5947", desc: "\u89D2\u8272\u7B49\u7EA7\u8FBE\u5230 40 \u7EA7", type: "\u6210\u957F", reward: { gold: 500, exp: 500, skillPoints: 4 } },
-      task25: { name: "\u4EFB\u52A1\u5927\u5E08", desc: "\u5B8C\u6210 25 \u4E2A\u4EFB\u52A1", type: "\u6210\u957F", reward: { gold: 300, exp: 300, skillPoints: 3 } },
-      weekly20: { name: "\u5468\u62A5\u5E38\u5BA2", desc: "\u5355\u5468\u5B8C\u6210 20 \u9053\u9898", type: "\u5B66\u4E60", reward: { gold: 100, exp: 100, skillPoints: 2 } },
-      all_zone_bosses: { name: "\u4E94\u57DF\u8BA8\u4F10", desc: "\u51FB\u8D25\u5BA1\u8BA1\u3001\u8D22\u7BA1\u3001\u7A0E\u6CD5\u3001\u7ECF\u6D4E\u6CD5\u548C\u6218\u7565\u533A\u57DF Boss", type: "\u533A\u57DF", reward: { gold: 300, exp: 300, skillPoints: 3 } },
-      final_clear: { name: "\u516D\u57DF\u5E73\u8861", desc: "\u51FB\u8D25\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\uFF0C\u5B8C\u6210\u6700\u7EC8\u8BD5\u70BC", type: "\u7EC8\u5C40", reward: { gold: 500, exp: 500, skillPoints: 5 } }
-    };
     const defaultState = () => ({
       screen: "title",
       saveVersion: 3,
@@ -800,6 +1093,29 @@
       notifiedSystems: []
     });
     let state = loadSave() || defaultState();
+    bindAudio(() => state);
+    const achievementSystem = createAchievementSystem({
+      getState: () => state,
+      save,
+      updateHUD,
+      maybeLevelUp,
+      sfx,
+      showAchievementToast
+    });
+    const { unlockAchievement } = achievementSystem;
+    const questSystem = createQuestSystem({
+      getState: () => state,
+      save,
+      updateHUD,
+      showToast,
+      advanceMainStory,
+      maybeLevelUp,
+      unlockAchievement,
+      sfx,
+      openModal,
+      ensureTaskFields
+    });
+    const { activateRegionTasks, updateTask, deliverTask } = questSystem;
     if (state.soundEnabled === void 0) state.soundEnabled = true;
     if (!state.weapon) state.weapon = { id: "pencil_sword", name: "\u94C5\u7B14\u77ED\u5251", atk: 5 };
     if (!state.armor) state.armor = { id: "apprentice_robe", name: "\u5B66\u5F92\u5E03\u8863", def: 2 };
@@ -1953,146 +2269,8 @@
     const touch = { up: false, down: false, left: false, right: false };
     const mapEffects = [];
     let lastTime = 0;
-    let audioCtx = null;
-    let bgmTimer = null;
-    let bgmAudio = null;
-    let bgmStep = 0;
-    const BGM_NOTES = [261.63, 329.63, 392, 329.63, 293.66, 329.63, 261.63, 220];
-    const BGM_MAP = "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES02.ogg";
-    const BGM_BATTLE = "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES08.ogg";
-    const KENNEY_SFX = {
-      click: "assets/audio/kenney_ui-audio/Audio/click1.ogg",
-      switch: "assets/audio/kenney_ui-audio/Audio/switch1.ogg",
-      hover: "assets/audio/kenney_ui-audio/Audio/rollover1.ogg",
-      door: "assets/audio/kenney_rpg-audio/Audio/doorOpen_1.ogg",
-      doorClose: "assets/audio/kenney_rpg-audio/Audio/doorClose_1.ogg",
-      chest: "assets/audio/kenney_rpg-audio/Audio/metalLatch.ogg",
-      collect: "assets/audio/kenney_rpg-audio/Audio/handleSmallLeather.ogg",
-      gold: "assets/audio/kenney_rpg-audio/Audio/handleCoins.ogg",
-      book: "assets/audio/kenney_rpg-audio/Audio/bookOpen.ogg",
-      hit: "assets/audio/kenney_rpg-audio/Audio/metalClick.ogg",
-      skill: "assets/audio/kenney_rpg-audio/Audio/knifeSlice.ogg",
-      item: "assets/audio/kenney_rpg-audio/Audio/handleCoins2.ogg",
-      correct: "assets/audio/kenney_ui-audio/Audio/click3.ogg",
-      wrong: "assets/audio/kenney_rpg-audio/Audio/creak2.ogg",
-      craft: "assets/audio/kenney_rpg-audio/Audio/chop.ogg",
-      enhance: "assets/audio/kenney_rpg-audio/Audio/metalClick.ogg",
-      footstep: "assets/audio/kenney_rpg-audio/Audio/footstep00.ogg",
-      levelup: "assets/audio/kenney_music-jingles/Audio/Hit jingles/jingles_HIT00.ogg",
-      win: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES00.ogg"
-    };
-    function ensureAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === "suspended") audioCtx.resume();
-      return audioCtx;
-    }
-    function tone(freq, duration, type = "square", gain = 0.035, when = 0) {
-      if (!state.soundEnabled || state.settings.sfxEnabled === false) return;
-      try {
-        const ctx2 = ensureAudio();
-        const vol = gain * state.settings.volume * state.settings.sfxVolume;
-        const t = ctx2.currentTime + when;
-        const osc = ctx2.createOscillator();
-        const g = ctx2.createGain();
-        osc.type = type;
-        osc.frequency.value = freq;
-        g.gain.setValueAtTime(1e-4, t);
-        g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
-        g.gain.exponentialRampToValueAtTime(1e-4, t + duration);
-        osc.connect(g);
-        g.connect(ctx2.destination);
-        osc.start(t);
-        osc.stop(t + duration + 0.02);
-      } catch (e) {
-      }
-    }
-    const audioCache = {};
-    const BGM_BY_ZONE = {
-      gold_field: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES02.ogg",
-      audit_tower: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES08.ogg",
-      capital_forest: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES04.ogg",
-      tax_wasteland: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES06.ogg",
-      law_temple: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES10.ogg",
-      strategy_star: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES12.ogg"
-    };
-    function playKenneySfx(kind) {
-      if (!state.soundEnabled || state.settings.sfxEnabled === false) return false;
-      const src = KENNEY_SFX[kind];
-      if (!src) return false;
-      try {
-        if (!audioCache[kind]) {
-          const cached = new Audio(src);
-          cached.preload = "auto";
-          audioCache[kind] = cached;
-        }
-        const audio = audioCache[kind];
-        audio.currentTime = 0;
-        audio.volume = Math.max(0.06, (state.settings.volume || 0.8) * (state.settings.sfxVolume || 0.8) * 0.65);
-        const playPromise = audio.play();
-        if (playPromise && playPromise.catch) playPromise.catch(() => {
-        });
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }
-    function sfx(kind) {
-      if (playKenneySfx(kind)) return;
-      if (kind === "click") tone(520, 0.06, "square", 0.02);
-      else if (kind === "hit") tone(180, 0.12, "sawtooth", 0.035);
-      else if (kind === "correct") {
-        tone(523.25, 0.12, "square", 0.035);
-        tone(659.25, 0.16, "square", 0.035, 0.1);
-      } else if (kind === "wrong") {
-        tone(220, 0.2, "sawtooth", 0.03);
-        tone(160, 0.25, "sawtooth", 0.03, 0.08);
-      } else if (kind === "gold") {
-        tone(880, 0.08, "square", 0.03);
-        tone(1320, 0.1, "square", 0.03, 0.07);
-      } else if (kind === "levelup") {
-        [392, 523.25, 659.25, 783.99].forEach((f, i) => tone(f, 0.18, "triangle", 0.04, i * 0.12));
-      } else if (kind === "win") {
-        [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone(f, 0.22, "triangle", 0.04, i * 0.14));
-      }
-    }
-    function playBgm(src) {
-      if (!state.soundEnabled || state.settings.musicEnabled === false) return;
-      if (bgmAudio && bgmAudio.src && bgmAudio.src.endsWith(src)) {
-        if (bgmAudio.paused) bgmAudio.play().catch(() => {
-        });
-        return;
-      }
-      stopBgm();
-      try {
-        bgmAudio = new Audio(src);
-        bgmAudio.loop = true;
-        bgmAudio.volume = Math.max(0.08, (state.settings.volume || 0.8) * (state.settings.musicVolume || 0.5) * 0.55);
-        const promise = bgmAudio.play();
-        if (promise && promise.catch) promise.catch(() => {
-        });
-      } catch (e) {
-      }
-    }
     function startBgm() {
       playZoneBgm(state.zone || "gold_field");
-    }
-    function playZoneBgm(zone) {
-      playBgm(BGM_BY_ZONE[zone] || BGM_MAP);
-    }
-    function stopBgm() {
-      if (bgmTimer) {
-        clearInterval(bgmTimer);
-        bgmTimer = null;
-      }
-      if (bgmAudio) {
-        try {
-          bgmAudio.pause();
-        } catch (e) {
-        }
-        bgmAudio = null;
-      }
     }
     function updateLoadingProgress() {
       const pct = Math.min(100, Math.round(loadedAssets / TOTAL_LOAD_STEPS * 100));
@@ -2216,30 +2394,11 @@
         assets.battleBgs[key] = clean;
       }
     }
-    function loadSave() {
-      try {
-        const raw = localStorage.getItem(SAVE_KEY);
-        const parsed = raw ? JSON.parse(raw) : null;
-        if (parsed && typeof parsed === "object" && (!parsed.saveVersion || parsed.saveVersion < 3)) {
-          parsed.saveVersion = 3;
-        }
-        return parsed;
-      } catch (e) {
-        return null;
-      }
-    }
     function save() {
-      try {
-        state.saveVersion = 3;
-        localStorage.setItem(SAVE_KEY, JSON.stringify(state));
-      } catch (e) {
-      }
+      persistSave(state);
     }
     function resetSave() {
-      try {
-        localStorage.removeItem(SAVE_KEY);
-      } catch (e) {
-      }
+      clearSave();
       state = defaultState();
     }
     function openModal(html) {
@@ -4224,14 +4383,6 @@
       sfx("gold");
       showToast("\u83B7\u5F97 " + chest.reward + " \u91D1\u5E01");
     }
-    function activateRegionTasks(zone) {
-      const group = REGION_TASK_GROUPS[zone];
-      if (!group) return;
-      group.forEach((task) => {
-        if (!state.tasks.some((t) => t.id === task.id)) state.tasks.push({ ...task });
-      });
-      ensureTaskFields();
-    }
     function advanceMainStory(step) {
       if (state.mainStep >= step) return;
       state.mainStep = step;
@@ -4253,66 +4404,6 @@
       state._pendingMainStory = null;
       playStory(lines, () => {
       });
-    }
-    function updateTask(taskId, amount) {
-      const task = state.tasks.find((t) => t.id === taskId);
-      if (!task || task.done) return;
-      task.progress = Math.min(task.target, task.progress + amount);
-      if (task.progress >= task.target) {
-        if (!task.deliverable && !task.done) {
-          if (!task.deliverNpc) {
-            deliverTask(task.id);
-          } else {
-            task.deliverable = true;
-            save();
-            updateHUD();
-            showToast("\u4EFB\u52A1\u5B8C\u6210\uFF1A" + task.title + "\uFF0C\u8BF7\u524D\u5F80\u5BF9\u5E94 NPC \u4EA4\u4ED8");
-          }
-        }
-      }
-      if (["defeat3", "chest2", "collect3"].includes(taskId) && !state.bossKilled) {
-        const ready = ["defeat3", "chest2", "collect3"].every((id) => {
-          const t = state.tasks.find((x) => x.id === id);
-          return t && t.done;
-        });
-        if (ready) advanceMainStory(1);
-      }
-    }
-    function deliverTask(taskId, silent = false) {
-      const task = state.tasks.find((t) => t.id === taskId);
-      if (!task || task.done) return;
-      task.deliverable = false;
-      task.done = true;
-      const reward = task.reward || { gold: 30, exp: 40, skillPoints: 1 };
-      state.player.gold += reward.gold;
-      state.player.exp += reward.exp;
-      state.player.skillPoints += reward.skillPoints;
-      maybeLevelUp();
-      save();
-      updateHUD();
-      const doneCount = state.tasks.filter((t) => t.done).length;
-      if (doneCount >= 25) unlockAchievement("task25");
-      sfx("win");
-      if (silent) {
-        showToast("\u4EFB\u52A1\u4EA4\u4ED8\u5B8C\u6210\uFF1A" + task.title);
-        return;
-      }
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u4EFB\u52A1\u4EA4\u4ED8\u5B8C\u6210</div>
-        <div class="result-banner correct">${task.title}</div>
-        <div class="reward-grid">
-          <div class="report-card"><div class="num">${reward.gold} G</div><div>\u91D1\u5E01</div></div>
-          <div class="report-card"><div class="num">${reward.exp}</div><div>\u7ECF\u9A8C</div></div>
-          <div class="report-card"><div class="num">+${reward.skillPoints}</div><div>\u6280\u80FD\u70B9</div></div>
-        </div>
-        <div class="info-card">${task.desc}</div>
-        <div class="modal-actions">
-          <button class="pixel-btn" data-action="close">\u8FD4\u56DE</button>
-          <button class="pixel-btn secondary" data-action="npc-return" data-npc="${task.deliverNpc || ""}">\u7EE7\u7EED\u4E0E NPC \u5BF9\u8BDD</button>
-        </div>
-      </div>
-    `);
     }
     function openEquip() {
       if (!isSystemUnlocked("equip")) {
@@ -4676,21 +4767,6 @@
         <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
       </div>
     `);
-    }
-    function unlockAchievement(id) {
-      if (state.achievements.includes(id)) return;
-      const a = ACHIEVEMENTS[id];
-      if (!a) return;
-      state.achievements.push(id);
-      const r = a.reward || {};
-      if (r.gold) state.player.gold += r.gold;
-      if (r.exp) state.player.exp += r.exp;
-      if (r.skillPoints) state.player.skillPoints += r.skillPoints;
-      maybeLevelUp();
-      save();
-      updateHUD();
-      sfx("win");
-      showAchievementToast(a);
     }
     function openAchievements() {
       const rows = Object.entries(ACHIEVEMENTS).map(([id, a]) => {

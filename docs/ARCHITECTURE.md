@@ -11,8 +11,14 @@ CPA_RPG_M2_Demo/
       config.js           # 版本、存档键、系统解锁等级等配置
       utils.js            # 日期、周次、时长等工具函数
     data/
+      achievements.js
       questions.js        # 构建时由 tools/build_data_module.mjs 生成
-    systems/              # 预留：战斗、答题、存档、音频等系统模块
+      regionTasks.js
+    systems/
+      achievements.js     # 成就解锁与奖励
+      audio.js            # 音效、BGM、WebAudio
+      quests.js           # 任务进度与交付
+      save.js             # localStorage 存档
   tests/
     smoke.mjs             # file:// 冒烟测试
     pwa.mjs               # PWA 安装与离线测试
@@ -59,6 +65,6 @@ npm run dev
 
 ## 后续拆分计划
 
-1. 将存档、音频、战斗、答题拆到 `src/systems/`。
+1. 将战斗、答题、玩家成长拆到 `src/systems/`。
 2. 将地图、战斗、UI 渲染拆到独立渲染模块。
 3. 增加类型检查、Lint、单元测试和 CI 自动部署。
