@@ -1001,6 +1001,474 @@
     return { openBattleModal, openSkillSelect, openItemSelect };
   }
 
+  // src/systems/battle.js
+  function createBattleSystem(deps) {
+    const {
+      getState,
+      getMonsterType,
+      getWeaponAtk,
+      getArmorDef,
+      getJobBonus,
+      getCurrentJobSkills,
+      isSystemUnlocked,
+      openBattleModal,
+      openSkillSelect,
+      openItemSelect,
+      openQuiz,
+      openModal,
+      closeModal,
+      showToast,
+      updateHUD,
+      playBgm: playBgm2,
+      playZoneBgm: playZoneBgm2,
+      BGM_BATTLE: BGM_BATTLE2,
+      sfx: sfx2,
+      addEffect,
+      getQuestionsByPoint: getQuestionsByPoint2,
+      getRandomQuestions: getRandomQuestions2,
+      maybeLevelUp,
+      gainPartnerExp,
+      updateTask,
+      unlockAchievement,
+      activateRegionTasks,
+      advanceMainStory,
+      save,
+      hud,
+      touchControls,
+      showTouchIfCoarse,
+      BATTLE_REGIONS,
+      FINAL_BOSS_WEAK_POINTS,
+      BOSS_MECHANICS,
+      ZONE_BOSS_STATE,
+      ZONE_BOSS_TASK,
+      ZONE_MONSTER_TASK,
+      REGION_BOSS_INTRO,
+      getSkills
+    } = deps;
+    function startBattle(monster, isBoss) {
+      const state = getState();
+      state.screen = "battle";
+      playBgm2(BGM_BATTLE2);
+      const regionInfo = BATTLE_REGIONS[getMonsterType(monster.id)] || BATTLE_REGIONS.paper_crane;
+      const battleMonster = { ...monster };
+      state.battle = {
+        monster: battleMonster,
+        isBoss,
+        region: regionInfo,
+        hp: battleMonster.hp,
+        maxHp: battleMonster.hp,
+        turn: 1,
+        feedback: "",
+        effects: [],
+        shakeUntil: 0,
+        bossPhase: 1,
+        phase2: false,
+        phase3: false,
+        bossMechanicInfo: null,
+        auditMarkActive: false,
+        strategySurge: false,
+        finalWeakIndex: null,
+        partnerBlessUsed: false,
+        combo: 0,
+        comboActive: false,
+        critFlashUntil: 0,
+        phaseFlashUntil: 0,
+        bossEnteredAt: isBoss ? Date.now() : 0,
+        anim: {
+          playerAttack: 0,
+          monsterHit: 0,
+          monsterAttack: 0,
+          playerHit: 0
+        }
+      };
+      hud.classList.add("hidden");
+      touchControls.classList.add("hidden");
+      openBattleModal();
+    }
+    function useItem(itemId) {
+      const state = getState();
+      if (itemId === "hp_potion") {
+        if ((state.inventory.hpPotion || 0) <= 0) {
+          state.battle.feedback = "\u6CA1\u6709\u56DE\u590D\u836F\u6C34\u3002";
+          openBattleModal();
+          return;
+        }
+        state.inventory.hpPotion -= 1;
+        state.player.hp = Math.min(state.player.maxHp, state.player.hp + 30);
+        state.battle.feedback = "\u4F7F\u7528\u56DE\u590D\u836F\u6C34\uFF0C\u6062\u590D 30 HP\u3002";
+      } else if (itemId === "mp_potion") {
+        if ((state.inventory.mpPotion || 0) <= 0) {
+          state.battle.feedback = "\u6CA1\u6709\u4EE5\u592A\u4E4B\u9732\u3002";
+          openBattleModal();
+          return;
+        }
+        state.inventory.mpPotion -= 1;
+        state.player.mp = Math.min(state.player.maxMp, state.player.mp + 30);
+        state.battle.feedback = "\u4F7F\u7528\u4EE5\u592A\u4E4B\u9732\uFF0C\u6062\u590D 30 MP\u3002";
+      }
+      save();
+      enemyTurn();
+    }
+    function selectSkill(skillId) {
+      const state = getState();
+      const skill = getSkills()[skillId];
+      if (!skill) return;
+      if (state.player.mp < skill.mp) {
+        state.battle.feedback = "MP \u4E0D\u8DB3\uFF0C\u65E0\u6CD5\u4F7F\u7528\u8BE5\u6280\u80FD\u3002";
+        openBattleModal();
+        return;
+      }
+      state.player.mp -= skill.mp;
+      state.pendingSkill = skill;
+      const weakPoint = state.battle && state.battle.bossMechanicInfo && state.battle.bossMechanicInfo.key === "final_boss" && state.battle.finalWeakIndex !== null ? FINAL_BOSS_WEAK_POINTS[state.battle.finalWeakIndex] : skill.point;
+      const q = getQuestionsByPoint2(weakPoint, 1)[0] || getRandomQuestions2(1)[0];
+      state.quiz = {
+        q,
+        callback: (correct) => {
+          const current = getState();
+          const sk = current.pendingSkill;
+          current.pendingSkill = null;
+          if (!sk) return;
+          if (sk.power === 0) {
+            if (correct) {
+              current.battle.combo += 1;
+              const heal = Math.round(current.player.maxHp * 0.15);
+              current.player.hp = Math.min(current.player.maxHp, current.player.hp + heal);
+              current.battle.feedback = "\u8BD5\u7B97\u5E73\u8861\u6210\u529F\uFF0C\u56DE\u590D HP " + heal;
+            } else {
+              current.battle.combo = 0;
+              current.battle.comboActive = false;
+              current.battle.feedback = "\u8BD5\u7B97\u5E73\u8861\u5931\u8D25\uFF0C\u56DE\u590D\u6548\u679C\u51CF\u534A\u3002";
+              const heal = Math.round(current.player.maxHp * 0.07);
+              current.player.hp = Math.min(current.player.maxHp, current.player.hp + heal);
+            }
+            enemyTurn();
+            return;
+          }
+          const effectiveAtk = current.player.attack + getWeaponAtk() + getJobBonus("atk");
+          const wrongMult = current.battle && current.battle.phase2 ? 0.3 : 0.5;
+          let base = correct ? Math.round(effectiveAtk * sk.power) : Math.max(1, Math.round(effectiveAtk * sk.power * wrongMult));
+          let label = correct ? "\u6280\u80FD\u5F31\u70B9\u7834\u89E3\uFF0C" : "\u7B54\u9519\uFF0C\u6280\u80FD\u5A01\u529B\u4E0B\u964D\uFF0C";
+          if (correct) {
+            current.battle.combo += 1;
+          } else {
+            current.battle.combo = 0;
+            current.battle.comboActive = false;
+          }
+          if (correct && current.partner.mood >= 70 && current.battle && !current.battle.partnerBlessUsed) {
+            base = Math.round(base * 1.3);
+            current.battle.partnerBlessUsed = true;
+            label = "\u8BB0\u8D26\u795D\u798F\u53D1\u52A8\uFF0C" + label;
+          }
+          if (correct && current.battle.combo >= 3 && !current.battle.comboActive) {
+            current.battle.comboActive = true;
+            base = Math.round(base * 1.5);
+            label = "\u7B54\u9898\u4E09\u8FDE\u51FB\u89E6\u53D1\uFF0C" + label;
+            addEffect("COMBO x3", 460, 260, "#ffd166");
+          }
+          applyPlayerDamage(base, label + sk.name);
+        }
+      };
+      openQuiz(q);
+    }
+    function playerBattleAction(action) {
+      const state = getState();
+      if (action === "attack") {
+        const crit = Math.random() < 0.15;
+        let dmg = Math.max(1, state.player.attack + getWeaponAtk() + getJobBonus("atk") - 4 + Math.floor(Math.random() * 4));
+        if (crit) dmg = Math.round(dmg * 1.5);
+        applyPlayerDamage(dmg, crit ? "\u66B4\u51FB\u547D\u4E2D" : "\u666E\u901A\u653B\u51FB\u547D\u4E2D", crit);
+        if (!state.battle) return;
+      } else if (action === "skill") {
+        openSkillSelect();
+        return;
+      } else if (action === "item") {
+        openItemSelect();
+        return;
+      } else if (action === "run") {
+        if (Math.random() < 0.7) {
+          showToast("\u6210\u529F\u9003\u8DD1");
+          state.screen = "map";
+          playZoneBgm2(state.zone || "gold_field");
+          delete state.battle;
+          hud.classList.remove("hidden");
+          showTouchIfCoarse();
+          closeModal();
+          return;
+        }
+        state.battle.feedback = "\u9003\u8DD1\u5931\u8D25\uFF01";
+        enemyTurn();
+        return;
+      }
+    }
+    function applyPlayerDamage(dmg, label, critical = false) {
+      const state = getState();
+      dmg = Math.max(1, Math.round(dmg));
+      const hasLawShield = state.battle && state.battle.bossMechanicInfo && state.battle.bossMechanicInfo.key === "law_boss";
+      if (hasLawShield) {
+        dmg = Math.max(1, Math.round(dmg * 0.75));
+        label = "\u6CD5\u6761\u62A4\u76FE\u62B5\u6D88\u90E8\u5206\u4F24\u5BB3\uFF0C" + label;
+      }
+      state.battle.hp -= dmg;
+      addEffect("-" + dmg, 720, 300, "#ffd166");
+      state.battle.shakeUntil = Date.now() + 180;
+      state.battle.anim.playerAttack = Date.now();
+      state.battle.anim.monsterHit = Date.now() + 120;
+      if (critical) {
+        state.battle.critFlashUntil = Date.now() + 420;
+        state.battle.shakeUntil = Date.now() + 260;
+        addEffect("\u66B4\u51FB", 700, 250, "#ffe066", true);
+      }
+      sfx2("hit");
+      state.battle.feedback = label + "\uFF0C\u9020\u6210 " + dmg + " \u4F24\u5BB3\u3002";
+      if (state.battle.hp <= 0) {
+        endBattle(true);
+        return;
+      }
+      const partnerDmg = partnerAttack();
+      if (partnerDmg > 0) {
+        state.battle.feedback += "<br>\u8BB0\u8D26\u7CBE\u7075\u534F\u52A9\u653B\u51FB\uFF0C\u9020\u6210 " + partnerDmg + " \u4F24\u5BB3\u3002";
+        if (state.battle.hp <= 0) {
+          endBattle(true);
+          return;
+        }
+      }
+      enemyTurn();
+    }
+    function partnerAttack() {
+      const state = getState();
+      if (!isSystemUnlocked("partner")) return 0;
+      const partner = state.partner;
+      const base = Math.round((partner.atk + partner.level) * (1 + partner.mood / 200) + getJobBonus("atk"));
+      const dmg = Math.max(1, base - 2 + Math.floor(Math.random() * 4));
+      state.battle.hp -= dmg;
+      addEffect("-" + dmg, 760, 330, "#ffe9a8");
+      state.battle.anim.monsterHit = Date.now();
+      return dmg;
+    }
+    function enemyTurn() {
+      const state = getState();
+      state.battle.turn += 1;
+      const bossName = state.battle.monster.id === "boss_1" ? "\u5408\u5E76\u62A5\u8868\u5DE8\u50CF" : state.battle.monster.label;
+      if (state.battle.isBoss && !state.battle.phase2 && state.battle.hp <= state.battle.maxHp * 0.5) {
+        state.battle.phase2 = true;
+        state.battle.bossPhase = 2;
+        state.battle.phaseFlashUntil = Date.now() + 700;
+        state.battle.monster.attack += 5;
+        const mechanic = BOSS_MECHANICS[state.battle.monster.id];
+        if (mechanic) {
+          state.battle.bossMechanicInfo = { ...mechanic, key: state.battle.monster.id };
+        }
+        state.battle.feedback += `<br>${bossName}\u8FDB\u5165\u7B2C\u4E8C\u9636\u6BB5${state.battle.bossMechanicInfo ? "\uFF1A" + state.battle.bossMechanicInfo.name : "\uFF1A\u62A5\u8868\u9519\u4E71"}\uFF01\u653B\u51FB\u529B\u63D0\u5347\u3002${state.battle.bossMechanicInfo ? " \u4E13\u5C5E\u673A\u5236\uFF1A" + state.battle.bossMechanicInfo.desc : ""}`;
+        sfx2("wrong");
+        showToast(`${bossName}\u8FDB\u5165\u7B2C\u4E8C\u9636\u6BB5${state.battle.bossMechanicInfo ? "\uFF1A" + state.battle.bossMechanicInfo.name : "\uFF1A\u62A5\u8868\u9519\u4E71"}`);
+      }
+      if (state.battle.isBoss && state.battle.phase2 && !state.battle.phase3 && state.battle.hp <= state.battle.maxHp * 0.2) {
+        state.battle.phase3 = true;
+        state.battle.bossPhase = 3;
+        state.battle.phaseFlashUntil = Date.now() + 700;
+        state.battle.monster.attack += 6;
+        state.battle.feedback += `<br>${bossName}\u8FDB\u5165\u6700\u7EC8\u9636\u6BB5\uFF1A\u501F\u8D37\u5931\u8861\uFF01\u653B\u51FB\u529B\u518D\u6B21\u63D0\u5347\u3002`;
+        sfx2("wrong");
+        showToast(`${bossName}\u8FDB\u5165\u6700\u7EC8\u9636\u6BB5\uFF1A\u501F\u8D37\u5931\u8861`);
+      }
+      if (state.battle.isBoss && state.battle.bossMechanicInfo) {
+        applyBossMechanicTurnEffects();
+      }
+      const dmg = Math.max(1, state.battle.monster.attack - state.player.defense - getArmorDef() - getJobBonus("def") + Math.floor(Math.random() * 4) - 2);
+      const surgeBonus = state.battle.strategySurge ? 4 : 0;
+      const finalDmg = dmg + surgeBonus;
+      state.player.hp -= finalDmg;
+      addEffect("-" + finalDmg, 220, 360, "#ff6b6b");
+      state.battle.shakeUntil = Date.now() + 180;
+      state.battle.anim.monsterAttack = Date.now();
+      state.battle.anim.playerHit = Date.now() + 120;
+      state.battle.feedback += "<br>\u602A\u7269\u53CD\u51FB\uFF0C\u53D7\u5230 " + finalDmg + " \u4F24\u5BB3\u3002" + (surgeBonus ? " \u8FDE\u73AF\u6269\u5F20\u8FFD\u52A0\u4F24\u5BB3\u3002" : "");
+      if (state.player.hp <= 0) {
+        state.player.hp = Math.round(state.player.maxHp * 0.5);
+        showToast("\u6218\u6597\u5931\u8D25\uFF0C\u56DE\u5230\u5B58\u6863\u70B9\u6062\u590D 50% HP");
+        state.screen = "map";
+        playZoneBgm2(state.zone || "gold_field");
+        delete state.battle;
+        hud.classList.remove("hidden");
+        showTouchIfCoarse();
+        closeModal();
+        save();
+        return;
+      }
+      updateHUD();
+      openBattleModal();
+    }
+    function applyBossMechanicTurnEffects() {
+      const state = getState();
+      const b = state.battle;
+      const key = b.bossMechanicInfo && b.bossMechanicInfo.key;
+      if (key === "capital_boss") {
+        const drain = Math.min(4, state.player.mp);
+        state.player.mp = Math.max(0, state.player.mp - drain);
+        b.feedback += `<br>\u73B0\u91D1\u6D41\u8679\u5438\u6D88\u8017 ${drain} MP\u3002`;
+      } else if (key === "audit_boss") {
+        b.auditMarkActive = true;
+        b.feedback += "<br>\u5BA1\u8BA1\u6807\u8BB0\u5DF2\u9644\u7740\uFF0C\u4E0B\u4E00\u9898\u7B54\u9519\u5C06\u53D7\u5230\u53CD\u566C\u3002";
+      } else if (key === "strategy_boss") {
+        b.strategySurge = true;
+        b.feedback += "<br>\u8FDE\u73AF\u6269\u5F20\u542F\u52A8\uFF0C\u666E\u901A\u653B\u51FB\u9644\u5E26\u8FFD\u52A0\u4F24\u5BB3\u3002";
+      } else if (key === "final_boss") {
+        b.finalWeakIndex = (b.turn - 1) % FINAL_BOSS_WEAK_POINTS.length;
+        b.feedback += `<br>\u516D\u57DF\u5931\u8861\uFF0C\u5F53\u524D\u5F31\u70B9\u8F6C\u5411\uFF1A${FINAL_BOSS_WEAK_POINTS[b.finalWeakIndex]}\u3002`;
+      }
+    }
+    function endBattle(win) {
+      var _a;
+      const state = getState();
+      const b = state.battle;
+      if (win) {
+        sfx2("win");
+        const p = state.player;
+        state.partner.mood = Math.min(100, state.partner.mood + 4);
+        gainPartnerExp(15);
+        p.gold += b.monster.gold;
+        p.exp += b.monster.exp;
+        const drops = {
+          monster_1: { stone: 1 },
+          monster_2: { ink: 1 },
+          monster_3: { beads: 1 },
+          boss_1: { credential: 1 },
+          audit_monster_1: { ink: 1 },
+          audit_monster_2: { beads: 1 },
+          audit_boss: { ink: 2 },
+          capital_monster_1: { stone: 1 },
+          capital_monster_2: { beads: 1 },
+          capital_boss: { stone: 2 },
+          tax_monster_1: { stone: 1 },
+          tax_monster_2: { ink: 1 },
+          tax_boss: { ink: 2 },
+          law_monster_1: { beads: 1 },
+          law_monster_2: { ink: 1 },
+          law_boss: { beads: 2 },
+          strategy_monster_1: { stone: 1 },
+          strategy_monster_2: { beads: 1 },
+          strategy_boss: { credential: 2 }
+        };
+        const drop = drops[b.monster.id] || {};
+        const materialNames = { stone: "\u91D1\u7B97\u77F3", ink: "\u58A8\u6E0D\u6B8B\u9875", beads: "\u7B97\u76D8\u73E0", credential: "\u5408\u5E76\u51ED\u8BC1" };
+        const dropText = Object.entries(drop).map(([key, count]) => {
+          state.inventory.materials[key] = (state.inventory.materials[key] || 0) + count;
+          return `${materialNames[key]} \xD7${count}`;
+        }).join("\u3001");
+        if (b.monster.id === "final_boss") {
+          state.gameCompleted = true;
+          state.strategyCleared = true;
+          if (!state.jobs.unlocked.includes("strategy")) {
+            state.jobs.unlocked.push("strategy");
+            showToast("\u89E3\u9501\u65B0\u804C\u4E1A\uFF1A\u6218\u7565\u53EC\u5524\u5E08");
+          }
+          unlockAchievement("final_clear");
+          if (state.jobs.unlocked.length >= 6) unlockAchievement("all_jobs");
+        } else if (b.monster.id === "boss_1") {
+          state.bossKilled = true;
+          if (!state.jobs.unlocked.includes("auditor")) {
+            state.jobs.unlocked.push("auditor");
+            showToast("\u89E3\u9501\u65B0\u804C\u4E1A\uFF1A\u5BA1\u8BA1\u6CD5\u5E08");
+          }
+          if (state.jobs.unlocked.length >= 6) unlockAchievement("all_jobs");
+        } else if (ZONE_BOSS_STATE[b.monster.id]) {
+          state[ZONE_BOSS_STATE[b.monster.id]] = true;
+          activateRegionTasks(state.zone);
+          updateTask(ZONE_BOSS_TASK[b.monster.id], 1);
+          if (Object.values(ZONE_BOSS_STATE).every((flag) => state[flag])) unlockAchievement("all_zone_bosses");
+        } else {
+          state.monstersKilled = (state.monstersKilled || 0) + 1;
+          if (!state.monstersKilledIds) state.monstersKilledIds = [];
+          state.monstersKilledIds.push(b.monster.id);
+          if (ZONE_MONSTER_TASK[b.monster.id]) updateTask(ZONE_MONSTER_TASK[b.monster.id], 1);
+          if (["audit_monster_1", "audit_monster_2"].includes(b.monster.id)) {
+            const auditKills = state.monstersKilledIds.filter((id) => ["audit_monster_1", "audit_monster_2"].includes(id));
+            if (auditKills.length >= 2 && !state.auditCleared) {
+              state.auditCleared = true;
+              showToast("\u5BA1\u8BA1\u94C1\u5821\u5DF2\u8083\u6E05\uFF0C\u8D44\u672C\u5BC6\u6797\u5165\u53E3\u5F00\u542F");
+            }
+          }
+          if (["capital_monster_1", "capital_monster_2"].includes(b.monster.id)) {
+            const capitalKills = state.monstersKilledIds.filter((id) => ["capital_monster_1", "capital_monster_2"].includes(id));
+            if (capitalKills.length >= 2 && !state.capitalCleared) {
+              state.capitalCleared = true;
+              showToast("\u8D44\u672C\u5BC6\u6797\u5DF2\u8083\u6E05\uFF0C\u7A0E\u7387\u8352\u539F\u5165\u53E3\u5F00\u542F");
+            }
+          }
+          if (["tax_monster_1", "tax_monster_2"].includes(b.monster.id)) {
+            const taxKills = state.monstersKilledIds.filter((id) => ["tax_monster_1", "tax_monster_2"].includes(id));
+            if (taxKills.length >= 2 && !state.taxCleared) {
+              state.taxCleared = true;
+              showToast("\u7A0E\u7387\u8352\u539F\u5DF2\u8083\u6E05\uFF0C\u6CD5\u6761\u795E\u6BBF\u5165\u53E3\u5F00\u542F");
+            }
+          }
+          if (["law_monster_1", "law_monster_2"].includes(b.monster.id)) {
+            const lawKills = state.monstersKilledIds.filter((id) => ["law_monster_1", "law_monster_2"].includes(id));
+            if (lawKills.length >= 2 && !state.lawCleared) {
+              state.lawCleared = true;
+              showToast("\u6CD5\u6761\u795E\u6BBF\u5DF2\u8083\u6E05\uFF0C\u6218\u7565\u661F\u5854\u5165\u53E3\u5F00\u542F");
+            }
+          }
+          if (["strategy_monster_1", "strategy_monster_2"].includes(b.monster.id)) {
+            const strategyKills = state.monstersKilledIds.filter((id) => ["strategy_monster_1", "strategy_monster_2"].includes(id));
+            if (strategyKills.length >= 2 && !state.strategyCleared) {
+              state.strategyCleared = true;
+              showToast("\u6218\u7565\u661F\u5854\u5DF2\u8083\u6E05\uFF0C\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\u73B0\u8EAB");
+            }
+          }
+        }
+        if (b.monster.id === "boss_1") updateTask("main", 1);
+        else if (!b.isBoss) updateTask("defeat3", 1);
+        if (!b.isBoss && b.monster.id === "monster_2") updateTask("defeat_ink", 1);
+        if (!b.isBoss && b.monster.id === "monster_1") updateTask("defeat_crane", 1);
+        unlockAchievement("first_battle");
+        if ((state.monstersKilled || 0) >= 3) unlockAchievement("beat_3");
+        if ((state.monstersKilled || 0) >= 10) unlockAchievement("kill10");
+        if (b.monster.id === "boss_1") unlockAchievement("beat_boss");
+        maybeLevelUp();
+        save();
+        updateHUD();
+        openModal(`
+        <div class="modal-box victory">
+          <div class="modal-title">\u6218\u6597\u80DC\u5229</div>
+          <div class="result-banner correct">\u51FB\u8D25 ${b.monster.label}</div>
+          <div class="reward-grid">
+            <div class="report-card"><div class="num">${b.monster.exp}</div><div>\u7ECF\u9A8C</div></div>
+            <div class="report-card"><div class="num">${b.monster.gold} G</div><div>\u91D1\u5E01</div></div>
+            <div class="report-card"><div class="num">${dropText ? "\u83B7\u5F97" : "\u2014"}</div><div>${dropText || "\u65E0\u6389\u843D"}</div></div>
+          </div>
+          <div class="info-card">${b.monster.id === "final_boss" ? "\u4F60\u51FB\u8D25\u4E86\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\u3002\u4F1A\u8BA1\u3001\u5BA1\u8BA1\u3001\u8D22\u7BA1\u3001\u7A0E\u6CD5\u3001\u7ECF\u6D4E\u6CD5\u548C\u6218\u7565\u516D\u57DF\u91CD\u65B0\u5E73\u8861\uFF0C\u8BB0\u8D26\u5927\u9646\u6062\u590D\u4E86\u79E9\u5E8F\u3002" : b.monster.id === "boss_1" ? "\u4F60\u51FB\u8D25\u4E86\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u3002\u5C0F\u5206\uFF1A\u501F\u8D37\u91CD\u65B0\u5E73\u8861\u4E86\uFF0C\u8C22\u8C22\u4F60\uFF0C\u4F1A\u8BA1\u52C7\u8005\u3002<br>\u4E0B\u4E00\u7AD9\uFF1A\u5BA1\u8BA1\u94C1\u5821\u3002\u5B8C\u6574\u533A\u57DF\u7684\u5192\u9669\u5C06\u5728\u540E\u7EED\u7248\u672C\u89E3\u9501\u3002" : ZONE_BOSS_STATE[b.monster.id] ? `\u4F60\u51FB\u8D25\u4E86${b.monster.label}\u3002${((_a = REGION_BOSS_INTRO[b.monster.id]) == null ? void 0 : _a.text) || "\u533A\u57DF\u79E9\u5E8F\u6B63\u5728\u6062\u590D\u3002"}` : state.zone === "strategy_star" ? "\u6218\u7565\u661F\u5854\u7684\u8FF7\u96FE\u6B63\u5728\u6D88\u6563\uFF0C\u4F60\u5DF2\u63A5\u8FD1\u516D\u57DF\u5E73\u8861\u3002" : state.zone === "law_temple" ? "\u6CD5\u6761\u795E\u6BBF\u7684\u89C4\u5219\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u5DE9\u56FA\u7ECF\u6D4E\u6CD5\u77E5\u8BC6\u3002" : state.zone === "tax_wasteland" ? "\u7A0E\u7387\u8352\u539F\u7684\u7533\u62A5\u79E9\u5E8F\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u638C\u63E1\u7A0E\u6CD5\u89C4\u5219\u3002" : state.zone === "capital_forest" ? "\u8D44\u672C\u5BC6\u6797\u4E2D\u7684\u8D22\u52A1\u5F02\u5E38\u6B63\u5728\u6D88\u9000\uFF0C\u7EE7\u7EED\u6DF1\u5316\u8D22\u7BA1\u77E5\u8BC6\u3002" : state.zone === "audit_tower" ? "\u5BA1\u8BA1\u94C1\u5821\u7684\u8BC1\u636E\u94FE\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u68C0\u67E5\u5269\u4F59\u5F02\u5E38\u3002" : "\u7EE7\u7EED\u63A2\u7D22\u91D1\u7B97\u539F\u91CE\u3002"}</div>
+          <div class="modal-actions">
+            <button class="pixel-btn" data-action="close">\u8FD4\u56DE\u5730\u56FE</button>
+            ${b.monster.id === "final_boss" ? '<button class="pixel-btn secondary" data-action="ending">\u67E5\u770B\u7ED3\u5C40</button>' : ""}
+          </div>
+        </div>
+      `);
+        if (state.gameCompleted) advanceMainStory(8);
+        else if (state.strategyCleared) advanceMainStory(7);
+        else if (state.lawCleared) advanceMainStory(6);
+        else if (state.taxCleared) advanceMainStory(5);
+        else if (state.capitalCleared) advanceMainStory(4);
+        else if (state.auditCleared) advanceMainStory(3);
+        else if (state.bossKilled) advanceMainStory(2);
+      }
+      state.screen = "map";
+      playZoneBgm2(state.zone || "gold_field");
+      delete state.battle;
+      hud.classList.remove("hidden");
+      showTouchIfCoarse();
+    }
+    return {
+      startBattle,
+      useItem,
+      selectSkill,
+      playerBattleAction,
+      enemyTurn,
+      endBattle
+    };
+  }
+
   // src/game.js
   (() => {
     "use strict";
@@ -1387,6 +1855,49 @@
       ensureTaskFields
     });
     const { activateRegionTasks, updateTask, deliverTask } = questSystem;
+    const battleSystem = createBattleSystem({
+      getState: () => state,
+      getMonsterType,
+      getWeaponAtk,
+      getArmorDef,
+      getJobBonus,
+      getCurrentJobSkills,
+      isSystemUnlocked,
+      openBattleModal,
+      openSkillSelect,
+      openItemSelect,
+      openQuiz,
+      openModal,
+      closeModal,
+      showToast,
+      updateHUD,
+      playBgm,
+      playZoneBgm,
+      BGM_BATTLE,
+      sfx,
+      addEffect,
+      getQuestionsByPoint,
+      getRandomQuestions,
+      maybeLevelUp,
+      gainPartnerExp,
+      updateTask,
+      unlockAchievement,
+      activateRegionTasks,
+      advanceMainStory,
+      save,
+      hud,
+      touchControls,
+      showTouchIfCoarse,
+      BATTLE_REGIONS,
+      FINAL_BOSS_WEAK_POINTS,
+      BOSS_MECHANICS,
+      ZONE_BOSS_STATE,
+      ZONE_BOSS_TASK,
+      ZONE_MONSTER_TASK,
+      REGION_BOSS_INTRO,
+      getSkills: () => SKILLS
+    });
+    const { startBattle, useItem, selectSkill, playerBattleAction } = battleSystem;
     if (state.soundEnabled === void 0) state.soundEnabled = true;
     if (!state.weapon) state.weapon = { id: "pencil_sword", name: "\u94C5\u7B14\u77ED\u5251", atk: 5 };
     if (!state.armor) state.armor = { id: "apprentice_robe", name: "\u5B66\u5F92\u5E03\u8863", def: 2 };
@@ -5521,414 +6032,10 @@
       </div>
     `);
     }
-    function startBattle(monster, isBoss) {
-      state.screen = "battle";
-      playBgm(BGM_BATTLE);
-      const regionInfo = BATTLE_REGIONS[getMonsterType(monster.id)] || BATTLE_REGIONS.paper_crane;
-      const battleMonster = { ...monster };
-      state.battle = {
-        monster: battleMonster,
-        isBoss,
-        region: regionInfo,
-        hp: battleMonster.hp,
-        maxHp: battleMonster.hp,
-        turn: 1,
-        feedback: "",
-        effects: [],
-        shakeUntil: 0,
-        bossPhase: 1,
-        phase2: false,
-        phase3: false,
-        bossMechanicInfo: null,
-        auditMarkActive: false,
-        strategySurge: false,
-        finalWeakIndex: null,
-        partnerBlessUsed: false,
-        combo: 0,
-        comboActive: false,
-        critFlashUntil: 0,
-        phaseFlashUntil: 0,
-        bossEnteredAt: isBoss ? Date.now() : 0,
-        anim: {
-          playerAttack: 0,
-          monsterHit: 0,
-          monsterAttack: 0,
-          playerHit: 0
-        }
-      };
-      hud.classList.add("hidden");
-      touchControls.classList.add("hidden");
-      openBattleModal();
-    }
     function showTouchIfCoarse() {
       if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) {
         touchControls.classList.remove("hidden");
       }
-    }
-    function useItem(itemId) {
-      if (itemId === "hp_potion") {
-        if ((state.inventory.hpPotion || 0) <= 0) {
-          state.battle.feedback = "\u6CA1\u6709\u56DE\u590D\u836F\u6C34\u3002";
-          openBattleModal();
-          return;
-        }
-        state.inventory.hpPotion -= 1;
-        state.player.hp = Math.min(state.player.maxHp, state.player.hp + 30);
-        state.battle.feedback = "\u4F7F\u7528\u56DE\u590D\u836F\u6C34\uFF0C\u6062\u590D 30 HP\u3002";
-      } else if (itemId === "mp_potion") {
-        if ((state.inventory.mpPotion || 0) <= 0) {
-          state.battle.feedback = "\u6CA1\u6709\u4EE5\u592A\u4E4B\u9732\u3002";
-          openBattleModal();
-          return;
-        }
-        state.inventory.mpPotion -= 1;
-        state.player.mp = Math.min(state.player.maxMp, state.player.mp + 30);
-        state.battle.feedback = "\u4F7F\u7528\u4EE5\u592A\u4E4B\u9732\uFF0C\u6062\u590D 30 MP\u3002";
-      }
-      save();
-      enemyTurn();
-    }
-    function selectSkill(skillId) {
-      const skill = SKILLS[skillId];
-      if (!skill) return;
-      if (state.player.mp < skill.mp) {
-        state.battle.feedback = "MP \u4E0D\u8DB3\uFF0C\u65E0\u6CD5\u4F7F\u7528\u8BE5\u6280\u80FD\u3002";
-        openBattleModal();
-        return;
-      }
-      state.player.mp -= skill.mp;
-      state.pendingSkill = skill;
-      const weakPoint = state.battle && state.battle.bossMechanicInfo && state.battle.bossMechanicInfo.key === "final_boss" && state.battle.finalWeakIndex !== null ? FINAL_BOSS_WEAK_POINTS[state.battle.finalWeakIndex] : skill.point;
-      const q = getQuestionsByPoint(weakPoint, 1)[0] || getRandomQuestions(1)[0];
-      state.quiz = {
-        q,
-        callback: (correct) => {
-          const sk = state.pendingSkill;
-          state.pendingSkill = null;
-          if (!sk) return;
-          if (sk.power === 0) {
-            if (correct) {
-              state.battle.combo += 1;
-              const heal = Math.round(state.player.maxHp * 0.15);
-              state.player.hp = Math.min(state.player.maxHp, state.player.hp + heal);
-              state.battle.feedback = "\u8BD5\u7B97\u5E73\u8861\u6210\u529F\uFF0C\u56DE\u590D HP " + heal;
-            } else {
-              state.battle.combo = 0;
-              state.battle.comboActive = false;
-              state.battle.feedback = "\u8BD5\u7B97\u5E73\u8861\u5931\u8D25\uFF0C\u56DE\u590D\u6548\u679C\u51CF\u534A\u3002";
-              const heal = Math.round(state.player.maxHp * 0.07);
-              state.player.hp = Math.min(state.player.maxHp, state.player.hp + heal);
-            }
-            enemyTurn();
-            return;
-          }
-          const effectiveAtk = state.player.attack + getWeaponAtk() + getJobBonus("atk");
-          const wrongMult = state.battle && state.battle.phase2 ? 0.3 : 0.5;
-          let base = correct ? Math.round(effectiveAtk * sk.power) : Math.max(1, Math.round(effectiveAtk * sk.power * wrongMult));
-          let label = correct ? "\u6280\u80FD\u5F31\u70B9\u7834\u89E3\uFF0C" : "\u7B54\u9519\uFF0C\u6280\u80FD\u5A01\u529B\u4E0B\u964D\uFF0C";
-          if (correct) {
-            state.battle.combo += 1;
-          } else {
-            state.battle.combo = 0;
-            state.battle.comboActive = false;
-          }
-          if (correct && state.partner.mood >= 70 && state.battle && !state.battle.partnerBlessUsed) {
-            base = Math.round(base * 1.3);
-            state.battle.partnerBlessUsed = true;
-            label = "\u8BB0\u8D26\u795D\u798F\u53D1\u52A8\uFF0C" + label;
-          }
-          if (correct && state.battle.combo >= 3 && !state.battle.comboActive) {
-            state.battle.comboActive = true;
-            base = Math.round(base * 1.5);
-            label = "\u7B54\u9898\u4E09\u8FDE\u51FB\u89E6\u53D1\uFF0C" + label;
-            addEffect("COMBO x3", 460, 260, "#ffd166");
-          }
-          applyPlayerDamage(base, label + sk.name);
-        }
-      };
-      openQuiz(q);
-    }
-    function playerBattleAction(action) {
-      if (action === "attack") {
-        const crit = Math.random() < 0.15;
-        let dmg = Math.max(1, state.player.attack + getWeaponAtk() + getJobBonus("atk") - 4 + Math.floor(Math.random() * 4));
-        if (crit) dmg = Math.round(dmg * 1.5);
-        applyPlayerDamage(dmg, crit ? "\u66B4\u51FB\u547D\u4E2D" : "\u666E\u901A\u653B\u51FB\u547D\u4E2D", crit);
-        if (!state.battle) return;
-      } else if (action === "skill") {
-        openSkillSelect();
-        return;
-      } else if (action === "item") {
-        openItemSelect();
-        return;
-      } else if (action === "run") {
-        if (Math.random() < 0.7) {
-          showToast("\u6210\u529F\u9003\u8DD1");
-          state.screen = "map";
-          playZoneBgm(state.zone || "gold_field");
-          delete state.battle;
-          hud.classList.remove("hidden");
-          showTouchIfCoarse();
-          closeModal();
-          return;
-        }
-        state.battle.feedback = "\u9003\u8DD1\u5931\u8D25\uFF01";
-        enemyTurn();
-        return;
-      }
-    }
-    function applyPlayerDamage(dmg, label, critical = false) {
-      dmg = Math.max(1, Math.round(dmg));
-      const hasLawShield = state.battle && state.battle.bossMechanicInfo && state.battle.bossMechanicInfo.key === "law_boss";
-      if (hasLawShield) {
-        dmg = Math.max(1, Math.round(dmg * 0.75));
-        label = "\u6CD5\u6761\u62A4\u76FE\u62B5\u6D88\u90E8\u5206\u4F24\u5BB3\uFF0C" + label;
-      }
-      state.battle.hp -= dmg;
-      addEffect("-" + dmg, 720, 300, "#ffd166");
-      state.battle.shakeUntil = Date.now() + 180;
-      state.battle.anim.playerAttack = Date.now();
-      state.battle.anim.monsterHit = Date.now() + 120;
-      if (critical) {
-        state.battle.critFlashUntil = Date.now() + 420;
-        state.battle.shakeUntil = Date.now() + 260;
-        addEffect("\u66B4\u51FB", 700, 250, "#ffe066", true);
-      }
-      sfx("hit");
-      state.battle.feedback = label + "\uFF0C\u9020\u6210 " + dmg + " \u4F24\u5BB3\u3002";
-      if (state.battle.hp <= 0) {
-        endBattle(true);
-        return;
-      }
-      const partnerDmg = partnerAttack();
-      if (partnerDmg > 0) {
-        state.battle.feedback += "<br>\u8BB0\u8D26\u7CBE\u7075\u534F\u52A9\u653B\u51FB\uFF0C\u9020\u6210 " + partnerDmg + " \u4F24\u5BB3\u3002";
-        if (state.battle.hp <= 0) {
-          endBattle(true);
-          return;
-        }
-      }
-      enemyTurn();
-    }
-    function partnerAttack() {
-      if (!isSystemUnlocked("partner")) return 0;
-      const partner = state.partner;
-      const base = Math.round((partner.atk + partner.level) * (1 + partner.mood / 200) + getJobBonus("atk"));
-      const dmg = Math.max(1, base - 2 + Math.floor(Math.random() * 4));
-      state.battle.hp -= dmg;
-      addEffect("-" + dmg, 760, 330, "#ffe9a8");
-      state.battle.anim.monsterHit = Date.now();
-      return dmg;
-    }
-    function enemyTurn() {
-      state.battle.turn += 1;
-      const bossName = state.battle.monster.id === "boss_1" ? "\u5408\u5E76\u62A5\u8868\u5DE8\u50CF" : state.battle.monster.label;
-      if (state.battle.isBoss && !state.battle.phase2 && state.battle.hp <= state.battle.maxHp * 0.5) {
-        state.battle.phase2 = true;
-        state.battle.bossPhase = 2;
-        state.battle.phaseFlashUntil = Date.now() + 700;
-        state.battle.monster.attack += 5;
-        const mechanic = BOSS_MECHANICS[state.battle.monster.id];
-        if (mechanic) {
-          state.battle.bossMechanicInfo = { ...mechanic, key: state.battle.monster.id };
-        }
-        state.battle.feedback += `<br>${bossName}\u8FDB\u5165\u7B2C\u4E8C\u9636\u6BB5${state.battle.bossMechanicInfo ? "\uFF1A" + state.battle.bossMechanicInfo.name : "\uFF1A\u62A5\u8868\u9519\u4E71"}\uFF01\u653B\u51FB\u529B\u63D0\u5347\u3002${state.battle.bossMechanicInfo ? " \u4E13\u5C5E\u673A\u5236\uFF1A" + state.battle.bossMechanicInfo.desc : ""}`;
-        sfx("wrong");
-        showToast(`${bossName}\u8FDB\u5165\u7B2C\u4E8C\u9636\u6BB5${state.battle.bossMechanicInfo ? "\uFF1A" + state.battle.bossMechanicInfo.name : "\uFF1A\u62A5\u8868\u9519\u4E71"}`);
-      }
-      if (state.battle.isBoss && state.battle.phase2 && !state.battle.phase3 && state.battle.hp <= state.battle.maxHp * 0.2) {
-        state.battle.phase3 = true;
-        state.battle.bossPhase = 3;
-        state.battle.phaseFlashUntil = Date.now() + 700;
-        state.battle.monster.attack += 6;
-        state.battle.feedback += `<br>${bossName}\u8FDB\u5165\u6700\u7EC8\u9636\u6BB5\uFF1A\u501F\u8D37\u5931\u8861\uFF01\u653B\u51FB\u529B\u518D\u6B21\u63D0\u5347\u3002`;
-        sfx("wrong");
-        showToast(`${bossName}\u8FDB\u5165\u6700\u7EC8\u9636\u6BB5\uFF1A\u501F\u8D37\u5931\u8861`);
-      }
-      if (state.battle.isBoss && state.battle.bossMechanicInfo) {
-        applyBossMechanicTurnEffects();
-      }
-      const dmg = Math.max(1, state.battle.monster.attack - state.player.defense - getArmorDef() - getJobBonus("def") + Math.floor(Math.random() * 4) - 2);
-      const surgeBonus = state.battle.strategySurge ? 4 : 0;
-      const finalDmg = dmg + surgeBonus;
-      state.player.hp -= finalDmg;
-      addEffect("-" + finalDmg, 220, 360, "#ff6b6b");
-      state.battle.shakeUntil = Date.now() + 180;
-      state.battle.anim.monsterAttack = Date.now();
-      state.battle.anim.playerHit = Date.now() + 120;
-      state.battle.feedback += "<br>\u602A\u7269\u53CD\u51FB\uFF0C\u53D7\u5230 " + finalDmg + " \u4F24\u5BB3\u3002" + (surgeBonus ? " \u8FDE\u73AF\u6269\u5F20\u8FFD\u52A0\u4F24\u5BB3\u3002" : "");
-      if (state.player.hp <= 0) {
-        state.player.hp = Math.round(state.player.maxHp * 0.5);
-        showToast("\u6218\u6597\u5931\u8D25\uFF0C\u56DE\u5230\u5B58\u6863\u70B9\u6062\u590D 50% HP");
-        state.screen = "map";
-        playZoneBgm(state.zone || "gold_field");
-        delete state.battle;
-        hud.classList.remove("hidden");
-        showTouchIfCoarse();
-        closeModal();
-        save();
-        return;
-      }
-      updateHUD();
-      openBattleModal();
-    }
-    function applyBossMechanicTurnEffects() {
-      const b = state.battle;
-      const key = b.bossMechanicInfo && b.bossMechanicInfo.key;
-      if (key === "capital_boss") {
-        const drain = Math.min(4, state.player.mp);
-        state.player.mp = Math.max(0, state.player.mp - drain);
-        b.feedback += `<br>\u73B0\u91D1\u6D41\u8679\u5438\u6D88\u8017 ${drain} MP\u3002`;
-      } else if (key === "audit_boss") {
-        b.auditMarkActive = true;
-        b.feedback += "<br>\u5BA1\u8BA1\u6807\u8BB0\u5DF2\u9644\u7740\uFF0C\u4E0B\u4E00\u9898\u7B54\u9519\u5C06\u53D7\u5230\u53CD\u566C\u3002";
-      } else if (key === "strategy_boss") {
-        b.strategySurge = true;
-        b.feedback += "<br>\u8FDE\u73AF\u6269\u5F20\u542F\u52A8\uFF0C\u666E\u901A\u653B\u51FB\u9644\u5E26\u8FFD\u52A0\u4F24\u5BB3\u3002";
-      } else if (key === "final_boss") {
-        b.finalWeakIndex = (b.turn - 1) % FINAL_BOSS_WEAK_POINTS.length;
-        b.feedback += `<br>\u516D\u57DF\u5931\u8861\uFF0C\u5F53\u524D\u5F31\u70B9\u8F6C\u5411\uFF1A${FINAL_BOSS_WEAK_POINTS[b.finalWeakIndex]}\u3002`;
-      }
-    }
-    function endBattle(win) {
-      var _a;
-      const b = state.battle;
-      if (win) {
-        sfx("win");
-        const p = state.player;
-        state.partner.mood = Math.min(100, state.partner.mood + 4);
-        gainPartnerExp(15);
-        p.gold += b.monster.gold;
-        p.exp += b.monster.exp;
-        const drops = {
-          monster_1: { stone: 1 },
-          monster_2: { ink: 1 },
-          monster_3: { beads: 1 },
-          boss_1: { credential: 1 },
-          audit_monster_1: { ink: 1 },
-          audit_monster_2: { beads: 1 },
-          audit_boss: { ink: 2 },
-          capital_monster_1: { stone: 1 },
-          capital_monster_2: { beads: 1 },
-          capital_boss: { stone: 2 },
-          tax_monster_1: { stone: 1 },
-          tax_monster_2: { ink: 1 },
-          tax_boss: { ink: 2 },
-          law_monster_1: { beads: 1 },
-          law_monster_2: { ink: 1 },
-          law_boss: { beads: 2 },
-          strategy_monster_1: { stone: 1 },
-          strategy_monster_2: { beads: 1 },
-          strategy_boss: { credential: 2 }
-        };
-        const drop = drops[b.monster.id] || {};
-        const materialNames = { stone: "\u91D1\u7B97\u77F3", ink: "\u58A8\u6E0D\u6B8B\u9875", beads: "\u7B97\u76D8\u73E0", credential: "\u5408\u5E76\u51ED\u8BC1" };
-        const dropText = Object.entries(drop).map(([key, count]) => {
-          state.inventory.materials[key] = (state.inventory.materials[key] || 0) + count;
-          return `${materialNames[key]} \xD7${count}`;
-        }).join("\u3001");
-        if (b.monster.id === "final_boss") {
-          state.gameCompleted = true;
-          state.strategyCleared = true;
-          if (!state.jobs.unlocked.includes("strategy")) {
-            state.jobs.unlocked.push("strategy");
-            showToast("\u89E3\u9501\u65B0\u804C\u4E1A\uFF1A\u6218\u7565\u53EC\u5524\u5E08");
-          }
-          unlockAchievement("final_clear");
-          if (state.jobs.unlocked.length >= 6) unlockAchievement("all_jobs");
-        } else if (b.monster.id === "boss_1") {
-          state.bossKilled = true;
-          if (!state.jobs.unlocked.includes("auditor")) {
-            state.jobs.unlocked.push("auditor");
-            showToast("\u89E3\u9501\u65B0\u804C\u4E1A\uFF1A\u5BA1\u8BA1\u6CD5\u5E08");
-          }
-          if (state.jobs.unlocked.length >= 6) unlockAchievement("all_jobs");
-        } else if (ZONE_BOSS_STATE[b.monster.id]) {
-          state[ZONE_BOSS_STATE[b.monster.id]] = true;
-          activateRegionTasks(state.zone);
-          updateTask(ZONE_BOSS_TASK[b.monster.id], 1);
-          if (Object.values(ZONE_BOSS_STATE).every((flag) => state[flag])) unlockAchievement("all_zone_bosses");
-        } else {
-          state.monstersKilled = (state.monstersKilled || 0) + 1;
-          if (!state.monstersKilledIds) state.monstersKilledIds = [];
-          state.monstersKilledIds.push(b.monster.id);
-          if (ZONE_MONSTER_TASK[b.monster.id]) updateTask(ZONE_MONSTER_TASK[b.monster.id], 1);
-          if (["audit_monster_1", "audit_monster_2"].includes(b.monster.id)) {
-            const auditKills = state.monstersKilledIds.filter((id) => ["audit_monster_1", "audit_monster_2"].includes(id));
-            if (auditKills.length >= 2 && !state.auditCleared) {
-              state.auditCleared = true;
-              showToast("\u5BA1\u8BA1\u94C1\u5821\u5DF2\u8083\u6E05\uFF0C\u8D44\u672C\u5BC6\u6797\u5165\u53E3\u5F00\u542F");
-            }
-          }
-          if (["capital_monster_1", "capital_monster_2"].includes(b.monster.id)) {
-            const capitalKills = state.monstersKilledIds.filter((id) => ["capital_monster_1", "capital_monster_2"].includes(id));
-            if (capitalKills.length >= 2 && !state.capitalCleared) {
-              state.capitalCleared = true;
-              showToast("\u8D44\u672C\u5BC6\u6797\u5DF2\u8083\u6E05\uFF0C\u7A0E\u7387\u8352\u539F\u5165\u53E3\u5F00\u542F");
-            }
-          }
-          if (["tax_monster_1", "tax_monster_2"].includes(b.monster.id)) {
-            const taxKills = state.monstersKilledIds.filter((id) => ["tax_monster_1", "tax_monster_2"].includes(id));
-            if (taxKills.length >= 2 && !state.taxCleared) {
-              state.taxCleared = true;
-              showToast("\u7A0E\u7387\u8352\u539F\u5DF2\u8083\u6E05\uFF0C\u6CD5\u6761\u795E\u6BBF\u5165\u53E3\u5F00\u542F");
-            }
-          }
-          if (["law_monster_1", "law_monster_2"].includes(b.monster.id)) {
-            const lawKills = state.monstersKilledIds.filter((id) => ["law_monster_1", "law_monster_2"].includes(id));
-            if (lawKills.length >= 2 && !state.lawCleared) {
-              state.lawCleared = true;
-              showToast("\u6CD5\u6761\u795E\u6BBF\u5DF2\u8083\u6E05\uFF0C\u6218\u7565\u661F\u5854\u5165\u53E3\u5F00\u542F");
-            }
-          }
-          if (["strategy_monster_1", "strategy_monster_2"].includes(b.monster.id)) {
-            const strategyKills = state.monstersKilledIds.filter((id) => ["strategy_monster_1", "strategy_monster_2"].includes(id));
-            if (strategyKills.length >= 2 && !state.strategyCleared) {
-              state.strategyCleared = true;
-              showToast("\u6218\u7565\u661F\u5854\u5DF2\u8083\u6E05\uFF0C\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\u73B0\u8EAB");
-            }
-          }
-        }
-        if (b.monster.id === "boss_1") updateTask("main", 1);
-        else if (!b.isBoss) updateTask("defeat3", 1);
-        if (!b.isBoss && b.monster.id === "monster_2") updateTask("defeat_ink", 1);
-        if (!b.isBoss && b.monster.id === "monster_1") updateTask("defeat_crane", 1);
-        unlockAchievement("first_battle");
-        if ((state.monstersKilled || 0) >= 3) unlockAchievement("beat_3");
-        if ((state.monstersKilled || 0) >= 10) unlockAchievement("kill10");
-        if (b.monster.id === "boss_1") unlockAchievement("beat_boss");
-        maybeLevelUp();
-        save();
-        updateHUD();
-        openModal(`
-        <div class="modal-box victory">
-          <div class="modal-title">\u6218\u6597\u80DC\u5229</div>
-          <div class="result-banner correct">\u51FB\u8D25 ${b.monster.label}</div>
-          <div class="reward-grid">
-            <div class="report-card"><div class="num">${b.monster.exp}</div><div>\u7ECF\u9A8C</div></div>
-            <div class="report-card"><div class="num">${b.monster.gold} G</div><div>\u91D1\u5E01</div></div>
-            <div class="report-card"><div class="num">${dropText ? "\u83B7\u5F97" : "\u2014"}</div><div>${dropText || "\u65E0\u6389\u843D"}</div></div>
-          </div>
-          <div class="info-card">${b.monster.id === "final_boss" ? "\u4F60\u51FB\u8D25\u4E86\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\u3002\u4F1A\u8BA1\u3001\u5BA1\u8BA1\u3001\u8D22\u7BA1\u3001\u7A0E\u6CD5\u3001\u7ECF\u6D4E\u6CD5\u548C\u6218\u7565\u516D\u57DF\u91CD\u65B0\u5E73\u8861\uFF0C\u8BB0\u8D26\u5927\u9646\u6062\u590D\u4E86\u79E9\u5E8F\u3002" : b.monster.id === "boss_1" ? "\u4F60\u51FB\u8D25\u4E86\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u3002\u5C0F\u5206\uFF1A\u501F\u8D37\u91CD\u65B0\u5E73\u8861\u4E86\uFF0C\u8C22\u8C22\u4F60\uFF0C\u4F1A\u8BA1\u52C7\u8005\u3002<br>\u4E0B\u4E00\u7AD9\uFF1A\u5BA1\u8BA1\u94C1\u5821\u3002\u5B8C\u6574\u533A\u57DF\u7684\u5192\u9669\u5C06\u5728\u540E\u7EED\u7248\u672C\u89E3\u9501\u3002" : ZONE_BOSS_STATE[b.monster.id] ? `\u4F60\u51FB\u8D25\u4E86${b.monster.label}\u3002${((_a = REGION_BOSS_INTRO[b.monster.id]) == null ? void 0 : _a.text) || "\u533A\u57DF\u79E9\u5E8F\u6B63\u5728\u6062\u590D\u3002"}` : state.zone === "strategy_star" ? "\u6218\u7565\u661F\u5854\u7684\u8FF7\u96FE\u6B63\u5728\u6D88\u6563\uFF0C\u4F60\u5DF2\u63A5\u8FD1\u516D\u57DF\u5E73\u8861\u3002" : state.zone === "law_temple" ? "\u6CD5\u6761\u795E\u6BBF\u7684\u89C4\u5219\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u5DE9\u56FA\u7ECF\u6D4E\u6CD5\u77E5\u8BC6\u3002" : state.zone === "tax_wasteland" ? "\u7A0E\u7387\u8352\u539F\u7684\u7533\u62A5\u79E9\u5E8F\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u638C\u63E1\u7A0E\u6CD5\u89C4\u5219\u3002" : state.zone === "capital_forest" ? "\u8D44\u672C\u5BC6\u6797\u4E2D\u7684\u8D22\u52A1\u5F02\u5E38\u6B63\u5728\u6D88\u9000\uFF0C\u7EE7\u7EED\u6DF1\u5316\u8D22\u7BA1\u77E5\u8BC6\u3002" : state.zone === "audit_tower" ? "\u5BA1\u8BA1\u94C1\u5821\u7684\u8BC1\u636E\u94FE\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u68C0\u67E5\u5269\u4F59\u5F02\u5E38\u3002" : "\u7EE7\u7EED\u63A2\u7D22\u91D1\u7B97\u539F\u91CE\u3002"}</div>
-          <div class="modal-actions">
-            <button class="pixel-btn" data-action="close">\u8FD4\u56DE\u5730\u56FE</button>
-            ${b.monster.id === "final_boss" ? '<button class="pixel-btn secondary" data-action="ending">\u67E5\u770B\u7ED3\u5C40</button>' : ""}
-          </div>
-        </div>
-      `);
-        if (state.gameCompleted) advanceMainStory(8);
-        else if (state.strategyCleared) advanceMainStory(7);
-        else if (state.lawCleared) advanceMainStory(6);
-        else if (state.taxCleared) advanceMainStory(5);
-        else if (state.capitalCleared) advanceMainStory(4);
-        else if (state.auditCleared) advanceMainStory(3);
-        else if (state.bossKilled) advanceMainStory(2);
-      }
-      state.screen = "map";
-      playZoneBgm(state.zone || "gold_field");
-      delete state.battle;
-      hud.classList.remove("hidden");
-      showTouchIfCoarse();
     }
     function notifySystemUnlocks() {
       const lv = state.player.level;
