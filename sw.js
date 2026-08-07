@@ -1,14 +1,10 @@
-const CACHE_VERSION = "cpa-rpg-pwa-v2";
+const CACHE_VERSION = "cpa-rpg-pwa-v3";
 const CORE_FILES = [
   "./",
   "./index.html",
   "./style.css",
   "./game.js",
   "./sprites.js",
-  "./questions.js",
-  "./questions_extra.js",
-  "./questions_m3.js",
-  "./questions_m4.js",
   "./manifest.webmanifest",
   "./assets/pwa/pwa-icon-192.png",
   "./assets/pwa/pwa-icon-512.png",

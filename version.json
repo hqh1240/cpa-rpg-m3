@@ -2,5 +2,5 @@
   "version": "0.9.0",
   "build": "M3 Phase 3 Preview",
   "date": "2026-08-06",
-  "notes": "新增五区域 Boss、本地任务、学习计划、学习周报、渐进解锁与正式化界面；支持 PWA 安装与离线缓存。"
+  "notes": "新增五区域主题 tileset；支持 PWA 安装与离线缓存；完成工程重构：src 源码目录、esbuild 构建、题目数据并入构建产物。"
 }
