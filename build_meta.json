@@ -1,8 +1,8 @@
 {
   "name": "cpa-rpg-m3",
-  "version": "0.9.0",
-  "build": "M3 Phase 3 Preview",
+  "version": "0.9.1",
+  "build": "M3 可玩性优化",
   "pwa": true,
-  "date": "2026-08-06",
-  "generated": "2026-08-08T02:10:16.253Z"
+  "date": "2026-08-08",
+  "generated": "2026-08-08T09:35:15.704Z"
 }

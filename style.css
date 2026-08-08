@@ -1311,7 +1311,7 @@ button {
 }
 
 #modal.battle-mode .modal-box {
-  border-image: url("assets/ui/rpgui/border-image-golden2.png") 16 fill / 12px;
+  border-image: url("assets/ui/rpgui/border-image-golden.png") 16 fill / 12px;
 }
 
 .point-grid {

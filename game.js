@@ -210,17 +210,17 @@
     { id: 351, point: "\u4F1A\u8BA1\u4E3B\u4F53", q: "\u4F1A\u8BA1\u4E3B\u4F53\u4E0D\u4E00\u5B9A\u7B49\u540C\u4E8E\u6CD5\u5F8B\u4E3B\u4F53\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u4F1A\u8BA1\u4E3B\u4F53\u53EF\u80FD\u662F\u4F01\u4E1A\u3001\u5206\u90E8\u6216\u5185\u90E8\u5355\u4F4D\uFF0C\u4E0D\u4E00\u5B9A\u5177\u6709\u6CD5\u4EBA\u8D44\u683C\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "judge" },
     { id: 352, point: "\u501F\u8D37\u65B9\u5411", q: "\u8D44\u4EA7\u589E\u52A0\u5E94\u8BB0\u5165\uFF08\u3000\uFF09\u3002", options: ["\u501F\u65B9", "\u8D37\u65B9", "\u5907\u62B5\u65B9", "\u8868\u5916"], answer: 0, explain: "\u8D44\u4EA7\u548C\u8D39\u7528\u589E\u52A0\u8BB0\u501F\u65B9\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "single" },
     { id: 353, point: "\u79D1\u76EE\u5206\u7C7B", q: "\u5E94\u6536\u8D26\u6B3E\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u8D44\u4EA7\u7C7B\u79D1\u76EE", "\u8D1F\u503A\u7C7B\u79D1\u76EE", "\u6240\u6709\u8005\u6743\u76CA\u7C7B\u79D1\u76EE", "\u635F\u76CA\u7C7B\u79D1\u76EE"], answer: 0, explain: "\u5E94\u6536\u8D26\u6B3E\u662F\u4F01\u4E1A\u62E5\u6709\u7684\u503A\u6743\uFF0C\u5C5E\u4E8E\u8D44\u4EA7\u7C7B\u79D1\u76EE\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "single" },
-    { id: 354, point: "\u8BD5\u7B97\u5E73\u8861", q: "\u53D1\u751F\u989D\u8BD5\u7B97\u5E73\u8861\u7684\u76F4\u63A5\u4F9D\u636E\u662F\uFF08\u3000\uFF09\u3002", options: ["\u8D44\u4EA7=\u8D1F\u503A+\u6240\u6709\u8005\u6743\u76CA", "\u6709\u501F\u5FC5\u6709\u8D37\uFF0C\u501F\u8D37\u5FC5\u76F8\u7B49", "\u6536\u5165=\u8D39\u7528+\u5229\u6DA6", "\u671F\u521D\u4F59\u989D=\u671F\u672B\u4F59\u989D"], answer: 1, explain: "\u6BCF\u7B14\u5206\u5F55\u501F\u8D37\u91D1\u989D\u76F8\u7B49\uFF0C\u56E0\u6B64\u53D1\u751F\u989D\u5408\u8BA1\u5E73\u8861\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "single" },
+    { id: 354, point: "\u8BD5\u7B97\u5E73\u8861", q: "\u4F59\u989D\u8BD5\u7B97\u5E73\u8861\u7684\u7406\u8BBA\u4F9D\u636E\u662F\uFF08\u3000\uFF09\u3002", options: ["\u8D44\u4EA7=\u8D1F\u503A+\u6240\u6709\u8005\u6743\u76CA", "\u6709\u501F\u5FC5\u6709\u8D37\uFF0C\u501F\u8D37\u5FC5\u76F8\u7B49", "\u6536\u5165=\u8D39\u7528+\u5229\u6DA6", "\u671F\u521D\u4F59\u989D=\u671F\u672B\u4F59\u989D"], answer: 0, explain: "\u4F59\u989D\u8BD5\u7B97\u5E73\u8861\u4EE5\u4F1A\u8BA1\u7B49\u5F0F\u4E3A\u57FA\u7840\uFF0C\u68C0\u67E5\u8D26\u6237\u671F\u672B\u4F59\u989D\u5408\u8BA1\u662F\u5426\u5E73\u8861\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "single" },
     { id: 355, point: "\u51ED\u8BC1", q: "\u539F\u59CB\u51ED\u8BC1\u91D1\u989D\u6709\u9519\u8BEF\u65F6\uFF0C\u6B63\u786E\u5904\u7406\u662F\uFF08\u3000\uFF09\u3002", options: ["\u7531\u7ECF\u529E\u4EBA\u66F4\u6B63", "\u7531\u4F1A\u8BA1\u4EBA\u5458\u66F4\u6B63", "\u7531\u5BA1\u6838\u4EBA\u5458\u66F4\u6B63", "\u7531\u51FA\u5177\u5355\u4F4D\u91CD\u5F00"], answer: 3, explain: "\u91D1\u989D\u9519\u8BEF\u5FC5\u987B\u7531\u51FA\u5177\u5355\u4F4D\u91CD\u5F00\uFF0C\u4E0D\u5F97\u66F4\u6B63\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
     { id: 356, point: "\u8D26\u7C3F", q: "\u73B0\u91D1\u65E5\u8BB0\u8D26\u901A\u5E38\u7531\u51FA\u7EB3\u4EBA\u5458\u767B\u8BB0\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u73B0\u91D1\u548C\u94F6\u884C\u5B58\u6B3E\u65E5\u8BB0\u8D26\u7531\u51FA\u7EB3\u9010\u65E5\u9010\u7B14\u767B\u8BB0\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "judge" },
     { id: 357, point: "\u5B58\u8D27", q: "\u7269\u4EF7\u6301\u7EED\u4E0A\u6DA8\u65F6\uFF0C\u91C7\u7528\u5148\u8FDB\u5148\u51FA\u6CD5\u4F1A\u4F7F\u671F\u672B\u5B58\u8D27\u6210\u672C\uFF08\u3000\uFF09\u3002", options: ["\u504F\u9AD8", "\u504F\u4F4E", "\u4E0D\u53D8", "\u65E0\u6CD5\u786E\u5B9A"], answer: 0, explain: "\u540E\u8D2D\u5165\u7684\u9AD8\u4EF7\u5B58\u8D27\u7559\u5728\u671F\u672B\uFF0C\u671F\u672B\u6210\u672C\u504F\u9AD8\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
     { id: 358, point: "\u56FA\u5B9A\u8D44\u4EA7", q: "\u56FA\u5B9A\u8D44\u4EA7\u76D8\u76C8\u5E94\u6309\uFF08\u3000\uFF09\u5904\u7406\u3002", options: ["\u8425\u4E1A\u5916\u6536\u5165", "\u4EE5\u524D\u5E74\u5EA6\u635F\u76CA\u8C03\u6574", "\u7BA1\u7406\u8D39\u7528", "\u5176\u4ED6\u4E1A\u52A1\u6536\u5165"], answer: 1, explain: "\u56FA\u5B9A\u8D44\u4EA7\u76D8\u76C8\u5C5E\u4E8E\u524D\u671F\u5DEE\u9519\uFF0C\u901A\u8FC7\u4EE5\u524D\u5E74\u5EA6\u635F\u76CA\u8C03\u6574\u6838\u7B97\u3002", subject: "\u4F1A\u8BA1", difficulty: "expert", type: "single" },
-    { id: 359, point: "\u65E0\u5F62\u8D44\u4EA7", q: "\u4F7F\u7528\u5BFF\u547D\u4E0D\u786E\u5B9A\u7684\u65E0\u5F62\u8D44\u4EA7\uFF08\u3000\uFF09\u3002", options: ["\u4E0D\u644A\u9500\u4F46\u6BCF\u5E74\u51CF\u503C\u6D4B\u8BD5", "\u630910\u5E74\u644A\u9500", "\u6309\u5408\u540C\u671F\u9650\u644A\u9500", "\u4E0D\u8FDB\u884C\u4EFB\u4F55\u540E\u7EED\u8BA1\u91CF"], answer: 0, explain: "\u4F7F\u7528\u5BFF\u547D\u4E0D\u786E\u5B9A\u7684\u65E0\u5F62\u8D44\u4EA7\u4E0D\u644A\u9500\uFF0C\u4F46\u6BCF\u5E74\u8FDB\u884C\u51CF\u503C\u6D4B\u8BD5\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 359, point: "\u65E0\u5F62\u8D44\u4EA7", q: "\u4F01\u4E1A\u644A\u9500\u4F7F\u7528\u5BFF\u547D\u6709\u9650\u7684\u65E0\u5F62\u8D44\u4EA7\u65F6\uFF0C\u901A\u5E38\u5E94\uFF08\u3000\uFF09\u3002", options: ["\u7CFB\u7EDF\u5408\u7406\u644A\u9500\u5E76\u8BA1\u5165\u76F8\u5173\u6210\u672C\u8D39\u7528", "\u53EA\u5728\u5904\u7F6E\u65F6\u4E00\u6B21\u6027\u644A\u9500", "\u630910\u5E74\u5F3A\u5236\u644A\u9500", "\u4E0D\u8FDB\u884C\u644A\u9500"], answer: 0, explain: "\u4F7F\u7528\u5BFF\u547D\u6709\u9650\u7684\u65E0\u5F62\u8D44\u4EA7\u5E94\u5728\u4F7F\u7528\u5BFF\u547D\u5185\u7CFB\u7EDF\u5408\u7406\u644A\u9500\uFF0C\u5E76\u8BA1\u5165\u76F8\u5173\u6210\u672C\u8D39\u7528\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
     { id: 360, point: "\u6295\u8D44\u6027\u623F\u5730\u4EA7", q: "\u6210\u672C\u6A21\u5F0F\u8F6C\u4E3A\u516C\u5141\u4EF7\u503C\u6A21\u5F0F\u5C5E\u4E8E\u4F1A\u8BA1\u653F\u7B56\u53D8\u66F4\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u8BE5\u8F6C\u6362\u5C5E\u4E8E\u4F1A\u8BA1\u653F\u7B56\u53D8\u66F4\uFF0C\u5E94\u8FFD\u6EAF\u8C03\u6574\u3002", subject: "\u4F1A\u8BA1", difficulty: "expert", type: "judge" },
     { id: 361, point: "\u957F\u671F\u80A1\u6743\u6295\u8D44", q: "\u6743\u76CA\u6CD5\u4E0B\uFF0C\u521D\u59CB\u6295\u8D44\u6210\u672C\u5C0F\u4E8E\u5E94\u4EAB\u6709\u88AB\u6295\u8D44\u65B9\u53EF\u8FA8\u8BA4\u51C0\u8D44\u4EA7\u516C\u5141\u4EF7\u503C\u4EFD\u989D\u65F6\uFF0C\u5E94\uFF08\u3000\uFF09\u3002", options: ["\u786E\u8BA4\u4E3A\u8425\u4E1A\u5916\u6536\u5165", "\u786E\u8BA4\u4E3A\u8D44\u672C\u516C\u79EF", "\u8C03\u589E\u957F\u671F\u80A1\u6743\u6295\u8D44", "\u4E0D\u4F5C\u5904\u7406"], answer: 0, explain: "\u5DEE\u989D\u8BA1\u5165\u8425\u4E1A\u5916\u6536\u5165\u5E76\u8C03\u6574\u957F\u671F\u80A1\u6743\u6295\u8D44\u8D26\u9762\u4EF7\u503C\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
     { id: 362, point: "\u6536\u5165", q: "\u6536\u5165\u786E\u8BA4\u4E94\u6B65\u6CD5\u9996\u5148\u9700\u8981\uFF08\u3000\uFF09\u3002", options: ["\u8BC6\u522B\u5C65\u7EA6\u4E49\u52A1", "\u8BC6\u522B\u5BA2\u6237\u5408\u540C", "\u786E\u5B9A\u4EA4\u6613\u4EF7\u683C", "\u786E\u8BA4\u6536\u5165"], answer: 1, explain: "\u4E94\u6B65\u6CD5\u7B2C\u4E00\u6B65\u662F\u8BC6\u522B\u4E0E\u5BA2\u6237\u8BA2\u7ACB\u7684\u5408\u540C\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
     { id: 363, point: "\u5229\u6DA6", q: "\u4E0B\u5217\u5F71\u54CD\u5229\u6DA6\u603B\u989D\u7684\u9879\u76EE\u6709\uFF08\u3000\uFF09\u3002", options: ["\u8425\u4E1A\u6536\u5165", "\u8425\u4E1A\u5916\u652F\u51FA", "\u6240\u5F97\u7A0E\u8D39\u7528", "\u6295\u8D44\u6536\u76CA"], answer: [0, 1, 3], explain: "\u5229\u6DA6\u603B\u989D=\u8425\u4E1A\u5229\u6DA6+\u8425\u4E1A\u5916\u6536\u5165-\u8425\u4E1A\u5916\u652F\u51FA\uFF1B\u6240\u5F97\u7A0E\u8D39\u7528\u5F71\u54CD\u51C0\u5229\u6DA6\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "multiple" },
-    { id: 364, point: "\u6240\u6709\u8005\u6743\u76CA", q: "\u8D44\u672C\u516C\u79EF\u7684\u4E3B\u8981\u6765\u6E90\u662F\uFF08\u3000\uFF09\u3002", options: ["\u7ECF\u8425\u51C0\u5229\u6DA6", "\u8D44\u672C\u6EA2\u4EF7\u6216\u80A1\u672C\u6EA2\u4EF7", "\u5411\u94F6\u884C\u501F\u6B3E", "\u9884\u6536\u8D27\u6B3E"], answer: 1, explain: "\u8D44\u672C\u516C\u79EF\u4E3B\u8981\u6765\u81EA\u6295\u8D44\u8005\u6295\u5165\u8D44\u672C\u8D85\u8FC7\u6CE8\u518C\u8D44\u672C\u4EFD\u989D\u7684\u90E8\u5206\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 364, point: "\u6240\u6709\u8005\u6743\u76CA", q: "\u5176\u4ED6\u7EFC\u5408\u6536\u76CA\u5C5E\u4E8E\uFF08\u3000\uFF09\u7684\u7EC4\u6210\u90E8\u5206\u3002", options: ["\u6240\u6709\u8005\u6743\u76CA", "\u8D1F\u503A", "\u8425\u4E1A\u6536\u5165", "\u8D39\u7528"], answer: 0, explain: "\u5176\u4ED6\u7EFC\u5408\u6536\u76CA\u76F4\u63A5\u8BA1\u5165\u6240\u6709\u8005\u6743\u76CA\uFF0C\u662F\u6240\u6709\u8005\u6743\u76CA\u7684\u7EC4\u6210\u90E8\u5206\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
     { id: 365, point: "\u62A5\u8868", q: "\u8D44\u4EA7\u8D1F\u503A\u8868\u4E2D\u5B58\u8D27\u9879\u76EE\u5E94\u6309\uFF08\u3000\uFF09\u586B\u5217\u3002", options: ["\u5B58\u8D27\u603B\u8D26\u4F59\u989D", "\u6263\u9664\u5B58\u8D27\u8DCC\u4EF7\u51C6\u5907\u540E\u7684\u51C0\u989D", "\u91C7\u8D2D\u539F\u4EF7", "\u53EF\u53D8\u73B0\u51C0\u503C"], answer: 1, explain: "\u5B58\u8D27\u9879\u76EE\u6309\u8D26\u9762\u4EF7\u503C\uFF0C\u5373\u6263\u9664\u5B58\u8D27\u8DCC\u4EF7\u51C6\u5907\u540E\u7684\u51C0\u989D\u586B\u5217\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
     { id: 366, point: "\u73B0\u91D1\u6D41\u91CF", q: "\u8D2D\u4E70\u56FA\u5B9A\u8D44\u4EA7\u652F\u4ED8\u7684\u73B0\u91D1\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u7ECF\u8425\u6D3B\u52A8", "\u6295\u8D44\u6D3B\u52A8", "\u7B79\u8D44\u6D3B\u52A8", "\u4E0D\u6D89\u53CA\u73B0\u91D1"], answer: 1, explain: "\u8D2D\u5EFA\u548C\u5904\u7F6E\u957F\u671F\u8D44\u4EA7\u5C5E\u4E8E\u6295\u8D44\u6D3B\u52A8\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "single" },
     { id: 367, point: "\u8D28\u91CF\u8981\u6C42", q: "\u4E0D\u9AD8\u4F30\u8D44\u4EA7\u548C\u6536\u76CA\u3001\u4E0D\u4F4E\u4F30\u8D1F\u503A\u548C\u8D39\u7528\u4F53\u73B0\u4E86\uFF08\u3000\uFF09\u3002", options: ["\u76F8\u5173\u6027", "\u8C28\u614E\u6027", "\u53CA\u65F6\u6027", "\u91CD\u8981\u6027"], answer: 1, explain: "\u8C28\u614E\u6027\u8981\u6C42\u4E0D\u9AD8\u4F30\u8D44\u4EA7\u6216\u6536\u76CA\u3001\u4E0D\u4F4E\u4F30\u8D1F\u503A\u6216\u8D39\u7528\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "single" },
@@ -228,7 +228,7 @@
     { id: 369, point: "\u5BA1\u8BA1\u76EE\u6807", q: "\u8D22\u52A1\u62A5\u8868\u5BA1\u8BA1\u63D0\u4F9B\u7684\u4FDD\u8BC1\u662F\uFF08\u3000\uFF09\u3002", options: ["\u7EDD\u5BF9\u4FDD\u8BC1", "\u5408\u7406\u4FDD\u8BC1", "\u6709\u9650\u4FDD\u8BC1", "\u65E0\u4FDD\u8BC1"], answer: 1, explain: "\u8D22\u52A1\u62A5\u8868\u5BA1\u8BA1\u63D0\u4F9B\u5408\u7406\u4FDD\u8BC1\uFF0C\u800C\u975E\u7EDD\u5BF9\u4FDD\u8BC1\u3002", subject: "\u5BA1\u8BA1", difficulty: "basic", type: "single" },
     { id: 370, point: "\u5BA1\u8BA1\u8BC1\u636E", q: "\u4E0B\u5217\u901A\u5E38\u53EF\u9760\u6027\u8F83\u9AD8\u7684\u5BA1\u8BA1\u8BC1\u636E\u662F\uFF08\u3000\uFF09\u3002", options: ["\u5185\u90E8\u53E3\u5934\u9648\u8FF0", "\u5916\u90E8\u72EC\u7ACB\u6765\u6E90\u7684\u4E66\u9762\u8BC1\u636E", "\u672A\u7ECF\u6838\u9A8C\u7684\u590D\u5370\u4EF6", "\u7BA1\u7406\u5C42\u58F0\u660E"], answer: 1, explain: "\u5916\u90E8\u72EC\u7ACB\u4E66\u9762\u8BC1\u636E\u901A\u5E38\u6BD4\u5185\u90E8\u53E3\u5934\u8BC1\u636E\u66F4\u53EF\u9760\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "single" },
     { id: 371, point: "\u5BA1\u8BA1\u610F\u89C1", q: "\u4E0B\u5217\u5C5E\u4E8E\u975E\u65E0\u4FDD\u7559\u610F\u89C1\u7684\u6709\uFF08\u3000\uFF09\u3002", options: ["\u4FDD\u7559\u610F\u89C1", "\u5426\u5B9A\u610F\u89C1", "\u65E0\u6CD5\u8868\u793A\u610F\u89C1", "\u5E26\u5F3A\u8C03\u4E8B\u9879\u6BB5\u7684\u65E0\u4FDD\u7559\u610F\u89C1"], answer: [0, 1, 2], explain: "\u975E\u65E0\u4FDD\u7559\u610F\u89C1\u5305\u62EC\u4FDD\u7559\u3001\u5426\u5B9A\u548C\u65E0\u6CD5\u8868\u793A\u610F\u89C1\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "multiple" },
-    { id: 372, point: "\u5185\u90E8\u63A7\u5236", q: "\u63A7\u5236\u6D4B\u8BD5\u7684\u76EE\u7684\u662F\u8BC4\u4EF7\uFF08\u3000\uFF09\u3002", options: ["\u7ECF\u8425\u6548\u7387", "\u5185\u90E8\u63A7\u5236\u9632\u6B62\u6216\u53D1\u73B0\u8BA4\u5B9A\u5C42\u6B21\u91CD\u5927\u9519\u62A5\u7684\u6709\u6548\u6027", "\u76C8\u5229\u80FD\u529B", "\u73B0\u91D1\u6D41\u52A8\u6027"], answer: 1, explain: "\u63A7\u5236\u6D4B\u8BD5\u8BC4\u4EF7\u5185\u90E8\u63A7\u5236\u8FD0\u884C\u7684\u6709\u6548\u6027\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 372, point: "\u5185\u90E8\u63A7\u5236", q: "\u4E0B\u5217\u5C5E\u4E8E\u5185\u90E8\u63A7\u5236\u8981\u7D20\u7684\u662F\uFF08\u3000\uFF09\u3002", options: ["\u63A7\u5236\u73AF\u5883", "\u7ECF\u8425\u9884\u7B97", "\u9500\u552E\u6298\u6263", "\u56FA\u5B9A\u8D44\u4EA7\u6298\u65E7"], answer: 0, explain: "\u5185\u90E8\u63A7\u5236\u8981\u7D20\u5305\u62EC\u63A7\u5236\u73AF\u5883\u3001\u98CE\u9669\u8BC4\u4F30\u3001\u63A7\u5236\u6D3B\u52A8\u3001\u4FE1\u606F\u4E0E\u6C9F\u901A\u548C\u76D1\u7763\u6D3B\u52A8\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "single" },
     { id: 373, point: "\u5BA1\u8BA1\u98CE\u9669", q: "\u5BA1\u8BA1\u98CE\u9669\u6A21\u578B\u4E2D\u7684\u68C0\u67E5\u98CE\u9669\u4E0E\u5BA1\u8BA1\u7A0B\u5E8F\u8BBE\u8BA1\u5408\u7406\u6027\u3001\u5B9E\u65BD\u6709\u6548\u6027\u5448\uFF08\u3000\uFF09\u5173\u7CFB\u3002", options: ["\u6B63\u5411", "\u53CD\u5411", "\u65E0\u5173", "\u65E0\u6CD5\u786E\u5B9A"], answer: 1, explain: "\u68C0\u67E5\u98CE\u9669\u8D8A\u9AD8\uFF0C\u8BF4\u660E\u7A0B\u5E8F\u8D8A\u4E0D\u80FD\u53D1\u73B0\u91CD\u5927\u9519\u62A5\uFF1B\u8BBE\u8BA1\u4E0E\u5B9E\u65BD\u8D8A\u597D\uFF0C\u68C0\u67E5\u98CE\u9669\u8D8A\u4F4E\u3002", subject: "\u5BA1\u8BA1", difficulty: "expert", type: "single" },
     { id: 374, point: "\u5BA1\u8BA1\u91CD\u8981\u6027", q: "\u91CD\u8981\u6027\u6C34\u5E73\u8D8A\u4F4E\uFF0C\u6CE8\u518C\u4F1A\u8BA1\u5E08\u9700\u8981\u6536\u96C6\u7684\u5BA1\u8BA1\u8BC1\u636E\u901A\u5E38\uFF08\u3000\uFF09\u3002", options: ["\u8D8A\u5C11", "\u8D8A\u591A", "\u4E0D\u53D8", "\u65E0\u6CD5\u786E\u5B9A"], answer: 1, explain: "\u91CD\u8981\u6027\u6C34\u5E73\u8D8A\u4F4E\uFF0C\u53EF\u5BB9\u5FCD\u9519\u62A5\u8D8A\u5C0F\uFF0C\u9700\u8981\u66F4\u591A\u8BC1\u636E\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "single" },
     { id: 375, point: "\u5BA1\u8BA1\u62BD\u6837", q: "\u62BD\u6837\u98CE\u9669\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u8BEF\u53D7\u98CE\u9669", "\u8BEF\u62D2\u98CE\u9669", "\u975E\u62BD\u6837\u98CE\u9669", "\u56FA\u6709\u98CE\u9669"], answer: [0, 1], explain: "\u62BD\u6837\u98CE\u9669\u5305\u62EC\u8BEF\u53D7\u548C\u8BEF\u62D2\uFF1B\u975E\u62BD\u6837\u98CE\u9669\u4E0D\u662F\u62BD\u6837\u98CE\u9669\u3002", subject: "\u5BA1\u8BA1", difficulty: "expert", type: "multiple" },
@@ -247,35 +247,35 @@
     { id: 388, point: "\u821E\u5F0A\u98CE\u9669", q: "\u7BA1\u7406\u5C42\u51CC\u9A7E\u4E8E\u63A7\u5236\u4E4B\u4E0A\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u7279\u522B\u98CE\u9669", "\u56FA\u6709\u98CE\u9669", "\u68C0\u67E5\u98CE\u9669", "\u975E\u62BD\u6837\u98CE\u9669"], answer: 0, explain: "\u7BA1\u7406\u5C42\u51CC\u9A7E\u4E8E\u63A7\u5236\u4E4B\u4E0A\u901A\u5E38\u6784\u6210\u7279\u522B\u98CE\u9669\u3002", subject: "\u5BA1\u8BA1", difficulty: "expert", type: "single" },
     { id: 389, point: "\u8D27\u5E01\u65F6\u95F4\u4EF7\u503C", q: "\u666E\u901A\u5E74\u91D1\u73B0\u503C\u7CFB\u6570\u7528\u4E8E\u8BA1\u7B97\uFF08\u3000\uFF09\u3002", options: ["\u5355\u7B14\u6B3E\u9879\u7EC8\u503C", "\u7B49\u989D\u7CFB\u5217\u6B3E\u9879\u73B0\u503C", "\u73B0\u91D1\u6D41\u91CF\u603B\u989D", "\u51C0\u5229\u6DA6"], answer: 1, explain: "\u666E\u901A\u5E74\u91D1\u73B0\u503C\u7CFB\u6570\u628A\u7B49\u989D\u7CFB\u5217\u73B0\u91D1\u6D41\u6298\u73B0\u5230\u73B0\u503C\u3002", subject: "\u8D22\u7BA1", difficulty: "basic", type: "single" },
     { id: 390, point: "\u8D44\u672C\u6210\u672C", q: "\u8BA1\u7B97\u52A0\u6743\u5E73\u5747\u8D44\u672C\u6210\u672C\u65F6\uFF0C\u503A\u52A1\u8D44\u672C\u6210\u672C\u901A\u5E38\u4F7F\u7528\uFF08\u3000\uFF09\u3002", options: ["\u7A0E\u524D\u5229\u7387", "\u7A0E\u540E\u5229\u7387", "\u7968\u9762\u5229\u7387", "\u65E0\u98CE\u9669\u5229\u7387"], answer: 1, explain: "\u503A\u52A1\u5229\u606F\u6709\u62B5\u7A0E\u4F5C\u7528\uFF0C\u901A\u5E38\u7528\u7A0E\u540E\u503A\u52A1\u8D44\u672C\u6210\u672C\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
-    { id: 391, point: "\u8D22\u52A1\u6760\u6746", q: "\u8D22\u52A1\u6760\u6746\u7CFB\u6570\u8D8A\u5927\uFF0C\u901A\u5E38\u8868\u660E\uFF08\u3000\uFF09\u3002", options: ["\u6BCF\u80A1\u6536\u76CA\u6CE2\u52A8\u8D8A\u5C0F", "\u606F\u7A0E\u524D\u5229\u6DA6\u6CE2\u52A8\u8D8A\u5927", "\u6BCF\u80A1\u6536\u76CA\u5BF9\u606F\u7A0E\u524D\u5229\u6DA6\u7684\u653E\u5927\u4F5C\u7528\u8D8A\u5F3A", "\u503A\u52A1\u6BD4\u4F8B\u8D8A\u4F4E"], answer: 2, explain: "\u8D22\u52A1\u6760\u6746\u53CD\u6620\u606F\u7A0E\u524D\u5229\u6DA6\u53D8\u52A8\u5BF9\u6BCF\u80A1\u6536\u76CA\u7684\u653E\u5927\u4F5C\u7528\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
-    { id: 392, point: "\u8D44\u672C\u9884\u7B97", q: "\u51C0\u73B0\u503C\u5927\u4E8E\u96F6\u610F\u5473\u7740\u9879\u76EE\uFF08\u3000\uFF09\u3002", options: ["\u4E0D\u53EF\u884C", "\u53EF\u884C", "\u4E00\u5B9A\u76C8\u5229", "\u56DE\u6536\u671F\u4E3A\u96F6"], answer: 1, explain: "NPV>0\u8868\u793A\u9884\u671F\u62A5\u916C\u7387\u9AD8\u4E8E\u8D44\u672C\u6210\u672C\uFF0C\u9879\u76EE\u53EF\u884C\u3002", subject: "\u8D22\u7BA1", difficulty: "basic", type: "single" },
+    { id: 391, point: "\u8D22\u52A1\u6760\u6746", q: "\u8D22\u52A1\u6760\u6746\u901A\u5E38\u4E0E\uFF08\u3000\uFF09\u76F8\u5173\u3002", options: ["\u56FA\u5B9A\u878D\u8D44\u6210\u672C", "\u53D8\u52A8\u5236\u9020\u6210\u672C", "\u5B58\u8D27\u5468\u8F6C", "\u5E94\u6536\u8D26\u6B3E"], answer: 0, explain: "\u8D22\u52A1\u6760\u6746\u4E3B\u8981\u7531\u503A\u52A1\u5229\u606F\u3001\u4F18\u5148\u80A1\u80A1\u5229\u7B49\u56FA\u5B9A\u878D\u8D44\u6210\u672C\u5F62\u6210\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
+    { id: 392, point: "\u8D44\u672C\u9884\u7B97", q: "\u51C0\u73B0\u503C\u6CD5\u4E0E\u9759\u6001\u56DE\u6536\u671F\u6CD5\u76F8\u6BD4\uFF0C\u4E3B\u8981\u4F18\u70B9\u662F\uFF08\u3000\uFF09\u3002", options: ["\u8003\u8651\u8D27\u5E01\u65F6\u95F4\u4EF7\u503C", "\u8BA1\u7B97\u6700\u7B80\u5355", "\u4E0D\u4F9D\u8D56\u8D44\u672C\u6210\u672C", "\u65E0\u9700\u9884\u6D4B\u73B0\u91D1\u6D41"], answer: 0, explain: "\u51C0\u73B0\u503C\u6CD5\u5C06\u672A\u6765\u73B0\u91D1\u6D41\u91CF\u6298\u73B0\uFF0C\u8003\u8651\u4E86\u8D27\u5E01\u65F6\u95F4\u4EF7\u503C\u3002", subject: "\u8D22\u7BA1", difficulty: "basic", type: "single" },
     { id: 393, point: "\u8425\u8FD0\u8D44\u672C", q: "\u6D41\u52A8\u6BD4\u7387\u7B49\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u6D41\u52A8\u8D44\u4EA7\xF7\u6D41\u52A8\u8D1F\u503A", "\u6D41\u52A8\u8D1F\u503A\xF7\u6D41\u52A8\u8D44\u4EA7", "\u8D44\u4EA7\xF7\u8D1F\u503A", "\u51C0\u5229\u6DA6\xF7\u8D44\u4EA7"], answer: 0, explain: "\u6D41\u52A8\u6BD4\u7387=\u6D41\u52A8\u8D44\u4EA7\xF7\u6D41\u52A8\u8D1F\u503A\u3002", subject: "\u8D22\u7BA1", difficulty: "basic", type: "single" },
     { id: 394, point: "\u98CE\u9669\u4E0E\u62A5\u916C", q: "\u7CFB\u7EDF\u6027\u98CE\u9669\u8D8A\u9AD8\uFF0C\u5FC5\u8981\u62A5\u916C\u7387\u901A\u5E38\uFF08\u3000\uFF09\u3002", options: ["\u8D8A\u9AD8", "\u8D8A\u4F4E", "\u4E0D\u53D8", "\u65E0\u5173"], answer: 0, explain: "\u7CFB\u7EDF\u6027\u98CE\u9669\u4E0D\u53EF\u5206\u6563\uFF0C\u5E02\u573A\u4F1A\u8981\u6C42\u66F4\u9AD8\u62A5\u916C\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
     { id: 395, point: "\u7ECF\u8425\u6760\u6746", q: "\u56FA\u5B9A\u7ECF\u8425\u6210\u672C\u8D8A\u9AD8\uFF0C\u7ECF\u8425\u6760\u6746\u7CFB\u6570\u901A\u5E38\uFF08\u3000\uFF09\u3002", options: ["\u8D8A\u9AD8", "\u8D8A\u4F4E", "\u4E0D\u53D8", "\u65E0\u6CD5\u786E\u5B9A"], answer: 0, explain: "\u56FA\u5B9A\u6210\u672C\u5360\u6BD4\u8D8A\u9AD8\uFF0C\u606F\u7A0E\u524D\u5229\u6DA6\u5BF9\u9500\u91CF\u53D8\u52A8\u7684\u654F\u611F\u5EA6\u8D8A\u9AD8\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
     { id: 396, point: "\u8D22\u52A1\u5206\u6790", q: "\u675C\u90A6\u5206\u6790\u4E2D\uFF0C\u51C0\u8D44\u4EA7\u6536\u76CA\u7387\u53EF\u4EE5\u5206\u89E3\u4E3A\uFF08\u3000\uFF09\u3002", options: ["\u8425\u4E1A\u51C0\u5229\u7387", "\u603B\u8D44\u4EA7\u5468\u8F6C\u7387", "\u6743\u76CA\u4E58\u6570", "\u6D41\u52A8\u6BD4\u7387"], answer: [0, 1, 2], explain: "\u675C\u90A6\u4F53\u7CFB\u5C06\u51C0\u8D44\u4EA7\u6536\u76CA\u7387\u5206\u89E3\u4E3A\u8425\u4E1A\u51C0\u5229\u7387\u3001\u603B\u8D44\u4EA7\u5468\u8F6C\u7387\u548C\u6743\u76CA\u4E58\u6570\u3002", subject: "\u8D22\u7BA1", difficulty: "expert", type: "multiple" },
     { id: 397, point: "\u672C\u91CF\u5229\u5206\u6790", q: "\u76C8\u4E8F\u5E73\u8861\u70B9\u9500\u91CF\u7B49\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u56FA\u5B9A\u6210\u672C\xF7\u5355\u4F4D\u8FB9\u9645\u8D21\u732E", "\u56FA\u5B9A\u6210\u672C\xF7\u8FB9\u9645\u8D21\u732E\u7387", "\u53D8\u52A8\u6210\u672C\xF7\u5355\u4EF7", "\u51C0\u5229\u6DA6\xF7\u5355\u4EF7"], answer: 0, explain: "\u76C8\u4E8F\u5E73\u8861\u9500\u91CF=\u56FA\u5B9A\u6210\u672C\xF7\u5355\u4F4D\u8FB9\u9645\u8D21\u732E\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
-    { id: 398, point: "\u80A1\u5229\u653F\u7B56", q: "\u5269\u4F59\u80A1\u5229\u653F\u7B56\u4F18\u5148\u6EE1\u8DB3\uFF08\u3000\uFF09\u3002", options: ["\u80A1\u4E1C\u77ED\u671F\u5206\u7EA2", "\u6295\u8D44\u6240\u9700\u8D44\u91D1", "\u503A\u6743\u4EBA\u5229\u606F", "\u7BA1\u7406\u8D39\u7528"], answer: 1, explain: "\u5269\u4F59\u80A1\u5229\u653F\u7B56\u5148\u6EE1\u8DB3\u6295\u8D44\u8D44\u91D1\u9700\u6C42\uFF0C\u5269\u4F59\u5229\u6DA6\u518D\u5206\u914D\u80A1\u5229\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
+    { id: 398, point: "\u80A1\u5229\u653F\u7B56", q: "\u56FA\u5B9A\u80A1\u5229\u6216\u7A33\u5B9A\u589E\u957F\u80A1\u5229\u653F\u7B56\u7684\u4F18\u70B9\u901A\u5E38\u662F\uFF08\u3000\uFF09\u3002", options: ["\u5411\u5E02\u573A\u4F20\u9012\u7A33\u5B9A\u4FE1\u53F7", "\u5B8C\u5168\u4E0D\u7EB3\u7A0E", "\u589E\u52A0\u7ECF\u8425\u98CE\u9669", "\u65E0\u9700\u7559\u5B58\u6536\u76CA"], answer: 0, explain: "\u7A33\u5B9A\u7684\u80A1\u5229\u653F\u7B56\u6709\u52A9\u4E8E\u5411\u5E02\u573A\u4F20\u9012\u7ECF\u8425\u7A33\u5B9A\u7684\u4FE1\u53F7\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
     { id: 399, point: "\u8D27\u5E01\u65F6\u95F4\u4EF7\u503C", q: "\u540D\u4E49\u5229\u7387\u7B49\u4E8E\u5B9E\u9645\u5229\u7387\u4E0E\u901A\u8D27\u81A8\u80C0\u7387\u4E4B\u548C\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 1, explain: "\u540D\u4E49\u5229\u7387\u4E0E\u771F\u5B9E\u5229\u7387\u3001\u901A\u8D27\u81A8\u80C0\u7387\u4E4B\u95F4\u5B58\u5728\u8D39\u96EA\u5173\u7CFB\uFF0C\u4F46\u4E0D\u662F\u7B80\u5355\u76F8\u52A0\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "judge" },
     { id: 400, point: "\u8D44\u672C\u6210\u672C", q: "\u8D44\u672C\u8D44\u4EA7\u5B9A\u4EF7\u6A21\u578B\u4E2D\uFF0C\u5FC5\u8981\u62A5\u916C\u7387=\uFF08\u3000\uFF09\u3002", options: ["\u65E0\u98CE\u9669\u5229\u7387+\u03B2\xD7(\u5E02\u573A\u5E73\u5747\u62A5\u916C\u7387-\u65E0\u98CE\u9669\u5229\u7387)", "\u65E0\u98CE\u9669\u5229\u7387\xD7\u03B2", "\u5E02\u573A\u5E73\u5747\u62A5\u916C\u7387\xD7\u03B2", "\u80A1\u5229\xF7\u80A1\u4EF7"], answer: 0, explain: "CAPM\u516C\u5F0F\u4E3AR=Rf+\u03B2\xD7(Rm-Rf)\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
     { id: 401, point: "\u8D22\u52A1\u6760\u6746", q: "\u5176\u4ED6\u6761\u4EF6\u4E0D\u53D8\u65F6\uFF0C\u63D0\u9AD8\u503A\u52A1\u6BD4\u4F8B\u901A\u5E38\u4F1A\u4F7F\u8D22\u52A1\u6760\u6746\u7CFB\u6570\uFF08\u3000\uFF09\u3002", options: ["\u63D0\u9AD8", "\u964D\u4F4E", "\u4E0D\u53D8", "\u65E0\u6CD5\u786E\u5B9A"], answer: 0, explain: "\u56FA\u5B9A\u878D\u8D44\u6210\u672C\u589E\u52A0\u4F1A\u653E\u5927\u6BCF\u80A1\u6536\u76CA\u6CE2\u52A8\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
     { id: 402, point: "\u8D44\u672C\u9884\u7B97", q: "\u4E92\u65A5\u9879\u76EE\u8BC4\u4EF7\u4E2D\uFF0C\u5E94\u5F53\u4F18\u5148\u9009\u62E9\uFF08\u3000\uFF09\u3002", options: ["\u5185\u542B\u62A5\u916C\u7387\u6700\u9AD8\u7684\u9879\u76EE", "\u51C0\u73B0\u503C\u6700\u5927\u7684\u9879\u76EE", "\u56DE\u6536\u671F\u6700\u77ED\u7684\u9879\u76EE", "\u4F1A\u8BA1\u5229\u6DA6\u7387\u6700\u9AD8\u7684\u9879\u76EE"], answer: 1, explain: "\u4E92\u65A5\u9879\u76EE\u5E94\u4EE5\u51C0\u73B0\u503C\u4E3A\u4E3B\u8981\u51B3\u7B56\u4F9D\u636E\u3002", subject: "\u8D22\u7BA1", difficulty: "expert", type: "single" },
     { id: 403, point: "\u8425\u8FD0\u8D44\u672C", q: "\u8425\u8FD0\u8D44\u672C\u7B49\u4E8E\u6D41\u52A8\u8D44\u4EA7\u51CF\u6D41\u52A8\u8D1F\u503A\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u8425\u8FD0\u8D44\u672C=\u6D41\u52A8\u8D44\u4EA7-\u6D41\u52A8\u8D1F\u503A\u3002", subject: "\u8D22\u7BA1", difficulty: "basic", type: "judge" },
     { id: 404, point: "\u98CE\u9669\u4E0E\u62A5\u916C", q: "\u6295\u8D44\u7EC4\u5408\u5206\u6563\u5316\u53EF\u4EE5\u964D\u4F4E\uFF08\u3000\uFF09\u3002", options: ["\u7CFB\u7EDF\u6027\u98CE\u9669", "\u975E\u7CFB\u7EDF\u6027\u98CE\u9669", "\u5E02\u573A\u98CE\u9669", "\u65E0\u98CE\u9669\u5229\u7387"], answer: 1, explain: "\u5206\u6563\u5316\u80FD\u964D\u4F4E\u975E\u7CFB\u7EDF\u6027\u98CE\u9669\uFF0C\u4E0D\u80FD\u6D88\u9664\u7CFB\u7EDF\u6027\u98CE\u9669\u3002", subject: "\u8D22\u7BA1", difficulty: "basic", type: "single" },
-    { id: 405, point: "\u7ECF\u8425\u6760\u6746", q: "\u7ECF\u8425\u6760\u6746\u4E3B\u8981\u6765\u6E90\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u56FA\u5B9A\u7ECF\u8425\u6210\u672C", "\u503A\u52A1\u5229\u606F", "\u4F18\u5148\u80A1\u80A1\u5229", "\u53D8\u52A8\u6210\u672C"], answer: 0, explain: "\u56FA\u5B9A\u7ECF\u8425\u6210\u672C\u4F7F\u606F\u7A0E\u524D\u5229\u6DA6\u653E\u5927\u9500\u91CF\u53D8\u52A8\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
+    { id: 405, point: "\u7ECF\u8425\u6760\u6746", q: "\u5176\u4ED6\u6761\u4EF6\u4E0D\u53D8\u65F6\uFF0C\u56FA\u5B9A\u7ECF\u8425\u6210\u672C\u8D8A\u9AD8\uFF0C\u7ECF\u8425\u6760\u6746\u7CFB\u6570\u901A\u5E38\uFF08\u3000\uFF09\u3002", options: ["\u8D8A\u9AD8", "\u8D8A\u4F4E", "\u4E0D\u53D8", "\u65E0\u6CD5\u786E\u5B9A"], answer: 0, explain: "\u56FA\u5B9A\u7ECF\u8425\u6210\u672C\u5360\u6BD4\u8D8A\u9AD8\uFF0C\u606F\u7A0E\u524D\u5229\u6DA6\u5BF9\u9500\u91CF\u53D8\u52A8\u7684\u654F\u611F\u5EA6\u8D8A\u5927\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
     { id: 406, point: "\u8D22\u52A1\u5206\u6790", q: "\u5E94\u6536\u8D26\u6B3E\u5468\u8F6C\u7387\u53CD\u6620\u4F01\u4E1A\uFF08\u3000\uFF09\u3002", options: ["\u6536\u8D26\u901F\u5EA6", "\u5B58\u8D27\u79EF\u538B", "\u76C8\u5229\u80FD\u529B", "\u8D1F\u503A\u7ED3\u6784"], answer: 0, explain: "\u5E94\u6536\u8D26\u6B3E\u5468\u8F6C\u7387\u8861\u91CF\u5E94\u6536\u8D26\u6B3E\u8F6C\u5316\u4E3A\u73B0\u91D1\u7684\u901F\u5EA6\u3002", subject: "\u8D22\u7BA1", difficulty: "basic", type: "single" },
     { id: 407, point: "\u672C\u91CF\u5229\u5206\u6790", q: "\u5B89\u5168\u8FB9\u9645\u53EF\u4EE5\u7528\u4E8E\u8861\u91CF\uFF08\u3000\uFF09\u3002", options: ["\u73B0\u6709\u9500\u552E\u8D85\u8FC7\u76C8\u4E8F\u5E73\u8861\u70B9\u7684\u7A0B\u5EA6", "\u56FA\u5B9A\u6210\u672C\u9AD8\u4F4E", "\u8D44\u91D1\u5360\u7528", "\u7A0E\u7387\u5F71\u54CD"], answer: 0, explain: "\u5B89\u5168\u8FB9\u9645\u53CD\u6620\u73B0\u6709\u9500\u552E\u8D85\u51FA\u76C8\u4E8F\u5E73\u8861\u70B9\u7684\u90E8\u5206\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
     { id: 408, point: "\u80A1\u5229\u653F\u7B56", q: "\u56FA\u5B9A\u80A1\u5229\u652F\u4ED8\u7387\u653F\u7B56\u4E0B\uFF0C\u80A1\u5229\u968F\u76C8\u5229\u6CE2\u52A8\u800C\u6CE2\u52A8\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u56FA\u5B9A\u80A1\u5229\u652F\u4ED8\u7387\u653F\u7B56\u6309\u56FA\u5B9A\u6BD4\u4F8B\u5206\u914D\uFF0C\u76C8\u5229\u6CE2\u52A8\u4F1A\u5BFC\u81F4\u80A1\u5229\u6CE2\u52A8\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "judge" },
     { id: 409, point: "\u589E\u503C\u7A0E", q: "\u4E00\u822C\u7EB3\u7A0E\u4EBA\u9500\u552E\u8D27\u7269\u9002\u7528\u589E\u503C\u7A0E\u57FA\u672C\u7A0E\u7387\u901A\u5E38\u4E3A\uFF08\u3000\uFF09\u3002", options: ["6%", "9%", "13%", "25%"], answer: 2, explain: "\u9500\u552E\u8D27\u7269\u57FA\u672C\u7A0E\u7387\u4E3A13%\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
     { id: 410, point: "\u6D88\u8D39\u7A0E", q: "\u6D88\u8D39\u7A0E\u7684\u5F81\u7A0E\u5BF9\u8C61\u662F\uFF08\u3000\uFF09\u3002", options: ["\u5168\u90E8\u5546\u54C1", "\u7279\u5B9A\u6D88\u8D39\u54C1", "\u5168\u90E8\u670D\u52A1", "\u8FDB\u53E3\u6280\u672F"], answer: 1, explain: "\u6D88\u8D39\u7A0E\u53EA\u5BF9\u70DF\u3001\u9152\u3001\u9AD8\u6863\u5316\u5986\u54C1\u7B49\u7279\u5B9A\u6D88\u8D39\u54C1\u5F81\u6536\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
-    { id: 411, point: "\u4F01\u4E1A\u6240\u5F97\u7A0E", q: "\u6211\u56FD\u4F01\u4E1A\u6240\u5F97\u7A0E\u57FA\u672C\u7A0E\u7387\u4E3A\uFF08\u3000\uFF09\u3002", options: ["13%", "20%", "25%", "30%"], answer: 2, explain: "\u4F01\u4E1A\u6240\u5F97\u7A0E\u57FA\u672C\u7A0E\u7387\u4E3A25%\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 411, point: "\u4F01\u4E1A\u6240\u5F97\u7A0E", q: "\u4F01\u4E1A\u6240\u5F97\u7A0E\u7684\u5E94\u7EB3\u7A0E\u6240\u5F97\u989D\u901A\u5E38\u4EE5\uFF08\u3000\uFF09\u4E3A\u57FA\u7840\u8BA1\u7B97\u3002", options: ["\u4F1A\u8BA1\u5229\u6DA6", "\u73B0\u91D1\u6D41\u91CF", "\u9500\u552E\u6536\u5165", "\u8D44\u4EA7\u603B\u989D"], answer: 0, explain: "\u5E94\u7EB3\u7A0E\u6240\u5F97\u989D\u4EE5\u4F1A\u8BA1\u5229\u6DA6\u4E3A\u57FA\u7840\uFF0C\u6309\u7A0E\u6CD5\u89C4\u5B9A\u8FDB\u884C\u7EB3\u7A0E\u8C03\u6574\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
     { id: 412, point: "\u4E2A\u4EBA\u6240\u5F97\u7A0E", q: "\u5C45\u6C11\u4E2A\u4EBA\u5DE5\u8D44\u85AA\u91D1\u6240\u5F97\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u7ECF\u8425\u6240\u5F97", "\u7EFC\u5408\u6240\u5F97", "\u8D22\u4EA7\u8F6C\u8BA9\u6240\u5F97", "\u5076\u7136\u6240\u5F97"], answer: 1, explain: "\u5DE5\u8D44\u85AA\u91D1\u5C5E\u4E8E\u7EFC\u5408\u6240\u5F97\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
     { id: 413, point: "\u7A0E\u6536\u4F18\u60E0", q: "\u7B26\u5408\u6761\u4EF6\u7684\u7814\u53D1\u8D39\u7528\u53EF\u4EE5\u4EAB\u53D7\uFF08\u3000\uFF09\u52A0\u8BA1\u6263\u9664\u3002", options: ["50%", "75%", "100%", "150%"], answer: 2, explain: "2023\u5E74\u8D77\u7B26\u5408\u6761\u4EF6\u7684\u4F01\u4E1A\u7814\u53D1\u8D39\u7528\u6309100%\u52A0\u8BA1\u6263\u9664\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
     { id: 414, point: "\u53D1\u7968\u7BA1\u7406", q: "\u589E\u503C\u7A0E\u4E13\u7528\u53D1\u7968\u662F\u8D2D\u4E70\u65B9\uFF08\u3000\uFF09\u7684\u91CD\u8981\u51ED\u8BC1\u3002", options: ["\u62B5\u6263\u8FDB\u9879\u7A0E\u989D", "\u786E\u8BA4\u6536\u5165", "\u7533\u62A5\u4E2A\u4EBA\u6240\u5F97\u7A0E", "\u7F34\u7EB3\u6D88\u8D39\u7A0E"], answer: 0, explain: "\u4E13\u7528\u53D1\u7968\u7528\u4E8E\u62B5\u6263\u8FDB\u9879\u7A0E\u989D\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
-    { id: 415, point: "\u623F\u4EA7\u7A0E", q: "\u623F\u4EA7\u51FA\u79DF\u7684\uFF0C\u623F\u4EA7\u7A0E\u4ECE\u79DF\u8BA1\u5F81\u7A0E\u7387\u901A\u5E38\u4E3A\uFF08\u3000\uFF09\u3002", options: ["1.2%", "4%", "12%", "20%"], answer: 2, explain: "\u4ECE\u79DF\u8BA1\u5F81\u6309\u79DF\u91D1\u6536\u5165\u768412%\u7F34\u7EB3\uFF0C\u4E2A\u4EBA\u51FA\u79DF\u4F4F\u623F\u63094%\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
-    { id: 416, point: "\u5370\u82B1\u7A0E", q: "\u4EA7\u6743\u8F6C\u79FB\u4E66\u636E\u9002\u7528\u7684\u5370\u82B1\u7A0E\u7A0E\u7387\u4E3A\uFF08\u3000\uFF09\u3002", options: ["0.05\u2030", "0.3\u2030", "0.5\u2030", "1\u2030"], answer: 2, explain: "\u4EA7\u6743\u8F6C\u79FB\u4E66\u636E\u6309\u4EF7\u6B3E\u76840.5\u2030\u8D34\u82B1\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
-    { id: 417, point: "\u571F\u5730\u589E\u503C\u7A0E", q: "\u571F\u5730\u589E\u503C\u7A0E\u5B9E\u884C\uFF08\u3000\uFF09\u3002", options: ["\u6BD4\u4F8B\u7A0E\u7387", "\u8D85\u7387\u7D2F\u8FDB\u7A0E\u7387", "\u5B9A\u989D\u7A0E\u7387", "\u8D85\u500D\u7D2F\u8FDB\u7A0E\u7387"], answer: 1, explain: "\u571F\u5730\u589E\u503C\u7A0E\u5B9E\u884C30%-60%\u7684\u8D85\u7387\u7D2F\u8FDB\u7A0E\u7387\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 415, point: "\u623F\u4EA7\u7A0E", q: "\u623F\u4EA7\u7A0E\u4ECE\u4EF7\u8BA1\u5F81\u7684\u8BA1\u7A0E\u4F9D\u636E\u901A\u5E38\u662F\uFF08\u3000\uFF09\u3002", options: ["\u623F\u4EA7\u539F\u503C\u4E00\u6B21\u51CF\u9664\u4E00\u5B9A\u6BD4\u4F8B\u540E\u7684\u4F59\u503C", "\u623F\u4EA7\u5E02\u573A\u8BC4\u4F30\u4EF7", "\u79DF\u91D1\u6536\u5165", "\u623F\u5C4B\u8D26\u9762\u51C0\u503C"], answer: 0, explain: "\u4ECE\u4EF7\u8BA1\u5F81\u4EE5\u623F\u4EA7\u539F\u503C\u4E00\u6B21\u51CF\u9664\u89C4\u5B9A\u6BD4\u4F8B\u540E\u7684\u4F59\u503C\u4F5C\u4E3A\u8BA1\u7A0E\u4F9D\u636E\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 416, point: "\u5370\u82B1\u7A0E", q: "\u8F6C\u8BA9\u571F\u5730\u4F7F\u7528\u6743\u3001\u623F\u5C4B\u6240\u6709\u6743\u7B49\u4EA7\u6743\u8F6C\u79FB\u4E66\u636E\u9002\u7528\u7684\u5370\u82B1\u7A0E\u7A0E\u7387\u4E3A\uFF08\u3000\uFF09\u3002", options: ["0.05\u2030", "0.3\u2030", "0.5\u2030", "1\u2030"], answer: 2, explain: "\u571F\u5730\u4F7F\u7528\u6743\u548C\u623F\u5C4B\u6240\u6709\u6743\u7B49\u4EA7\u6743\u8F6C\u79FB\u4E66\u636E\u6309\u4EF7\u6B3E\u76840.5\u2030\u8D34\u82B1\uFF1B\u5546\u6807\u4E13\u7528\u6743\u7B49\u63090.3\u2030\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 417, point: "\u571F\u5730\u589E\u503C\u7A0E", q: "\u571F\u5730\u589E\u503C\u7A0E\u7684\u8BA1\u7A0E\u589E\u503C\u989D\u662F\u6307\uFF08\u3000\uFF09\u3002", options: ["\u8F6C\u8BA9\u6536\u5165\u51CF\u9664\u6263\u9664\u9879\u76EE\u91D1\u989D\u540E\u7684\u4F59\u989D", "\u8F6C\u8BA9\u6536\u5165\u51CF\u9664\u539F\u503C\u7684\u4F59\u989D", "\u79DF\u91D1\u6536\u5165\u51CF\u9664\u8D39\u7528\u540E\u7684\u4F59\u989D", "\u623F\u4EA7\u8BC4\u4F30\u4EF7"], answer: 0, explain: "\u589E\u503C\u989D\u662F\u8F6C\u8BA9\u623F\u5730\u4EA7\u53D6\u5F97\u7684\u6536\u5165\u51CF\u9664\u7A0E\u6CD5\u89C4\u5B9A\u7684\u6263\u9664\u9879\u76EE\u91D1\u989D\u540E\u7684\u4F59\u989D\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
     { id: 418, point: "\u8F66\u8F86\u8D2D\u7F6E\u7A0E", q: "\u8F66\u8F86\u8D2D\u7F6E\u7A0E\u7A0E\u7387\u4E3A\uFF08\u3000\uFF09\u3002", options: ["5%", "10%", "13%", "20%"], answer: 1, explain: "\u8F66\u8F86\u8D2D\u7F6E\u7A0E\u7A0E\u7387\u4E3A10%\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
-    { id: 419, point: "\u5951\u7A0E", q: "\u5951\u7A0E\u7531\uFF08\u3000\uFF09\u7F34\u7EB3\u3002", options: ["\u51FA\u8BA9\u65B9", "\u627F\u53D7\u571F\u5730\u3001\u623F\u5C4B\u6743\u5C5E\u7684\u4E00\u65B9", "\u4E2D\u4ECB\u673A\u6784", "\u653F\u5E9C"], answer: 1, explain: "\u5951\u7A0E\u7531\u627F\u53D7\u571F\u5730\u3001\u623F\u5C4B\u6743\u5C5E\u7684\u5355\u4F4D\u548C\u4E2A\u4EBA\u7F34\u7EB3\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 419, point: "\u5951\u7A0E", q: "\u571F\u5730\u4F7F\u7528\u6743\u51FA\u8BA9\u5C5E\u4E8E\u5951\u7A0E\u7684\uFF08\u3000\uFF09\u3002", options: ["\u5F81\u7A0E\u8303\u56F4", "\u514D\u7A0E\u9879\u76EE", "\u4E0D\u5F81\u7A0E\u9879\u76EE", "\u4EC5\u5BF9\u4E2A\u4EBA\u5F81\u6536"], answer: 0, explain: "\u571F\u5730\u4F7F\u7528\u6743\u51FA\u8BA9\u5C5E\u4E8E\u5951\u7A0E\u5F81\u7A0E\u8303\u56F4\uFF0C\u7531\u627F\u53D7\u65B9\u7F34\u7EB3\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
     { id: 420, point: "\u7A0E\u6536\u5F81\u7BA1", q: "\u7EB3\u7A0E\u4EBA\u53D1\u751F\u7EB3\u7A0E\u4E49\u52A1\u540E\u5E94\u5F53\uFF08\u3000\uFF09\u3002", options: ["\u7B49\u5F85\u7A0E\u52A1\u673A\u5173\u6838\u5B9A", "\u4F9D\u6CD5\u529E\u7406\u7EB3\u7A0E\u7533\u62A5", "\u81EA\u884C\u51B3\u5B9A\u662F\u5426\u7EB3\u7A0E", "\u53EA\u7533\u62A5\u4E0D\u7F34\u7A0E"], answer: 1, explain: "\u7EB3\u7A0E\u4EBA\u5E94\u4F9D\u6CD5\u6309\u671F\u529E\u7406\u7EB3\u7A0E\u7533\u62A5\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
     { id: 421, point: "\u589E\u503C\u7A0E", q: "\u4E00\u822C\u7EB3\u7A0E\u4EBA\u7279\u5B9A\u60C5\u51B5\u4E0B\u53EF\u4EE5\u9009\u62E9\u7B80\u6613\u8BA1\u7A0E\uFF0C\u5F81\u6536\u7387\u901A\u5E38\u4E3A\uFF08\u3000\uFF09\u3002", options: ["2%", "3%", "6%", "9%"], answer: 1, explain: "\u7B80\u6613\u8BA1\u7A0E\u5F81\u6536\u7387\u901A\u5E38\u4E3A3%\uFF0C\u90E8\u5206\u9879\u76EE\u4E3A5%\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
     { id: 422, point: "\u6D88\u8D39\u7A0E", q: "\u81EA\u4EA7\u81EA\u7528\u5E94\u7A0E\u6D88\u8D39\u54C1\uFF0C\u6CA1\u6709\u540C\u7C7B\u9500\u552E\u4EF7\u683C\u7684\u6309\u7EC4\u6210\u8BA1\u7A0E\u4EF7\u683C\u8BA1\u7A0E\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u81EA\u4EA7\u81EA\u7528\u6CA1\u6709\u540C\u7C7B\u552E\u4EF7\u65F6\u6309\u7EC4\u6210\u8BA1\u7A0E\u4EF7\u683C\u8BA1\u7B97\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "judge" },
@@ -293,21 +293,21 @@
     { id: 434, point: "\u7968\u636E\u6CD5", q: "\u6C47\u7968\u7684\u4ED8\u6B3E\u4EBA\u901A\u5E38\u662F\uFF08\u3000\uFF09\u3002", options: ["\u51FA\u7968\u4EBA", "\u94F6\u884C\u6216\u627F\u5151\u4EBA", "\u6536\u6B3E\u4EBA", "\u80CC\u4E66\u4EBA"], answer: 1, explain: "\u6C47\u7968\u4ED8\u6B3E\u4EBA\u662F\u53D7\u7968\u4EBA\uFF0C\u5546\u4E1A\u6C47\u7968\u7ECF\u627F\u5151\u540E\u7531\u627F\u5151\u4EBA\u4ED8\u6B3E\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "single" },
     { id: 435, point: "\u7269\u6743\u6CD5", q: "\u4E0D\u52A8\u4EA7\u62B5\u62BC\u6743\u901A\u5E38\u81EA\uFF08\u3000\uFF09\u65F6\u8BBE\u7ACB\u3002", options: ["\u5408\u540C\u7B7E\u8BA2", "\u767B\u8BB0", "\u4EA4\u4ED8", "\u516C\u8BC1"], answer: 1, explain: "\u4E0D\u52A8\u4EA7\u62B5\u62BC\u4EE5\u767B\u8BB0\u4E3A\u8BBE\u7ACB\u8981\u4EF6\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
     { id: 436, point: "\u53CD\u5784\u65AD\u6CD5", q: "\u7ECF\u8425\u8005\u96C6\u4E2D\u8FBE\u5230\u56FD\u52A1\u9662\u89C4\u5B9A\u6807\u51C6\u65F6\uFF0C\u5E94\u5F53\uFF08\u3000\uFF09\u3002", options: ["\u4E8B\u5148\u7533\u62A5", "\u4E8B\u540E\u7533\u62A5", "\u65E0\u9700\u7533\u62A5", "\u4EC5\u5185\u90E8\u5BA1\u6279"], answer: 0, explain: "\u8FBE\u5230\u7533\u62A5\u6807\u51C6\u7684\u7ECF\u8425\u8005\u96C6\u4E2D\u5E94\u5F53\u4E8B\u5148\u7533\u62A5\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
-    { id: 437, point: "\u5408\u4F19\u4F01\u4E1A\u6CD5", q: "\u666E\u901A\u5408\u4F19\u4EBA\u5BF9\u5408\u4F19\u4F01\u4E1A\u503A\u52A1\u627F\u62C5\uFF08\u3000\uFF09\u3002", options: ["\u6709\u9650\u8D23\u4EFB", "\u65E0\u9650\u8FDE\u5E26\u8D23\u4EFB", "\u6309\u51FA\u8D44\u6BD4\u4F8B\u8D23\u4EFB", "\u4E0D\u627F\u62C5\u8D23\u4EFB"], answer: 1, explain: "\u666E\u901A\u5408\u4F19\u4EBA\u5BF9\u5408\u4F19\u4F01\u4E1A\u503A\u52A1\u627F\u62C5\u65E0\u9650\u8FDE\u5E26\u8D23\u4EFB\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 437, point: "\u5408\u4F19\u4F01\u4E1A\u6CD5", q: "\u6709\u9650\u5408\u4F19\u4F01\u4E1A\u7531\uFF08\u3000\uFF09\u6267\u884C\u5408\u4F19\u4E8B\u52A1\u3002", options: ["\u666E\u901A\u5408\u4F19\u4EBA", "\u6709\u9650\u5408\u4F19\u4EBA", "\u5916\u90E8\u503A\u6743\u4EBA", "\u4EFB\u610F\u5408\u4F19\u4EBA"], answer: 0, explain: "\u6709\u9650\u5408\u4F19\u4F01\u4E1A\u7531\u666E\u901A\u5408\u4F19\u4EBA\u6267\u884C\u5408\u4F19\u4E8B\u52A1\uFF0C\u6709\u9650\u5408\u4F19\u4EBA\u4E0D\u6267\u884C\u5408\u4F19\u4E8B\u52A1\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "single" },
     { id: 438, point: "\u516C\u53F8\u6CD5", q: "\u6709\u9650\u8D23\u4EFB\u516C\u53F8\u6CD5\u5B9A\u4EE3\u8868\u53EF\u4EE5\u7531\uFF08\u3000\uFF09\u62C5\u4EFB\u3002", options: ["\u6267\u884C\u516C\u53F8\u4E8B\u52A1\u7684\u8463\u4E8B\u6216\u7ECF\u7406", "\u4EFB\u610F\u5458\u5DE5", "\u8D22\u52A1\u8D1F\u8D23\u4EBA", "\u5916\u90E8\u987E\u95EE"], answer: 0, explain: "\u73B0\u884C\u516C\u53F8\u6CD5\u89C4\u5B9A\u6CD5\u5B9A\u4EE3\u8868\u7531\u6267\u884C\u516C\u53F8\u4E8B\u52A1\u7684\u8463\u4E8B\u6216\u7ECF\u7406\u62C5\u4EFB\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
     { id: 439, point: "\u516C\u53F8\u6CBB\u7406", q: "\u4E0B\u5217\u5C5E\u4E8E\u80A1\u4E1C\u4F1A\u804C\u6743\u7684\u662F\uFF08\u3000\uFF09\u3002", options: ["\u9009\u4E3E\u548C\u66F4\u6362\u8463\u4E8B", "\u8058\u4EFB\u516C\u53F8\u603B\u7ECF\u7406", "\u5236\u5B9A\u57FA\u672C\u5236\u5EA6", "\u6267\u884C\u8463\u4E8B\u4F1A\u51B3\u8BAE"], answer: 0, explain: "\u80A1\u4E1C\u4F1A\u9009\u4E3E\u548C\u66F4\u6362\u8463\u4E8B\uFF1B\u8058\u4EFB\u603B\u7ECF\u7406\u5C5E\u4E8E\u8463\u4E8B\u4F1A\u804C\u6743\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
-    { id: 440, point: "\u5408\u540C\u6CD5", q: "\u8FDD\u53CD\u6CD5\u5F8B\u3001\u884C\u653F\u6CD5\u89C4\u5F3A\u5236\u6027\u89C4\u5B9A\u7684\u5408\u540C\u901A\u5E38\uFF08\u3000\uFF09\u3002", options: ["\u65E0\u6548", "\u6709\u6548", "\u53EF\u64A4\u9500", "\u6548\u529B\u5F85\u5B9A"], answer: 0, explain: "\u8FDD\u53CD\u5F3A\u5236\u6027\u89C4\u5B9A\u53EF\u80FD\u65E0\u6548\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 440, point: "\u5408\u540C\u6CD5", q: "\u53EF\u64A4\u9500\u5408\u540C\u5728\u88AB\u64A4\u9500\u524D\uFF08\u3000\uFF09\u3002", options: ["\u6709\u6548", "\u65E0\u6548", "\u6548\u529B\u5F85\u5B9A", "\u81EA\u52A8\u89E3\u9664"], answer: 0, explain: "\u53EF\u64A4\u9500\u5408\u540C\u5728\u88AB\u64A4\u9500\u524D\u6709\u6548\uFF0C\u64A4\u9500\u540E\u81EA\u59CB\u65E0\u6548\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "single" },
     { id: 441, point: "\u8BC1\u5238\u6CD5", q: "\u4E0A\u5E02\u516C\u53F8\u5E94\u53CA\u65F6\u62AB\u9732\u7684\u91CD\u5927\u4E8B\u4EF6\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u7ECF\u8425\u65B9\u9488\u91CD\u5927\u53D8\u5316", "\u91CD\u5927\u6295\u8D44\u884C\u4E3A", "\u91CD\u8981\u5408\u540C", "\u65E5\u5E38\u529E\u516C\u7528\u54C1\u91C7\u8D2D"], answer: [0, 1, 2], explain: "\u7ECF\u8425\u65B9\u9488\u3001\u91CD\u5927\u6295\u8D44\u548C\u91CD\u8981\u5408\u540C\u5C5E\u4E8E\u91CD\u5927\u4E8B\u4EF6\uFF1B\u65E5\u5E38\u91C7\u8D2D\u4E0D\u6784\u6210\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "multiple" },
     { id: 442, point: "\u7834\u4EA7\u6CD5", q: "\u7834\u4EA7\u91CD\u6574\u7684\u4E3B\u8981\u76EE\u7684\u662F\uFF08\u3000\uFF09\u3002", options: ["\u4F7F\u4F01\u4E1A\u6062\u590D\u7ECF\u8425\u80FD\u529B", "\u7ACB\u5373\u89E3\u6563\u4F01\u4E1A", "\u514D\u9664\u5168\u90E8\u503A\u52A1", "\u65E0\u507F\u8F6C\u8BA9\u8D44\u4EA7"], answer: 0, explain: "\u91CD\u6574\u65E8\u5728\u8C03\u6574\u503A\u52A1\u548C\u7ECF\u8425\u65B9\u6848\uFF0C\u4F7F\u4F01\u4E1A\u6062\u590D\u7ECF\u8425\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
     { id: 443, point: "\u7968\u636E\u6CD5", q: "\u6C47\u7968\u53EF\u4EE5\u901A\u8FC7\u80CC\u4E66\u8F6C\u8BA9\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u6C47\u7968\u53EF\u4EE5\u80CC\u4E66\u8F6C\u8BA9\uFF0C\u4F9D\u6CD5\u8BB0\u8F7D\u80CC\u4E66\u4EBA\u3001\u88AB\u80CC\u4E66\u4EBA\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "judge" },
     { id: 444, point: "\u7269\u6743\u6CD5", q: "\u5584\u610F\u53D6\u5F97\u9700\u8981\u6EE1\u8DB3\uFF08\u3000\uFF09\u7B49\u6761\u4EF6\u3002", options: ["\u53D7\u8BA9\u4EBA\u5584\u610F", "\u5408\u7406\u4EF7\u683C\u8F6C\u8BA9", "\u5B8C\u6210\u6CD5\u5B9A\u516C\u793A", "\u8F6C\u8BA9\u4EBA\u6709\u6743\u5904\u5206"], answer: [0, 1, 2], explain: "\u5584\u610F\u53D6\u5F97\u8981\u6C42\u5584\u610F\u3001\u5408\u7406\u4EF7\u683C\u548C\u5B8C\u6210\u516C\u793A\uFF1B\u8F6C\u8BA9\u4EBA\u901A\u5E38\u65E0\u6743\u5904\u5206\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "expert", type: "multiple" },
     { id: 445, point: "\u53CD\u5784\u65AD\u6CD5", q: "\u5177\u6709\u7ADE\u4E89\u5173\u7CFB\u7684\u7ECF\u8425\u8005\u56FA\u5B9A\u4EF7\u683C\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u6A2A\u5411\u5784\u65AD\u534F\u8BAE", "\u7EB5\u5411\u5784\u65AD\u534F\u8BAE", "\u7ECF\u8425\u8005\u96C6\u4E2D", "\u6EE5\u7528\u5E02\u573A\u652F\u914D\u5730\u4F4D"], answer: 0, explain: "\u7ADE\u4E89\u8005\u4E4B\u95F4\u56FA\u5B9A\u4EF7\u683C\u5C5E\u4E8E\u6A2A\u5411\u5784\u65AD\u534F\u8BAE\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
     { id: 446, point: "\u5408\u4F19\u4F01\u4E1A\u6CD5", q: "\u6709\u9650\u5408\u4F19\u4EBA\u901A\u5E38\u4EE5\uFF08\u3000\uFF09\u5BF9\u5408\u4F19\u4F01\u4E1A\u503A\u52A1\u627F\u62C5\u8D23\u4EFB\u3002", options: ["\u8BA4\u7F34\u51FA\u8D44\u989D", "\u65E0\u9650\u8FDE\u5E26\u8D23\u4EFB", "\u5BB6\u5EAD\u8D22\u4EA7", "\u5408\u4F19\u4F01\u4E1A\u8D44\u4EA7"], answer: 0, explain: "\u6709\u9650\u5408\u4F19\u4EBA\u4EE5\u5176\u8BA4\u7F34\u51FA\u8D44\u989D\u4E3A\u9650\u627F\u62C5\u8D23\u4EFB\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
-    { id: 447, point: "\u516C\u53F8\u6CD5", q: "\u4E00\u4E2A\u81EA\u7136\u4EBA\u53EA\u80FD\u6295\u8D44\u8BBE\u7ACB\u4E00\u4E2A\u4E00\u4EBA\u6709\u9650\u8D23\u4EFB\u516C\u53F8\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u4E00\u4E2A\u81EA\u7136\u4EBA\u53EA\u80FD\u8BBE\u7ACB\u4E00\u4E2A\u4E00\u4EBA\u6709\u9650\u8D23\u4EFB\u516C\u53F8\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "judge" },
+    { id: 447, point: "\u516C\u53F8\u6CD5", q: "\u4E00\u4E2A\u81EA\u7136\u4EBA\u53EA\u80FD\u6295\u8D44\u8BBE\u7ACB\u4E00\u4E2A\u4E00\u4EBA\u6709\u9650\u8D23\u4EFB\u516C\u53F8\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 1, explain: "2024\u5E74\u65B0\u516C\u53F8\u6CD5\u5DF2\u5220\u9664\u4E00\u4E2A\u81EA\u7136\u4EBA\u53EA\u80FD\u8BBE\u7ACB\u4E00\u4E2A\u4E00\u4EBA\u6709\u9650\u8D23\u4EFB\u516C\u53F8\u7684\u9650\u5236\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "judge" },
     { id: 448, point: "\u8BC1\u5238\u6CD5", q: "\u5185\u5E55\u4FE1\u606F\u77E5\u60C5\u4EBA\u5728\u5185\u5E55\u4FE1\u606F\u516C\u5F00\u524D\u4E70\u5356\u76F8\u5173\u8BC1\u5238\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u5408\u6CD5\u6295\u8D44", "\u5185\u5E55\u4EA4\u6613", "\u6B63\u5E38\u5957\u5229", "\u98CE\u9669\u7BA1\u7406"], answer: 1, explain: "\u5229\u7528\u5185\u5E55\u4FE1\u606F\u4E70\u5356\u8BC1\u5238\u6784\u6210\u5185\u5E55\u4EA4\u6613\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "single" },
-    { id: 449, point: "SWOT", q: "SWOT\u5206\u6790\u4E2D\u7684O\u4EE3\u8868\uFF08\u3000\uFF09\u3002", options: ["\u673A\u4F1A", "\u4F18\u52BF", "\u5A01\u80C1", "\u52A3\u52BF"], answer: 0, explain: "O=Opportunities\u673A\u4F1A\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
-    { id: 450, point: "\u4E94\u529B\u6A21\u578B", q: "\u6CE2\u7279\u4E94\u529B\u6A21\u578B\u4E0D\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u73B0\u6709\u7ADE\u4E89\u8005", "\u6F5C\u5728\u8FDB\u5165\u8005", "\u653F\u5E9C\u653F\u7B56", "\u66FF\u4EE3\u54C1"], answer: 2, explain: "\u4E94\u529B\u5305\u62EC\u73B0\u6709\u7ADE\u4E89\u8005\u3001\u6F5C\u5728\u8FDB\u5165\u8005\u3001\u66FF\u4EE3\u54C1\u3001\u4F9B\u5E94\u5546\u548C\u8D2D\u4E70\u8005\u8BAE\u4EF7\u80FD\u529B\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
-    { id: 451, point: "\u4EF7\u503C\u94FE", q: "\u4E0B\u5217\u5C5E\u4E8E\u4EF7\u503C\u94FE\u57FA\u672C\u6D3B\u52A8\u7684\u662F\uFF08\u3000\uFF09\u3002", options: ["\u5E02\u573A\u9500\u552E", "\u91C7\u8D2D\u7BA1\u7406", "\u6280\u672F\u5F00\u53D1", "\u4EBA\u529B\u8D44\u6E90"], answer: 0, explain: "\u57FA\u672C\u6D3B\u52A8\u5305\u62EC\u5185\u90E8\u540E\u52E4\u3001\u751F\u4EA7\u3001\u5916\u90E8\u540E\u52E4\u3001\u5E02\u573A\u548C\u9500\u552E\u3001\u670D\u52A1\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
+    { id: 449, point: "SWOT", q: "SWOT\u5206\u6790\u4E2D\u7684S\u4EE3\u8868\uFF08\u3000\uFF09\u3002", options: ["\u4F18\u52BF", "\u52A3\u52BF", "\u673A\u4F1A", "\u5A01\u80C1"], answer: 0, explain: "S=Strengths\u4F18\u52BF\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
+    { id: 450, point: "\u4E94\u529B\u6A21\u578B", q: "\u4E0B\u5217\u5C5E\u4E8E\u6CE2\u7279\u4E94\u529B\u6A21\u578B\u7684\u662F\uFF08\u3000\uFF09\u3002", options: ["\u4F9B\u5E94\u5546\u8BAE\u4EF7\u80FD\u529B", "\u653F\u5E9C\u8865\u8D34", "\u5B8F\u89C2\u7ECF\u6D4E\u653F\u7B56", "\u80A1\u4E1C\u56DE\u62A5"], answer: 0, explain: "\u4E94\u529B\u5305\u62EC\u73B0\u6709\u7ADE\u4E89\u3001\u6F5C\u5728\u8FDB\u5165\u8005\u3001\u66FF\u4EE3\u54C1\u3001\u4F9B\u5E94\u5546\u548C\u8D2D\u4E70\u8005\u8BAE\u4EF7\u80FD\u529B\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
+    { id: 451, point: "\u4EF7\u503C\u94FE", q: "\u4EF7\u503C\u94FE\u4E2D\u7684\u552E\u540E\u670D\u52A1\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u57FA\u672C\u6D3B\u52A8", "\u652F\u6301\u6D3B\u52A8", "\u4F01\u4E1A\u57FA\u7840\u8BBE\u65BD", "\u5916\u90E8\u73AF\u5883"], answer: 0, explain: "\u552E\u540E\u670D\u52A1\u662F\u4EF7\u503C\u94FE\u4E94\u9879\u57FA\u672C\u6D3B\u52A8\u4E4B\u4E00\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
     { id: 452, point: "\u5E76\u8D2D\u6218\u7565", q: "\u540C\u884C\u4E1A\u4F01\u4E1A\u4E4B\u95F4\u7684\u5E76\u8D2D\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u6A2A\u5411\u5E76\u8D2D", "\u7EB5\u5411\u5E76\u8D2D", "\u6DF7\u5408\u5E76\u8D2D", "\u8DE8\u56FD\u5E76\u8D2D"], answer: 0, explain: "\u6A2A\u5411\u5E76\u8D2D\u53D1\u751F\u5728\u76F8\u540C\u6216\u76F8\u8FD1\u884C\u4E1A\u4F01\u4E1A\u4E4B\u95F4\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
     { id: 453, point: "\u516C\u53F8\u6218\u7565\u7C7B\u578B", q: "\u53D1\u5C55\u6218\u7565\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u4E00\u4F53\u5316\u6218\u7565", "\u5BC6\u96C6\u578B\u6218\u7565", "\u591A\u5143\u5316\u6218\u7565", "\u6536\u7F29\u578B\u6218\u7565"], answer: [0, 1, 2], explain: "\u53D1\u5C55\u6218\u7565\u5305\u62EC\u4E00\u4F53\u5316\u3001\u5BC6\u96C6\u578B\u548C\u591A\u5143\u5316\uFF1B\u6536\u7F29\u578B\u5C5E\u4E8E\u9632\u5FA1\u6218\u7565\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "multiple" },
     { id: 454, point: "\u5E73\u8861\u8BA1\u5206\u5361", q: "\u5E73\u8861\u8BA1\u5206\u5361\u5305\u62EC\uFF08\u3000\uFF09\u56DB\u4E2A\u7EF4\u5EA6\u3002", options: ["\u8D22\u52A1", "\u5BA2\u6237", "\u5185\u90E8\u6D41\u7A0B", "\u5B66\u4E60\u4E0E\u6210\u957F"], answer: [0, 1, 2, 3], explain: "\u5E73\u8861\u8BA1\u5206\u5361\u56DB\u4E2A\u7EF4\u5EA6\u4E3A\u8D22\u52A1\u3001\u5BA2\u6237\u3001\u5185\u90E8\u6D41\u7A0B\u3001\u5B66\u4E60\u4E0E\u6210\u957F\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "multiple" },
@@ -346,7 +346,7 @@
     { id: 485, point: "\u524D\u671F\u5DEE\u9519", q: "\u91CD\u8981\u7684\u524D\u671F\u5DEE\u9519\u66F4\u6B63\u901A\u5E38\u9700\u8981\uFF08\u3000\uFF09\u3002", options: ["\u8FFD\u6EAF\u91CD\u8FF0", "\u672A\u6765\u9002\u7528", "\u8BA1\u5165\u5F53\u671F\u8D39\u7528", "\u8C03\u6574\u8D44\u672C\u516C\u79EF"], answer: 0, explain: "\u91CD\u8981\u524D\u671F\u5DEE\u9519\u91C7\u7528\u8FFD\u6EAF\u91CD\u8FF0\u6CD5\u3002", subject: "\u4F1A\u8BA1", difficulty: "expert", type: "single" },
     { id: 486, point: "\u6BCF\u80A1\u6536\u76CA", q: "\u57FA\u672C\u6BCF\u80A1\u6536\u76CA\u7B49\u4E8E\u5F52\u5C5E\u4E8E\u666E\u901A\u80A1\u80A1\u4E1C\u7684\u51C0\u5229\u6DA6\u9664\u4EE5\uFF08\u3000\uFF09\u3002", options: ["\u53D1\u884C\u5728\u5916\u666E\u901A\u80A1\u52A0\u6743\u5E73\u5747\u6570", "\u80A1\u672C\u603B\u6570", "\u6D41\u901A\u80A1\u9762\u503C", "\u6BCF\u80A1\u51C0\u8D44\u4EA7"], answer: 0, explain: "\u57FA\u672CEPS=\u51C0\u5229\u6DA6\xF7\u53D1\u884C\u5728\u5916\u666E\u901A\u80A1\u52A0\u6743\u5E73\u5747\u6570\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
     { id: 487, point: "\u516C\u5141\u4EF7\u503C", q: "\u516C\u5141\u4EF7\u503C\u7B2C\u4E00\u5C42\u6B21\u8F93\u5165\u503C\u662F\u6307\uFF08\u3000\uFF09\u3002", options: ["\u6D3B\u8DC3\u5E02\u573A\u4E2D\u76F8\u540C\u8D44\u4EA7\u6216\u8D1F\u503A\u7684\u62A5\u4EF7", "\u53EF\u89C2\u5BDF\u4F46\u975E\u62A5\u4EF7\u8F93\u5165\u503C", "\u4E0D\u53EF\u89C2\u5BDF\u8F93\u5165\u503C", "\u8D26\u9762\u4EF7\u503C"], answer: 0, explain: "\u7B2C\u4E00\u5C42\u6B21\u8F93\u5165\u503C\u662F\u6D3B\u8DC3\u5E02\u573A\u76F8\u540C\u8D44\u4EA7\u6216\u8D1F\u503A\u7684\u62A5\u4EF7\u3002", subject: "\u4F1A\u8BA1", difficulty: "expert", type: "single" },
-    { id: 488, point: "\u804C\u4E1A\u9053\u5FB7", q: "\u6CE8\u518C\u4F1A\u8BA1\u5E08\u4FDD\u6301\u72EC\u7ACB\u6027\u7684\u4E3B\u8981\u76EE\u7684\u662F\uFF08\u3000\uFF09\u3002", options: ["\u589E\u5F3A\u5BA1\u8BA1\u7ED3\u8BBA\u53EF\u4FE1\u5EA6", "\u964D\u4F4E\u5BA1\u8BA1\u6536\u8D39", "\u7F29\u77ED\u5BA1\u8BA1\u65F6\u95F4", "\u51CF\u5C11\u5E95\u7A3F\u6570\u91CF"], answer: 0, explain: "\u72EC\u7ACB\u6027\u6709\u52A9\u4E8E\u589E\u5F3A\u5BA1\u8BA1\u7ED3\u8BBA\u7684\u53EF\u4FE1\u5EA6\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 488, point: "\u804C\u4E1A\u9053\u5FB7", q: "\u6CE8\u518C\u4F1A\u8BA1\u5E08\u5728\u5BA1\u8BA1\u4E2D\u4FDD\u6301\u804C\u4E1A\u6000\u7591\u6709\u52A9\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u8BC6\u522B\u91CD\u5927\u9519\u62A5\u98CE\u9669", "\u63D0\u9AD8\u5BA1\u8BA1\u6536\u8D39", "\u7F29\u77ED\u5BA1\u8BA1\u8303\u56F4", "\u51CF\u5C11\u5BA1\u8BA1\u8BC1\u636E"], answer: 0, explain: "\u804C\u4E1A\u6000\u7591\u6709\u52A9\u4E8E\u5BA1\u614E\u8BC4\u4EF7\u8BC1\u636E\u5E76\u8BC6\u522B\u91CD\u5927\u9519\u62A5\u98CE\u9669\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
     { id: 489, point: "\u5BA1\u8BA1\u76EE\u6807", q: "\u88AB\u5BA1\u8BA1\u5355\u4F4D\u7BA1\u7406\u5C42\u5BF9\u8D22\u52A1\u62A5\u8868\u627F\u62C5\u7684\u8D23\u4EFB\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u6309\u7167\u9002\u7528\u7684\u8D22\u52A1\u62A5\u544A\u7F16\u5236\u57FA\u7840\u7F16\u5236\u62A5\u8868", "\u8BBE\u8BA1\u5E76\u6267\u884C\u5185\u90E8\u63A7\u5236", "\u63D0\u4F9B\u5FC5\u8981\u4FE1\u606F", "\u4FDD\u8BC1\u7ECF\u8425\u6210\u529F"], answer: [0, 1, 2], explain: "\u7BA1\u7406\u5C42\u8D1F\u8D23\u7F16\u5236\u62A5\u8868\u3001\u5185\u90E8\u63A7\u5236\u5E76\u5141\u8BB8\u6CE8\u518C\u4F1A\u8BA1\u5E08\u63A5\u89E6\u4FE1\u606F\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "multiple" },
     { id: 490, point: "\u5BA1\u8BA1\u8BC1\u636E", q: "\u94F6\u884C\u5B58\u6B3E\u51FD\u8BC1\u901A\u5E38\u9488\u5BF9\uFF08\u3000\uFF09\u3002", options: ["\u5B58\u5728\u6027\u4E0E\u5B8C\u6574\u6027", "\u8BA1\u4EF7\u548C\u5206\u644A", "\u5206\u7C7B", "\u622A\u6B62"], answer: 0, explain: "\u94F6\u884C\u51FD\u8BC1\u4E3B\u8981\u83B7\u53D6\u5B58\u5728\u6027\u548C\u5B8C\u6574\u6027\u8BC1\u636E\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "single" },
     { id: 491, point: "\u5BA1\u8BA1\u7A0B\u5E8F", q: "\u6CE8\u518C\u4F1A\u8BA1\u5E08\u89C2\u5BDF\u5B58\u8D27\u76D1\u76D8\u53EF\u4EE5\u83B7\u53D6\uFF08\u3000\uFF09\u65B9\u9762\u7684\u8BC1\u636E\u3002", options: ["\u5B58\u8D27\u5B58\u5728", "\u5B58\u8D27\u8D28\u91CF", "\u5B58\u8D27\u6240\u6709\u6743", "\u5B58\u8D27\u8BA1\u4EF7"], answer: 0, explain: "\u76D1\u76D8\u4E3B\u8981\u9488\u5BF9\u5B58\u8D27\u5B58\u5728\u8BA4\u5B9A\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "single" },
@@ -412,7 +412,7 @@
     { id: 551, point: "\u5408\u540C\u6CD5", q: "\u4E0B\u5217\u5C5E\u4E8E\u53EF\u64A4\u9500\u5408\u540C\u60C5\u5F62\u7684\u662F\uFF08\u3000\uFF09\u3002", options: ["\u91CD\u5927\u8BEF\u89E3", "\u663E\u5931\u516C\u5E73", "\u6B3A\u8BC8\u3001\u80C1\u8FEB", "\u8FDD\u53CD\u5F3A\u5236\u6027\u89C4\u5B9A"], answer: [0, 1, 2], explain: "\u91CD\u5927\u8BEF\u89E3\u3001\u663E\u5931\u516C\u5E73\u3001\u6B3A\u8BC8\u80C1\u8FEB\u7B49\u5C5E\u4E8E\u53EF\u64A4\u9500\uFF1B\u8FDD\u53CD\u5F3A\u5236\u6027\u89C4\u5B9A\u53EF\u80FD\u65E0\u6548\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "multiple" },
     { id: 552, point: "\u8BC1\u5238\u6CD5", q: "\u4E0A\u5E02\u516C\u53F8\u4FE1\u606F\u62AB\u9732\u5E94\u5F53\u9075\u5FAA\uFF08\u3000\uFF09\u539F\u5219\u3002", options: ["\u771F\u5B9E\u3001\u51C6\u786E\u3001\u5B8C\u6574", "\u53CA\u65F6", "\u516C\u5E73", "\u4FDD\u5BC6"], answer: [0, 1, 2], explain: "\u4FE1\u606F\u62AB\u9732\u5E94\u771F\u5B9E\u3001\u51C6\u786E\u3001\u5B8C\u6574\u3001\u53CA\u65F6\u3001\u516C\u5E73\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "multiple" },
     { id: 553, point: "\u7834\u4EA7\u6CD5", q: "\u503A\u6743\u4EBA\u4F1A\u8BAE\u53EF\u4EE5\uFF08\u3000\uFF09\u3002", options: ["\u6838\u67E5\u503A\u6743", "\u5BA1\u8BAE\u548C\u89E3\u534F\u8BAE", "\u76D1\u7763\u7BA1\u7406\u4EBA", "\u76F4\u63A5\u5206\u914D\u8D22\u4EA7"], answer: [0, 1, 2], explain: "\u503A\u6743\u4EBA\u4F1A\u8BAE\u6838\u67E5\u503A\u6743\u3001\u5BA1\u8BAE\u548C\u89E3\u548C\u91CD\u6574\u8BA1\u5212\u3001\u76D1\u7763\u7BA1\u7406\u4EBA\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "multiple" },
-    { id: 554, point: "\u7968\u636E\u6CD5", q: "\u652F\u7968\u7684\u4ED8\u6B3E\u4EBA\u662F\uFF08\u3000\uFF09\u3002", options: ["\u94F6\u884C", "\u51FA\u7968\u4EBA", "\u6536\u6B3E\u4EBA", "\u80CC\u4E66\u4EBA"], answer: 0, explain: "\u652F\u7968\u4ED8\u6B3E\u4EBA\u662F\u529E\u7406\u652F\u7968\u5B58\u6B3E\u4E1A\u52A1\u7684\u94F6\u884C\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 554, point: "\u7968\u636E\u6CD5", q: "\u5546\u4E1A\u627F\u5151\u6C47\u7968\u7684\u4ED8\u6B3E\u4EBA\u901A\u5E38\u4E3A\uFF08\u3000\uFF09\u3002", options: ["\u627F\u5151\u4EBA", "\u51FA\u7968\u4EBA", "\u80CC\u4E66\u4EBA", "\u6301\u7968\u4EBA"], answer: 0, explain: "\u5546\u4E1A\u627F\u5151\u6C47\u7968\u7531\u4ED8\u6B3E\u4EBA\u627F\u5151\uFF0C\u4ED8\u6B3E\u4EBA\u627F\u5151\u540E\u5373\u4E3A\u627F\u5151\u4EBA\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "single" },
     { id: 555, point: "\u7269\u6743\u6CD5", q: "\u6240\u6709\u6743\u5305\u62EC\uFF08\u3000\uFF09\u7B49\u6743\u80FD\u3002", options: ["\u5360\u6709", "\u4F7F\u7528", "\u6536\u76CA", "\u5904\u5206"], answer: [0, 1, 2, 3], explain: "\u6240\u6709\u6743\u5305\u62EC\u5360\u6709\u3001\u4F7F\u7528\u3001\u6536\u76CA\u548C\u5904\u5206\u6743\u80FD\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "multiple" },
     { id: 556, point: "\u53CD\u5784\u65AD\u6CD5", q: "\u5177\u6709\u5E02\u573A\u652F\u914D\u5730\u4F4D\u7684\u7ECF\u8425\u8005\u4EE5\u4E0D\u516C\u5E73\u9AD8\u4EF7\u9500\u552E\u5546\u54C1\uFF0C\u53EF\u80FD\u6784\u6210\uFF08\u3000\uFF09\u3002", options: ["\u6EE5\u7528\u5E02\u573A\u652F\u914D\u5730\u4F4D", "\u6A2A\u5411\u5784\u65AD\u534F\u8BAE", "\u7ECF\u8425\u8005\u96C6\u4E2D", "\u7EB5\u5411\u5784\u65AD\u534F\u8BAE"], answer: 0, explain: "\u4E0D\u516C\u5E73\u9AD8\u4EF7\u5C5E\u4E8E\u6EE5\u7528\u5E02\u573A\u652F\u914D\u5730\u4F4D\u884C\u4E3A\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
     { id: 557, point: "\u5408\u4F19\u4F01\u4E1A\u6CD5", q: "\u666E\u901A\u5408\u4F19\u4F01\u4E1A\u4E8B\u52A1\u901A\u5E38\u7531\uFF08\u3000\uFF09\u6267\u884C\u3002", options: ["\u5168\u4F53\u666E\u901A\u5408\u4F19\u4EBA\u5171\u540C\u6267\u884C\u6216\u59D4\u6258\u90E8\u5206\u5408\u4F19\u4EBA", "\u6709\u9650\u5408\u4F19\u4EBA", "\u5916\u90E8\u7ECF\u7406", "\u503A\u6743\u4EBA"], answer: 0, explain: "\u666E\u901A\u5408\u4F19\u4F01\u4E1A\u4E8B\u52A1\u7531\u5168\u4F53\u666E\u901A\u5408\u4F19\u4EBA\u5171\u540C\u6267\u884C\u6216\u59D4\u6258\u90E8\u5206\u5408\u4F19\u4EBA\u6267\u884C\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
@@ -431,7 +431,7 @@
     { id: 570, point: "\u4E94\u529B\u6A21\u578B", q: "\u4F9B\u5E94\u5546\u63D0\u9AD8\u4EF7\u683C\u6216\u964D\u4F4E\u8D28\u91CF\u4F1A\u589E\u5F3A\uFF08\u3000\uFF09\u3002", options: ["\u4F9B\u5E94\u5546\u8BAE\u4EF7\u80FD\u529B", "\u8D2D\u4E70\u8005\u8BAE\u4EF7\u80FD\u529B", "\u66FF\u4EE3\u54C1\u5A01\u80C1", "\u6F5C\u5728\u8FDB\u5165\u8005\u5A01\u80C1"], answer: 0, explain: "\u4F9B\u5E94\u5546\u80FD\u529B\u589E\u5F3A\u4F1A\u63D0\u9AD8\u4F9B\u5E94\u5546\u8BAE\u4EF7\u80FD\u529B\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "single" },
     { id: 571, point: "\u4EF7\u503C\u94FE", q: "\u5185\u90E8\u540E\u52E4\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u57FA\u672C\u6D3B\u52A8", "\u652F\u6301\u6D3B\u52A8", "\u5916\u90E8\u73AF\u5883", "\u57FA\u7840\u8BBE\u65BD"], answer: 0, explain: "\u5185\u90E8\u540E\u52E4\u662F\u57FA\u672C\u6D3B\u52A8\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "single" },
     { id: 572, point: "\u5E76\u8D2D\u6218\u7565", q: "\u4E0A\u4E0B\u6E38\u4F01\u4E1A\u4E4B\u95F4\u7684\u5E76\u8D2D\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u7EB5\u5411\u5E76\u8D2D", "\u6A2A\u5411\u5E76\u8D2D", "\u6DF7\u5408\u5E76\u8D2D", "\u53CD\u5411\u5E76\u8D2D"], answer: 0, explain: "\u7EB5\u5411\u5E76\u8D2D\u53D1\u751F\u5728\u4E0A\u4E0B\u6E38\u4F01\u4E1A\u4E4B\u95F4\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
-    { id: 573, point: "\u516C\u53F8\u6218\u7565\u7C7B\u578B", q: "\u96C6\u4E2D\u5316\u6218\u7565\u7684\u6838\u5FC3\u662F\uFF08\u3000\uFF09\u3002", options: ["\u805A\u7126\u7279\u5B9A\u7EC6\u5206\u5E02\u573A", "\u8986\u76D6\u5168\u884C\u4E1A", "\u540C\u65F6\u6210\u672C\u9886\u5148\u548C\u5DEE\u5F02\u5316", "\u653E\u5F03\u7ADE\u4E89\u4F18\u52BF"], answer: 0, explain: "\u96C6\u4E2D\u5316\u6218\u7565\u805A\u7126\u7279\u5B9A\u7EC6\u5206\u5E02\u573A\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "single" },
+    { id: 573, point: "\u516C\u53F8\u6218\u7565\u7C7B\u578B", q: "\u6210\u672C\u9886\u5148\u6218\u7565\u7684\u4E3B\u8981\u98CE\u9669\u662F\uFF08\u3000\uFF09\u3002", options: ["\u6280\u672F\u53D8\u9769\u4F7F\u6210\u672C\u4F18\u52BF\u5931\u6548", "\u5BA2\u6237\u6570\u91CF\u51CF\u5C11", "\u5E02\u573A\u589E\u957F\u8FC7\u5FEB", "\u4EA7\u54C1\u5DEE\u5F02\u5316\u4E0D\u8DB3"], answer: 0, explain: "\u6280\u672F\u53D8\u9769\u6216\u6A21\u4EFF\u53EF\u80FD\u524A\u5F31\u6210\u672C\u4F18\u52BF\uFF0C\u662F\u6210\u672C\u9886\u5148\u6218\u7565\u7684\u5E38\u89C1\u98CE\u9669\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "single" },
     { id: 574, point: "\u5E73\u8861\u8BA1\u5206\u5361", q: "\u751F\u4EA7\u6D41\u7A0B\u6539\u8FDB\u5C5E\u4E8E\u5E73\u8861\u8BA1\u5206\u5361\u7684\uFF08\u3000\uFF09\u7EF4\u5EA6\u3002", options: ["\u5185\u90E8\u6D41\u7A0B", "\u8D22\u52A1", "\u5BA2\u6237", "\u5B66\u4E60\u4E0E\u6210\u957F"], answer: 0, explain: "\u5185\u90E8\u6D41\u7A0B\u7EF4\u5EA6\u5173\u6CE8\u8FD0\u8425\u6548\u7387\u548C\u8D28\u91CF\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "single" },
     { id: 575, point: "\u6CE2\u58EB\u987F\u77E9\u9635", q: "\u4F4E\u589E\u957F\u7387\u3001\u4F4E\u5E02\u573A\u4EFD\u989D\u7684\u4E1A\u52A1\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u7626\u72D7\u4E1A\u52A1", "\u660E\u661F\u4E1A\u52A1", "\u73B0\u91D1\u725B\u4E1A\u52A1", "\u95EE\u9898\u4E1A\u52A1"], answer: 0, explain: "\u7626\u72D7\u4E1A\u52A1\u4F4E\u589E\u957F\u3001\u4F4E\u4EFD\u989D\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
     { id: 576, point: "\u98CE\u9669\u7BA1\u7406", q: "\u4F01\u4E1A\u80FD\u627F\u53D7\u7684\u98CE\u9669\u635F\u5931\u4E0A\u9650\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u98CE\u9669\u627F\u53D7\u5EA6", "\u98CE\u9669\u504F\u597D", "\u98CE\u9669\u89C4\u907F", "\u98CE\u9669\u62A5\u544A"], answer: 0, explain: "\u98CE\u9669\u627F\u53D7\u5EA6\u662F\u4F01\u4E1A\u613F\u610F\u627F\u53D7\u7684\u98CE\u9669\u635F\u5931\u4E0A\u9650\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "single" },
@@ -624,9 +624,9 @@
   window.getRandomQuestions = getRandomQuestions;
 
   // src/core/config.js
-  var GAME_VERSION = "0.9.0";
-  var BUILD_LABEL = "M3 Phase 1 \xB7 2026-08-06";
-  var SAVE_KEY = "cpa_rpg_m2_save_v1";
+  var GAME_VERSION = "0.9.1";
+  var BUILD_LABEL = "M3 \u53EF\u73A9\u6027\u4F18\u5316 \xB7 2026-08-08";
+  var SAVE_KEY = "cpa_rpg_m3_save_v1";
   var SYSTEM_UNLOCK_LEVELS = {
     skill: 3,
     shop: 5,
@@ -634,20 +634,32 @@
     craft: 5,
     enhance: 5,
     partner: 8,
-    book: 10,
-    challenge: 10
+    book: 3,
+    challenge: 5
   };
 
   // src/core/utils.js
+  function dateStringFor(date) {
+    const pad = (n) => String(n).padStart(2, "0");
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  }
   function todayString() {
+    return dateStringFor(/* @__PURE__ */ new Date());
+  }
+  function dateStringOffset(offsetDays) {
     const d = /* @__PURE__ */ new Date();
-    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+    d.setDate(d.getDate() + offsetDays);
+    return dateStringFor(d);
   }
   function weekStartString(dateStr) {
-    const d = /* @__PURE__ */ new Date(dateStr + "T00:00:00");
+    const parts = String(dateStr || "").split("-").map(Number);
+    if (parts.length < 3 || parts.some((n) => !Number.isFinite(n))) return "";
+    const d = new Date(parts[0], parts[1] - 1, parts[2], 0, 0, 0);
+    if (Number.isNaN(d.getTime())) return "";
     const offset = (d.getDay() + 6) % 7;
     d.setDate(d.getDate() - offset);
-    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+    const pad = (n) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
   }
   function currentWeekKey() {
     return weekStartString(todayString());
@@ -690,9 +702,10 @@
   };
 
   // src/systems/save.js
+  var LEGACY_SAVE_KEY = "cpa_rpg_m2_save_v1";
   function loadSave() {
     try {
-      const raw = localStorage.getItem(SAVE_KEY);
+      const raw = localStorage.getItem(SAVE_KEY) || localStorage.getItem(LEGACY_SAVE_KEY);
       const parsed = raw ? JSON.parse(raw) : null;
       if (parsed && typeof parsed === "object" && (!parsed.saveVersion || parsed.saveVersion < 3)) {
         parsed.saveVersion = 3;
@@ -705,7 +718,15 @@
   function persistSave(state) {
     try {
       state.saveVersion = 3;
-      localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+      const snapshot = {
+        ...state,
+        quiz: void 0,
+        battle: void 0,
+        _lastQuizCorrect: void 0,
+        _lastLearningGain: void 0,
+        player: { ...state.player, moveTarget: null }
+      };
+      localStorage.setItem(SAVE_KEY, JSON.stringify(snapshot));
     } catch (e) {
     }
   }
@@ -1006,6 +1027,9 @@
   }
 
   // src/systems/playerGrowth.js
+  function getExpNext(level) {
+    return Math.round(30 * Math.pow(level, 0.9));
+  }
   function createPlayerGrowthSystem(deps) {
     const { getState, save, sfx: sfx2, showLevelUpToast, notifySystemUnlocks, showToast, unlockAchievement } = deps;
     function getLevelTitle(level) {
@@ -1026,11 +1050,11 @@
         leveled = true;
         p.exp -= p.expNext;
         p.level += 1;
-        p.expNext = Math.round(100 * Math.pow(p.level, 1.5));
+        p.expNext = getExpNext(p.level);
         p.maxHp += 12;
         p.maxMp += 6;
         p.attack += 3;
-        p.defense += 2;
+        p.defense += 1;
         p.skillPoints += 1;
         p.hp = p.maxHp;
         p.mp = p.maxMp;
@@ -1283,7 +1307,7 @@
       REGION_BOSS_INTRO,
       getSkills
     } = deps;
-    function startBattle(monster, isBoss) {
+    function startBattle(monster, isBoss, isTraining = false) {
       const state = getState();
       state.screen = "battle";
       playBgm2(BGM_BATTLE2);
@@ -1292,6 +1316,7 @@
       state.battle = {
         monster: battleMonster,
         isBoss,
+        isTraining,
         region: regionInfo,
         hp: battleMonster.hp,
         maxHp: battleMonster.hp,
@@ -1385,7 +1410,8 @@
           }
           const effectiveAtk = current.player.attack + getWeaponAtk() + getJobBonus("atk");
           const wrongMult = current.battle && current.battle.phase2 ? 0.3 : 0.5;
-          let base = correct ? Math.round(effectiveAtk * sk.power) : Math.max(1, Math.round(effectiveAtk * sk.power * wrongMult));
+          const skillPower = sk.power + (current.skillLevels && current.skillLevels[sk.id] || 0) * 0.1;
+          let base = correct ? Math.round(effectiveAtk * skillPower) : Math.max(1, Math.round(effectiveAtk * skillPower * wrongMult));
           let label = correct ? "\u6280\u80FD\u5F31\u70B9\u7834\u89E3\uFF0C" : "\u7B54\u9519\uFF0C\u6280\u80FD\u5A01\u529B\u4E0B\u964D\uFF0C";
           if (correct) {
             current.battle.combo += 1;
@@ -1518,9 +1544,13 @@
       if (state.battle.isBoss && state.battle.bossMechanicInfo) {
         applyBossMechanicTurnEffects();
       }
+      const levelScale = Math.max(0, state.player.level - 1);
+      const scaledAttack = Math.round(
+        state.battle.monster.attack + levelScale * (state.battle.isBoss ? 1.8 : 0.5)
+      );
       const dmg = Math.max(
-        1,
-        state.battle.monster.attack - state.player.defense - getArmorDef() - getJobBonus("def") + Math.floor(Math.random() * 4) - 2
+        state.battle.isBoss ? 3 : 1,
+        scaledAttack - state.player.defense - getArmorDef() - getJobBonus("def") + Math.floor(Math.random() * 4) - 2
       );
       const surgeBonus = state.battle.strategySurge ? 4 : 0;
       const finalDmg = dmg + surgeBonus;
@@ -1532,7 +1562,9 @@
       state.battle.feedback += "<br>\u602A\u7269\u53CD\u51FB\uFF0C\u53D7\u5230 " + finalDmg + " \u4F24\u5BB3\u3002" + (surgeBonus ? " \u8FDE\u73AF\u6269\u5F20\u8FFD\u52A0\u4F24\u5BB3\u3002" : "");
       if (state.player.hp <= 0) {
         state.player.hp = Math.round(state.player.maxHp * 0.5);
-        showToast("\u6218\u6597\u5931\u8D25\uFF0C\u56DE\u5230\u5B58\u6863\u70B9\u6062\u590D 50% HP");
+        const lostGold = Math.floor(state.player.gold * 0.1);
+        state.player.gold -= lostGold;
+        showToast(`\u6218\u6597\u5931\u8D25\uFF0C\u635F\u5931 ${lostGold} \u91D1\u5E01\u540E\u6062\u590D 50% HP`);
         state.screen = "map";
         playZoneBgm2(state.zone || "gold_field");
         delete state.battle;
@@ -1571,10 +1603,18 @@
       if (win) {
         sfx2("win");
         const p = state.player;
-        state.partner.mood = Math.min(100, state.partner.mood + 4);
-        gainPartnerExp(15);
-        p.gold += b.monster.gold;
-        p.exp += b.monster.exp;
+        const isTraining = !!state.battle.isTraining;
+        const trainingUsed = state.daily.trainingCount || 0;
+        const fullTrainingReward = !isTraining || trainingUsed < 3;
+        if (isTraining) state.daily.trainingCount = trainingUsed + 1;
+        if (fullTrainingReward) {
+          state.partner.mood = Math.min(100, state.partner.mood + 4);
+          gainPartnerExp(15);
+          p.gold += b.monster.gold;
+          p.exp += b.monster.exp;
+        } else {
+          showToast("\u4ECA\u65E5\u8BAD\u7EC3\u5956\u52B1\u6B21\u6570\u5DF2\u7528\u5B8C\uFF0C\u672C\u573A\u4E0D\u83B7\u5F97\u989D\u5916\u91D1\u5E01\u3001\u7ECF\u9A8C\u6216\u6389\u843D");
+        }
         const drops = {
           monster_1: { stone: 1 },
           monster_2: { ink: 1 },
@@ -1596,7 +1636,7 @@
           strategy_monster_2: { beads: 1 },
           strategy_boss: { credential: 2 }
         };
-        const drop = drops[b.monster.id] || {};
+        const drop = fullTrainingReward ? drops[b.monster.id] || {} : {};
         const materialNames = { stone: "\u91D1\u7B97\u77F3", ink: "\u58A8\u6E0D\u6B8B\u9875", beads: "\u7B97\u76D8\u73E0", credential: "\u5408\u5E76\u51ED\u8BC1" };
         const dropText = Object.entries(drop).map(([key, count]) => {
           state.inventory.materials[key] = (state.inventory.materials[key] || 0) + count;
@@ -1623,7 +1663,7 @@
           activateRegionTasks(state.zone);
           updateTask(ZONE_BOSS_TASK[b.monster.id], 1);
           if (Object.values(ZONE_BOSS_STATE).every((flag) => state[flag])) unlockAchievement("all_zone_bosses");
-        } else {
+        } else if (!isTraining) {
           state.monstersKilled = (state.monstersKilled || 0) + 1;
           if (!state.monstersKilledIds) state.monstersKilledIds = [];
           state.monstersKilledIds.push(b.monster.id);
@@ -1670,24 +1710,28 @@
             }
           }
         }
-        if (b.monster.id === "boss_1") updateTask("main", 1);
-        else if (!b.isBoss) updateTask("defeat3", 1);
-        if (!b.isBoss && b.monster.id === "monster_2") updateTask("defeat_ink", 1);
-        if (!b.isBoss && b.monster.id === "monster_1") updateTask("defeat_crane", 1);
-        unlockAchievement("first_battle");
-        if ((state.monstersKilled || 0) >= 3) unlockAchievement("beat_3");
-        if ((state.monstersKilled || 0) >= 10) unlockAchievement("kill10");
-        if (b.monster.id === "boss_1") unlockAchievement("beat_boss");
+        if (!isTraining) {
+          if (b.monster.id === "boss_1") updateTask("main", 1);
+          else if (!b.isBoss) updateTask("defeat3", 1);
+          if (!b.isBoss && b.monster.id === "monster_2") updateTask("defeat_ink", 1);
+          if (!b.isBoss && b.monster.id === "monster_1") updateTask("defeat_crane", 1);
+          unlockAchievement("first_battle");
+          if ((state.monstersKilled || 0) >= 3) unlockAchievement("beat_3");
+          if ((state.monstersKilled || 0) >= 10) unlockAchievement("kill10");
+          if (b.monster.id === "boss_1") unlockAchievement("beat_boss");
+        }
         maybeLevelUp();
         save();
         updateHUD();
+        const shownExp = fullTrainingReward ? b.monster.exp : 0;
+        const shownGold = fullTrainingReward ? b.monster.gold : 0;
         openModal(`
         <div class="modal-box victory">
           <div class="modal-title">\u6218\u6597\u80DC\u5229</div>
           <div class="result-banner correct">\u51FB\u8D25 ${b.monster.label}</div>
           <div class="reward-grid">
-            <div class="report-card"><div class="num">${b.monster.exp}</div><div>\u7ECF\u9A8C</div></div>
-            <div class="report-card"><div class="num">${b.monster.gold} G</div><div>\u91D1\u5E01</div></div>
+            <div class="report-card"><div class="num">${shownExp}</div><div>\u7ECF\u9A8C</div></div>
+            <div class="report-card"><div class="num">${shownGold} G</div><div>\u91D1\u5E01</div></div>
             <div class="report-card"><div class="num">${dropText ? "\u83B7\u5F97" : "\u2014"}</div><div>${dropText || "\u65E0\u6389\u843D"}</div></div>
           </div>
           <div class="info-card">${b.monster.id === "final_boss" ? "\u4F60\u51FB\u8D25\u4E86\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\u3002\u4F1A\u8BA1\u3001\u5BA1\u8BA1\u3001\u8D22\u7BA1\u3001\u7A0E\u6CD5\u3001\u7ECF\u6D4E\u6CD5\u548C\u6218\u7565\u516D\u57DF\u91CD\u65B0\u5E73\u8861\uFF0C\u8BB0\u8D26\u5927\u9646\u6062\u590D\u4E86\u79E9\u5E8F\u3002" : b.monster.id === "boss_1" ? "\u4F60\u51FB\u8D25\u4E86\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u3002\u5C0F\u5206\uFF1A\u501F\u8D37\u91CD\u65B0\u5E73\u8861\u4E86\uFF0C\u8C22\u8C22\u4F60\uFF0C\u4F1A\u8BA1\u52C7\u8005\u3002<br>\u4E0B\u4E00\u7AD9\uFF1A\u5BA1\u8BA1\u94C1\u5821\u3002\u5B8C\u6574\u533A\u57DF\u7684\u5192\u9669\u5C06\u5728\u540E\u7EED\u7248\u672C\u89E3\u9501\u3002" : ZONE_BOSS_STATE[b.monster.id] ? `\u4F60\u51FB\u8D25\u4E86${b.monster.label}\u3002${((_a = REGION_BOSS_INTRO[b.monster.id]) == null ? void 0 : _a.text) || "\u533A\u57DF\u79E9\u5E8F\u6B63\u5728\u6062\u590D\u3002"}` : state.zone === "strategy_star" ? "\u6218\u7565\u661F\u5854\u7684\u8FF7\u96FE\u6B63\u5728\u6D88\u6563\uFF0C\u4F60\u5DF2\u63A5\u8FD1\u516D\u57DF\u5E73\u8861\u3002" : state.zone === "law_temple" ? "\u6CD5\u6761\u795E\u6BBF\u7684\u89C4\u5219\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u5DE9\u56FA\u7ECF\u6D4E\u6CD5\u77E5\u8BC6\u3002" : state.zone === "tax_wasteland" ? "\u7A0E\u7387\u8352\u539F\u7684\u7533\u62A5\u79E9\u5E8F\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u638C\u63E1\u7A0E\u6CD5\u89C4\u5219\u3002" : state.zone === "capital_forest" ? "\u8D44\u672C\u5BC6\u6797\u4E2D\u7684\u8D22\u52A1\u5F02\u5E38\u6B63\u5728\u6D88\u9000\uFF0C\u7EE7\u7EED\u6DF1\u5316\u8D22\u7BA1\u77E5\u8BC6\u3002" : state.zone === "audit_tower" ? "\u5BA1\u8BA1\u94C1\u5821\u7684\u8BC1\u636E\u94FE\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u68C0\u67E5\u5269\u4F59\u5F02\u5E38\u3002" : "\u7EE7\u7EED\u63A2\u7D22\u91D1\u7B97\u539F\u91CE\u3002"}</div>
@@ -2071,18 +2115,21 @@
       const q = quiz.q;
       if (q.type === "multiple" && !Array.isArray(selected)) selected = [];
       const correct = isCorrectAnswer(selected, q.answer);
+      state._lastQuizCorrect = correct;
       state.answered += 1;
       state.quizHistory = state.quizHistory || [];
       state.quizHistory.push({ id: q.id, correct, at: Date.now() });
       if (state.quizHistory.length > 60) state.quizHistory = state.quizHistory.slice(-60);
       state.week.answered = (state.week.answered || 0) + 1;
       state.daily.answered += 1;
+      const subject = pointSubject(q.point);
+      state.week.subjects[subject] = (state.week.subjects[subject] || 0) + 1;
       if (!state.daily.done && state.daily.answered >= state.daily.target) {
         state.daily.done = true;
-        state.player.gold += 20;
-        state.player.exp += 10;
+        state.player.gold += 40;
+        state.player.exp += 20;
         maybeLevelUp();
-        showToast("\u4ECA\u65E5\u5B66\u4E60\u76EE\u6807\u5B8C\u6210\uFF01\u83B7\u5F97 20 \u91D1\u5E01\u300110 \u7ECF\u9A8C");
+        showToast("\u4ECA\u65E5\u5B66\u4E60\u76EE\u6807\u5B8C\u6210\uFF01\u83B7\u5F97 40 \u91D1\u5E01\u300120 \u7ECF\u9A8C");
       }
       state.pointProgress[q.point] = (state.pointProgress[q.point] || 0) + 1;
       if (correct) state.pointCorrect[q.point] = (state.pointCorrect[q.point] || 0) + 1;
@@ -2090,8 +2137,6 @@
         state.correct += 1;
         state.quizStreak = (state.quizStreak || 0) + 1;
         state.week.correct = (state.week.correct || 0) + 1;
-        const subject = pointSubject(q.point);
-        state.week.subjects[subject] = (state.week.subjects[subject] || 0) + 1;
         state.partner.mood = Math.min(100, state.partner.mood + 3);
         gainPartnerExp(5);
         updateTask("answer10", 1);
@@ -2104,8 +2149,8 @@
         const coverage = Math.round(Object.keys(state.pointProgress).length / Math.max(1, POINTS2.length) * 100);
         if (coverage >= 60) unlockAchievement("coverage60");
         if (coverage >= 90) unlockAchievement("coverage90");
-        state.player.exp += 2;
-        state._lastLearningGain = 2;
+        state.player.exp += 8;
+        state._lastLearningGain = 8;
         maybeLevelUp();
         const rec = state.reviewMap[q.id];
         if (rec && state.wrongQuestions.includes(q.id)) {
@@ -3143,7 +3188,7 @@
           <div class="modal-title">\u9519\u9898\u672C \xB7 \u5DF2\u6E05\u96F6</div>
           <div class="modal-text">\u5F53\u524D\u6CA1\u6709\u5F85\u590D\u4E60\u9519\u9898\u3002\u7EE7\u7EED\u4FDD\u6301\u5B66\u4E60\u8282\u594F\uFF0C\u628A\u6BCF\u6B21\u7B54\u9519\u90FD\u53D8\u6210\u638C\u63E1\u70B9\u3002</div>
           <div class="modal-actions">
-            <button class="pixel-btn" data-action="challenge-start" data-mode="mock">\u6A21\u62DF\u8003 5 \u9898</button>
+            <button class="pixel-btn" data-action="challenge-start" data-mode="mock">\u6A21\u62DF\u8003 10 \u9898</button>
             <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">\u667A\u80FD\u590D\u4E60</button>
             <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
           </div>
@@ -3232,6 +3277,10 @@
         state.lawCleared,
         state.strategyCleared
       ].filter(Boolean).length;
+      const dueReview = (state.wrongQuestions || []).filter((id) => {
+        const rec = state.reviewMap[id];
+        return !rec || !rec.next || rec.next <= Date.now();
+      }).length;
       openModal(`
       <div class="modal-box">
         <div class="modal-title">\u5B66\u4E60\u62A5\u544A \xB7 ${getCurrentJob().name}</div>
@@ -3253,7 +3302,7 @@
         <div class="modal-text"><b>\u6700\u8FD1\u590D\u4E60\u6311\u6218</b></div>
         <div class="report-grid">${historyCards}</div>
         <div class="modal-text">
-          \u9519\u9898\uFF1A${state.wrongQuestions.length} \xB7 \u666E\u901A\u602A\uFF1A${state.monstersKilled || 0} \xB7 \u533A\u57DF\u8083\u6E05\uFF1A${clearedZones} / 5 \xB7 BOSS\uFF1A${state.bossKilled ? "\u5DF2\u51FB\u8D25" : "\u672A\u51FB\u8D25"}<br>
+          \u9519\u9898\uFF1A${state.wrongQuestions.length} \xB7 \u4ECA\u65E5\u5230\u671F\u590D\u4E60\uFF1A${dueReview} \xB7 \u666E\u901A\u602A\uFF1A${state.monstersKilled || 0} \xB7 \u533A\u57DF\u8083\u6E05\uFF1A${clearedZones} / 5 \xB7 BOSS\uFF1A${state.bossKilled ? "\u5DF2\u51FB\u8D25" : "\u672A\u51FB\u8D25"}<br>
           \u88C5\u5907\uFF1A${state.weapon.name} / ${state.armor.name} \xB7 \u6280\u80FD\u70B9\uFF1A${p.skillPoints}<br>
           \u6750\u6599\uFF1A\u91D1\u7B97\u77F3 \xD7${state.inventory.materials.stone || 0} \xB7 \u58A8\u6E0D\u6B8B\u9875 \xD7${state.inventory.materials.ink || 0} \xB7 \u7B97\u76D8\u73E0 \xD7${state.inventory.materials.beads || 0}
         </div>
@@ -3543,7 +3592,7 @@
   }
 
   // src/render/panels.js
-  var JOB_QUESTIONS2 = [
+  var JOB_QUESTIONS = [
     {
       q: "\u4F60\u66F4\u559C\u6B22\u54EA\u79CD\u5B66\u4E60\u65B9\u5F0F\uFF1F",
       options: [
@@ -3764,13 +3813,13 @@
       const state = getState();
       const quiz = state.jobQuiz;
       if (!quiz) return;
-      const item = JOB_QUESTIONS2[quiz.idx];
+      const item = JOB_QUESTIONS[quiz.idx];
       const options = item.options.map(
         (opt, i) => `<button class="pixel-btn option" data-action="job-quiz-answer" data-value="${opt.value}"><span class="tag">${String.fromCharCode(65 + i)}</span>${opt.label}</button>`
       ).join("");
       openModal(`
       <div class="modal-box">
-        <div class="modal-title">\u804C\u4E1A\u63A8\u8350 \xB7 \u7B2C ${quiz.idx + 1}/${JOB_QUESTIONS2.length} \u9898</div>
+        <div class="modal-title">\u804C\u4E1A\u63A8\u8350 \xB7 \u7B2C ${quiz.idx + 1}/${JOB_QUESTIONS.length} \u9898</div>
         <div class="info-card">${item.q}</div>
         <div class="quiz-options">${options}</div>
       </div>
@@ -3828,14 +3877,17 @@
           <div class="report-card"><div class="num">${state.daily.answered}/${state.daily.target}</div><div>\u4ECA\u65E5\u8FDB\u5EA6</div></div>
           <div class="report-card"><div class="num">${progress}%</div><div>\u5B8C\u6210\u7387</div></div>
           <div class="report-card"><div class="num">${plan.subjects.length ? plan.subjects.join("\u3001") : "\u5168\u90E8"}</div><div>\u79D1\u76EE\u504F\u597D</div></div>
+          <div class="report-card"><div class="num">${plan.streakDays || 0} \u5929</div><div>\u8FDE\u7EED\u6253\u5361</div></div>
         </div>
         <div class="report-bar"><div style="width:${progress}%"></div></div>
+        <div class="modal-text"><b>\u8BA1\u5212\u72B6\u6001</b> \xB7 ${plan.enabled ? "\u5DF2\u5F00\u542F" : "\u5DF2\u6682\u505C"} ${state.daily.done ? " \xB7 \u4ECA\u65E5\u76EE\u6807\u5DF2\u5B8C\u6210" : ""}</div>
         <div class="modal-text"><b>\u6BCF\u65E5\u76EE\u6807</b></div>
         <div class="modal-actions">${targetBtns}</div>
         <div class="modal-text"><b>\u79D1\u76EE\u504F\u597D</b><br>\u672A\u9009\u62E9\u65F6\u4ECE\u5168\u90E8\u79D1\u76EE\u62BD\u53D6\u9898\u76EE\u3002</div>
         <div class="modal-actions">${subjectBtns}</div>
         <div class="modal-actions">
-          <button class="pixel-btn" data-action="challenge-start" data-mode="plan">\u5F00\u59CB\u4ECA\u65E5\u8BA1\u5212</button>
+          <button class="pixel-btn" data-action="plan-toggle">${plan.enabled ? "\u6682\u505C\u8BA1\u5212" : "\u5F00\u542F\u8BA1\u5212"}</button>
+          <button class="pixel-btn" data-action="challenge-start" data-mode="plan" ${plan.enabled ? "" : "disabled"}>\u5F00\u59CB\u4ECA\u65E5\u8BA1\u5212</button>
           <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
         </div>
       </div>
@@ -4419,7 +4471,7 @@
         maxMp: 50,
         level: 1,
         exp: 0,
-        expNext: 80,
+        expNext: getExpNext(1),
         gold: 40,
         attack: 16,
         defense: 9,
@@ -4446,6 +4498,7 @@
         skill: "\u8BB0\u8D26\u795D\u798F"
       },
       unlockedSkills: ["lending_slash", "trial_balance"],
+      skillLevels: {},
       skillPoints: 2,
       inventory: { hpPotion: 1, mpPotion: 1, materials: { stone: 0, ink: 0, beads: 0, credential: 0 } },
       reviewMap: {},
@@ -4533,10 +4586,18 @@
       achievements: [],
       levelTitles: [],
       collectCount: 0,
-      daily: { date: todayString(), answered: 0, target: 5, done: false },
-      plan: { enabled: true, dailyTarget: 5, subjects: [] },
+      daily: {
+        date: todayString(),
+        answered: 0,
+        target: 5,
+        done: false,
+        challengeCount: 0,
+        trainingCount: 0
+      },
+      plan: { enabled: true, dailyTarget: 5, subjects: [], streakDays: 0 },
       week: { weekStart: currentWeekKey(), answered: 0, correct: 0, subjects: {}, playSeconds: 0 },
       weeklyHistory: [],
+      dailyRespawnDate: todayString(),
       lowQuality: false,
       _unlockAll: false,
       notifiedSystems: []
@@ -4735,6 +4796,7 @@
     if (!state.equipmentLevels) state.equipmentLevels = { weapon: 0, armor: 0 };
     if (!state.unlockedSkills)
       state.unlockedSkills = ["lending_slash", "trial_balance", "subject_switch", "entry_combo", "consolidation"];
+    if (!state.skillLevels) state.skillLevels = {};
     if (!state.tasks) state.tasks = defaultState().tasks;
     if (state.skillPoints === void 0) state.skillPoints = 0;
     if (!state.inventory) state.inventory = { hpPotion: 1, mpPotion: 1 };
@@ -4748,6 +4810,11 @@
     if (!state.partner.expNext) state.partner.expNext = 50;
     if (!state.partner.skill) state.partner.skill = "\u8BB0\u8D26\u795D\u798F";
     if (state.player.skillPoints === void 0) state.player.skillPoints = state.skillPoints || 0;
+    const desiredExpNext = getExpNext(state.player.level || 1);
+    if (!state.player.expNext || state.player.expNext > desiredExpNext * 2) {
+      state.player.expNext = desiredExpNext;
+      if ((state.player.exp || 0) >= desiredExpNext) state.player.exp = Math.max(0, desiredExpNext - 1);
+    }
     if (!state.player.facing) state.player.facing = "down";
     if (state.player.moveTarget === void 0) state.player.moveTarget = null;
     if (!state.reviewMap) state.reviewMap = {};
@@ -4759,6 +4826,7 @@
     if (state.plan.enabled === void 0) state.plan.enabled = true;
     if (!state.plan.dailyTarget) state.plan.dailyTarget = 5;
     if (!Array.isArray(state.plan.subjects)) state.plan.subjects = [];
+    if (state.plan.streakDays === void 0) state.plan.streakDays = 0;
     if (!state.week) state.week = { weekStart: currentWeekKey(), answered: 0, correct: 0, subjects: {}, playSeconds: 0 };
     if (!Array.isArray(state.weeklyHistory)) state.weeklyHistory = [];
     if (state.week.weekStart !== currentWeekKey()) {
@@ -4768,10 +4836,26 @@
     }
     if (!state.week.subjects) state.week.subjects = {};
     if (!state.daily || state.daily.date !== todayString()) {
-      state.daily = { date: todayString(), answered: 0, target: state.plan.dailyTarget || 5, done: false };
+      if (state.daily && state.daily.date) {
+        if (state.daily.date === dateStringOffset(-1) && (state.daily.answered || 0) >= (state.daily.target || 1)) {
+          state.plan.streakDays = (state.plan.streakDays || 0) + 1;
+        } else {
+          state.plan.streakDays = 0;
+        }
+      }
+      state.daily = {
+        date: todayString(),
+        answered: 0,
+        target: state.plan.dailyTarget || 5,
+        done: false,
+        challengeCount: 0,
+        trainingCount: 0
+      };
     } else {
       state.daily.target = state.plan.dailyTarget || state.daily.target;
     }
+    if (state.daily.challengeCount === void 0) state.daily.challengeCount = 0;
+    if (state.daily.trainingCount === void 0) state.daily.trainingCount = 0;
     if (!state.settings)
       state.settings = {
         shake: true,
@@ -4826,6 +4910,13 @@
     if (state.quizStreak === void 0) state.quizStreak = 0;
     if (!Array.isArray(state.visitedRooms)) state.visitedRooms = [];
     if (!Array.isArray(state.collectedMaterialIds)) state.collectedMaterialIds = [];
+    if (!Array.isArray(state.monstersKilledIds)) state.monstersKilledIds = [];
+    if (!state.dailyRespawnDate) state.dailyRespawnDate = todayString();
+    else if (state.dailyRespawnDate !== todayString()) {
+      state.dailyRespawnDate = todayString();
+      state.monstersKilledIds = [];
+      state.collectedMaterialIds = [];
+    }
     if (!state.collectCount) state.collectCount = 0;
     if (!state.tasks.some((t) => t.id === "defeat_ink")) {
       const inkTask = defaultState().tasks.find((t) => t.id === "defeat_ink");
@@ -4991,8 +5082,8 @@
         y: 220,
         label: "\u5408\u5E76\u62A5\u8868\u5DE8\u50CF",
         point: "\u62A5\u8868",
-        hp: 180,
-        attack: 15,
+        hp: 130,
+        attack: 16,
         exp: 120,
         gold: 80
       }
@@ -6252,8 +6343,8 @@
         y: 180,
         label: "\u51ED\u8BC1\u5DE8\u50CF",
         point: "\u5BA1\u8BA1\u8BC1\u636E",
-        hp: 130,
-        attack: 15,
+        hp: 150,
+        attack: 17,
         exp: 90,
         gold: 60
       }
@@ -6363,8 +6454,8 @@
         y: 180,
         label: "\u4F30\u503C\u6811\u738B",
         point: "\u8D44\u672C\u9884\u7B97",
-        hp: 140,
-        attack: 16,
+        hp: 170,
+        attack: 19,
         exp: 100,
         gold: 70
       }
@@ -6467,8 +6558,8 @@
         y: 180,
         label: "\u7A0E\u7AE0\u5DE8\u50CF",
         point: "\u4F01\u4E1A\u6240\u5F97\u7A0E",
-        hp: 150,
-        attack: 17,
+        hp: 190,
+        attack: 21,
         exp: 110,
         gold: 80
       }
@@ -6571,8 +6662,8 @@
         y: 180,
         label: "\u6CD5\u69CC\u88C1\u51B3\u8005",
         point: "\u8BC1\u5238\u6CD5",
-        hp: 160,
-        attack: 18,
+        hp: 210,
+        attack: 23,
         exp: 120,
         gold: 90
       }
@@ -6674,8 +6765,8 @@
         y: 180,
         label: "\u5E76\u8D2D\u9738\u4E3B",
         point: "\u5E76\u8D2D\u6218\u7565",
-        hp: 170,
-        attack: 19,
+        hp: 240,
+        attack: 25,
         exp: 130,
         gold: 100
       },
@@ -6686,12 +6777,34 @@
         y: 220,
         label: "\u516D\u57DF\u5931\u8861\u4E4B\u4E3B",
         point: "\u516D\u57DF\u5E73\u8861",
-        hp: 260,
-        attack: 20,
+        hp: 300,
+        attack: 28,
         exp: 300,
         gold: 200
       }
     ];
+    const TRAINING_BASE = {
+      gold_field: { label: "\u8BAD\u7EC3\u51ED\u8BC1\u7EB8\u9E64", point: "\u51ED\u8BC1", hp: 42, attack: 9, exp: 26, gold: 18 },
+      audit_tower: { label: "\u8BAD\u7EC3\u5E95\u7A3F\u9B54\u50CF", point: "\u5BA1\u8BA1\u8BC1\u636E", hp: 60, attack: 12, exp: 40, gold: 30 },
+      capital_forest: { label: "\u8BAD\u7EC3\u73B0\u91D1\u6D41\u72FC", point: "\u73B0\u91D1\u6D41\u91CF", hp: 62, attack: 13, exp: 44, gold: 34 },
+      tax_wasteland: { label: "\u8BAD\u7EC3\u53D1\u7968\u9B54\u50CF", point: "\u53D1\u7968\u7BA1\u7406", hp: 64, attack: 14, exp: 48, gold: 36 },
+      law_temple: { label: "\u8BAD\u7EC3\u5408\u540C\u9B54\u50CF", point: "\u5408\u540C\u6CD5", hp: 66, attack: 15, exp: 52, gold: 38 },
+      strategy_star: { label: "\u8BAD\u7EC3\u6218\u7565\u8FF7\u96FE\u517D", point: "SWOT", hp: 68, attack: 16, exp: 56, gold: 40 }
+    };
+    function getTrainingMonster() {
+      const base = TRAINING_BASE[state.zone] || TRAINING_BASE.gold_field;
+      return {
+        id: "training_" + state.zone,
+        type: "monster",
+        isTraining: true,
+        label: base.label,
+        point: base.point,
+        hp: base.hp,
+        attack: base.attack,
+        exp: base.exp,
+        gold: base.gold
+      };
+    }
     function tileAt(tx, ty) {
       if (tx < 0 || ty < 0 || tx >= MAP_W || ty >= MAP_H) return 3;
       return getCurrentMapGrid()[ty][tx];
@@ -6846,6 +6959,13 @@
       }
       const source = pool.length ? pool : QUESTIONS;
       return [...source].sort(() => Math.random() - 0.5).slice(0, Math.max(1, count));
+    }
+    function getDueReviewCount() {
+      const now = Date.now();
+      return (state.wrongQuestions || []).filter((id) => {
+        const rec = state.reviewMap[id];
+        return !rec || !rec.next || rec.next <= now;
+      }).length;
     }
     function pointSubject(point) {
       for (const [subject, points] of Object.entries(PLAN_SUBJECT_POINTS)) {
@@ -8099,7 +8219,15 @@
         closeModal();
         updateHUD();
         sfx("doorClose");
-        showToast("\u8FD4\u56DE\u91D1\u7B97\u539F\u91CE");
+        const zoneNames = {
+          gold_field: "\u91D1\u7B97\u539F\u91CE",
+          audit_tower: "\u5BA1\u8BA1\u94C1\u5821",
+          capital_forest: "\u8D44\u672C\u5BC6\u6797",
+          tax_wasteland: "\u7A0E\u7387\u8352\u539F",
+          law_temple: "\u6CD5\u6761\u795E\u6BBF",
+          strategy_star: "\u6218\u7565\u661F\u5854"
+        };
+        showToast("\u8FD4\u56DE" + (zoneNames[state.zone] || "\u5730\u56FE"));
       });
     }
     const ZONE_UNLOCK = {
@@ -8348,15 +8476,17 @@
         </div>`;
       }).join("");
       const skillRows = getCurrentJobSkills().map((s) => {
+        const skillLevel = state.skillLevels[s.id] || 0;
+        const boostBtn = `<button class="pixel-btn small secondary" data-action="upgrade-skill" data-skill="${s.id}" data-from="equip">\u5F3A\u5316 +${skillLevel}</button>`;
         if (job.id === "accountant") {
           const learned = state.unlockedSkills.includes(s.id);
           const button = learned ? `<span style="color:#2f7a35;">\u5DF2\u4E60\u5F97</span>` : `<button class="pixel-btn small" data-action="learn-skill" data-skill="${s.id}">\u5B66\u4E60</button>`;
           return `<div class="book-card" style="display:flex;justify-content:space-between;align-items:center;gap:10px;" data-tip="${s.name}\uFF1A${s.desc} \xB7 \u6D88\u8017 ${s.mp} MP">
-            <div><b>${s.name}</b> \xB7 ${s.mp} MP<br><span class="caption">${s.desc}</span></div>${button}
+            <div><b>${s.name}</b> \xB7 ${s.mp} MP<br><span class="caption">${s.desc}</span></div><div>${button}${learned ? boostBtn : ""}</div>
           </div>`;
         }
         return `<div class="book-card" style="display:flex;justify-content:space-between;align-items:center;gap:10px;" data-tip="${s.name}\uFF1A${s.desc} \xB7 \u6D88\u8017 ${s.mp} MP">
-          <div><b>${s.name}</b> \xB7 ${s.mp} MP<br><span class="caption">${s.desc}</span></div><span style="color:#2f7a35;">\u5DF2\u4E60\u5F97</span>
+          <div><b>${s.name}</b> \xB7 ${s.mp} MP<br><span class="caption">${s.desc}</span></div><div><span style="color:#2f7a35;">\u5DF2\u4E60\u5F97</span>${boostBtn}</div>
         </div>`;
       }).join("");
       openModal(`
@@ -8415,12 +8545,14 @@
           const learned = job.id === "accountant" ? state.unlockedSkills.includes(s.id) : true;
           const stateText = learned ? "\u5DF2\u4E60\u5F97" : "\u53EF\u5B66\u4E60";
           const learnBtn = job.id === "accountant" && !learned ? `<button class="pixel-btn small" data-action="learn-skill" data-skill="${s.id}" data-from="skill-tree">\u5B66\u4E60</button>` : "";
+          const skillLevel = state.skillLevels[s.id] || 0;
+          const boostBtn = learned ? `<button class="pixel-btn small secondary" data-action="upgrade-skill" data-skill="${s.id}" data-from="skill-tree">\u5F3A\u5316 +${skillLevel}\uFF08+${(skillLevel * 0.1).toFixed(1)} \u500D\uFF09</button>` : "";
           return `
               <div class="skill-tree-card ${learned ? "" : "locked"}" data-tip="${s.name}\uFF1A${s.desc} \xB7 \u6D88\u8017 ${s.mp} MP">
                 <span class="skill-state">${stateText}</span>
                 <b>${s.name}</b> \xB7 ${s.mp} MP
                 <small>${s.desc}</small>
-                <div class="modal-actions" style="margin-top:10px;">${learnBtn}</div>
+                <div class="modal-actions" style="margin-top:10px;">${learnBtn}${boostBtn}</div>
               </div>
             `;
         }).join("");
@@ -8486,22 +8618,46 @@
       if (from === "skill-tree") openSkillTree();
       else openEquip();
     }
+    function upgradeSkill(skillId, from = "equip") {
+      const skill = SKILLS[skillId];
+      if (!skill || !getCurrentJobSkills().some((s) => s.id === skillId)) return;
+      const current = state.skillLevels[skillId] || 0;
+      if (current >= 5) {
+        showToast("\u8BE5\u6280\u80FD\u5DF2\u8FBE\u5230\u5F3A\u5316\u4E0A\u9650 +5");
+        return;
+      }
+      if (state.player.skillPoints < 1) {
+        showToast("\u6280\u80FD\u70B9\u4E0D\u8DB3");
+        return;
+      }
+      state.player.skillPoints -= 1;
+      state.skillLevels[skillId] = current + 1;
+      save();
+      sfx("switch");
+      sfx("levelup");
+      showToast(skill.name + " \u5F3A\u5316\u81F3 +" + (current + 1));
+      if (from === "skill-tree") openSkillTree();
+      else openEquip();
+    }
     function openChallengeSetup() {
       if (!isSystemUnlocked("challenge")) {
         showToast(systemLockTip("challenge", "\u590D\u4E60\u6311\u6218") + " \u89E3\u9501");
         return;
       }
+      const used = state.daily.challengeCount || 0;
+      const left = Math.max(0, 3 - used);
       openModal(`
       <div class="modal-box">
         <div class="modal-title">\u590D\u4E60\u6311\u6218</div>
         <div class="modal-text">
-          \u5B8C\u6210 5 \u9053\u9898\u53EF\u83B7\u5F97\u5956\u52B1\u3002\u6B63\u786E\u7387\u8FBE\u5230 80% \u4EE5\u4E0A\u989D\u5916\u83B7\u5F97\u6280\u80FD\u70B9\u3002
+          \u5B8C\u6210 5 \u9053\u9898\u53EF\u83B7\u5F97\u5956\u52B1\uFF0C\u6A21\u62DF\u8003\u4E3A 10 \u9898\u6574\u5377\u3002\u4ECA\u65E5\u5269\u4F59\u5168\u989D\u5956\u52B1\u6B21\u6570\uFF1A${left}\u3002\u524D 3 \u6B21\u83B7\u5F97 20 \u91D1\u5E01\u300110 \u7ECF\u9A8C\uFF1B\u6B63\u786E\u7387\u8FBE\u5230 80% \u989D\u5916\u83B7\u5F97 1 \u6280\u80FD\u70B9\u3002\u4E4B\u540E\u4ECD\u53EF\u7EE7\u7EED\u5237\u9898\uFF0C\u4F46\u53EA\u83B7\u5F97 5 \u91D1\u5E01\u3002
         </div>
         <div class="modal-actions">
           <button class="pixel-btn" data-action="challenge-start" data-mode="wrong">\u9519\u9898\u4E13\u7EC3</button>
           <button class="pixel-btn secondary" data-action="challenge-start" data-mode="weak">\u8584\u5F31\u70B9\u4E13\u7EC3</button>
           <button class="pixel-btn secondary" data-action="challenge-start" data-mode="adaptive">\u81EA\u9002\u5E94\u8BAD\u7EC3</button>
-          <button class="pixel-btn secondary" data-action="challenge-start" data-mode="mock">\u6A21\u62DF\u8003 5 \u9898</button>
+          <button class="pixel-btn secondary" data-action="challenge-start" data-mode="mock">\u6A21\u62DF\u8003 10 \u9898</button>
+          <button class="pixel-btn secondary" data-action="training-start">\u6BCF\u65E5\u8BAD\u7EC3\u573A</button>
         </div>
         <div class="modal-actions">
           <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
@@ -8509,7 +8665,40 @@
       </div>
     `);
     }
+    function openTrainingSetup() {
+      if (!isSystemUnlocked("challenge")) {
+        showToast(systemLockTip("challenge", "\u6BCF\u65E5\u8BAD\u7EC3\u573A") + " \u89E3\u9501");
+        return;
+      }
+      const used = state.daily.trainingCount || 0;
+      const left = Math.max(0, 3 - used);
+      const zoneNames = {
+        audit_tower: "\u5BA1\u8BA1\u94C1\u5821",
+        capital_forest: "\u8D44\u672C\u5BC6\u6797",
+        tax_wasteland: "\u7A0E\u7387\u8352\u539F",
+        law_temple: "\u6CD5\u6761\u795E\u6BBF",
+        strategy_star: "\u6218\u7565\u661F\u5854",
+        gold_field: "\u91D1\u7B97\u539F\u91CE"
+      };
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u6BCF\u65E5\u8BAD\u7EC3\u573A</div>
+        <div class="info-card">
+          \u5728${zoneNames[state.zone] || "\u5F53\u524D\u533A\u57DF"}\u8FDB\u884C\u4E00\u573A\u53EF\u91CD\u590D\u6218\u6597\uFF0C\u9002\u5408\u6E05\u7A7A\u5730\u56FE\u540E\u7EE7\u7EED\u7EC3\u4E60\u548C\u5237\u5B66\u4E60\u53CD\u9988\u3002<br><br>
+          \u4ECA\u65E5\u5269\u4F59\u5168\u989D\u5956\u52B1\u6B21\u6570\uFF1A${left}\u3002\u524D 3 \u6B21\u83B7\u5F97\u5B8C\u6574\u91D1\u5E01\u3001\u7ECF\u9A8C\u548C\u6389\u843D\uFF1B\u4E4B\u540E\u4ECD\u53EF\u8FDB\u5165\u8BAD\u7EC3\uFF0C\u4F46\u6CA1\u6709\u989D\u5916\u6218\u6597\u5956\u52B1\u3002
+        </div>
+        <div class="modal-actions">
+          <button class="pixel-btn" data-action="training-start-battle">\u8FDB\u5165\u8BAD\u7EC3</button>
+          <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
+        </div>
+      </div>
+    `);
+    }
     function startChallenge(mode) {
+      if (mode === "plan" && !state.plan.enabled) {
+        showToast("\u5B66\u4E60\u8BA1\u5212\u5DF2\u6682\u505C\uFF0C\u8BF7\u5148\u5728\u8BA1\u5212\u9762\u677F\u5F00\u542F");
+        return;
+      }
       let questions = [];
       if (mode === "wrong") {
         questions = state.wrongQuestions.map((id) => QUESTIONS.find((q) => q.id === id)).filter(Boolean).slice(0, 5);
@@ -8530,7 +8719,7 @@
       } else if (mode === "smart") {
         questions = getSmartReviewQuestions(state.plan.dailyTarget || 5);
       } else {
-        questions = getRandomQuestions(5);
+        questions = getRandomQuestions(10);
       }
       state.challenge = { mode, questions, idx: 0, correct: 0, total: questions.length };
       askChallengeQuestion();
@@ -8554,10 +8743,15 @@
     function endChallenge() {
       const c = state.challenge;
       const acc = Math.round(c.correct / c.total * 100);
-      state.player.gold += 20;
-      state.player.exp += 10;
+      const used = state.daily.challengeCount || 0;
+      const fullReward = used < 3;
+      state.daily.challengeCount = used + 1;
+      const goldGain = fullReward ? 20 : 5;
+      const expGain = fullReward ? 10 : 0;
+      state.player.gold += goldGain;
+      state.player.exp += expGain;
       let skillBonus = 0;
-      if (c.correct >= Math.ceil(c.total * 0.8)) {
+      if (fullReward && c.correct >= Math.ceil(c.total * 0.8)) {
         state.player.skillPoints += 1;
         skillBonus = 1;
       }
@@ -8568,14 +8762,14 @@
       updateHUD();
       openModal(`
       <div class="modal-box">
-        <div class="modal-title">\u590D\u4E60\u6311\u6218\u5B8C\u6210</div>
+        <div class="modal-title">${c.mode === "mock" ? "\u6A21\u62DF\u8003\u5B8C\u6210" : "\u590D\u4E60\u6311\u6218\u5B8C\u6210"}</div>
         <div class="result-banner ${acc >= 80 ? "correct" : "wrong"}">\u6B63\u786E ${c.correct} / ${c.total} \xB7 \u6B63\u786E\u7387 ${acc}%</div>
         <div class="reward-grid">
-          <div class="report-card"><div class="num">20 G</div><div>\u91D1\u5E01</div></div>
-          <div class="report-card"><div class="num">10</div><div>\u7ECF\u9A8C</div></div>
+          <div class="report-card"><div class="num">${goldGain} G</div><div>\u91D1\u5E01</div></div>
+          <div class="report-card"><div class="num">${expGain || "\u2014"}</div><div>\u7ECF\u9A8C</div></div>
           <div class="report-card"><div class="num">${skillBonus ? "+1" : "\u2014"}</div><div>\u6280\u80FD\u70B9</div></div>
         </div>
-        <div class="info-card">${acc >= 80 ? "\u6B63\u786E\u7387\u8FBE\u5230 80%\uFF0C\u83B7\u5F97\u989D\u5916\u6280\u80FD\u70B9\u3002\u8584\u5F31\u8003\u70B9\u5DF2\u540C\u6B65\u5230\u5B66\u4E60\u62A5\u544A\u3002" : "\u7EE7\u7EED\u9488\u5BF9\u8584\u5F31\u8003\u70B9\u590D\u4E60\uFF0C\u4E0B\u6B21\u8FBE\u5230 80% \u53EF\u83B7\u5F97\u989D\u5916\u6280\u80FD\u70B9\u3002"}</div>
+        <div class="info-card">${fullReward ? acc >= 80 ? "\u6B63\u786E\u7387\u8FBE\u5230 80%\uFF0C\u83B7\u5F97\u989D\u5916\u6280\u80FD\u70B9\u3002\u8584\u5F31\u8003\u70B9\u5DF2\u540C\u6B65\u5230\u5B66\u4E60\u62A5\u544A\u3002" : "\u7EE7\u7EED\u9488\u5BF9\u8584\u5F31\u8003\u70B9\u590D\u4E60\uFF0C\u4E0B\u6B21\u8FBE\u5230 80% \u53EF\u83B7\u5F97\u989D\u5916\u6280\u80FD\u70B9\u3002" : "\u4ECA\u65E5\u5168\u989D\u5956\u52B1\u5DF2\u7528\u5B8C\uFF0C\u7EE7\u7EED\u5237\u9898\u53EA\u83B7\u5F97\u5C11\u91CF\u91D1\u5E01\u3002\u7B54\u9898\u672C\u8EAB\u4ECD\u4F1A\u8BA1\u5165\u5B66\u4E60\u8BB0\u5F55\u548C\u7ECF\u9A8C\u3002"}</div>
         <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
       </div>
     `);
@@ -8621,7 +8815,7 @@
           <div class="tutorial-step"><span class="step-no">3</span><b>\u6218\u6597</b><br>\u6280\u80FD\u653B\u51FB\u89E6\u53D1 CPA \u77E5\u8BC6\u8BD5\u70BC</div>
           <div class="tutorial-step"><span class="step-no">4</span><b>\u5B66\u4E60</b><br>\u83DC\u5355\u53EF\u6253\u5F00\u4EFB\u52A1\u3001\u9519\u9898\u672C\u3001\u5B66\u4E60\u62A5\u544A</div>
         </div>
-        <div class="info-card">\u5B58\u6863\u4F1A\u81EA\u52A8\u4FDD\u5B58\uFF0C\u4E5F\u53EF\u5728\u8BBE\u7F6E\u4E2D\u5BFC\u51FA/\u5BFC\u5165\u3002\u5E38\u7528\u5FEB\u6377\u952E\uFF1AM \u5730\u56FE\u3001Q \u4EFB\u52A1\u3001K \u6280\u80FD\u6811\u3002<br><br>\u7CFB\u7EDF\u4F1A\u968F\u7B49\u7EA7\u9010\u6B65\u89E3\u9501\uFF1ALv.3 \u6280\u80FD\u3001Lv.5 \u88C5\u5907/\u5546\u5E97/\u6253\u9020\u3001Lv.8 \u4F19\u4F34\u3001Lv.10 \u9519\u9898\u672C/\u590D\u4E60\u6311\u6218\u3002</div>
+        <div class="info-card">\u5B58\u6863\u4F1A\u81EA\u52A8\u4FDD\u5B58\uFF0C\u4E5F\u53EF\u5728\u8BBE\u7F6E\u4E2D\u5BFC\u51FA/\u5BFC\u5165\u3002\u5E38\u7528\u5FEB\u6377\u952E\uFF1AM \u5730\u56FE\u3001Q \u4EFB\u52A1\u3001K \u6280\u80FD\u6811\u3002<br><br>\u7CFB\u7EDF\u4F1A\u968F\u7B49\u7EA7\u9010\u6B65\u89E3\u9501\uFF1ALv.3 \u6280\u80FD/\u9519\u9898\u672C\u3001Lv.5 \u88C5\u5907/\u5546\u5E97/\u6253\u9020/\u590D\u4E60\u6311\u6218\u3001Lv.8 \u4F19\u4F34\u3002</div>
         <div class="modal-actions">
           <button class="pixel-btn" data-action="close">\u5F00\u59CB\u63A2\u7D22</button>
         </div>
@@ -8897,6 +9091,9 @@
       "learn-skill": (dataset) => {
         learnSkill(dataset.skill, dataset.from);
       },
+      "upgrade-skill": (dataset) => {
+        upgradeSkill(dataset.skill, dataset.from);
+      },
       "switch-job": (dataset) => {
         switchJob(dataset.job);
       },
@@ -8946,6 +9143,7 @@
         openBook();
       },
       menu: (dataset) => {
+        const dueCount = getDueReviewCount();
         openModal(`
         <div class="modal-box">
           <div class="modal-title">\u83DC\u5355</div>
@@ -8954,9 +9152,10 @@
             <button class="pixel-btn secondary" data-action="world-map">\u4E16\u754C\u5730\u56FE</button>
             ${menuButton("\u4F19\u4F34", "partner", "partner")}
             ${menuButton("\u590D\u4E60\u6311\u6218", "challenge", "challenge")}
+            ${menuButton("\u6BCF\u65E5\u8BAD\u7EC3", "training-start", "challenge")}
             <button class="pixel-btn secondary" data-action="plan">\u5B66\u4E60\u8BA1\u5212</button>
             <button class="pixel-btn secondary" data-action="weekly-report">\u5B66\u4E60\u5468\u62A5</button>
-            <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">\u667A\u80FD\u590D\u4E60</button>
+            <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">\u667A\u80FD\u590D\u4E60${dueCount ? ` \xB7 \u4ECA\u65E5\u5230\u671F ${dueCount}` : ""}</button>
             <button class="pixel-btn secondary" data-action="point-map">\u8003\u7EB2\u5BFC\u822A</button>
             <button class="pixel-btn secondary" data-action="settings">\u8BBE\u7F6E</button>
             <button class="pixel-btn secondary" data-action="achievements">\u6210\u5C31</button>
@@ -9114,6 +9313,12 @@
       "challenge-start": (dataset) => {
         startChallenge(dataset.mode);
       },
+      "training-start": (dataset) => {
+        openTrainingSetup();
+      },
+      "training-start-battle": (dataset) => {
+        startBattle(getTrainingMonster(), false, true);
+      },
       plan: (dataset) => {
         openPlan();
       },
@@ -9170,6 +9375,12 @@
         } else {
           state.plan.subjects.push(dataset.subject);
         }
+        save();
+        sfx("click");
+        openPlan();
+      },
+      "plan-toggle": (dataset) => {
+        state.plan.enabled = state.plan.enabled === false;
         save();
         sfx("click");
         openPlan();

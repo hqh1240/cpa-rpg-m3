@@ -3,16 +3,16 @@
 ## 目录结构
 
 ```text
-CPA_RPG_M2_Demo/
+cpa-rpg-m3/
   src/
     main.js               # 构建入口
-    game.js               # 游戏引擎主模块（当前仍为单体，后续继续拆分）
+    game.js               # 游戏编排主模块：初始化、状态、交互与系统装配
     core/
       config.js           # 版本、存档键、系统解锁等级等配置
       utils.js            # 日期、周次、时长等工具函数
     data/
       achievements.js
-      questions.js        # 构建时由 tools/build_data_module.mjs 生成
+    questions.js          # 构建时由 tools/build_data_module.mjs 生成
       regionTasks.js
     systems/
       achievements.js     # 成就解锁与奖励
@@ -61,7 +61,7 @@ npm run build
 npm test
 ```
 
-`npm test` 会执行单元测试、重新构建、`file://` 冒烟测试和 PWA 离线测试。
+`npm test` 会执行单元测试、重新构建、`file://` 冒烟测试和 PWA 离线测试。CI 中执行 `npm run lint`、`npm run unit` 与 `npm run build`。
 
 ## 工程检查
 
