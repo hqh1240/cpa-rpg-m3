@@ -204,6 +204,128 @@
     { id: 347, point: "\u516C\u53F8\u6218\u7565\u7C7B\u578B", q: "\u4E0B\u5217\u5C5E\u4E8E\u53D1\u5C55\u6218\u7565\u7C7B\u578B\u7684\u6709\uFF08\u3000\uFF09\u3002", options: ["\u4E00\u4F53\u5316\u6218\u7565", "\u5BC6\u96C6\u578B\u6218\u7565", "\u591A\u5143\u5316\u6218\u7565", "\u6536\u7F29\u578B\u6218\u7565"], answer: [0, 1, 2], explain: "\u53D1\u5C55\u6218\u7565\u4E3B\u8981\u5305\u62EC\u4E00\u4F53\u5316\u6218\u7565\u3001\u5BC6\u96C6\u578B\u6218\u7565\u548C\u591A\u5143\u5316\u6218\u7565\uFF1B\u6536\u7F29\u578B\u6218\u7565\u5C5E\u4E8E\u9632\u5FA1\u6027\u6218\u7565\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "multiple" },
     { id: 348, point: "\u5E76\u8D2D\u6218\u7565", q: "\u4E0B\u5217\u5C5E\u4E8E\u4F01\u4E1A\u5E76\u8D2D\u52A8\u673A\u7684\u6709\uFF08\u3000\uFF09\u3002", options: ["\u83B7\u53D6\u534F\u540C\u6548\u5E94", "\u63D0\u5347\u5E02\u573A\u652F\u914D\u529B", "\u8FDB\u5165\u65B0\u5E02\u573A", "\u4EFB\u4F55\u591A\u5143\u5316\u5E76\u8D2D\u90FD\u80FD\u964D\u4F4E\u98CE\u9669"], answer: [0, 1, 2], explain: "\u534F\u540C\u6548\u5E94\u3001\u5E02\u573A\u652F\u914D\u529B\u548C\u8FDB\u5165\u65B0\u5E02\u573A\u662F\u5E38\u89C1\u5E76\u8D2D\u52A8\u673A\uFF1B\u5E76\u8D2D\u5E76\u4E0D\u5FC5\u7136\u964D\u4F4E\u98CE\u9669\uFF0C\u591A\u5143\u5316\u53EF\u80FD\u5E26\u6765\u65B0\u7684\u98CE\u9669\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "multiple" }
   ];
+  var QUESTIONS_M5 = [
+    { id: 349, point: "\u4F1A\u8BA1\u5047\u8BBE", q: "\u6301\u7EED\u7ECF\u8425\u5047\u8BBE\u4E3B\u8981\u89E3\u51B3\uFF08\u3000\uFF09\u95EE\u9898\u3002", options: ["\u8D44\u4EA7\u7684\u8BA1\u91CF\u57FA\u7840", "\u8D1F\u503A\u7684\u8BA1\u91CF\u57FA\u7840", "\u4F01\u4E1A\u4F1A\u4E0D\u4F1A\u9A6C\u4E0A\u6E05\u7B97", "\u4F1A\u8BA1\u4E3B\u4F53\u7684\u8FB9\u754C"], answer: 2, explain: "\u6301\u7EED\u7ECF\u8425\u5047\u8BBE\u5047\u5B9A\u4F01\u4E1A\u4F1A\u957F\u671F\u7ECF\u8425\uFF0C\u4ECE\u800C\u91C7\u7528\u6301\u7EED\u7ECF\u8425\u57FA\u7840\u8BA1\u91CF\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "single" },
+    { id: 350, point: "\u4F1A\u8BA1\u57FA\u7840", q: "\u6211\u56FD\u4F01\u4E1A\u4F1A\u8BA1\u786E\u8BA4\u3001\u8BA1\u91CF\u548C\u62A5\u544A\u7684\u57FA\u7840\u662F\uFF08\u3000\uFF09\u3002", options: ["\u6536\u4ED8\u5B9E\u73B0\u5236", "\u6743\u8D23\u53D1\u751F\u5236", "\u73B0\u91D1\u5236", "\u5B9E\u6536\u5B9E\u4ED8\u5236"], answer: 1, explain: "\u4F01\u4E1A\u4F1A\u8BA1\u901A\u5E38\u91C7\u7528\u6743\u8D23\u53D1\u751F\u5236\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "single" },
+    { id: 351, point: "\u4F1A\u8BA1\u4E3B\u4F53", q: "\u4F1A\u8BA1\u4E3B\u4F53\u4E0D\u4E00\u5B9A\u7B49\u540C\u4E8E\u6CD5\u5F8B\u4E3B\u4F53\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u4F1A\u8BA1\u4E3B\u4F53\u53EF\u80FD\u662F\u4F01\u4E1A\u3001\u5206\u90E8\u6216\u5185\u90E8\u5355\u4F4D\uFF0C\u4E0D\u4E00\u5B9A\u5177\u6709\u6CD5\u4EBA\u8D44\u683C\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "judge" },
+    { id: 352, point: "\u501F\u8D37\u65B9\u5411", q: "\u8D44\u4EA7\u589E\u52A0\u5E94\u8BB0\u5165\uFF08\u3000\uFF09\u3002", options: ["\u501F\u65B9", "\u8D37\u65B9", "\u5907\u62B5\u65B9", "\u8868\u5916"], answer: 0, explain: "\u8D44\u4EA7\u548C\u8D39\u7528\u589E\u52A0\u8BB0\u501F\u65B9\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "single" },
+    { id: 353, point: "\u79D1\u76EE\u5206\u7C7B", q: "\u5E94\u6536\u8D26\u6B3E\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u8D44\u4EA7\u7C7B\u79D1\u76EE", "\u8D1F\u503A\u7C7B\u79D1\u76EE", "\u6240\u6709\u8005\u6743\u76CA\u7C7B\u79D1\u76EE", "\u635F\u76CA\u7C7B\u79D1\u76EE"], answer: 0, explain: "\u5E94\u6536\u8D26\u6B3E\u662F\u4F01\u4E1A\u62E5\u6709\u7684\u503A\u6743\uFF0C\u5C5E\u4E8E\u8D44\u4EA7\u7C7B\u79D1\u76EE\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "single" },
+    { id: 354, point: "\u8BD5\u7B97\u5E73\u8861", q: "\u53D1\u751F\u989D\u8BD5\u7B97\u5E73\u8861\u7684\u76F4\u63A5\u4F9D\u636E\u662F\uFF08\u3000\uFF09\u3002", options: ["\u8D44\u4EA7=\u8D1F\u503A+\u6240\u6709\u8005\u6743\u76CA", "\u6709\u501F\u5FC5\u6709\u8D37\uFF0C\u501F\u8D37\u5FC5\u76F8\u7B49", "\u6536\u5165=\u8D39\u7528+\u5229\u6DA6", "\u671F\u521D\u4F59\u989D=\u671F\u672B\u4F59\u989D"], answer: 1, explain: "\u6BCF\u7B14\u5206\u5F55\u501F\u8D37\u91D1\u989D\u76F8\u7B49\uFF0C\u56E0\u6B64\u53D1\u751F\u989D\u5408\u8BA1\u5E73\u8861\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "single" },
+    { id: 355, point: "\u51ED\u8BC1", q: "\u539F\u59CB\u51ED\u8BC1\u91D1\u989D\u6709\u9519\u8BEF\u65F6\uFF0C\u6B63\u786E\u5904\u7406\u662F\uFF08\u3000\uFF09\u3002", options: ["\u7531\u7ECF\u529E\u4EBA\u66F4\u6B63", "\u7531\u4F1A\u8BA1\u4EBA\u5458\u66F4\u6B63", "\u7531\u5BA1\u6838\u4EBA\u5458\u66F4\u6B63", "\u7531\u51FA\u5177\u5355\u4F4D\u91CD\u5F00"], answer: 3, explain: "\u91D1\u989D\u9519\u8BEF\u5FC5\u987B\u7531\u51FA\u5177\u5355\u4F4D\u91CD\u5F00\uFF0C\u4E0D\u5F97\u66F4\u6B63\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 356, point: "\u8D26\u7C3F", q: "\u73B0\u91D1\u65E5\u8BB0\u8D26\u901A\u5E38\u7531\u51FA\u7EB3\u4EBA\u5458\u767B\u8BB0\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u73B0\u91D1\u548C\u94F6\u884C\u5B58\u6B3E\u65E5\u8BB0\u8D26\u7531\u51FA\u7EB3\u9010\u65E5\u9010\u7B14\u767B\u8BB0\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "judge" },
+    { id: 357, point: "\u5B58\u8D27", q: "\u7269\u4EF7\u6301\u7EED\u4E0A\u6DA8\u65F6\uFF0C\u91C7\u7528\u5148\u8FDB\u5148\u51FA\u6CD5\u4F1A\u4F7F\u671F\u672B\u5B58\u8D27\u6210\u672C\uFF08\u3000\uFF09\u3002", options: ["\u504F\u9AD8", "\u504F\u4F4E", "\u4E0D\u53D8", "\u65E0\u6CD5\u786E\u5B9A"], answer: 0, explain: "\u540E\u8D2D\u5165\u7684\u9AD8\u4EF7\u5B58\u8D27\u7559\u5728\u671F\u672B\uFF0C\u671F\u672B\u6210\u672C\u504F\u9AD8\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 358, point: "\u56FA\u5B9A\u8D44\u4EA7", q: "\u56FA\u5B9A\u8D44\u4EA7\u76D8\u76C8\u5E94\u6309\uFF08\u3000\uFF09\u5904\u7406\u3002", options: ["\u8425\u4E1A\u5916\u6536\u5165", "\u4EE5\u524D\u5E74\u5EA6\u635F\u76CA\u8C03\u6574", "\u7BA1\u7406\u8D39\u7528", "\u5176\u4ED6\u4E1A\u52A1\u6536\u5165"], answer: 1, explain: "\u56FA\u5B9A\u8D44\u4EA7\u76D8\u76C8\u5C5E\u4E8E\u524D\u671F\u5DEE\u9519\uFF0C\u901A\u8FC7\u4EE5\u524D\u5E74\u5EA6\u635F\u76CA\u8C03\u6574\u6838\u7B97\u3002", subject: "\u4F1A\u8BA1", difficulty: "expert", type: "single" },
+    { id: 359, point: "\u65E0\u5F62\u8D44\u4EA7", q: "\u4F7F\u7528\u5BFF\u547D\u4E0D\u786E\u5B9A\u7684\u65E0\u5F62\u8D44\u4EA7\uFF08\u3000\uFF09\u3002", options: ["\u4E0D\u644A\u9500\u4F46\u6BCF\u5E74\u51CF\u503C\u6D4B\u8BD5", "\u630910\u5E74\u644A\u9500", "\u6309\u5408\u540C\u671F\u9650\u644A\u9500", "\u4E0D\u8FDB\u884C\u4EFB\u4F55\u540E\u7EED\u8BA1\u91CF"], answer: 0, explain: "\u4F7F\u7528\u5BFF\u547D\u4E0D\u786E\u5B9A\u7684\u65E0\u5F62\u8D44\u4EA7\u4E0D\u644A\u9500\uFF0C\u4F46\u6BCF\u5E74\u8FDB\u884C\u51CF\u503C\u6D4B\u8BD5\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 360, point: "\u6295\u8D44\u6027\u623F\u5730\u4EA7", q: "\u6210\u672C\u6A21\u5F0F\u8F6C\u4E3A\u516C\u5141\u4EF7\u503C\u6A21\u5F0F\u5C5E\u4E8E\u4F1A\u8BA1\u653F\u7B56\u53D8\u66F4\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u8BE5\u8F6C\u6362\u5C5E\u4E8E\u4F1A\u8BA1\u653F\u7B56\u53D8\u66F4\uFF0C\u5E94\u8FFD\u6EAF\u8C03\u6574\u3002", subject: "\u4F1A\u8BA1", difficulty: "expert", type: "judge" },
+    { id: 361, point: "\u957F\u671F\u80A1\u6743\u6295\u8D44", q: "\u6743\u76CA\u6CD5\u4E0B\uFF0C\u521D\u59CB\u6295\u8D44\u6210\u672C\u5C0F\u4E8E\u5E94\u4EAB\u6709\u88AB\u6295\u8D44\u65B9\u53EF\u8FA8\u8BA4\u51C0\u8D44\u4EA7\u516C\u5141\u4EF7\u503C\u4EFD\u989D\u65F6\uFF0C\u5E94\uFF08\u3000\uFF09\u3002", options: ["\u786E\u8BA4\u4E3A\u8425\u4E1A\u5916\u6536\u5165", "\u786E\u8BA4\u4E3A\u8D44\u672C\u516C\u79EF", "\u8C03\u589E\u957F\u671F\u80A1\u6743\u6295\u8D44", "\u4E0D\u4F5C\u5904\u7406"], answer: 0, explain: "\u5DEE\u989D\u8BA1\u5165\u8425\u4E1A\u5916\u6536\u5165\u5E76\u8C03\u6574\u957F\u671F\u80A1\u6743\u6295\u8D44\u8D26\u9762\u4EF7\u503C\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 362, point: "\u6536\u5165", q: "\u6536\u5165\u786E\u8BA4\u4E94\u6B65\u6CD5\u9996\u5148\u9700\u8981\uFF08\u3000\uFF09\u3002", options: ["\u8BC6\u522B\u5C65\u7EA6\u4E49\u52A1", "\u8BC6\u522B\u5BA2\u6237\u5408\u540C", "\u786E\u5B9A\u4EA4\u6613\u4EF7\u683C", "\u786E\u8BA4\u6536\u5165"], answer: 1, explain: "\u4E94\u6B65\u6CD5\u7B2C\u4E00\u6B65\u662F\u8BC6\u522B\u4E0E\u5BA2\u6237\u8BA2\u7ACB\u7684\u5408\u540C\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 363, point: "\u5229\u6DA6", q: "\u4E0B\u5217\u5F71\u54CD\u5229\u6DA6\u603B\u989D\u7684\u9879\u76EE\u6709\uFF08\u3000\uFF09\u3002", options: ["\u8425\u4E1A\u6536\u5165", "\u8425\u4E1A\u5916\u652F\u51FA", "\u6240\u5F97\u7A0E\u8D39\u7528", "\u6295\u8D44\u6536\u76CA"], answer: [0, 1, 3], explain: "\u5229\u6DA6\u603B\u989D=\u8425\u4E1A\u5229\u6DA6+\u8425\u4E1A\u5916\u6536\u5165-\u8425\u4E1A\u5916\u652F\u51FA\uFF1B\u6240\u5F97\u7A0E\u8D39\u7528\u5F71\u54CD\u51C0\u5229\u6DA6\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "multiple" },
+    { id: 364, point: "\u6240\u6709\u8005\u6743\u76CA", q: "\u8D44\u672C\u516C\u79EF\u7684\u4E3B\u8981\u6765\u6E90\u662F\uFF08\u3000\uFF09\u3002", options: ["\u7ECF\u8425\u51C0\u5229\u6DA6", "\u8D44\u672C\u6EA2\u4EF7\u6216\u80A1\u672C\u6EA2\u4EF7", "\u5411\u94F6\u884C\u501F\u6B3E", "\u9884\u6536\u8D27\u6B3E"], answer: 1, explain: "\u8D44\u672C\u516C\u79EF\u4E3B\u8981\u6765\u81EA\u6295\u8D44\u8005\u6295\u5165\u8D44\u672C\u8D85\u8FC7\u6CE8\u518C\u8D44\u672C\u4EFD\u989D\u7684\u90E8\u5206\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 365, point: "\u62A5\u8868", q: "\u8D44\u4EA7\u8D1F\u503A\u8868\u4E2D\u5B58\u8D27\u9879\u76EE\u5E94\u6309\uFF08\u3000\uFF09\u586B\u5217\u3002", options: ["\u5B58\u8D27\u603B\u8D26\u4F59\u989D", "\u6263\u9664\u5B58\u8D27\u8DCC\u4EF7\u51C6\u5907\u540E\u7684\u51C0\u989D", "\u91C7\u8D2D\u539F\u4EF7", "\u53EF\u53D8\u73B0\u51C0\u503C"], answer: 1, explain: "\u5B58\u8D27\u9879\u76EE\u6309\u8D26\u9762\u4EF7\u503C\uFF0C\u5373\u6263\u9664\u5B58\u8D27\u8DCC\u4EF7\u51C6\u5907\u540E\u7684\u51C0\u989D\u586B\u5217\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 366, point: "\u73B0\u91D1\u6D41\u91CF", q: "\u8D2D\u4E70\u56FA\u5B9A\u8D44\u4EA7\u652F\u4ED8\u7684\u73B0\u91D1\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u7ECF\u8425\u6D3B\u52A8", "\u6295\u8D44\u6D3B\u52A8", "\u7B79\u8D44\u6D3B\u52A8", "\u4E0D\u6D89\u53CA\u73B0\u91D1"], answer: 1, explain: "\u8D2D\u5EFA\u548C\u5904\u7F6E\u957F\u671F\u8D44\u4EA7\u5C5E\u4E8E\u6295\u8D44\u6D3B\u52A8\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "single" },
+    { id: 367, point: "\u8D28\u91CF\u8981\u6C42", q: "\u4E0D\u9AD8\u4F30\u8D44\u4EA7\u548C\u6536\u76CA\u3001\u4E0D\u4F4E\u4F30\u8D1F\u503A\u548C\u8D39\u7528\u4F53\u73B0\u4E86\uFF08\u3000\uFF09\u3002", options: ["\u76F8\u5173\u6027", "\u8C28\u614E\u6027", "\u53CA\u65F6\u6027", "\u91CD\u8981\u6027"], answer: 1, explain: "\u8C28\u614E\u6027\u8981\u6C42\u4E0D\u9AD8\u4F30\u8D44\u4EA7\u6216\u6536\u76CA\u3001\u4E0D\u4F4E\u4F30\u8D1F\u503A\u6216\u8D39\u7528\u3002", subject: "\u4F1A\u8BA1", difficulty: "basic", type: "single" },
+    { id: 368, point: "\u653F\u5E9C\u8865\u52A9", q: "\u603B\u989D\u6CD5\u4E0B\uFF0C\u4E0E\u8D44\u4EA7\u76F8\u5173\u7684\u653F\u5E9C\u8865\u52A9\u901A\u5E38\u5148\u786E\u8BA4\u4E3A\uFF08\u3000\uFF09\u3002", options: ["\u8425\u4E1A\u5916\u6536\u5165", "\u9012\u5EF6\u6536\u76CA", "\u8D44\u672C\u516C\u79EF", "\u5176\u4ED6\u7EFC\u5408\u6536\u76CA"], answer: 1, explain: "\u603B\u989D\u6CD5\u4E0B\u5148\u786E\u8BA4\u9012\u5EF6\u6536\u76CA\uFF0C\u518D\u5728\u8D44\u4EA7\u4F7F\u7528\u5BFF\u547D\u5185\u5206\u644A\u3002", subject: "\u4F1A\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 369, point: "\u5BA1\u8BA1\u76EE\u6807", q: "\u8D22\u52A1\u62A5\u8868\u5BA1\u8BA1\u63D0\u4F9B\u7684\u4FDD\u8BC1\u662F\uFF08\u3000\uFF09\u3002", options: ["\u7EDD\u5BF9\u4FDD\u8BC1", "\u5408\u7406\u4FDD\u8BC1", "\u6709\u9650\u4FDD\u8BC1", "\u65E0\u4FDD\u8BC1"], answer: 1, explain: "\u8D22\u52A1\u62A5\u8868\u5BA1\u8BA1\u63D0\u4F9B\u5408\u7406\u4FDD\u8BC1\uFF0C\u800C\u975E\u7EDD\u5BF9\u4FDD\u8BC1\u3002", subject: "\u5BA1\u8BA1", difficulty: "basic", type: "single" },
+    { id: 370, point: "\u5BA1\u8BA1\u8BC1\u636E", q: "\u4E0B\u5217\u901A\u5E38\u53EF\u9760\u6027\u8F83\u9AD8\u7684\u5BA1\u8BA1\u8BC1\u636E\u662F\uFF08\u3000\uFF09\u3002", options: ["\u5185\u90E8\u53E3\u5934\u9648\u8FF0", "\u5916\u90E8\u72EC\u7ACB\u6765\u6E90\u7684\u4E66\u9762\u8BC1\u636E", "\u672A\u7ECF\u6838\u9A8C\u7684\u590D\u5370\u4EF6", "\u7BA1\u7406\u5C42\u58F0\u660E"], answer: 1, explain: "\u5916\u90E8\u72EC\u7ACB\u4E66\u9762\u8BC1\u636E\u901A\u5E38\u6BD4\u5185\u90E8\u53E3\u5934\u8BC1\u636E\u66F4\u53EF\u9760\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 371, point: "\u5BA1\u8BA1\u610F\u89C1", q: "\u4E0B\u5217\u5C5E\u4E8E\u975E\u65E0\u4FDD\u7559\u610F\u89C1\u7684\u6709\uFF08\u3000\uFF09\u3002", options: ["\u4FDD\u7559\u610F\u89C1", "\u5426\u5B9A\u610F\u89C1", "\u65E0\u6CD5\u8868\u793A\u610F\u89C1", "\u5E26\u5F3A\u8C03\u4E8B\u9879\u6BB5\u7684\u65E0\u4FDD\u7559\u610F\u89C1"], answer: [0, 1, 2], explain: "\u975E\u65E0\u4FDD\u7559\u610F\u89C1\u5305\u62EC\u4FDD\u7559\u3001\u5426\u5B9A\u548C\u65E0\u6CD5\u8868\u793A\u610F\u89C1\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "multiple" },
+    { id: 372, point: "\u5185\u90E8\u63A7\u5236", q: "\u63A7\u5236\u6D4B\u8BD5\u7684\u76EE\u7684\u662F\u8BC4\u4EF7\uFF08\u3000\uFF09\u3002", options: ["\u7ECF\u8425\u6548\u7387", "\u5185\u90E8\u63A7\u5236\u9632\u6B62\u6216\u53D1\u73B0\u8BA4\u5B9A\u5C42\u6B21\u91CD\u5927\u9519\u62A5\u7684\u6709\u6548\u6027", "\u76C8\u5229\u80FD\u529B", "\u73B0\u91D1\u6D41\u52A8\u6027"], answer: 1, explain: "\u63A7\u5236\u6D4B\u8BD5\u8BC4\u4EF7\u5185\u90E8\u63A7\u5236\u8FD0\u884C\u7684\u6709\u6548\u6027\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 373, point: "\u5BA1\u8BA1\u98CE\u9669", q: "\u5BA1\u8BA1\u98CE\u9669\u6A21\u578B\u4E2D\u7684\u68C0\u67E5\u98CE\u9669\u4E0E\u5BA1\u8BA1\u7A0B\u5E8F\u8BBE\u8BA1\u5408\u7406\u6027\u3001\u5B9E\u65BD\u6709\u6548\u6027\u5448\uFF08\u3000\uFF09\u5173\u7CFB\u3002", options: ["\u6B63\u5411", "\u53CD\u5411", "\u65E0\u5173", "\u65E0\u6CD5\u786E\u5B9A"], answer: 1, explain: "\u68C0\u67E5\u98CE\u9669\u8D8A\u9AD8\uFF0C\u8BF4\u660E\u7A0B\u5E8F\u8D8A\u4E0D\u80FD\u53D1\u73B0\u91CD\u5927\u9519\u62A5\uFF1B\u8BBE\u8BA1\u4E0E\u5B9E\u65BD\u8D8A\u597D\uFF0C\u68C0\u67E5\u98CE\u9669\u8D8A\u4F4E\u3002", subject: "\u5BA1\u8BA1", difficulty: "expert", type: "single" },
+    { id: 374, point: "\u5BA1\u8BA1\u91CD\u8981\u6027", q: "\u91CD\u8981\u6027\u6C34\u5E73\u8D8A\u4F4E\uFF0C\u6CE8\u518C\u4F1A\u8BA1\u5E08\u9700\u8981\u6536\u96C6\u7684\u5BA1\u8BA1\u8BC1\u636E\u901A\u5E38\uFF08\u3000\uFF09\u3002", options: ["\u8D8A\u5C11", "\u8D8A\u591A", "\u4E0D\u53D8", "\u65E0\u6CD5\u786E\u5B9A"], answer: 1, explain: "\u91CD\u8981\u6027\u6C34\u5E73\u8D8A\u4F4E\uFF0C\u53EF\u5BB9\u5FCD\u9519\u62A5\u8D8A\u5C0F\uFF0C\u9700\u8981\u66F4\u591A\u8BC1\u636E\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 375, point: "\u5BA1\u8BA1\u62BD\u6837", q: "\u62BD\u6837\u98CE\u9669\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u8BEF\u53D7\u98CE\u9669", "\u8BEF\u62D2\u98CE\u9669", "\u975E\u62BD\u6837\u98CE\u9669", "\u56FA\u6709\u98CE\u9669"], answer: [0, 1], explain: "\u62BD\u6837\u98CE\u9669\u5305\u62EC\u8BEF\u53D7\u548C\u8BEF\u62D2\uFF1B\u975E\u62BD\u6837\u98CE\u9669\u4E0D\u662F\u62BD\u6837\u98CE\u9669\u3002", subject: "\u5BA1\u8BA1", difficulty: "expert", type: "multiple" },
+    { id: 376, point: "\u5BA1\u8BA1\u7A0B\u5E8F", q: "\u5BF9\u94F6\u884C\u5B58\u6B3E\uFF0C\u6CE8\u518C\u4F1A\u8BA1\u5E08\u901A\u5E38\u5E94\uFF08\u3000\uFF09\u3002", options: ["\u5168\u90E8\u51FD\u8BC1", "\u53EA\u51FD\u8BC1\u5927\u989D\u8D26\u6237", "\u53EA\u505A\u5185\u90E8\u63A7\u5236\u6D4B\u8BD5", "\u4E0D\u51FD\u8BC1"], answer: 0, explain: "\u9664\u975E\u6709\u5145\u5206\u7406\u7531\u76F8\u4FE1\u4E0D\u91CD\u8981\u4E14\u98CE\u9669\u4F4E\uFF0C\u901A\u5E38\u5E94\u5BF9\u5168\u90E8\u94F6\u884C\u5B58\u6B3E\u8D26\u6237\u51FD\u8BC1\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 377, point: "\u5BA1\u8BA1\u8BA1\u5212", q: "\u603B\u4F53\u5BA1\u8BA1\u7B56\u7565\u786E\u5B9A\u7684\u5185\u5BB9\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u5BA1\u8BA1\u8303\u56F4", "\u65F6\u95F4\u5B89\u6392", "\u5BA1\u8BA1\u65B9\u5411", "\u5177\u4F53\u6837\u672C\u89C4\u6A21"], answer: [0, 1, 2], explain: "\u603B\u4F53\u5BA1\u8BA1\u7B56\u7565\u786E\u5B9A\u8303\u56F4\u3001\u65F6\u95F4\u5B89\u6392\u548C\u65B9\u5411\uFF1B\u5177\u4F53\u6837\u672C\u5C5E\u4E8E\u5177\u4F53\u5BA1\u8BA1\u8BA1\u5212\u3002", subject: "\u5BA1\u8BA1", difficulty: "expert", type: "multiple" },
+    { id: 378, point: "\u7BA1\u7406\u5C42\u8BA4\u5B9A", q: "\u201C\u8D44\u4EA7\u662F\u5426\u771F\u5B9E\u5B58\u5728\u201D\u5BF9\u5E94\u7684\u7BA1\u7406\u5C42\u8BA4\u5B9A\u662F\uFF08\u3000\uFF09\u3002", options: ["\u5B58\u5728", "\u5B8C\u6574\u6027", "\u8BA1\u4EF7\u548C\u5206\u644A", "\u6743\u5229\u548C\u4E49\u52A1"], answer: 0, explain: "\u5B58\u5728\u8BA4\u5B9A\u9488\u5BF9\u8D44\u4EA7\u8D1F\u503A\u8868\u9879\u76EE\u662F\u5426\u771F\u5B9E\u5B58\u5728\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 379, point: "\u821E\u5F0A\u98CE\u9669", q: "\u4E0B\u5217\u5C5E\u4E8E\u821E\u5F0A\u98CE\u9669\u56E0\u7D20\u7684\u6709\uFF08\u3000\uFF09\u3002", options: ["\u52A8\u673A\u6216\u538B\u529B", "\u673A\u4F1A", "\u501F\u53E3", "\u5458\u5DE5\u5E74\u9F84"], answer: [0, 1, 2], explain: "\u821E\u5F0A\u98CE\u9669\u56E0\u7D20\u901A\u5E38\u5305\u62EC\u52A8\u673A\u6216\u538B\u529B\u3001\u673A\u4F1A\u548C\u501F\u53E3\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "multiple" },
+    { id: 380, point: "\u5BA1\u8BA1\u8BC1\u636E", q: "\u5BF9\u5B58\u8D27\u5B9E\u65BD\u76D1\u76D8\u901A\u5E38\u53EF\u4EE5\u83B7\u53D6\uFF08\u3000\uFF09\u65B9\u9762\u7684\u5BA1\u8BA1\u8BC1\u636E\u3002", options: ["\u5B58\u5728", "\u5B8C\u6574\u6027", "\u51C6\u786E\u6027", "\u622A\u6B62"], answer: 0, explain: "\u76D1\u76D8\u4E3B\u8981\u9488\u5BF9\u5B58\u8D27\u7684\u5B58\u5728\u8BA4\u5B9A\uFF0C\u4E5F\u53EF\u89C2\u5BDF\u5B8C\u6574\u6027\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 381, point: "\u5BA1\u8BA1\u7A0B\u5E8F", q: "\u5206\u6790\u7A0B\u5E8F\u53EF\u7528\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u98CE\u9669\u8BC4\u4F30", "\u5B9E\u8D28\u6027\u7A0B\u5E8F", "\u603B\u4F53\u590D\u6838", "\u66FF\u4EE3\u5BA1\u8BA1\u610F\u89C1"], answer: [0, 1, 2], explain: "\u5206\u6790\u7A0B\u5E8F\u53EF\u7528\u4E8E\u98CE\u9669\u8BC4\u4F30\u3001\u5B9E\u8D28\u6027\u7A0B\u5E8F\u548C\u5BA1\u8BA1\u7ED3\u675F\u65F6\u7684\u603B\u4F53\u590D\u6838\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "multiple" },
+    { id: 382, point: "\u5BA1\u8BA1\u610F\u89C1", q: "\u5E26\u5F3A\u8C03\u4E8B\u9879\u6BB5\u7684\u65E0\u4FDD\u7559\u610F\u89C1\u4ECD\u5C5E\u4E8E\u65E0\u4FDD\u7559\u610F\u89C1\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u5F3A\u8C03\u4E8B\u9879\u6BB5\u4E0D\u5F71\u54CD\u5DF2\u53D1\u8868\u7684\u5BA1\u8BA1\u610F\u89C1\u7C7B\u578B\u3002", subject: "\u5BA1\u8BA1", difficulty: "basic", type: "judge" },
+    { id: 383, point: "\u5185\u90E8\u63A7\u5236", q: "\u5185\u90E8\u63A7\u5236\u56FA\u6709\u5C40\u9650\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u4EBA\u4E3A\u9519\u8BEF\u6216\u821E\u5F0A", "\u7BA1\u7406\u5C42\u51CC\u9A7E", "\u6210\u672C\u6548\u76CA\u8003\u8651", "\u5B8C\u5168\u6D88\u9664\u98CE\u9669"], answer: [0, 1, 2], explain: "\u5185\u90E8\u63A7\u5236\u5B58\u5728\u56FA\u6709\u5C40\u9650\uFF0C\u4E0D\u80FD\u5B8C\u5168\u6D88\u9664\u91CD\u5927\u9519\u62A5\u98CE\u9669\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "multiple" },
+    { id: 384, point: "\u5BA1\u8BA1\u98CE\u9669", q: "\u5BA1\u8BA1\u98CE\u9669=\u91CD\u5927\u9519\u62A5\u98CE\u9669\xD7\u68C0\u67E5\u98CE\u9669\uFF0C\u5176\u4E2D\u91CD\u5927\u9519\u62A5\u98CE\u9669\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u56FA\u6709\u98CE\u9669", "\u63A7\u5236\u98CE\u9669", "\u68C0\u67E5\u98CE\u9669", "\u62BD\u6837\u98CE\u9669"], answer: [0, 1], explain: "\u91CD\u5927\u9519\u62A5\u98CE\u9669\u5206\u4E3A\u8D22\u52A1\u62A5\u8868\u5C42\u6B21\u548C\u8BA4\u5B9A\u5C42\u6B21\uFF0C\u8BA4\u5B9A\u5C42\u6B21\u5305\u62EC\u56FA\u6709\u98CE\u9669\u548C\u63A7\u5236\u98CE\u9669\u3002", subject: "\u5BA1\u8BA1", difficulty: "expert", type: "multiple" },
+    { id: 385, point: "\u5BA1\u8BA1\u62BD\u6837", q: "\u975E\u7EDF\u8BA1\u62BD\u6837\u4E0D\u80FD\u5F62\u6210\u5BA1\u8BA1\u7ED3\u8BBA\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 1, explain: "\u975E\u7EDF\u8BA1\u62BD\u6837\u4E5F\u53EF\u4EE5\u5F62\u6210\u5BA1\u8BA1\u7ED3\u8BBA\uFF0C\u53EA\u662F\u4E0D\u80FD\u91CF\u5316\u62BD\u6837\u98CE\u9669\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "judge" },
+    { id: 386, point: "\u5BA1\u8BA1\u8BA1\u5212", q: "\u5177\u4F53\u5BA1\u8BA1\u8BA1\u5212\u5E94\u5F53\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u8FDB\u4E00\u6B65\u5BA1\u8BA1\u7A0B\u5E8F\u7684\u6027\u8D28\u3001\u65F6\u95F4\u5B89\u6392\u548C\u8303\u56F4", "\u603B\u4F53\u5BA1\u8BA1\u7B56\u7565", "\u5BA1\u8BA1\u6536\u8D39", "\u7BA1\u7406\u5C42\u58F0\u660E"], answer: 0, explain: "\u5177\u4F53\u5BA1\u8BA1\u8BA1\u5212\u5305\u62EC\u98CE\u9669\u8BC4\u4F30\u7A0B\u5E8F\u548C\u8FDB\u4E00\u6B65\u5BA1\u8BA1\u7A0B\u5E8F\u5B89\u6392\u3002", subject: "\u5BA1\u8BA1", difficulty: "expert", type: "single" },
+    { id: 387, point: "\u7BA1\u7406\u5C42\u8BA4\u5B9A", q: "\u201C\u6240\u6709\u5E94\u8BA1\u5165\u7684\u9500\u552E\u662F\u5426\u90FD\u5DF2\u5165\u8D26\u201D\u5BF9\u5E94\uFF08\u3000\uFF09\u8BA4\u5B9A\u3002", options: ["\u53D1\u751F", "\u5B8C\u6574\u6027", "\u51C6\u786E\u6027", "\u5206\u7C7B"], answer: 1, explain: "\u5B8C\u6574\u6027\u8BA4\u5B9A\u9488\u5BF9\u5E94\u8BB0\u5F55\u800C\u672A\u8BB0\u5F55\u7684\u9879\u76EE\u3002", subject: "\u5BA1\u8BA1", difficulty: "advanced", type: "single" },
+    { id: 388, point: "\u821E\u5F0A\u98CE\u9669", q: "\u7BA1\u7406\u5C42\u51CC\u9A7E\u4E8E\u63A7\u5236\u4E4B\u4E0A\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u7279\u522B\u98CE\u9669", "\u56FA\u6709\u98CE\u9669", "\u68C0\u67E5\u98CE\u9669", "\u975E\u62BD\u6837\u98CE\u9669"], answer: 0, explain: "\u7BA1\u7406\u5C42\u51CC\u9A7E\u4E8E\u63A7\u5236\u4E4B\u4E0A\u901A\u5E38\u6784\u6210\u7279\u522B\u98CE\u9669\u3002", subject: "\u5BA1\u8BA1", difficulty: "expert", type: "single" },
+    { id: 389, point: "\u8D27\u5E01\u65F6\u95F4\u4EF7\u503C", q: "\u666E\u901A\u5E74\u91D1\u73B0\u503C\u7CFB\u6570\u7528\u4E8E\u8BA1\u7B97\uFF08\u3000\uFF09\u3002", options: ["\u5355\u7B14\u6B3E\u9879\u7EC8\u503C", "\u7B49\u989D\u7CFB\u5217\u6B3E\u9879\u73B0\u503C", "\u73B0\u91D1\u6D41\u91CF\u603B\u989D", "\u51C0\u5229\u6DA6"], answer: 1, explain: "\u666E\u901A\u5E74\u91D1\u73B0\u503C\u7CFB\u6570\u628A\u7B49\u989D\u7CFB\u5217\u73B0\u91D1\u6D41\u6298\u73B0\u5230\u73B0\u503C\u3002", subject: "\u8D22\u7BA1", difficulty: "basic", type: "single" },
+    { id: 390, point: "\u8D44\u672C\u6210\u672C", q: "\u8BA1\u7B97\u52A0\u6743\u5E73\u5747\u8D44\u672C\u6210\u672C\u65F6\uFF0C\u503A\u52A1\u8D44\u672C\u6210\u672C\u901A\u5E38\u4F7F\u7528\uFF08\u3000\uFF09\u3002", options: ["\u7A0E\u524D\u5229\u7387", "\u7A0E\u540E\u5229\u7387", "\u7968\u9762\u5229\u7387", "\u65E0\u98CE\u9669\u5229\u7387"], answer: 1, explain: "\u503A\u52A1\u5229\u606F\u6709\u62B5\u7A0E\u4F5C\u7528\uFF0C\u901A\u5E38\u7528\u7A0E\u540E\u503A\u52A1\u8D44\u672C\u6210\u672C\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
+    { id: 391, point: "\u8D22\u52A1\u6760\u6746", q: "\u8D22\u52A1\u6760\u6746\u7CFB\u6570\u8D8A\u5927\uFF0C\u901A\u5E38\u8868\u660E\uFF08\u3000\uFF09\u3002", options: ["\u6BCF\u80A1\u6536\u76CA\u6CE2\u52A8\u8D8A\u5C0F", "\u606F\u7A0E\u524D\u5229\u6DA6\u6CE2\u52A8\u8D8A\u5927", "\u6BCF\u80A1\u6536\u76CA\u5BF9\u606F\u7A0E\u524D\u5229\u6DA6\u7684\u653E\u5927\u4F5C\u7528\u8D8A\u5F3A", "\u503A\u52A1\u6BD4\u4F8B\u8D8A\u4F4E"], answer: 2, explain: "\u8D22\u52A1\u6760\u6746\u53CD\u6620\u606F\u7A0E\u524D\u5229\u6DA6\u53D8\u52A8\u5BF9\u6BCF\u80A1\u6536\u76CA\u7684\u653E\u5927\u4F5C\u7528\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
+    { id: 392, point: "\u8D44\u672C\u9884\u7B97", q: "\u51C0\u73B0\u503C\u5927\u4E8E\u96F6\u610F\u5473\u7740\u9879\u76EE\uFF08\u3000\uFF09\u3002", options: ["\u4E0D\u53EF\u884C", "\u53EF\u884C", "\u4E00\u5B9A\u76C8\u5229", "\u56DE\u6536\u671F\u4E3A\u96F6"], answer: 1, explain: "NPV>0\u8868\u793A\u9884\u671F\u62A5\u916C\u7387\u9AD8\u4E8E\u8D44\u672C\u6210\u672C\uFF0C\u9879\u76EE\u53EF\u884C\u3002", subject: "\u8D22\u7BA1", difficulty: "basic", type: "single" },
+    { id: 393, point: "\u8425\u8FD0\u8D44\u672C", q: "\u6D41\u52A8\u6BD4\u7387\u7B49\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u6D41\u52A8\u8D44\u4EA7\xF7\u6D41\u52A8\u8D1F\u503A", "\u6D41\u52A8\u8D1F\u503A\xF7\u6D41\u52A8\u8D44\u4EA7", "\u8D44\u4EA7\xF7\u8D1F\u503A", "\u51C0\u5229\u6DA6\xF7\u8D44\u4EA7"], answer: 0, explain: "\u6D41\u52A8\u6BD4\u7387=\u6D41\u52A8\u8D44\u4EA7\xF7\u6D41\u52A8\u8D1F\u503A\u3002", subject: "\u8D22\u7BA1", difficulty: "basic", type: "single" },
+    { id: 394, point: "\u98CE\u9669\u4E0E\u62A5\u916C", q: "\u7CFB\u7EDF\u6027\u98CE\u9669\u8D8A\u9AD8\uFF0C\u5FC5\u8981\u62A5\u916C\u7387\u901A\u5E38\uFF08\u3000\uFF09\u3002", options: ["\u8D8A\u9AD8", "\u8D8A\u4F4E", "\u4E0D\u53D8", "\u65E0\u5173"], answer: 0, explain: "\u7CFB\u7EDF\u6027\u98CE\u9669\u4E0D\u53EF\u5206\u6563\uFF0C\u5E02\u573A\u4F1A\u8981\u6C42\u66F4\u9AD8\u62A5\u916C\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
+    { id: 395, point: "\u7ECF\u8425\u6760\u6746", q: "\u56FA\u5B9A\u7ECF\u8425\u6210\u672C\u8D8A\u9AD8\uFF0C\u7ECF\u8425\u6760\u6746\u7CFB\u6570\u901A\u5E38\uFF08\u3000\uFF09\u3002", options: ["\u8D8A\u9AD8", "\u8D8A\u4F4E", "\u4E0D\u53D8", "\u65E0\u6CD5\u786E\u5B9A"], answer: 0, explain: "\u56FA\u5B9A\u6210\u672C\u5360\u6BD4\u8D8A\u9AD8\uFF0C\u606F\u7A0E\u524D\u5229\u6DA6\u5BF9\u9500\u91CF\u53D8\u52A8\u7684\u654F\u611F\u5EA6\u8D8A\u9AD8\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
+    { id: 396, point: "\u8D22\u52A1\u5206\u6790", q: "\u675C\u90A6\u5206\u6790\u4E2D\uFF0C\u51C0\u8D44\u4EA7\u6536\u76CA\u7387\u53EF\u4EE5\u5206\u89E3\u4E3A\uFF08\u3000\uFF09\u3002", options: ["\u8425\u4E1A\u51C0\u5229\u7387", "\u603B\u8D44\u4EA7\u5468\u8F6C\u7387", "\u6743\u76CA\u4E58\u6570", "\u6D41\u52A8\u6BD4\u7387"], answer: [0, 1, 2], explain: "\u675C\u90A6\u4F53\u7CFB\u5C06\u51C0\u8D44\u4EA7\u6536\u76CA\u7387\u5206\u89E3\u4E3A\u8425\u4E1A\u51C0\u5229\u7387\u3001\u603B\u8D44\u4EA7\u5468\u8F6C\u7387\u548C\u6743\u76CA\u4E58\u6570\u3002", subject: "\u8D22\u7BA1", difficulty: "expert", type: "multiple" },
+    { id: 397, point: "\u672C\u91CF\u5229\u5206\u6790", q: "\u76C8\u4E8F\u5E73\u8861\u70B9\u9500\u91CF\u7B49\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u56FA\u5B9A\u6210\u672C\xF7\u5355\u4F4D\u8FB9\u9645\u8D21\u732E", "\u56FA\u5B9A\u6210\u672C\xF7\u8FB9\u9645\u8D21\u732E\u7387", "\u53D8\u52A8\u6210\u672C\xF7\u5355\u4EF7", "\u51C0\u5229\u6DA6\xF7\u5355\u4EF7"], answer: 0, explain: "\u76C8\u4E8F\u5E73\u8861\u9500\u91CF=\u56FA\u5B9A\u6210\u672C\xF7\u5355\u4F4D\u8FB9\u9645\u8D21\u732E\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
+    { id: 398, point: "\u80A1\u5229\u653F\u7B56", q: "\u5269\u4F59\u80A1\u5229\u653F\u7B56\u4F18\u5148\u6EE1\u8DB3\uFF08\u3000\uFF09\u3002", options: ["\u80A1\u4E1C\u77ED\u671F\u5206\u7EA2", "\u6295\u8D44\u6240\u9700\u8D44\u91D1", "\u503A\u6743\u4EBA\u5229\u606F", "\u7BA1\u7406\u8D39\u7528"], answer: 1, explain: "\u5269\u4F59\u80A1\u5229\u653F\u7B56\u5148\u6EE1\u8DB3\u6295\u8D44\u8D44\u91D1\u9700\u6C42\uFF0C\u5269\u4F59\u5229\u6DA6\u518D\u5206\u914D\u80A1\u5229\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
+    { id: 399, point: "\u8D27\u5E01\u65F6\u95F4\u4EF7\u503C", q: "\u540D\u4E49\u5229\u7387\u7B49\u4E8E\u5B9E\u9645\u5229\u7387\u4E0E\u901A\u8D27\u81A8\u80C0\u7387\u4E4B\u548C\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 1, explain: "\u540D\u4E49\u5229\u7387\u4E0E\u771F\u5B9E\u5229\u7387\u3001\u901A\u8D27\u81A8\u80C0\u7387\u4E4B\u95F4\u5B58\u5728\u8D39\u96EA\u5173\u7CFB\uFF0C\u4F46\u4E0D\u662F\u7B80\u5355\u76F8\u52A0\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "judge" },
+    { id: 400, point: "\u8D44\u672C\u6210\u672C", q: "\u8D44\u672C\u8D44\u4EA7\u5B9A\u4EF7\u6A21\u578B\u4E2D\uFF0C\u5FC5\u8981\u62A5\u916C\u7387=\uFF08\u3000\uFF09\u3002", options: ["\u65E0\u98CE\u9669\u5229\u7387+\u03B2\xD7(\u5E02\u573A\u5E73\u5747\u62A5\u916C\u7387-\u65E0\u98CE\u9669\u5229\u7387)", "\u65E0\u98CE\u9669\u5229\u7387\xD7\u03B2", "\u5E02\u573A\u5E73\u5747\u62A5\u916C\u7387\xD7\u03B2", "\u80A1\u5229\xF7\u80A1\u4EF7"], answer: 0, explain: "CAPM\u516C\u5F0F\u4E3AR=Rf+\u03B2\xD7(Rm-Rf)\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
+    { id: 401, point: "\u8D22\u52A1\u6760\u6746", q: "\u5176\u4ED6\u6761\u4EF6\u4E0D\u53D8\u65F6\uFF0C\u63D0\u9AD8\u503A\u52A1\u6BD4\u4F8B\u901A\u5E38\u4F1A\u4F7F\u8D22\u52A1\u6760\u6746\u7CFB\u6570\uFF08\u3000\uFF09\u3002", options: ["\u63D0\u9AD8", "\u964D\u4F4E", "\u4E0D\u53D8", "\u65E0\u6CD5\u786E\u5B9A"], answer: 0, explain: "\u56FA\u5B9A\u878D\u8D44\u6210\u672C\u589E\u52A0\u4F1A\u653E\u5927\u6BCF\u80A1\u6536\u76CA\u6CE2\u52A8\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
+    { id: 402, point: "\u8D44\u672C\u9884\u7B97", q: "\u4E92\u65A5\u9879\u76EE\u8BC4\u4EF7\u4E2D\uFF0C\u5E94\u5F53\u4F18\u5148\u9009\u62E9\uFF08\u3000\uFF09\u3002", options: ["\u5185\u542B\u62A5\u916C\u7387\u6700\u9AD8\u7684\u9879\u76EE", "\u51C0\u73B0\u503C\u6700\u5927\u7684\u9879\u76EE", "\u56DE\u6536\u671F\u6700\u77ED\u7684\u9879\u76EE", "\u4F1A\u8BA1\u5229\u6DA6\u7387\u6700\u9AD8\u7684\u9879\u76EE"], answer: 1, explain: "\u4E92\u65A5\u9879\u76EE\u5E94\u4EE5\u51C0\u73B0\u503C\u4E3A\u4E3B\u8981\u51B3\u7B56\u4F9D\u636E\u3002", subject: "\u8D22\u7BA1", difficulty: "expert", type: "single" },
+    { id: 403, point: "\u8425\u8FD0\u8D44\u672C", q: "\u8425\u8FD0\u8D44\u672C\u7B49\u4E8E\u6D41\u52A8\u8D44\u4EA7\u51CF\u6D41\u52A8\u8D1F\u503A\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u8425\u8FD0\u8D44\u672C=\u6D41\u52A8\u8D44\u4EA7-\u6D41\u52A8\u8D1F\u503A\u3002", subject: "\u8D22\u7BA1", difficulty: "basic", type: "judge" },
+    { id: 404, point: "\u98CE\u9669\u4E0E\u62A5\u916C", q: "\u6295\u8D44\u7EC4\u5408\u5206\u6563\u5316\u53EF\u4EE5\u964D\u4F4E\uFF08\u3000\uFF09\u3002", options: ["\u7CFB\u7EDF\u6027\u98CE\u9669", "\u975E\u7CFB\u7EDF\u6027\u98CE\u9669", "\u5E02\u573A\u98CE\u9669", "\u65E0\u98CE\u9669\u5229\u7387"], answer: 1, explain: "\u5206\u6563\u5316\u80FD\u964D\u4F4E\u975E\u7CFB\u7EDF\u6027\u98CE\u9669\uFF0C\u4E0D\u80FD\u6D88\u9664\u7CFB\u7EDF\u6027\u98CE\u9669\u3002", subject: "\u8D22\u7BA1", difficulty: "basic", type: "single" },
+    { id: 405, point: "\u7ECF\u8425\u6760\u6746", q: "\u7ECF\u8425\u6760\u6746\u4E3B\u8981\u6765\u6E90\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u56FA\u5B9A\u7ECF\u8425\u6210\u672C", "\u503A\u52A1\u5229\u606F", "\u4F18\u5148\u80A1\u80A1\u5229", "\u53D8\u52A8\u6210\u672C"], answer: 0, explain: "\u56FA\u5B9A\u7ECF\u8425\u6210\u672C\u4F7F\u606F\u7A0E\u524D\u5229\u6DA6\u653E\u5927\u9500\u91CF\u53D8\u52A8\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
+    { id: 406, point: "\u8D22\u52A1\u5206\u6790", q: "\u5E94\u6536\u8D26\u6B3E\u5468\u8F6C\u7387\u53CD\u6620\u4F01\u4E1A\uFF08\u3000\uFF09\u3002", options: ["\u6536\u8D26\u901F\u5EA6", "\u5B58\u8D27\u79EF\u538B", "\u76C8\u5229\u80FD\u529B", "\u8D1F\u503A\u7ED3\u6784"], answer: 0, explain: "\u5E94\u6536\u8D26\u6B3E\u5468\u8F6C\u7387\u8861\u91CF\u5E94\u6536\u8D26\u6B3E\u8F6C\u5316\u4E3A\u73B0\u91D1\u7684\u901F\u5EA6\u3002", subject: "\u8D22\u7BA1", difficulty: "basic", type: "single" },
+    { id: 407, point: "\u672C\u91CF\u5229\u5206\u6790", q: "\u5B89\u5168\u8FB9\u9645\u53EF\u4EE5\u7528\u4E8E\u8861\u91CF\uFF08\u3000\uFF09\u3002", options: ["\u73B0\u6709\u9500\u552E\u8D85\u8FC7\u76C8\u4E8F\u5E73\u8861\u70B9\u7684\u7A0B\u5EA6", "\u56FA\u5B9A\u6210\u672C\u9AD8\u4F4E", "\u8D44\u91D1\u5360\u7528", "\u7A0E\u7387\u5F71\u54CD"], answer: 0, explain: "\u5B89\u5168\u8FB9\u9645\u53CD\u6620\u73B0\u6709\u9500\u552E\u8D85\u51FA\u76C8\u4E8F\u5E73\u8861\u70B9\u7684\u90E8\u5206\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "single" },
+    { id: 408, point: "\u80A1\u5229\u653F\u7B56", q: "\u56FA\u5B9A\u80A1\u5229\u652F\u4ED8\u7387\u653F\u7B56\u4E0B\uFF0C\u80A1\u5229\u968F\u76C8\u5229\u6CE2\u52A8\u800C\u6CE2\u52A8\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u56FA\u5B9A\u80A1\u5229\u652F\u4ED8\u7387\u653F\u7B56\u6309\u56FA\u5B9A\u6BD4\u4F8B\u5206\u914D\uFF0C\u76C8\u5229\u6CE2\u52A8\u4F1A\u5BFC\u81F4\u80A1\u5229\u6CE2\u52A8\u3002", subject: "\u8D22\u7BA1", difficulty: "advanced", type: "judge" },
+    { id: 409, point: "\u589E\u503C\u7A0E", q: "\u4E00\u822C\u7EB3\u7A0E\u4EBA\u9500\u552E\u8D27\u7269\u9002\u7528\u589E\u503C\u7A0E\u57FA\u672C\u7A0E\u7387\u901A\u5E38\u4E3A\uFF08\u3000\uFF09\u3002", options: ["6%", "9%", "13%", "25%"], answer: 2, explain: "\u9500\u552E\u8D27\u7269\u57FA\u672C\u7A0E\u7387\u4E3A13%\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 410, point: "\u6D88\u8D39\u7A0E", q: "\u6D88\u8D39\u7A0E\u7684\u5F81\u7A0E\u5BF9\u8C61\u662F\uFF08\u3000\uFF09\u3002", options: ["\u5168\u90E8\u5546\u54C1", "\u7279\u5B9A\u6D88\u8D39\u54C1", "\u5168\u90E8\u670D\u52A1", "\u8FDB\u53E3\u6280\u672F"], answer: 1, explain: "\u6D88\u8D39\u7A0E\u53EA\u5BF9\u70DF\u3001\u9152\u3001\u9AD8\u6863\u5316\u5986\u54C1\u7B49\u7279\u5B9A\u6D88\u8D39\u54C1\u5F81\u6536\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 411, point: "\u4F01\u4E1A\u6240\u5F97\u7A0E", q: "\u6211\u56FD\u4F01\u4E1A\u6240\u5F97\u7A0E\u57FA\u672C\u7A0E\u7387\u4E3A\uFF08\u3000\uFF09\u3002", options: ["13%", "20%", "25%", "30%"], answer: 2, explain: "\u4F01\u4E1A\u6240\u5F97\u7A0E\u57FA\u672C\u7A0E\u7387\u4E3A25%\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 412, point: "\u4E2A\u4EBA\u6240\u5F97\u7A0E", q: "\u5C45\u6C11\u4E2A\u4EBA\u5DE5\u8D44\u85AA\u91D1\u6240\u5F97\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u7ECF\u8425\u6240\u5F97", "\u7EFC\u5408\u6240\u5F97", "\u8D22\u4EA7\u8F6C\u8BA9\u6240\u5F97", "\u5076\u7136\u6240\u5F97"], answer: 1, explain: "\u5DE5\u8D44\u85AA\u91D1\u5C5E\u4E8E\u7EFC\u5408\u6240\u5F97\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 413, point: "\u7A0E\u6536\u4F18\u60E0", q: "\u7B26\u5408\u6761\u4EF6\u7684\u7814\u53D1\u8D39\u7528\u53EF\u4EE5\u4EAB\u53D7\uFF08\u3000\uFF09\u52A0\u8BA1\u6263\u9664\u3002", options: ["50%", "75%", "100%", "150%"], answer: 2, explain: "2023\u5E74\u8D77\u7B26\u5408\u6761\u4EF6\u7684\u4F01\u4E1A\u7814\u53D1\u8D39\u7528\u6309100%\u52A0\u8BA1\u6263\u9664\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 414, point: "\u53D1\u7968\u7BA1\u7406", q: "\u589E\u503C\u7A0E\u4E13\u7528\u53D1\u7968\u662F\u8D2D\u4E70\u65B9\uFF08\u3000\uFF09\u7684\u91CD\u8981\u51ED\u8BC1\u3002", options: ["\u62B5\u6263\u8FDB\u9879\u7A0E\u989D", "\u786E\u8BA4\u6536\u5165", "\u7533\u62A5\u4E2A\u4EBA\u6240\u5F97\u7A0E", "\u7F34\u7EB3\u6D88\u8D39\u7A0E"], answer: 0, explain: "\u4E13\u7528\u53D1\u7968\u7528\u4E8E\u62B5\u6263\u8FDB\u9879\u7A0E\u989D\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 415, point: "\u623F\u4EA7\u7A0E", q: "\u623F\u4EA7\u51FA\u79DF\u7684\uFF0C\u623F\u4EA7\u7A0E\u4ECE\u79DF\u8BA1\u5F81\u7A0E\u7387\u901A\u5E38\u4E3A\uFF08\u3000\uFF09\u3002", options: ["1.2%", "4%", "12%", "20%"], answer: 2, explain: "\u4ECE\u79DF\u8BA1\u5F81\u6309\u79DF\u91D1\u6536\u5165\u768412%\u7F34\u7EB3\uFF0C\u4E2A\u4EBA\u51FA\u79DF\u4F4F\u623F\u63094%\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 416, point: "\u5370\u82B1\u7A0E", q: "\u4EA7\u6743\u8F6C\u79FB\u4E66\u636E\u9002\u7528\u7684\u5370\u82B1\u7A0E\u7A0E\u7387\u4E3A\uFF08\u3000\uFF09\u3002", options: ["0.05\u2030", "0.3\u2030", "0.5\u2030", "1\u2030"], answer: 2, explain: "\u4EA7\u6743\u8F6C\u79FB\u4E66\u636E\u6309\u4EF7\u6B3E\u76840.5\u2030\u8D34\u82B1\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 417, point: "\u571F\u5730\u589E\u503C\u7A0E", q: "\u571F\u5730\u589E\u503C\u7A0E\u5B9E\u884C\uFF08\u3000\uFF09\u3002", options: ["\u6BD4\u4F8B\u7A0E\u7387", "\u8D85\u7387\u7D2F\u8FDB\u7A0E\u7387", "\u5B9A\u989D\u7A0E\u7387", "\u8D85\u500D\u7D2F\u8FDB\u7A0E\u7387"], answer: 1, explain: "\u571F\u5730\u589E\u503C\u7A0E\u5B9E\u884C30%-60%\u7684\u8D85\u7387\u7D2F\u8FDB\u7A0E\u7387\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 418, point: "\u8F66\u8F86\u8D2D\u7F6E\u7A0E", q: "\u8F66\u8F86\u8D2D\u7F6E\u7A0E\u7A0E\u7387\u4E3A\uFF08\u3000\uFF09\u3002", options: ["5%", "10%", "13%", "20%"], answer: 1, explain: "\u8F66\u8F86\u8D2D\u7F6E\u7A0E\u7A0E\u7387\u4E3A10%\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 419, point: "\u5951\u7A0E", q: "\u5951\u7A0E\u7531\uFF08\u3000\uFF09\u7F34\u7EB3\u3002", options: ["\u51FA\u8BA9\u65B9", "\u627F\u53D7\u571F\u5730\u3001\u623F\u5C4B\u6743\u5C5E\u7684\u4E00\u65B9", "\u4E2D\u4ECB\u673A\u6784", "\u653F\u5E9C"], answer: 1, explain: "\u5951\u7A0E\u7531\u627F\u53D7\u571F\u5730\u3001\u623F\u5C4B\u6743\u5C5E\u7684\u5355\u4F4D\u548C\u4E2A\u4EBA\u7F34\u7EB3\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 420, point: "\u7A0E\u6536\u5F81\u7BA1", q: "\u7EB3\u7A0E\u4EBA\u53D1\u751F\u7EB3\u7A0E\u4E49\u52A1\u540E\u5E94\u5F53\uFF08\u3000\uFF09\u3002", options: ["\u7B49\u5F85\u7A0E\u52A1\u673A\u5173\u6838\u5B9A", "\u4F9D\u6CD5\u529E\u7406\u7EB3\u7A0E\u7533\u62A5", "\u81EA\u884C\u51B3\u5B9A\u662F\u5426\u7EB3\u7A0E", "\u53EA\u7533\u62A5\u4E0D\u7F34\u7A0E"], answer: 1, explain: "\u7EB3\u7A0E\u4EBA\u5E94\u4F9D\u6CD5\u6309\u671F\u529E\u7406\u7EB3\u7A0E\u7533\u62A5\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 421, point: "\u589E\u503C\u7A0E", q: "\u4E00\u822C\u7EB3\u7A0E\u4EBA\u7279\u5B9A\u60C5\u51B5\u4E0B\u53EF\u4EE5\u9009\u62E9\u7B80\u6613\u8BA1\u7A0E\uFF0C\u5F81\u6536\u7387\u901A\u5E38\u4E3A\uFF08\u3000\uFF09\u3002", options: ["2%", "3%", "6%", "9%"], answer: 1, explain: "\u7B80\u6613\u8BA1\u7A0E\u5F81\u6536\u7387\u901A\u5E38\u4E3A3%\uFF0C\u90E8\u5206\u9879\u76EE\u4E3A5%\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 422, point: "\u6D88\u8D39\u7A0E", q: "\u81EA\u4EA7\u81EA\u7528\u5E94\u7A0E\u6D88\u8D39\u54C1\uFF0C\u6CA1\u6709\u540C\u7C7B\u9500\u552E\u4EF7\u683C\u7684\u6309\u7EC4\u6210\u8BA1\u7A0E\u4EF7\u683C\u8BA1\u7A0E\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u81EA\u4EA7\u81EA\u7528\u6CA1\u6709\u540C\u7C7B\u552E\u4EF7\u65F6\u6309\u7EC4\u6210\u8BA1\u7A0E\u4EF7\u683C\u8BA1\u7B97\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "judge" },
+    { id: 423, point: "\u4F01\u4E1A\u6240\u5F97\u7A0E", q: "\u4E0B\u5217\u652F\u51FA\u5728\u4F01\u4E1A\u6240\u5F97\u7A0E\u524D\u4E0D\u5F97\u6263\u9664\u7684\u6709\uFF08\u3000\uFF09\u3002", options: ["\u5411\u6295\u8D44\u8005\u652F\u4ED8\u7684\u80A1\u606F", "\u4F01\u4E1A\u6240\u5F97\u7A0E\u7A0E\u6B3E", "\u8FDD\u53CD\u6CD5\u5F8B\u7684\u7F5A\u6B3E", "\u7B26\u5408\u6761\u4EF6\u7684\u516C\u76CA\u6027\u6350\u8D60"], answer: [0, 1, 2], explain: "\u80A1\u606F\u3001\u7A0E\u6B3E\u548C\u8FDD\u6CD5\u7F5A\u6B3E\u4E0D\u5F97\u6263\u9664\uFF1B\u7B26\u5408\u6761\u4EF6\u7684\u516C\u76CA\u6027\u6350\u8D60\u53EF\u6309\u89C4\u5B9A\u6263\u9664\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "multiple" },
+    { id: 424, point: "\u4E2A\u4EBA\u6240\u5F97\u7A0E", q: "\u5C45\u6C11\u4E2A\u4EBA\u7EFC\u5408\u6240\u5F97\u9002\u7528\uFF08\u3000\uFF09\u8D85\u989D\u7D2F\u8FDB\u7A0E\u7387\u3002", options: ["3%-45%", "5%-35%", "10%-40%", "20%-45%"], answer: 0, explain: "\u7EFC\u5408\u6240\u5F97\u9002\u75283%-45%\u4E03\u7EA7\u8D85\u989D\u7D2F\u8FDB\u7A0E\u7387\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 425, point: "\u623F\u4EA7\u7A0E", q: "\u4E2A\u4EBA\u51FA\u79DF\u4F4F\u623F\u63094%\u7684\u7A0E\u7387\u5F81\u6536\u623F\u4EA7\u7A0E\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u4E2A\u4EBA\u51FA\u79DF\u4F4F\u623F\u51CF\u63094%\u5F81\u6536\u623F\u4EA7\u7A0E\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "judge" },
+    { id: 426, point: "\u5370\u82B1\u7A0E", q: "\u501F\u6B3E\u5408\u540C\u9002\u7528\u7684\u5370\u82B1\u7A0E\u7A0E\u7387\u4E3A\uFF08\u3000\uFF09\u3002", options: ["0.05\u2030", "0.3\u2030", "0.5\u2030", "1\u2030"], answer: 0, explain: "\u501F\u6B3E\u5408\u540C\u6309\u501F\u6B3E\u91D1\u989D\u76840.05\u2030\u8D34\u82B1\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 427, point: "\u571F\u5730\u589E\u503C\u7A0E", q: "\u571F\u5730\u589E\u503C\u7A0E\u6263\u9664\u9879\u76EE\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u53D6\u5F97\u571F\u5730\u4F7F\u7528\u6743\u6240\u652F\u4ED8\u7684\u91D1\u989D", "\u623F\u5730\u4EA7\u5F00\u53D1\u6210\u672C", "\u623F\u5730\u4EA7\u5F00\u53D1\u8D39\u7528", "\u589E\u503C\u7A0E\u8FDB\u9879\u7A0E\u989D"], answer: [0, 1, 2], explain: "\u6263\u9664\u9879\u76EE\u5305\u62EC\u53D6\u5F97\u571F\u5730\u4F7F\u7528\u6743\u3001\u5F00\u53D1\u6210\u672C\u3001\u5F00\u53D1\u8D39\u7528\u3001\u7A0E\u91D1\u53CA\u5176\u4ED6\u6263\u9664\u9879\u76EE\u3002", subject: "\u7A0E\u6CD5", difficulty: "expert", type: "multiple" },
+    { id: 428, point: "\u7A0E\u6536\u5F81\u7BA1", q: "\u7A0E\u6536\u4FDD\u5168\u63AA\u65BD\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u51BB\u7ED3\u5B58\u6B3E", "\u6263\u62BC\u67E5\u5C01\u8D22\u4EA7", "\u62CD\u5356\u8D22\u4EA7", "\u8D23\u4EE4\u63D0\u4F9B\u7EB3\u7A0E\u62C5\u4FDD"], answer: [0, 1], explain: "\u4FDD\u5168\u63AA\u65BD\u5305\u62EC\u51BB\u7ED3\u3001\u6263\u62BC\u3001\u67E5\u5C01\uFF1B\u62CD\u5356\u5C5E\u4E8E\u5F3A\u5236\u6267\u884C\u3002", subject: "\u7A0E\u6CD5", difficulty: "expert", type: "multiple" },
+    { id: 429, point: "\u516C\u53F8\u6CD5", q: "\u6709\u9650\u8D23\u4EFB\u516C\u53F8\u80A1\u4E1C\u4F1A\u4E0B\u5217\u5C5E\u4E8E\u7279\u522B\u51B3\u8BAE\u4E8B\u9879\u7684\u6709\uFF08\u3000\uFF09\u3002", options: ["\u4FEE\u6539\u7AE0\u7A0B", "\u589E\u51CF\u6CE8\u518C\u8D44\u672C", "\u516C\u53F8\u5408\u5E76\u3001\u5206\u7ACB\u3001\u89E3\u6563", "\u9009\u4E3E\u666E\u901A\u8463\u4E8B"], answer: [0, 1, 2], explain: "\u4FEE\u6539\u7AE0\u7A0B\u3001\u589E\u51CF\u8D44\u672C\u548C\u5408\u5E76\u5206\u7ACB\u89E3\u6563\u5C5E\u4E8E\u7279\u522B\u51B3\u8BAE\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "multiple" },
+    { id: 430, point: "\u516C\u53F8\u6CBB\u7406", q: "\u73B0\u884C\u516C\u53F8\u6CD5\u4E0B\uFF0C\u6709\u9650\u8D23\u4EFB\u516C\u53F8\u8463\u4E8B\u4F1A\u6210\u5458\u4E3A\uFF08\u3000\uFF09\u3002", options: ["3\u4EBA\u4EE5\u4E0A", "5-19\u4EBA", "\u65E0\u4EBA\u6570\u9650\u5236", "\u5FC5\u987B\u4E3A\u5947\u6570"], answer: 0, explain: "\u73B0\u884C\u516C\u53F8\u6CD5\u8981\u6C42\u8463\u4E8B\u4F1A\u6210\u5458\u4E09\u4EBA\u4EE5\u4E0A\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 431, point: "\u5408\u540C\u6CD5", q: "\u5408\u540C\u6210\u7ACB\u7684\u4E00\u822C\u8FC7\u7A0B\u662F\uFF08\u3000\uFF09\u3002", options: ["\u8981\u7EA6\u4E0E\u627F\u8BFA", "\u62DB\u6807\u4E0E\u6295\u6807", "\u7533\u8BF7\u4E0E\u5BA1\u6279", "\u516C\u544A\u4E0E\u767B\u8BB0"], answer: 0, explain: "\u5408\u540C\u4E00\u822C\u7ECF\u8FC7\u8981\u7EA6\u548C\u627F\u8BFA\u6210\u7ACB\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 432, point: "\u8BC1\u5238\u6CD5", q: "\u6211\u56FD\u8BC1\u5238\u516C\u5F00\u53D1\u884C\u5B9E\u884C\uFF08\u3000\uFF09\u3002", options: ["\u6CE8\u518C\u5236", "\u5BA1\u6279\u5236", "\u6838\u51C6\u5236", "\u5907\u6848\u5236"], answer: 0, explain: "\u516C\u5F00\u53D1\u884C\u8BC1\u5238\u5B9E\u884C\u6CE8\u518C\u5236\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 433, point: "\u7834\u4EA7\u6CD5", q: "\u7834\u4EA7\u8D22\u4EA7\u6E05\u507F\u987A\u5E8F\u4E2D\u901A\u5E38\u4F18\u5148\u6E05\u507F\uFF08\u3000\uFF09\u3002", options: ["\u666E\u901A\u503A\u6743", "\u7834\u4EA7\u8D39\u7528\u548C\u5171\u76CA\u503A\u52A1", "\u80A1\u4E1C\u5206\u7EA2", "\u5546\u4E1A\u5E7F\u544A\u8D39"], answer: 1, explain: "\u7834\u4EA7\u8D39\u7528\u548C\u5171\u76CA\u503A\u52A1\u4F18\u5148\u6E05\u507F\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 434, point: "\u7968\u636E\u6CD5", q: "\u6C47\u7968\u7684\u4ED8\u6B3E\u4EBA\u901A\u5E38\u662F\uFF08\u3000\uFF09\u3002", options: ["\u51FA\u7968\u4EBA", "\u94F6\u884C\u6216\u627F\u5151\u4EBA", "\u6536\u6B3E\u4EBA", "\u80CC\u4E66\u4EBA"], answer: 1, explain: "\u6C47\u7968\u4ED8\u6B3E\u4EBA\u662F\u53D7\u7968\u4EBA\uFF0C\u5546\u4E1A\u6C47\u7968\u7ECF\u627F\u5151\u540E\u7531\u627F\u5151\u4EBA\u4ED8\u6B3E\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 435, point: "\u7269\u6743\u6CD5", q: "\u4E0D\u52A8\u4EA7\u62B5\u62BC\u6743\u901A\u5E38\u81EA\uFF08\u3000\uFF09\u65F6\u8BBE\u7ACB\u3002", options: ["\u5408\u540C\u7B7E\u8BA2", "\u767B\u8BB0", "\u4EA4\u4ED8", "\u516C\u8BC1"], answer: 1, explain: "\u4E0D\u52A8\u4EA7\u62B5\u62BC\u4EE5\u767B\u8BB0\u4E3A\u8BBE\u7ACB\u8981\u4EF6\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 436, point: "\u53CD\u5784\u65AD\u6CD5", q: "\u7ECF\u8425\u8005\u96C6\u4E2D\u8FBE\u5230\u56FD\u52A1\u9662\u89C4\u5B9A\u6807\u51C6\u65F6\uFF0C\u5E94\u5F53\uFF08\u3000\uFF09\u3002", options: ["\u4E8B\u5148\u7533\u62A5", "\u4E8B\u540E\u7533\u62A5", "\u65E0\u9700\u7533\u62A5", "\u4EC5\u5185\u90E8\u5BA1\u6279"], answer: 0, explain: "\u8FBE\u5230\u7533\u62A5\u6807\u51C6\u7684\u7ECF\u8425\u8005\u96C6\u4E2D\u5E94\u5F53\u4E8B\u5148\u7533\u62A5\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 437, point: "\u5408\u4F19\u4F01\u4E1A\u6CD5", q: "\u666E\u901A\u5408\u4F19\u4EBA\u5BF9\u5408\u4F19\u4F01\u4E1A\u503A\u52A1\u627F\u62C5\uFF08\u3000\uFF09\u3002", options: ["\u6709\u9650\u8D23\u4EFB", "\u65E0\u9650\u8FDE\u5E26\u8D23\u4EFB", "\u6309\u51FA\u8D44\u6BD4\u4F8B\u8D23\u4EFB", "\u4E0D\u627F\u62C5\u8D23\u4EFB"], answer: 1, explain: "\u666E\u901A\u5408\u4F19\u4EBA\u5BF9\u5408\u4F19\u4F01\u4E1A\u503A\u52A1\u627F\u62C5\u65E0\u9650\u8FDE\u5E26\u8D23\u4EFB\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 438, point: "\u516C\u53F8\u6CD5", q: "\u6709\u9650\u8D23\u4EFB\u516C\u53F8\u6CD5\u5B9A\u4EE3\u8868\u53EF\u4EE5\u7531\uFF08\u3000\uFF09\u62C5\u4EFB\u3002", options: ["\u6267\u884C\u516C\u53F8\u4E8B\u52A1\u7684\u8463\u4E8B\u6216\u7ECF\u7406", "\u4EFB\u610F\u5458\u5DE5", "\u8D22\u52A1\u8D1F\u8D23\u4EBA", "\u5916\u90E8\u987E\u95EE"], answer: 0, explain: "\u73B0\u884C\u516C\u53F8\u6CD5\u89C4\u5B9A\u6CD5\u5B9A\u4EE3\u8868\u7531\u6267\u884C\u516C\u53F8\u4E8B\u52A1\u7684\u8463\u4E8B\u6216\u7ECF\u7406\u62C5\u4EFB\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 439, point: "\u516C\u53F8\u6CBB\u7406", q: "\u4E0B\u5217\u5C5E\u4E8E\u80A1\u4E1C\u4F1A\u804C\u6743\u7684\u662F\uFF08\u3000\uFF09\u3002", options: ["\u9009\u4E3E\u548C\u66F4\u6362\u8463\u4E8B", "\u8058\u4EFB\u516C\u53F8\u603B\u7ECF\u7406", "\u5236\u5B9A\u57FA\u672C\u5236\u5EA6", "\u6267\u884C\u8463\u4E8B\u4F1A\u51B3\u8BAE"], answer: 0, explain: "\u80A1\u4E1C\u4F1A\u9009\u4E3E\u548C\u66F4\u6362\u8463\u4E8B\uFF1B\u8058\u4EFB\u603B\u7ECF\u7406\u5C5E\u4E8E\u8463\u4E8B\u4F1A\u804C\u6743\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 440, point: "\u5408\u540C\u6CD5", q: "\u8FDD\u53CD\u6CD5\u5F8B\u3001\u884C\u653F\u6CD5\u89C4\u5F3A\u5236\u6027\u89C4\u5B9A\u7684\u5408\u540C\u901A\u5E38\uFF08\u3000\uFF09\u3002", options: ["\u65E0\u6548", "\u6709\u6548", "\u53EF\u64A4\u9500", "\u6548\u529B\u5F85\u5B9A"], answer: 0, explain: "\u8FDD\u53CD\u5F3A\u5236\u6027\u89C4\u5B9A\u53EF\u80FD\u65E0\u6548\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 441, point: "\u8BC1\u5238\u6CD5", q: "\u4E0A\u5E02\u516C\u53F8\u5E94\u53CA\u65F6\u62AB\u9732\u7684\u91CD\u5927\u4E8B\u4EF6\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u7ECF\u8425\u65B9\u9488\u91CD\u5927\u53D8\u5316", "\u91CD\u5927\u6295\u8D44\u884C\u4E3A", "\u91CD\u8981\u5408\u540C", "\u65E5\u5E38\u529E\u516C\u7528\u54C1\u91C7\u8D2D"], answer: [0, 1, 2], explain: "\u7ECF\u8425\u65B9\u9488\u3001\u91CD\u5927\u6295\u8D44\u548C\u91CD\u8981\u5408\u540C\u5C5E\u4E8E\u91CD\u5927\u4E8B\u4EF6\uFF1B\u65E5\u5E38\u91C7\u8D2D\u4E0D\u6784\u6210\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "multiple" },
+    { id: 442, point: "\u7834\u4EA7\u6CD5", q: "\u7834\u4EA7\u91CD\u6574\u7684\u4E3B\u8981\u76EE\u7684\u662F\uFF08\u3000\uFF09\u3002", options: ["\u4F7F\u4F01\u4E1A\u6062\u590D\u7ECF\u8425\u80FD\u529B", "\u7ACB\u5373\u89E3\u6563\u4F01\u4E1A", "\u514D\u9664\u5168\u90E8\u503A\u52A1", "\u65E0\u507F\u8F6C\u8BA9\u8D44\u4EA7"], answer: 0, explain: "\u91CD\u6574\u65E8\u5728\u8C03\u6574\u503A\u52A1\u548C\u7ECF\u8425\u65B9\u6848\uFF0C\u4F7F\u4F01\u4E1A\u6062\u590D\u7ECF\u8425\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 443, point: "\u7968\u636E\u6CD5", q: "\u6C47\u7968\u53EF\u4EE5\u901A\u8FC7\u80CC\u4E66\u8F6C\u8BA9\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u6C47\u7968\u53EF\u4EE5\u80CC\u4E66\u8F6C\u8BA9\uFF0C\u4F9D\u6CD5\u8BB0\u8F7D\u80CC\u4E66\u4EBA\u3001\u88AB\u80CC\u4E66\u4EBA\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "judge" },
+    { id: 444, point: "\u7269\u6743\u6CD5", q: "\u5584\u610F\u53D6\u5F97\u9700\u8981\u6EE1\u8DB3\uFF08\u3000\uFF09\u7B49\u6761\u4EF6\u3002", options: ["\u53D7\u8BA9\u4EBA\u5584\u610F", "\u5408\u7406\u4EF7\u683C\u8F6C\u8BA9", "\u5B8C\u6210\u6CD5\u5B9A\u516C\u793A", "\u8F6C\u8BA9\u4EBA\u6709\u6743\u5904\u5206"], answer: [0, 1, 2], explain: "\u5584\u610F\u53D6\u5F97\u8981\u6C42\u5584\u610F\u3001\u5408\u7406\u4EF7\u683C\u548C\u5B8C\u6210\u516C\u793A\uFF1B\u8F6C\u8BA9\u4EBA\u901A\u5E38\u65E0\u6743\u5904\u5206\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "expert", type: "multiple" },
+    { id: 445, point: "\u53CD\u5784\u65AD\u6CD5", q: "\u5177\u6709\u7ADE\u4E89\u5173\u7CFB\u7684\u7ECF\u8425\u8005\u56FA\u5B9A\u4EF7\u683C\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u6A2A\u5411\u5784\u65AD\u534F\u8BAE", "\u7EB5\u5411\u5784\u65AD\u534F\u8BAE", "\u7ECF\u8425\u8005\u96C6\u4E2D", "\u6EE5\u7528\u5E02\u573A\u652F\u914D\u5730\u4F4D"], answer: 0, explain: "\u7ADE\u4E89\u8005\u4E4B\u95F4\u56FA\u5B9A\u4EF7\u683C\u5C5E\u4E8E\u6A2A\u5411\u5784\u65AD\u534F\u8BAE\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 446, point: "\u5408\u4F19\u4F01\u4E1A\u6CD5", q: "\u6709\u9650\u5408\u4F19\u4EBA\u901A\u5E38\u4EE5\uFF08\u3000\uFF09\u5BF9\u5408\u4F19\u4F01\u4E1A\u503A\u52A1\u627F\u62C5\u8D23\u4EFB\u3002", options: ["\u8BA4\u7F34\u51FA\u8D44\u989D", "\u65E0\u9650\u8FDE\u5E26\u8D23\u4EFB", "\u5BB6\u5EAD\u8D22\u4EA7", "\u5408\u4F19\u4F01\u4E1A\u8D44\u4EA7"], answer: 0, explain: "\u6709\u9650\u5408\u4F19\u4EBA\u4EE5\u5176\u8BA4\u7F34\u51FA\u8D44\u989D\u4E3A\u9650\u627F\u62C5\u8D23\u4EFB\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "single" },
+    { id: 447, point: "\u516C\u53F8\u6CD5", q: "\u4E00\u4E2A\u81EA\u7136\u4EBA\u53EA\u80FD\u6295\u8D44\u8BBE\u7ACB\u4E00\u4E2A\u4E00\u4EBA\u6709\u9650\u8D23\u4EFB\u516C\u53F8\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 0, explain: "\u4E00\u4E2A\u81EA\u7136\u4EBA\u53EA\u80FD\u8BBE\u7ACB\u4E00\u4E2A\u4E00\u4EBA\u6709\u9650\u8D23\u4EFB\u516C\u53F8\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "judge" },
+    { id: 448, point: "\u8BC1\u5238\u6CD5", q: "\u5185\u5E55\u4FE1\u606F\u77E5\u60C5\u4EBA\u5728\u5185\u5E55\u4FE1\u606F\u516C\u5F00\u524D\u4E70\u5356\u76F8\u5173\u8BC1\u5238\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u5408\u6CD5\u6295\u8D44", "\u5185\u5E55\u4EA4\u6613", "\u6B63\u5E38\u5957\u5229", "\u98CE\u9669\u7BA1\u7406"], answer: 1, explain: "\u5229\u7528\u5185\u5E55\u4FE1\u606F\u4E70\u5356\u8BC1\u5238\u6784\u6210\u5185\u5E55\u4EA4\u6613\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "single" },
+    { id: 449, point: "SWOT", q: "SWOT\u5206\u6790\u4E2D\u7684O\u4EE3\u8868\uFF08\u3000\uFF09\u3002", options: ["\u673A\u4F1A", "\u4F18\u52BF", "\u5A01\u80C1", "\u52A3\u52BF"], answer: 0, explain: "O=Opportunities\u673A\u4F1A\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
+    { id: 450, point: "\u4E94\u529B\u6A21\u578B", q: "\u6CE2\u7279\u4E94\u529B\u6A21\u578B\u4E0D\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u73B0\u6709\u7ADE\u4E89\u8005", "\u6F5C\u5728\u8FDB\u5165\u8005", "\u653F\u5E9C\u653F\u7B56", "\u66FF\u4EE3\u54C1"], answer: 2, explain: "\u4E94\u529B\u5305\u62EC\u73B0\u6709\u7ADE\u4E89\u8005\u3001\u6F5C\u5728\u8FDB\u5165\u8005\u3001\u66FF\u4EE3\u54C1\u3001\u4F9B\u5E94\u5546\u548C\u8D2D\u4E70\u8005\u8BAE\u4EF7\u80FD\u529B\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
+    { id: 451, point: "\u4EF7\u503C\u94FE", q: "\u4E0B\u5217\u5C5E\u4E8E\u4EF7\u503C\u94FE\u57FA\u672C\u6D3B\u52A8\u7684\u662F\uFF08\u3000\uFF09\u3002", options: ["\u5E02\u573A\u9500\u552E", "\u91C7\u8D2D\u7BA1\u7406", "\u6280\u672F\u5F00\u53D1", "\u4EBA\u529B\u8D44\u6E90"], answer: 0, explain: "\u57FA\u672C\u6D3B\u52A8\u5305\u62EC\u5185\u90E8\u540E\u52E4\u3001\u751F\u4EA7\u3001\u5916\u90E8\u540E\u52E4\u3001\u5E02\u573A\u548C\u9500\u552E\u3001\u670D\u52A1\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
+    { id: 452, point: "\u5E76\u8D2D\u6218\u7565", q: "\u540C\u884C\u4E1A\u4F01\u4E1A\u4E4B\u95F4\u7684\u5E76\u8D2D\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u6A2A\u5411\u5E76\u8D2D", "\u7EB5\u5411\u5E76\u8D2D", "\u6DF7\u5408\u5E76\u8D2D", "\u8DE8\u56FD\u5E76\u8D2D"], answer: 0, explain: "\u6A2A\u5411\u5E76\u8D2D\u53D1\u751F\u5728\u76F8\u540C\u6216\u76F8\u8FD1\u884C\u4E1A\u4F01\u4E1A\u4E4B\u95F4\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
+    { id: 453, point: "\u516C\u53F8\u6218\u7565\u7C7B\u578B", q: "\u53D1\u5C55\u6218\u7565\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u4E00\u4F53\u5316\u6218\u7565", "\u5BC6\u96C6\u578B\u6218\u7565", "\u591A\u5143\u5316\u6218\u7565", "\u6536\u7F29\u578B\u6218\u7565"], answer: [0, 1, 2], explain: "\u53D1\u5C55\u6218\u7565\u5305\u62EC\u4E00\u4F53\u5316\u3001\u5BC6\u96C6\u578B\u548C\u591A\u5143\u5316\uFF1B\u6536\u7F29\u578B\u5C5E\u4E8E\u9632\u5FA1\u6218\u7565\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "multiple" },
+    { id: 454, point: "\u5E73\u8861\u8BA1\u5206\u5361", q: "\u5E73\u8861\u8BA1\u5206\u5361\u5305\u62EC\uFF08\u3000\uFF09\u56DB\u4E2A\u7EF4\u5EA6\u3002", options: ["\u8D22\u52A1", "\u5BA2\u6237", "\u5185\u90E8\u6D41\u7A0B", "\u5B66\u4E60\u4E0E\u6210\u957F"], answer: [0, 1, 2, 3], explain: "\u5E73\u8861\u8BA1\u5206\u5361\u56DB\u4E2A\u7EF4\u5EA6\u4E3A\u8D22\u52A1\u3001\u5BA2\u6237\u3001\u5185\u90E8\u6D41\u7A0B\u3001\u5B66\u4E60\u4E0E\u6210\u957F\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "multiple" },
+    { id: 455, point: "\u6CE2\u58EB\u987F\u77E9\u9635", q: "\u9AD8\u5E02\u573A\u589E\u957F\u7387\u3001\u9AD8\u76F8\u5BF9\u5E02\u573A\u4EFD\u989D\u7684\u4E1A\u52A1\u662F\uFF08\u3000\uFF09\u3002", options: ["\u660E\u661F\u4E1A\u52A1", "\u73B0\u91D1\u725B", "\u95EE\u9898\u4E1A\u52A1", "\u7626\u72D7\u4E1A\u52A1"], answer: 0, explain: "\u660E\u661F\u4E1A\u52A1\u5904\u4E8E\u9AD8\u589E\u957F\u3001\u9AD8\u4EFD\u989D\u8C61\u9650\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
+    { id: 456, point: "\u98CE\u9669\u7BA1\u7406", q: "\u4F01\u4E1A\u613F\u610F\u627F\u62C5\u7684\u98CE\u9669\u79CD\u7C7B\u548C\u6570\u91CF\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u98CE\u9669\u504F\u597D", "\u98CE\u9669\u627F\u53D7\u5EA6", "\u98CE\u9669\u5E94\u5BF9", "\u98CE\u9669\u62A5\u544A"], answer: 0, explain: "\u98CE\u9669\u504F\u597D\u662F\u4F01\u4E1A\u613F\u610F\u627F\u62C5\u7684\u98CE\u9669\u79CD\u7C7B\u548C\u6570\u91CF\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "single" },
+    { id: 457, point: "\u98CE\u9669\u7C7B\u578B", q: "\u4F01\u4E1A\u957F\u671F\u53D1\u5C55\u65B9\u5411\u9009\u62E9\u9519\u8BEF\u53EF\u80FD\u5E26\u6765\uFF08\u3000\uFF09\u3002", options: ["\u6218\u7565\u98CE\u9669", "\u8FD0\u8425\u98CE\u9669", "\u8D22\u52A1\u98CE\u9669", "\u5408\u89C4\u98CE\u9669"], answer: 0, explain: "\u6218\u7565\u98CE\u9669\u4E0E\u957F\u671F\u53D1\u5C55\u65B9\u5411\u548C\u91CD\u5927\u51B3\u7B56\u76F8\u5173\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "single" },
+    { id: 458, point: "SWOT", q: "SWOT\u5206\u6790\u4E2DW\u4EE3\u8868\uFF08\u3000\uFF09\u3002", options: ["\u4F18\u52BF", "\u52A3\u52BF", "\u673A\u4F1A", "\u5A01\u80C1"], answer: 1, explain: "W=Weaknesses\u52A3\u52BF\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
+    { id: 459, point: "\u4E94\u529B\u6A21\u578B", q: "\u529F\u80FD\u76F8\u4F3C\u5E76\u80FD\u6EE1\u8DB3\u76F8\u540C\u9700\u6C42\u7684\u5546\u54C1\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u66FF\u4EE3\u54C1", "\u4E92\u8865\u54C1", "\u4F9B\u5E94\u5546", "\u8D2D\u4E70\u8005"], answer: 0, explain: "\u66FF\u4EE3\u54C1\u662F\u529F\u80FD\u76F8\u4F3C\u3001\u53EF\u6EE1\u8DB3\u76F8\u540C\u9700\u6C42\u7684\u4EA7\u54C1\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "single" },
+    { id: 460, point: "\u4EF7\u503C\u94FE", q: "\u4E0B\u5217\u5C5E\u4E8E\u652F\u6301\u6D3B\u52A8\u7684\u662F\uFF08\u3000\uFF09\u3002", options: ["\u91C7\u8D2D", "\u751F\u4EA7\u8FD0\u8425", "\u5E02\u573A\u9500\u552E", "\u552E\u540E\u670D\u52A1"], answer: 0, explain: "\u91C7\u8D2D\u3001\u6280\u672F\u5F00\u53D1\u3001\u4EBA\u529B\u8D44\u6E90\u548C\u4F01\u4E1A\u57FA\u7840\u8BBE\u65BD\u5C5E\u4E8E\u652F\u6301\u6D3B\u52A8\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "single" },
+    { id: 461, point: "\u5E76\u8D2D\u6218\u7565", q: "\u4F01\u4E1A\u5E76\u8D2D\u7684\u5E38\u89C1\u52A8\u673A\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u534F\u540C\u6548\u5E94", "\u5E02\u573A\u652F\u914D\u529B", "\u8FDB\u5165\u65B0\u5E02\u573A", "\u5FC5\u7136\u964D\u4F4E\u98CE\u9669"], answer: [0, 1, 2], explain: "\u5E76\u8D2D\u53EF\u5E26\u6765\u534F\u540C\u3001\u5E02\u573A\u652F\u914D\u529B\u6216\u8FDB\u5165\u65B0\u5E02\u573A\uFF1B\u5E76\u8D2D\u4E0D\u5FC5\u7136\u964D\u4F4E\u98CE\u9669\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "multiple" },
+    { id: 462, point: "\u516C\u53F8\u6218\u7565\u7C7B\u578B", q: "\u4EE5\u66F4\u4F4E\u6210\u672C\u63D0\u4F9B\u76F8\u540C\u4EF7\u503C\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u6210\u672C\u9886\u5148\u6218\u7565", "\u5DEE\u5F02\u5316\u6218\u7565", "\u96C6\u4E2D\u5316\u6218\u7565", "\u591A\u5143\u5316\u6218\u7565"], answer: 0, explain: "\u6210\u672C\u9886\u5148\u6218\u7565\u901A\u8FC7\u66F4\u4F4E\u6210\u672C\u63D0\u4F9B\u76F8\u540C\u4EF7\u503C\u83B7\u5F97\u4F18\u52BF\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
+    { id: 463, point: "\u5E73\u8861\u8BA1\u5206\u5361", q: "\u5BA2\u6237\u6EE1\u610F\u5EA6\u5C5E\u4E8E\u5E73\u8861\u8BA1\u5206\u5361\u7684\uFF08\u3000\uFF09\u7EF4\u5EA6\u3002", options: ["\u8D22\u52A1", "\u5BA2\u6237", "\u5185\u90E8\u6D41\u7A0B", "\u5B66\u4E60\u4E0E\u6210\u957F"], answer: 1, explain: "\u5BA2\u6237\u6EE1\u610F\u5EA6\u5C5E\u4E8E\u5BA2\u6237\u7EF4\u5EA6\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "single" },
+    { id: 464, point: "\u6CE2\u58EB\u987F\u77E9\u9635", q: "\u4F4E\u589E\u957F\u3001\u9AD8\u4EFD\u989D\u7684\u4E1A\u52A1\u662F\uFF08\u3000\uFF09\u3002", options: ["\u660E\u661F\u4E1A\u52A1", "\u73B0\u91D1\u725B\u4E1A\u52A1", "\u95EE\u9898\u4E1A\u52A1", "\u7626\u72D7\u4E1A\u52A1"], answer: 1, explain: "\u73B0\u91D1\u725B\u4E1A\u52A1\u4F4E\u589E\u957F\u3001\u9AD8\u4EFD\u989D\uFF0C\u80FD\u4EA7\u751F\u7A33\u5B9A\u73B0\u91D1\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" },
+    { id: 465, point: "\u98CE\u9669\u7BA1\u7406", q: "\u98CE\u9669\u5E94\u5BF9\u7B56\u7565\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u98CE\u9669\u89C4\u907F", "\u98CE\u9669\u964D\u4F4E", "\u98CE\u9669\u8F6C\u79FB", "\u98CE\u9669\u63A5\u53D7"], answer: [0, 1, 2, 3], explain: "\u98CE\u9669\u5E94\u5BF9\u5305\u62EC\u89C4\u907F\u3001\u964D\u4F4E\u3001\u8F6C\u79FB\u548C\u63A5\u53D7\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "multiple" },
+    { id: 466, point: "\u98CE\u9669\u7C7B\u578B", q: "\u751F\u4EA7\u8BBE\u5907\u6545\u969C\u53EF\u80FD\u5BFC\u81F4\uFF08\u3000\uFF09\u3002", options: ["\u8FD0\u8425\u98CE\u9669", "\u6218\u7565\u98CE\u9669", "\u6CD5\u5F8B\u98CE\u9669", "\u5E02\u573A\u98CE\u9669"], answer: 0, explain: "\u8FD0\u8425\u98CE\u9669\u4E0E\u4E1A\u52A1\u6D41\u7A0B\u548C\u8D44\u4EA7\u8FD0\u8425\u76F8\u5173\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "single" },
+    { id: 467, point: "\u5E76\u8D2D\u6218\u7565", q: "\u591A\u5143\u5316\u5E76\u8D2D\u5FC5\u7136\u80FD\u964D\u4F4E\u4F01\u4E1A\u6574\u4F53\u98CE\u9669\u3002", options: ["\u6B63\u786E", "\u9519\u8BEF"], answer: 1, explain: "\u591A\u5143\u5316\u53EF\u80FD\u5F15\u5165\u65B0\u98CE\u9669\uFF0C\u5E76\u4E0D\u5FC5\u7136\u964D\u4F4E\u6574\u4F53\u98CE\u9669\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "judge" },
+    { id: 468, point: "\u516C\u53F8\u6218\u7565\u7C7B\u578B", q: "\u4F9D\u9760\u72EC\u7279\u4EA7\u54C1\u6216\u670D\u52A1\u83B7\u5F97\u6EA2\u4EF7\u5C5E\u4E8E\uFF08\u3000\uFF09\u3002", options: ["\u6210\u672C\u9886\u5148\u6218\u7565", "\u5DEE\u5F02\u5316\u6218\u7565", "\u4F4E\u6210\u672C\u96C6\u4E2D", "\u591A\u5143\u5316\u6218\u7565"], answer: 1, explain: "\u5DEE\u5F02\u5316\u6218\u7565\u901A\u8FC7\u72EC\u7279\u4EA7\u54C1\u83B7\u5F97\u6EA2\u4EF7\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "single" }
+  ];
   var QUESTIONS_BASE = [
     { id: 1, point: "\u4F1A\u8BA1\u7B49\u5F0F", q: "\u4F1A\u8BA1\u57FA\u672C\u7B49\u5F0F\u662F\uFF08 \uFF09\u3002", options: ["\u8D44\u4EA7\uFF1D\u8D1F\u503A\uFF0B\u6240\u6709\u8005\u6743\u76CA", "\u6536\u5165\uFF0D\u8D39\u7528\uFF1D\u5229\u6DA6", "\u8D44\u4EA7\uFF1D\u8D1F\u503A\uFF0D\u6240\u6709\u8005\u6743\u76CA", "\u501F\u65B9\u53D1\u751F\u989D\uFF1D\u8D37\u65B9\u53D1\u751F\u989D"], answer: 0, explain: "\u4F1A\u8BA1\u57FA\u672C\u7B49\u5F0F\u4E3A\u8D44\u4EA7\uFF1D\u8D1F\u503A\uFF0B\u6240\u6709\u8005\u6743\u76CA\uFF0C\u662F\u590D\u5F0F\u8BB0\u8D26\u548C\u62A5\u8868\u7F16\u5236\u7684\u7406\u8BBA\u57FA\u7840\u3002" },
     { id: 2, point: "\u4F1A\u8BA1\u8981\u7D20", q: "\u4E0B\u5217\u5C5E\u4E8E\u8D44\u4EA7\u8D1F\u503A\u8868\u8981\u7D20\u7684\u662F\uFF08 \uFF09\u3002", options: ["\u8D44\u4EA7", "\u6536\u5165", "\u8D39\u7528", "\u5229\u6DA6"], answer: 0, explain: "\u8D44\u4EA7\u3001\u8D1F\u503A\u3001\u6240\u6709\u8005\u6743\u76CA\u53CD\u6620\u8D22\u52A1\u72B6\u51B5\uFF0C\u5C5E\u4E8E\u8D44\u4EA7\u8D1F\u503A\u8868\u8981\u7D20\u3002" },
@@ -365,7 +487,7 @@
   function getRandomQuestions(count) {
     return [...QUESTIONS].sort(() => Math.random() - 0.5).slice(0, Math.max(1, count));
   }
-  var QUESTIONS = [...QUESTIONS_BASE, ...QUESTIONS_EXTRA, ...QUESTIONS_M3, ...QUESTIONS_M4];
+  var QUESTIONS = [...QUESTIONS_BASE, ...QUESTIONS_EXTRA, ...QUESTIONS_M3, ...QUESTIONS_M4, ...QUESTIONS_M5];
   var POINTS = [...new Set(QUESTIONS.map((q) => q.point))];
   window.QUESTIONS = QUESTIONS;
   window.POINTS = POINTS;
@@ -3858,9 +3980,24 @@
       final_boss: { id: "strategy", bg: "bright_wild", tint: "rgba(40, 32, 92, 0.24)", label: "\u6218\u7565\u661F\u5854 \xB7 \u7EC8\u5C40" }
     };
     const DECOR_TILES = {
-      grass: [{ col: 0, row: 0 }, { col: 1, row: 0 }],
-      flower: [{ col: 2, row: 0 }, { col: 3, row: 0 }, { col: 9, row: 0 }, { col: 10, row: 0 }, { col: 11, row: 0 }],
-      bush: [{ col: 4, row: 0 }, { col: 5, row: 0 }, { col: 6, row: 0 }, { col: 7, row: 0 }, { col: 8, row: 0 }]
+      grass: [
+        { col: 0, row: 0 },
+        { col: 1, row: 0 }
+      ],
+      flower: [
+        { col: 2, row: 0 },
+        { col: 3, row: 0 },
+        { col: 9, row: 0 },
+        { col: 10, row: 0 },
+        { col: 11, row: 0 }
+      ],
+      bush: [
+        { col: 4, row: 0 },
+        { col: 5, row: 0 },
+        { col: 6, row: 0 },
+        { col: 7, row: 0 },
+        { col: 8, row: 0 }
+      ]
     };
     const ZONE_BOSS_STATE = {
       audit_boss: "auditBossKilled",
@@ -3884,11 +4021,23 @@
       strategy_boss: "strategyCleared"
     };
     const REGION_BOSS_INTRO = {
-      audit_boss: { title: "\u5BA1\u8BA1\u94C1\u5821 \xB7 \u533A\u57DF\u51B3\u6218", text: "\u51ED\u8BC1\u5DE8\u50CF\u628A\u5BA1\u8BA1\u8BC1\u636E\u94FE\u6405\u6210\u4E71\u7801\u3002\u51FB\u8D25\u5B83\uFF0C\u8BA9\u5BA1\u8BA1\u94C1\u5821\u7684\u8BC1\u636E\u79E9\u5E8F\u6062\u590D\u3002" },
-      capital_boss: { title: "\u8D44\u672C\u5BC6\u6797 \xB7 \u533A\u57DF\u51B3\u6218", text: "\u4F30\u503C\u6811\u738B\u7528\u626D\u66F2\u7684\u73B0\u91D1\u6D41\u541E\u566C\u6295\u8D44\u6536\u76CA\u3002\u51FB\u8D25\u5B83\uFF0C\u8BA9\u8D44\u672C\u5BC6\u6797\u7684\u8D22\u52A1\u89C4\u5219\u91CD\u5F52\u6E05\u6670\u3002" },
-      tax_boss: { title: "\u7A0E\u7387\u8352\u539F \xB7 \u533A\u57DF\u51B3\u6218", text: "\u7A0E\u7AE0\u5DE8\u50CF\u5C06\u7533\u62A5\u89C4\u5219\u78BE\u6210\u7070\u70EC\u3002\u51FB\u8D25\u5B83\uFF0C\u8BA9\u7A0E\u7387\u8352\u539F\u7684\u7EB3\u7A0E\u79E9\u5E8F\u6062\u590D\u8FD0\u8F6C\u3002" },
+      audit_boss: {
+        title: "\u5BA1\u8BA1\u94C1\u5821 \xB7 \u533A\u57DF\u51B3\u6218",
+        text: "\u51ED\u8BC1\u5DE8\u50CF\u628A\u5BA1\u8BA1\u8BC1\u636E\u94FE\u6405\u6210\u4E71\u7801\u3002\u51FB\u8D25\u5B83\uFF0C\u8BA9\u5BA1\u8BA1\u94C1\u5821\u7684\u8BC1\u636E\u79E9\u5E8F\u6062\u590D\u3002"
+      },
+      capital_boss: {
+        title: "\u8D44\u672C\u5BC6\u6797 \xB7 \u533A\u57DF\u51B3\u6218",
+        text: "\u4F30\u503C\u6811\u738B\u7528\u626D\u66F2\u7684\u73B0\u91D1\u6D41\u541E\u566C\u6295\u8D44\u6536\u76CA\u3002\u51FB\u8D25\u5B83\uFF0C\u8BA9\u8D44\u672C\u5BC6\u6797\u7684\u8D22\u52A1\u89C4\u5219\u91CD\u5F52\u6E05\u6670\u3002"
+      },
+      tax_boss: {
+        title: "\u7A0E\u7387\u8352\u539F \xB7 \u533A\u57DF\u51B3\u6218",
+        text: "\u7A0E\u7AE0\u5DE8\u50CF\u5C06\u7533\u62A5\u89C4\u5219\u78BE\u6210\u7070\u70EC\u3002\u51FB\u8D25\u5B83\uFF0C\u8BA9\u7A0E\u7387\u8352\u539F\u7684\u7EB3\u7A0E\u79E9\u5E8F\u6062\u590D\u8FD0\u8F6C\u3002"
+      },
       law_boss: { title: "\u6CD5\u6761\u795E\u6BBF \xB7 \u533A\u57DF\u51B3\u6218", text: "\u6CD5\u69CC\u88C1\u51B3\u8005\u7BE1\u6539\u4E86\u5173\u952E\u6CD5\u6761\u3002\u51FB\u8D25\u5B83\uFF0C\u8BA9\u6CD5\u6761\u795E\u6BBF\u7684\u89C4\u5219\u91CD\u65B0\u751F\u6548\u3002" },
-      strategy_boss: { title: "\u6218\u7565\u661F\u5854 \xB7 \u533A\u57DF\u51B3\u6218", text: "\u5E76\u8D2D\u9738\u4E3B\u628A\u6218\u7565\u51B3\u7B56\u626D\u66F2\u6210\u65E0\u5E8F\u6269\u5F20\u3002\u51FB\u8D25\u5B83\uFF0C\u4E3A\u6700\u7EC8\u8BD5\u70BC\u6253\u5F00\u901A\u8DEF\u3002" }
+      strategy_boss: {
+        title: "\u6218\u7565\u661F\u5854 \xB7 \u533A\u57DF\u51B3\u6218",
+        text: "\u5E76\u8D2D\u9738\u4E3B\u628A\u6218\u7565\u51B3\u7B56\u626D\u66F2\u6210\u65E0\u5E8F\u6269\u5F20\u3002\u51FB\u8D25\u5B83\uFF0C\u4E3A\u6700\u7EC8\u8BD5\u70BC\u6253\u5F00\u901A\u8DEF\u3002"
+      }
     };
     const FINAL_BOSS_WEAK_POINTS = ["\u62A5\u8868", "\u5BA1\u8BA1\u8BC1\u636E", "\u8D44\u672C\u9884\u7B97", "\u4F01\u4E1A\u6240\u5F97\u7A0E", "\u8BC1\u5238\u6CD5", "\u5E76\u8D2D\u6218\u7565"];
     const BOSS_MECHANICS = {
@@ -3923,12 +4072,107 @@
       \u5E76\u8D2D\u6218\u7565: "strategy_quiz_task"
     };
     const PLAN_SUBJECT_POINTS = {
-      \u4F1A\u8BA1: ["\u4F1A\u8BA1\u7B49\u5F0F", "\u4F1A\u8BA1\u8981\u7D20", "\u4F1A\u8BA1\u5047\u8BBE", "\u4F1A\u8BA1\u57FA\u7840", "\u501F\u8D37\u65B9\u5411", "\u79D1\u76EE\u5206\u7C7B", "\u8BD5\u7B97\u5E73\u8861", "\u51ED\u8BC1", "\u8D26\u7C3F", "\u5B58\u8D27", "\u56FA\u5B9A\u8D44\u4EA7", "\u65E0\u5F62\u8D44\u4EA7", "\u6295\u8D44\u6027\u623F\u5730\u4EA7", "\u91D1\u878D\u8D44\u4EA7", "\u957F\u671F\u80A1\u6743\u6295\u8D44", "\u6536\u5165", "\u8D39\u7528", "\u6210\u672C", "\u5229\u6DA6", "\u5229\u6DA6\u5206\u914D", "\u6240\u6709\u8005\u6743\u76CA", "\u62A5\u8868", "\u73B0\u91D1\u6D41\u91CF", "\u8D28\u91CF\u8981\u6C42", "\u4F1A\u8BA1\u4E3B\u4F53", "\u8D27\u5E01\u8BA1\u91CF", "\u4F1A\u8BA1\u5206\u671F", "\u8BA1\u91CF\u5C5E\u6027", "\u8D1F\u503A", "\u804C\u5DE5\u85AA\u916C", "\u79DF\u8D41", "\u8D44\u4EA7\u51CF\u503C", "\u6240\u5F97\u7A0E", "\u501F\u6B3E\u8D39\u7528", "\u6216\u6709\u4E8B\u9879", "\u503A\u52A1\u91CD\u7EC4", "\u5916\u5E01\u6298\u7B97", "\u4F1A\u8BA1\u653F\u7B56", "\u4F1A\u8BA1\u4F30\u8BA1", "\u524D\u671F\u5DEE\u9519", "\u653F\u5E9C\u8865\u52A9", "\u6BCF\u80A1\u6536\u76CA", "\u516C\u5141\u4EF7\u503C", "\u804C\u4E1A\u9053\u5FB7", "\u5E94\u6536\u9879\u76EE", "\u8D22\u4EA7\u6E05\u67E5", "\u653F\u5E9C\u4F1A\u8BA1", "\u8D27\u5E01\u8D44\u91D1"],
-      \u5BA1\u8BA1: ["\u5BA1\u8BA1\u76EE\u6807", "\u5BA1\u8BA1\u8BC1\u636E", "\u5185\u90E8\u63A7\u5236", "\u5BA1\u8BA1\u610F\u89C1", "\u5BA1\u8BA1\u7A0B\u5E8F", "\u5BA1\u8BA1\u8BA1\u5212", "\u5BA1\u8BA1\u91CD\u8981\u6027", "\u5BA1\u8BA1\u98CE\u9669", "\u5BA1\u8BA1\u62BD\u6837", "\u7BA1\u7406\u5C42\u8BA4\u5B9A", "\u821E\u5F0A\u98CE\u9669"],
-      \u8D22\u7BA1: ["\u8D27\u5E01\u65F6\u95F4\u4EF7\u503C", "\u8D44\u672C\u6210\u672C", "\u8D22\u52A1\u6760\u6746", "\u8D44\u672C\u9884\u7B97", "\u8425\u8FD0\u8D44\u672C", "\u98CE\u9669\u4E0E\u62A5\u916C", "\u7ECF\u8425\u6760\u6746", "\u8D22\u52A1\u5206\u6790", "\u672C\u91CF\u5229\u5206\u6790", "\u80A1\u5229\u653F\u7B56"],
-      \u7A0E\u6CD5: ["\u589E\u503C\u7A0E", "\u6D88\u8D39\u7A0E", "\u4F01\u4E1A\u6240\u5F97\u7A0E", "\u4E2A\u4EBA\u6240\u5F97\u7A0E", "\u7A0E\u6536\u4F18\u60E0", "\u53D1\u7968\u7BA1\u7406", "\u623F\u4EA7\u7A0E", "\u5370\u82B1\u7A0E", "\u571F\u5730\u589E\u503C\u7A0E", "\u8F66\u8F86\u8D2D\u7F6E\u7A0E", "\u5951\u7A0E", "\u7A0E\u6536\u5F81\u7BA1"],
+      \u4F1A\u8BA1: [
+        "\u4F1A\u8BA1\u7B49\u5F0F",
+        "\u4F1A\u8BA1\u8981\u7D20",
+        "\u4F1A\u8BA1\u5047\u8BBE",
+        "\u4F1A\u8BA1\u57FA\u7840",
+        "\u501F\u8D37\u65B9\u5411",
+        "\u79D1\u76EE\u5206\u7C7B",
+        "\u8BD5\u7B97\u5E73\u8861",
+        "\u51ED\u8BC1",
+        "\u8D26\u7C3F",
+        "\u5B58\u8D27",
+        "\u56FA\u5B9A\u8D44\u4EA7",
+        "\u65E0\u5F62\u8D44\u4EA7",
+        "\u6295\u8D44\u6027\u623F\u5730\u4EA7",
+        "\u91D1\u878D\u8D44\u4EA7",
+        "\u957F\u671F\u80A1\u6743\u6295\u8D44",
+        "\u6536\u5165",
+        "\u8D39\u7528",
+        "\u6210\u672C",
+        "\u5229\u6DA6",
+        "\u5229\u6DA6\u5206\u914D",
+        "\u6240\u6709\u8005\u6743\u76CA",
+        "\u62A5\u8868",
+        "\u73B0\u91D1\u6D41\u91CF",
+        "\u8D28\u91CF\u8981\u6C42",
+        "\u4F1A\u8BA1\u4E3B\u4F53",
+        "\u8D27\u5E01\u8BA1\u91CF",
+        "\u4F1A\u8BA1\u5206\u671F",
+        "\u8BA1\u91CF\u5C5E\u6027",
+        "\u8D1F\u503A",
+        "\u804C\u5DE5\u85AA\u916C",
+        "\u79DF\u8D41",
+        "\u8D44\u4EA7\u51CF\u503C",
+        "\u6240\u5F97\u7A0E",
+        "\u501F\u6B3E\u8D39\u7528",
+        "\u6216\u6709\u4E8B\u9879",
+        "\u503A\u52A1\u91CD\u7EC4",
+        "\u5916\u5E01\u6298\u7B97",
+        "\u4F1A\u8BA1\u653F\u7B56",
+        "\u4F1A\u8BA1\u4F30\u8BA1",
+        "\u524D\u671F\u5DEE\u9519",
+        "\u653F\u5E9C\u8865\u52A9",
+        "\u6BCF\u80A1\u6536\u76CA",
+        "\u516C\u5141\u4EF7\u503C",
+        "\u804C\u4E1A\u9053\u5FB7",
+        "\u5E94\u6536\u9879\u76EE",
+        "\u8D22\u4EA7\u6E05\u67E5",
+        "\u653F\u5E9C\u4F1A\u8BA1",
+        "\u8D27\u5E01\u8D44\u91D1"
+      ],
+      \u5BA1\u8BA1: [
+        "\u5BA1\u8BA1\u76EE\u6807",
+        "\u5BA1\u8BA1\u8BC1\u636E",
+        "\u5185\u90E8\u63A7\u5236",
+        "\u5BA1\u8BA1\u610F\u89C1",
+        "\u5BA1\u8BA1\u7A0B\u5E8F",
+        "\u5BA1\u8BA1\u8BA1\u5212",
+        "\u5BA1\u8BA1\u91CD\u8981\u6027",
+        "\u5BA1\u8BA1\u98CE\u9669",
+        "\u5BA1\u8BA1\u62BD\u6837",
+        "\u7BA1\u7406\u5C42\u8BA4\u5B9A",
+        "\u821E\u5F0A\u98CE\u9669"
+      ],
+      \u8D22\u7BA1: [
+        "\u8D27\u5E01\u65F6\u95F4\u4EF7\u503C",
+        "\u8D44\u672C\u6210\u672C",
+        "\u8D22\u52A1\u6760\u6746",
+        "\u8D44\u672C\u9884\u7B97",
+        "\u8425\u8FD0\u8D44\u672C",
+        "\u98CE\u9669\u4E0E\u62A5\u916C",
+        "\u7ECF\u8425\u6760\u6746",
+        "\u8D22\u52A1\u5206\u6790",
+        "\u672C\u91CF\u5229\u5206\u6790",
+        "\u80A1\u5229\u653F\u7B56"
+      ],
+      \u7A0E\u6CD5: [
+        "\u589E\u503C\u7A0E",
+        "\u6D88\u8D39\u7A0E",
+        "\u4F01\u4E1A\u6240\u5F97\u7A0E",
+        "\u4E2A\u4EBA\u6240\u5F97\u7A0E",
+        "\u7A0E\u6536\u4F18\u60E0",
+        "\u53D1\u7968\u7BA1\u7406",
+        "\u623F\u4EA7\u7A0E",
+        "\u5370\u82B1\u7A0E",
+        "\u571F\u5730\u589E\u503C\u7A0E",
+        "\u8F66\u8F86\u8D2D\u7F6E\u7A0E",
+        "\u5951\u7A0E",
+        "\u7A0E\u6536\u5F81\u7BA1"
+      ],
       \u7ECF\u6D4E\u6CD5: ["\u516C\u53F8\u6CD5", "\u516C\u53F8\u6CBB\u7406", "\u5408\u540C\u6CD5", "\u8BC1\u5238\u6CD5", "\u7834\u4EA7\u6CD5", "\u7968\u636E\u6CD5", "\u7269\u6743\u6CD5", "\u53CD\u5784\u65AD\u6CD5", "\u5408\u4F19\u4F01\u4E1A\u6CD5"],
-      \u6218\u7565: ["SWOT", "\u4E94\u529B\u6A21\u578B", "\u4EF7\u503C\u94FE", "\u5E76\u8D2D\u6218\u7565", "\u516C\u53F8\u6218\u7565\u7C7B\u578B", "\u5E73\u8861\u8BA1\u5206\u5361", "\u6CE2\u58EB\u987F\u77E9\u9635", "\u98CE\u9669\u7BA1\u7406", "\u98CE\u9669\u7C7B\u578B"]
+      \u6218\u7565: [
+        "SWOT",
+        "\u4E94\u529B\u6A21\u578B",
+        "\u4EF7\u503C\u94FE",
+        "\u5E76\u8D2D\u6218\u7565",
+        "\u516C\u53F8\u6218\u7565\u7C7B\u578B",
+        "\u5E73\u8861\u8BA1\u5206\u5361",
+        "\u6CE2\u58EB\u987F\u77E9\u9635",
+        "\u98CE\u9669\u7BA1\u7406",
+        "\u98CE\u9669\u7C7B\u578B"
+      ]
     };
     const REVIEW_INTERVALS = [1, 2, 4, 7, 15, 30];
     const ROOM_TASK_MAP = {
@@ -4002,21 +4246,11 @@
         { speaker: "\u5C0F\u5206", text: "\u602A\u7269\u3001\u5B9D\u7BB1\u548C\u6750\u6599\u90FD\u67E5\u8FC7\u4E86\u3002\u5929\u5E73\u8861\u7891\u4E0A\u7684\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u5DF2\u7ECF\u82CF\u9192\uFF0C\u5B83\u4F1A\u628A\u4F60\u7684\u7B54\u6848\u53D8\u6210\u653B\u51FB\u3002" },
         { speaker: "\u8001\u4F1A\u8BA1", text: "\u53BB\u5427\u3002\u62A5\u8868\u4E0D\u53EA\u662F\u6570\u5B57\uFF0C\u66F4\u662F\u516D\u57DF\u5E73\u8861\u7684\u6839\u57FA\u3002" }
       ],
-      2: [
-        { speaker: "\u5C0F\u5206", text: "\u4F60\u51FB\u8D25\u4E86\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\uFF01\u5BA1\u8BA1\u94C1\u5821\u7684\u4F20\u9001\u95E8\u5DF2\u7ECF\u5F00\u542F\uFF0C\u8BC1\u636E\u94FE\u6B63\u5728\u7B49\u5F85\u4FEE\u590D\u3002" }
-      ],
-      3: [
-        { speaker: "\u5BA1\u8BA1\u7EDF\u9886", text: "\u5BA1\u8BA1\u94C1\u5821\u8083\u6E05\u4E86\u3002\u51ED\u8BC1\u5DE8\u50CF\u5012\u4E0B\u540E\uFF0C\u8D44\u672C\u5BC6\u6797\u91CC\u65B0\u7684\u8D22\u52A1\u5F02\u5E38\u5F00\u59CB\u6D6E\u51FA\u6C34\u9762\u3002" }
-      ],
-      4: [
-        { speaker: "\u8D22\u7BA1\u5BFC\u5E08", text: "\u8D44\u672C\u5BC6\u6797\u6062\u590D\u4E86\u3002\u7A0E\u7387\u8352\u539F\u7684\u7533\u62A5\u79E9\u5E8F\u6B63\u5728\u88AB\u7A0E\u7AE0\u5DE8\u50CF\u538B\u57AE\u3002" }
-      ],
-      5: [
-        { speaker: "\u7A0E\u52A1\u5B98", text: "\u7A0E\u7387\u8352\u539F\u6062\u590D\u4E86\u3002\u6CD5\u6761\u795E\u6BBF\u7684\u89C4\u5219\u88AB\u6CD5\u69CC\u88C1\u51B3\u8005\u7BE1\u6539\uFF0C\u516D\u57DF\u5F00\u59CB\u5931\u53BB\u6700\u540E\u7684\u79E9\u5E8F\u3002" }
-      ],
-      6: [
-        { speaker: "\u6CD5\u52A1\u5B98", text: "\u6CD5\u6761\u795E\u6BBF\u6062\u590D\u4E86\u3002\u6218\u7565\u661F\u5854\u91CC\u7684\u5E76\u8D2D\u9738\u4E3B\u5C01\u9501\u4E86\u6700\u7EC8\u8BD5\u70BC\u7684\u8DEF\u3002" }
-      ],
+      2: [{ speaker: "\u5C0F\u5206", text: "\u4F60\u51FB\u8D25\u4E86\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\uFF01\u5BA1\u8BA1\u94C1\u5821\u7684\u4F20\u9001\u95E8\u5DF2\u7ECF\u5F00\u542F\uFF0C\u8BC1\u636E\u94FE\u6B63\u5728\u7B49\u5F85\u4FEE\u590D\u3002" }],
+      3: [{ speaker: "\u5BA1\u8BA1\u7EDF\u9886", text: "\u5BA1\u8BA1\u94C1\u5821\u8083\u6E05\u4E86\u3002\u51ED\u8BC1\u5DE8\u50CF\u5012\u4E0B\u540E\uFF0C\u8D44\u672C\u5BC6\u6797\u91CC\u65B0\u7684\u8D22\u52A1\u5F02\u5E38\u5F00\u59CB\u6D6E\u51FA\u6C34\u9762\u3002" }],
+      4: [{ speaker: "\u8D22\u7BA1\u5BFC\u5E08", text: "\u8D44\u672C\u5BC6\u6797\u6062\u590D\u4E86\u3002\u7A0E\u7387\u8352\u539F\u7684\u7533\u62A5\u79E9\u5E8F\u6B63\u5728\u88AB\u7A0E\u7AE0\u5DE8\u50CF\u538B\u57AE\u3002" }],
+      5: [{ speaker: "\u7A0E\u52A1\u5B98", text: "\u7A0E\u7387\u8352\u539F\u6062\u590D\u4E86\u3002\u6CD5\u6761\u795E\u6BBF\u7684\u89C4\u5219\u88AB\u6CD5\u69CC\u88C1\u51B3\u8005\u7BE1\u6539\uFF0C\u516D\u57DF\u5F00\u59CB\u5931\u53BB\u6700\u540E\u7684\u79E9\u5E8F\u3002" }],
+      6: [{ speaker: "\u6CD5\u52A1\u5B98", text: "\u6CD5\u6761\u795E\u6BBF\u6062\u590D\u4E86\u3002\u6218\u7565\u661F\u5854\u91CC\u7684\u5E76\u8D2D\u9738\u4E3B\u5C01\u9501\u4E86\u6700\u7EC8\u8BD5\u70BC\u7684\u8DEF\u3002" }],
       7: [
         { speaker: "\u6218\u7565\u5B98", text: "\u6218\u7565\u661F\u5854\u5DF2\u8083\u6E05\u3002\u5C0F\u5206\u3001\u5BA1\u8BA1\u7EDF\u9886\u3001\u8D22\u7BA1\u5BFC\u5E08\u3001\u7A0E\u52A1\u5B98\u3001\u6CD5\u52A1\u5B98\u6B63\u5728\u4E3A\u4F60\u9001\u6765\u6700\u540E\u7684\u795D\u798F\u3002" },
         { speaker: "\u5C0F\u5206", text: "\u516D\u57DF\u7684\u529B\u91CF\u5DF2\u7ECF\u9F50\u805A\uFF0C\u53BB\u51FB\u8D25\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\uFF0C\u8BA9\u8BB0\u8D26\u5927\u9646\u91CD\u65B0\u5E73\u8861\u3002" }
@@ -4069,7 +4303,19 @@
       equipmentLevels: { weapon: 0, armor: 0 },
       jobs: { current: "accountant", unlocked: ["accountant"] },
       jobStoriesSeen: [],
-      partner: { id: "ledger_spirit", name: "\u8BB0\u8D26\u7CBE\u7075", hp: 90, maxHp: 90, atk: 8, mood: 60, active: true, level: 1, exp: 0, expNext: 50, skill: "\u8BB0\u8D26\u795D\u798F" },
+      partner: {
+        id: "ledger_spirit",
+        name: "\u8BB0\u8D26\u7CBE\u7075",
+        hp: 90,
+        maxHp: 90,
+        atk: 8,
+        mood: 60,
+        active: true,
+        level: 1,
+        exp: 0,
+        expNext: 50,
+        skill: "\u8BB0\u8D26\u795D\u798F"
+      },
       unlockedSkills: ["lending_slash", "trial_balance"],
       skillPoints: 2,
       inventory: { hpPotion: 1, mpPotion: 1, materials: { stone: 0, ink: 0, beads: 0, credential: 0 } },
@@ -4101,17 +4347,55 @@
       questStep: 0,
       mainStep: 0,
       tasks: [
-        { id: "main", title: "\u8C03\u67E5\u501F\u8D37\u5931\u8861", desc: "\u51FB\u8D25\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\uFF0C\u6062\u590D\u5929\u5E73\u8861\u7891\u7684\u5E73\u8861", progress: 0, target: 1, done: false },
+        {
+          id: "main",
+          title: "\u8C03\u67E5\u501F\u8D37\u5931\u8861",
+          desc: "\u51FB\u8D25\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\uFF0C\u6062\u590D\u5929\u5E73\u8861\u7891\u7684\u5E73\u8861",
+          progress: 0,
+          target: 1,
+          done: false
+        },
         { id: "defeat3", title: "\u51FB\u8D25\u626D\u66F2\u602A\u7269", desc: "\u51FB\u8D25 3 \u53EA\u666E\u901A\u602A\u7269", progress: 0, target: 3, done: false },
         { id: "chest2", title: "\u5F00\u542F\u5B9D\u7BB1", desc: "\u5F00\u542F 2 \u4E2A\u5B9D\u7BB1", progress: 0, target: 2, done: false },
         { id: "defeat_ink", title: "\u5BA1\u660E\u7684\u59D4\u6258", desc: "\u51FB\u8D25\u58A8\u6E0D\u602A\uFF0C\u590D\u4E60\u501F\u8D37\u65B9\u5411", progress: 0, target: 1, done: false },
         { id: "collect3", title: "\u5C0F\u5206\u7684\u59D4\u6258", desc: "\u91C7\u96C6 3 \u6B21\u5730\u56FE\u6750\u6599", progress: 0, target: 3, done: false },
-        { id: "talk_old", title: "\u62DC\u8BBF\u8001\u4F1A\u8BA1", desc: "\u4E0E\u8001\u4F1A\u8BA1\u5BF9\u8BDD\uFF0C\u4E86\u89E3\u516D\u57DF\u7684\u5386\u53F2", progress: 0, target: 1, done: false },
+        {
+          id: "talk_old",
+          title: "\u62DC\u8BBF\u8001\u4F1A\u8BA1",
+          desc: "\u4E0E\u8001\u4F1A\u8BA1\u5BF9\u8BDD\uFF0C\u4E86\u89E3\u516D\u57DF\u7684\u5386\u53F2",
+          progress: 0,
+          target: 1,
+          done: false
+        },
         { id: "craft_task", title: "\u4F1A\u8BA1\u5DE5\u574A\u59D4\u6258", desc: "\u6253\u9020 1 \u4EF6\u88C5\u5907\u6216\u836F\u6C34", progress: 0, target: 1, done: false },
         { id: "shop_task", title: "\u6742\u8D27\u94FA\u91C7\u8D2D", desc: "\u5728\u5BA1\u660E\u6742\u8D27\u94FA\u8D2D\u4E70 1 \u4EF6\u5546\u54C1", progress: 0, target: 1, done: false },
-        { id: "defeat_crane", title: "\u7EB8\u9E64\u8C03\u67E5", desc: "\u51FB\u8D25\u51ED\u8BC1\u7EB8\u9E64\uFF0C\u68C0\u67E5\u51ED\u8BC1\u5F02\u5E38", progress: 0, target: 1, done: false, reward: { gold: 45, exp: 60, skillPoints: 1 } },
-        { id: "answer10", title: "\u7B54\u9898\u5341\u8FDE", desc: "\u7D2F\u8BA1\u7B54\u5BF9 10 \u9053\u9898", progress: 0, target: 10, done: false, reward: { gold: 80, exp: 120, skillPoints: 2 } },
-        { id: "enhance_task", title: "\u5F3A\u5316\u59D4\u6258", desc: "\u5F3A\u5316\u4EFB\u610F\u88C5\u5907 1 \u6B21", progress: 0, target: 1, done: false, reward: { gold: 50, exp: 70, skillPoints: 1 } }
+        {
+          id: "defeat_crane",
+          title: "\u7EB8\u9E64\u8C03\u67E5",
+          desc: "\u51FB\u8D25\u51ED\u8BC1\u7EB8\u9E64\uFF0C\u68C0\u67E5\u51ED\u8BC1\u5F02\u5E38",
+          progress: 0,
+          target: 1,
+          done: false,
+          reward: { gold: 45, exp: 60, skillPoints: 1 }
+        },
+        {
+          id: "answer10",
+          title: "\u7B54\u9898\u5341\u8FDE",
+          desc: "\u7D2F\u8BA1\u7B54\u5BF9 10 \u9053\u9898",
+          progress: 0,
+          target: 10,
+          done: false,
+          reward: { gold: 80, exp: 120, skillPoints: 2 }
+        },
+        {
+          id: "enhance_task",
+          title: "\u5F3A\u5316\u59D4\u6258",
+          desc: "\u5F3A\u5316\u4EFB\u610F\u88C5\u5907 1 \u6B21",
+          progress: 0,
+          target: 1,
+          done: false,
+          reward: { gold: 50, exp: 70, skillPoints: 1 }
+        }
       ],
       soundEnabled: true,
       settings: { shake: true, volume: 0.8, musicEnabled: true, sfxEnabled: true, musicVolume: 0.5, sfxVolume: 0.8 },
@@ -4320,14 +4604,16 @@
     if (!state.weapon) state.weapon = { id: "pencil_sword", name: "\u94C5\u7B14\u77ED\u5251", atk: 5 };
     if (!state.armor) state.armor = { id: "apprentice_robe", name: "\u5B66\u5F92\u5E03\u8863", def: 2 };
     if (!state.equipmentLevels) state.equipmentLevels = { weapon: 0, armor: 0 };
-    if (!state.unlockedSkills) state.unlockedSkills = ["lending_slash", "trial_balance", "subject_switch", "entry_combo", "consolidation"];
+    if (!state.unlockedSkills)
+      state.unlockedSkills = ["lending_slash", "trial_balance", "subject_switch", "entry_combo", "consolidation"];
     if (!state.tasks) state.tasks = defaultState().tasks;
     if (state.skillPoints === void 0) state.skillPoints = 0;
     if (!state.inventory) state.inventory = { hpPotion: 1, mpPotion: 1 };
     if (!state.inventory.materials) state.inventory.materials = { stone: 0, ink: 0, beads: 0, credential: 0 };
     if (!state.jobs) state.jobs = { current: "accountant", unlocked: ["accountant"] };
     if (!state.jobStoriesSeen) state.jobStoriesSeen = [];
-    if (!state.partner) state.partner = { id: "ledger_spirit", name: "\u8BB0\u8D26\u7CBE\u7075", hp: 90, maxHp: 90, atk: 8, mood: 60, active: true };
+    if (!state.partner)
+      state.partner = { id: "ledger_spirit", name: "\u8BB0\u8D26\u7CBE\u7075", hp: 90, maxHp: 90, atk: 8, mood: 60, active: true };
     if (!state.partner.level) state.partner.level = 1;
     if (!state.partner.exp) state.partner.exp = 0;
     if (!state.partner.expNext) state.partner.expNext = 50;
@@ -4357,7 +4643,15 @@
     } else {
       state.daily.target = state.plan.dailyTarget || state.daily.target;
     }
-    if (!state.settings) state.settings = { shake: true, volume: 0.8, musicEnabled: true, sfxEnabled: true, musicVolume: 0.5, sfxVolume: 0.8 };
+    if (!state.settings)
+      state.settings = {
+        shake: true,
+        volume: 0.8,
+        musicEnabled: true,
+        sfxEnabled: true,
+        musicVolume: 0.5,
+        sfxVolume: 0.8
+      };
     if (state.settings.volume === void 0) state.settings.volume = 0.8;
     if (state.settings.musicEnabled === void 0) state.settings.musicEnabled = true;
     if (state.settings.sfxEnabled === void 0) state.settings.sfxEnabled = true;
@@ -4440,10 +4734,41 @@
     ensureTaskFields();
     activateRegionTasks(state.zone);
     const entities = [
-      { id: "npc_xiaofen", type: "npc", x: 430, y: 332, label: "\u5C0F\u5206", text: "\u6B22\u8FCE\u6765\u5230\u8BB0\u8D26\u5927\u9646\uFF01\u501F\u8D37\u5931\u8861\u540E\uFF0C\u602A\u7269\u5F00\u59CB\u626D\u66F2\u8FD9\u91CC\u7684\u77E5\u8BC6\u3002\u51FB\u8D25\u5B83\u4EEC\u524D\uFF0C\u5148\u56DE\u5FC6\u4E00\u4E0B\uFF1A\u8D44\u4EA7\u589E\u52A0\u8BB0\u54EA\u65B9\uFF1F", name: "\u5C0F\u5206" },
-      { id: "npc_shenming", type: "npc", x: 724, y: 286, label: "\u5BA1\u660E", text: "\u6211\u662F\u5BA1\u660E\u3002\u522B\u6025\u7740\u6253\u602A\uFF0C\u5148\u53BB\u77E5\u8BC6\u7891\u590D\u4E60\u201C\u4F1A\u8BA1\u7B49\u5F0F\u201D\u3002\u7B54\u5BF9\u9898\u76EE\u4F1A\u8BA9\u6280\u80FD\u66F4\u6709\u6548\u3002", name: "\u5BA1\u660E" },
-      { id: "npc_old", type: "npc", x: 96, y: 352, label: "\u8001\u4F1A\u8BA1", text: "\u6211\u662F\u8BB0\u8D26\u5927\u9646\u6700\u540E\u4E00\u4EE3\u8001\u4F1A\u8BA1\u3002\u590D\u5F0F\u8BB0\u8D26\u662F\u4E16\u754C\u7684\u6839\u57FA\uFF0C\u53EA\u8981\u501F\u8D37\u5E73\u8861\uFF0C\u77E5\u8BC6\u5C31\u4E0D\u4F1A\u626D\u66F2\u3002\u4F60\u53EF\u4EE5\u53BB\u91C7\u96C6\u91D1\u7B97\u77F3\u548C\u58A8\u6E0D\u6B8B\u9875\uFF0C\u7528\u6765\u6253\u9020\u88C5\u5907\u3002", name: "\u8001\u4F1A\u8BA1" },
-      { id: "balance_landmark", type: "landmark", x: 496, y: 176, label: "\u5929\u5E73\u8861\u7891", text: "\u5929\u5E73\u8861\u7891\u6B63\u5728\u53D1\u5149\u3002\u501F\u8D37\u5931\u8861\u540E\uFF0C\u8FD9\u91CC\u7684\u6CD5\u5219\u788E\u7247\u5DF2\u7ECF\u626D\u66F2\uFF0C\u53EA\u6709\u51FB\u8D25\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u624D\u80FD\u6062\u590D\u5E73\u8861\u3002" },
+      {
+        id: "npc_xiaofen",
+        type: "npc",
+        x: 430,
+        y: 332,
+        label: "\u5C0F\u5206",
+        text: "\u6B22\u8FCE\u6765\u5230\u8BB0\u8D26\u5927\u9646\uFF01\u501F\u8D37\u5931\u8861\u540E\uFF0C\u602A\u7269\u5F00\u59CB\u626D\u66F2\u8FD9\u91CC\u7684\u77E5\u8BC6\u3002\u51FB\u8D25\u5B83\u4EEC\u524D\uFF0C\u5148\u56DE\u5FC6\u4E00\u4E0B\uFF1A\u8D44\u4EA7\u589E\u52A0\u8BB0\u54EA\u65B9\uFF1F",
+        name: "\u5C0F\u5206"
+      },
+      {
+        id: "npc_shenming",
+        type: "npc",
+        x: 724,
+        y: 286,
+        label: "\u5BA1\u660E",
+        text: "\u6211\u662F\u5BA1\u660E\u3002\u522B\u6025\u7740\u6253\u602A\uFF0C\u5148\u53BB\u77E5\u8BC6\u7891\u590D\u4E60\u201C\u4F1A\u8BA1\u7B49\u5F0F\u201D\u3002\u7B54\u5BF9\u9898\u76EE\u4F1A\u8BA9\u6280\u80FD\u66F4\u6709\u6548\u3002",
+        name: "\u5BA1\u660E"
+      },
+      {
+        id: "npc_old",
+        type: "npc",
+        x: 96,
+        y: 352,
+        label: "\u8001\u4F1A\u8BA1",
+        text: "\u6211\u662F\u8BB0\u8D26\u5927\u9646\u6700\u540E\u4E00\u4EE3\u8001\u4F1A\u8BA1\u3002\u590D\u5F0F\u8BB0\u8D26\u662F\u4E16\u754C\u7684\u6839\u57FA\uFF0C\u53EA\u8981\u501F\u8D37\u5E73\u8861\uFF0C\u77E5\u8BC6\u5C31\u4E0D\u4F1A\u626D\u66F2\u3002\u4F60\u53EF\u4EE5\u53BB\u91C7\u96C6\u91D1\u7B97\u77F3\u548C\u58A8\u6E0D\u6B8B\u9875\uFF0C\u7528\u6765\u6253\u9020\u88C5\u5907\u3002",
+        name: "\u8001\u4F1A\u8BA1"
+      },
+      {
+        id: "balance_landmark",
+        type: "landmark",
+        x: 496,
+        y: 176,
+        label: "\u5929\u5E73\u8861\u7891",
+        text: "\u5929\u5E73\u8861\u7891\u6B63\u5728\u53D1\u5149\u3002\u501F\u8D37\u5931\u8861\u540E\uFF0C\u8FD9\u91CC\u7684\u6CD5\u5219\u788E\u7247\u5DF2\u7ECF\u626D\u66F2\uFF0C\u53EA\u6709\u51FB\u8D25\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u624D\u80FD\u6062\u590D\u5E73\u8861\u3002"
+      },
       { id: "door_shop", type: "door", x: 680, y: 252, label: "\u5BA1\u660E\u6742\u8D27\u94FA", target: "shop" },
       { id: "door_home", type: "door", x: 70, y: 322, label: "\u8001\u4F1A\u8BA1\u5BB6", target: "home" },
       { id: "door_workshop", type: "door", x: 360, y: 210, label: "\u4F1A\u8BA1\u5DE5\u574A", target: "workshop" },
@@ -4456,144 +4781,518 @@
       { id: "door_strategy", type: "door", x: 440, y: 500, label: "\u6218\u7565\u6C99\u76D8\u5BA4", target: "strategy_room" },
       { id: "chest_1", type: "chest", x: 720, y: 326, label: "\u5B9D\u7BB1", reward: 30 },
       { id: "chest_2", type: "chest", x: 160, y: 440, label: "\u5B9D\u7BB1", reward: 50 },
-      { id: "sign_1", type: "sign", x: 400, y: 170, label: "\u8DEF\u6807", text: "\u5317\u4FA7\u901A\u5F80\u5BA1\u8BA1\u6863\u6848\u5BA4\uFF0C\u4E1C\u4FA7\u901A\u5F80\u5BA1\u8BA1\u94C1\u5821\u3002\u4F1A\u8BA1\u539F\u91CE\u7684\u6838\u5FC3\u662F\u501F\u8D37\u5E73\u8861\uFF0C\u5148\u5B8C\u6210\u5C0F\u5206\u548C\u5BA1\u660E\u7684\u59D4\u6258\u518D\u524D\u8FDB\u3002" },
-      { id: "sign_2", type: "sign", x: 760, y: 220, label: "\u8B66\u6212\u8DEF\u6807", text: "\u524D\u65B9\u5929\u5E73\u796D\u575B\u6709\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u3002\u51FB\u7834\u524D\u8BB0\u5F97\u590D\u4E60\u62A5\u8868\u77E5\u8BC6\u70B9\uFF0C\u5E76\u51C6\u5907\u597D\u836F\u6C34\u548C\u5F3A\u5316\u88C5\u5907\u3002" },
-      { id: "stone_1", type: "stone", x: 250, y: 300, label: "\u77E5\u8BC6\u7891", point: "\u4F1A\u8BA1\u7B49\u5F0F", tip: "\u8D44\u4EA7 = \u8D1F\u503A + \u6240\u6709\u8005\u6743\u76CA\u3002\u7B54\u5BF9\u4E00\u9898\u53EF\u83B7\u5F97\u5B66\u4E60\u53CD\u9988\u3002" },
-      { id: "stone_2", type: "stone", x: 690, y: 430, label: "\u77E5\u8BC6\u7891", point: "\u501F\u8D37\u65B9\u5411", tip: "\u501F\u8868\u793A\u8D44\u4EA7\u548C\u8D39\u7528\u589E\u52A0\uFF0C\u8D37\u8868\u793A\u8D1F\u503A\u3001\u6240\u6709\u8005\u6743\u76CA\u548C\u6536\u5165\u589E\u52A0\u3002" },
+      {
+        id: "sign_1",
+        type: "sign",
+        x: 400,
+        y: 170,
+        label: "\u8DEF\u6807",
+        text: "\u5317\u4FA7\u901A\u5F80\u5BA1\u8BA1\u6863\u6848\u5BA4\uFF0C\u4E1C\u4FA7\u901A\u5F80\u5BA1\u8BA1\u94C1\u5821\u3002\u4F1A\u8BA1\u539F\u91CE\u7684\u6838\u5FC3\u662F\u501F\u8D37\u5E73\u8861\uFF0C\u5148\u5B8C\u6210\u5C0F\u5206\u548C\u5BA1\u660E\u7684\u59D4\u6258\u518D\u524D\u8FDB\u3002"
+      },
+      {
+        id: "sign_2",
+        type: "sign",
+        x: 760,
+        y: 220,
+        label: "\u8B66\u6212\u8DEF\u6807",
+        text: "\u524D\u65B9\u5929\u5E73\u796D\u575B\u6709\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u3002\u51FB\u7834\u524D\u8BB0\u5F97\u590D\u4E60\u62A5\u8868\u77E5\u8BC6\u70B9\uFF0C\u5E76\u51C6\u5907\u597D\u836F\u6C34\u548C\u5F3A\u5316\u88C5\u5907\u3002"
+      },
+      {
+        id: "stone_1",
+        type: "stone",
+        x: 250,
+        y: 300,
+        label: "\u77E5\u8BC6\u7891",
+        point: "\u4F1A\u8BA1\u7B49\u5F0F",
+        tip: "\u8D44\u4EA7 = \u8D1F\u503A + \u6240\u6709\u8005\u6743\u76CA\u3002\u7B54\u5BF9\u4E00\u9898\u53EF\u83B7\u5F97\u5B66\u4E60\u53CD\u9988\u3002"
+      },
+      {
+        id: "stone_2",
+        type: "stone",
+        x: 690,
+        y: 430,
+        label: "\u77E5\u8BC6\u7891",
+        point: "\u501F\u8D37\u65B9\u5411",
+        tip: "\u501F\u8868\u793A\u8D44\u4EA7\u548C\u8D39\u7528\u589E\u52A0\uFF0C\u8D37\u8868\u793A\u8D1F\u503A\u3001\u6240\u6709\u8005\u6743\u76CA\u548C\u6536\u5165\u589E\u52A0\u3002"
+      },
       { id: "collect_1", type: "collect", x: 300, y: 410, label: "\u91D1\u7B97\u77F3", material: "stone", amount: 1 },
       { id: "collect_2", type: "collect", x: 620, y: 450, label: "\u58A8\u6E0D\u6B8B\u9875", material: "ink", amount: 1 },
       { id: "collect_3", type: "collect", x: 740, y: 410, label: "\u7B97\u76D8\u73E0", material: "beads", amount: 1 },
       { id: "portal_tower", type: "portal", x: 896, y: 178, label: "\u5BA1\u8BA1\u94C1\u5821\u5165\u53E3", target: "\u5BA1\u8BA1\u94C1\u5821", locked: true },
-      { id: "monster_1", type: "monster", x: 570, y: 278, label: "\u51ED\u8BC1\u7EB8\u9E64", point: "\u51ED\u8BC1", hp: 42, attack: 9, exp: 26, gold: 18 },
-      { id: "monster_2", type: "monster", x: 178, y: 432, label: "\u58A8\u6E0D\u602A", point: "\u501F\u8D37\u65B9\u5411", hp: 38, attack: 8, exp: 22, gold: 15 },
-      { id: "monster_3", type: "monster", x: 800, y: 382, label: "\u7B97\u76D8\u5080\u5121", point: "\u79D1\u76EE\u5206\u7C7B", hp: 50, attack: 11, exp: 30, gold: 22 },
-      { id: "boss_1", type: "boss", x: 520, y: 220, label: "\u5408\u5E76\u62A5\u8868\u5DE8\u50CF", point: "\u62A5\u8868", hp: 180, attack: 15, exp: 120, gold: 80 }
+      {
+        id: "monster_1",
+        type: "monster",
+        x: 570,
+        y: 278,
+        label: "\u51ED\u8BC1\u7EB8\u9E64",
+        point: "\u51ED\u8BC1",
+        hp: 42,
+        attack: 9,
+        exp: 26,
+        gold: 18
+      },
+      {
+        id: "monster_2",
+        type: "monster",
+        x: 178,
+        y: 432,
+        label: "\u58A8\u6E0D\u602A",
+        point: "\u501F\u8D37\u65B9\u5411",
+        hp: 38,
+        attack: 8,
+        exp: 22,
+        gold: 15
+      },
+      {
+        id: "monster_3",
+        type: "monster",
+        x: 800,
+        y: 382,
+        label: "\u7B97\u76D8\u5080\u5121",
+        point: "\u79D1\u76EE\u5206\u7C7B",
+        hp: 50,
+        attack: 11,
+        exp: 30,
+        gold: 22
+      },
+      {
+        id: "boss_1",
+        type: "boss",
+        x: 520,
+        y: 220,
+        label: "\u5408\u5E76\u62A5\u8868\u5DE8\u50CF",
+        point: "\u62A5\u8868",
+        hp: 180,
+        attack: 15,
+        exp: 120,
+        gold: 80
+      }
     ];
     const ROOMS = {
       shop: { name: "\u5BA1\u660E\u6742\u8D27\u94FA", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 700, y: 270 } },
       home: { name: "\u8001\u4F1A\u8BA1\u5BB6", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 80, y: 340 } },
-      workshop: { name: "\u4F1A\u8BA1\u5DE5\u574A", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 360, y: 210 } },
-      archive: { name: "\u5BA1\u8BA1\u6863\u6848\u5BA4", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 648, y: 121 } },
+      workshop: {
+        name: "\u4F1A\u8BA1\u5DE5\u574A",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 360, y: 210 }
+      },
+      archive: {
+        name: "\u5BA1\u8BA1\u6863\u6848\u5BA4",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 648, y: 121 }
+      },
       ledger: { name: "\u65E7\u8D26\u623F", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 853, y: 402 } },
-      audit_room: { name: "\u5BA1\u8BA1\u5DE5\u4F5C\u53F0", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 832, y: 200 } },
-      finance_room: { name: "\u8D22\u52A1\u5206\u6790\u5BA4", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 96, y: 520 } },
-      tax_room: { name: "\u7A0E\u6CD5\u54A8\u8BE2\u5904", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 832, y: 520 } },
-      law_room: { name: "\u7ECF\u6D4E\u6CD5\u56FE\u4E66\u9986", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 192, y: 190 } },
-      strategy_room: { name: "\u6218\u7565\u6C99\u76D8\u5BA4", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 440, y: 520 } },
-      audit_meeting: { name: "\u5BA1\u8BA1\u4F1A\u8BAE\u5BA4", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 560, y: 390 } },
-      audit_evidence: { name: "\u8BC1\u636E\u5E93", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 680, y: 390 } },
-      audit_chief: { name: "\u5BA1\u8BA1\u957F\u529E\u516C\u5BA4", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 480, y: 410 } },
-      capital_cashflow: { name: "\u73B0\u91D1\u6D41\u6F14\u7EC3\u573A", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 560, y: 390 } },
-      capital_structure: { name: "\u8D44\u672C\u7ED3\u6784\u5B9E\u9A8C\u5BA4", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 680, y: 390 } },
-      capital_investment: { name: "\u6295\u8D44\u51B3\u7B56\u5BA4", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 480, y: 410 } },
-      tax_vat: { name: "\u589E\u503C\u7A0E\u6F14\u7EC3\u573A", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 560, y: 390 } },
-      tax_cit: { name: "\u4F01\u4E1A\u6240\u5F97\u7A0E\u7533\u62A5\u5385", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 680, y: 390 } },
-      tax_incentive: { name: "\u7A0E\u6536\u4F18\u60E0\u5BA4", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 480, y: 410 } },
-      law_contract: { name: "\u5408\u540C\u5BA1\u67E5\u5385", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 560, y: 390 } },
-      law_securities: { name: "\u8BC1\u5238\u6CD5\u8BB2\u5802", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 680, y: 390 } },
-      law_bankruptcy: { name: "\u7834\u4EA7\u6CD5\u5EAD", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 480, y: 410 } },
-      strategy_sandbox: { name: "\u6218\u7565\u6C99\u76D8\u5385", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 560, y: 390 } },
-      strategy_five: { name: "\u4E94\u529B\u51B3\u7B56\u5BA4", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 680, y: 390 } },
-      strategy_ma: { name: "\u5E76\u8D2D\u5B9E\u9A8C\u5BA4", spawn: { x: 300, y: 320 }, exit: { x: 300, y: 430 }, doorExternal: { x: 480, y: 410 } }
+      audit_room: {
+        name: "\u5BA1\u8BA1\u5DE5\u4F5C\u53F0",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 832, y: 200 }
+      },
+      finance_room: {
+        name: "\u8D22\u52A1\u5206\u6790\u5BA4",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 96, y: 520 }
+      },
+      tax_room: {
+        name: "\u7A0E\u6CD5\u54A8\u8BE2\u5904",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 832, y: 520 }
+      },
+      law_room: {
+        name: "\u7ECF\u6D4E\u6CD5\u56FE\u4E66\u9986",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 192, y: 190 }
+      },
+      strategy_room: {
+        name: "\u6218\u7565\u6C99\u76D8\u5BA4",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 440, y: 520 }
+      },
+      audit_meeting: {
+        name: "\u5BA1\u8BA1\u4F1A\u8BAE\u5BA4",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 560, y: 390 }
+      },
+      audit_evidence: {
+        name: "\u8BC1\u636E\u5E93",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 680, y: 390 }
+      },
+      audit_chief: {
+        name: "\u5BA1\u8BA1\u957F\u529E\u516C\u5BA4",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 480, y: 410 }
+      },
+      capital_cashflow: {
+        name: "\u73B0\u91D1\u6D41\u6F14\u7EC3\u573A",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 560, y: 390 }
+      },
+      capital_structure: {
+        name: "\u8D44\u672C\u7ED3\u6784\u5B9E\u9A8C\u5BA4",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 680, y: 390 }
+      },
+      capital_investment: {
+        name: "\u6295\u8D44\u51B3\u7B56\u5BA4",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 480, y: 410 }
+      },
+      tax_vat: {
+        name: "\u589E\u503C\u7A0E\u6F14\u7EC3\u573A",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 560, y: 390 }
+      },
+      tax_cit: {
+        name: "\u4F01\u4E1A\u6240\u5F97\u7A0E\u7533\u62A5\u5385",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 680, y: 390 }
+      },
+      tax_incentive: {
+        name: "\u7A0E\u6536\u4F18\u60E0\u5BA4",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 480, y: 410 }
+      },
+      law_contract: {
+        name: "\u5408\u540C\u5BA1\u67E5\u5385",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 560, y: 390 }
+      },
+      law_securities: {
+        name: "\u8BC1\u5238\u6CD5\u8BB2\u5802",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 680, y: 390 }
+      },
+      law_bankruptcy: {
+        name: "\u7834\u4EA7\u6CD5\u5EAD",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 480, y: 410 }
+      },
+      strategy_sandbox: {
+        name: "\u6218\u7565\u6C99\u76D8\u5385",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 560, y: 390 }
+      },
+      strategy_five: {
+        name: "\u4E94\u529B\u51B3\u7B56\u5BA4",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 680, y: 390 }
+      },
+      strategy_ma: {
+        name: "\u5E76\u8D2D\u5B9E\u9A8C\u5BA4",
+        spawn: { x: 300, y: 320 },
+        exit: { x: 300, y: 430 },
+        doorExternal: { x: 480, y: 410 }
+      }
     };
     const ROOM_ENTITIES = {
       shop: [
-        { id: "room_shop_npc", type: "npc", x: 250, y: 300, label: "\u5BA1\u660E", text: "\u6B22\u8FCE\u6765\u5230\u6742\u8D27\u94FA\u3002\u4F60\u53EF\u4EE5\u8D2D\u4E70\u836F\u6C34\u3001\u88C5\u5907\u548C\u804C\u4E1A\u51ED\u8BC1\u3002", name: "\u5BA1\u660E" },
+        {
+          id: "room_shop_npc",
+          type: "npc",
+          x: 250,
+          y: 300,
+          label: "\u5BA1\u660E",
+          text: "\u6B22\u8FCE\u6765\u5230\u6742\u8D27\u94FA\u3002\u4F60\u53EF\u4EE5\u8D2D\u4E70\u836F\u6C34\u3001\u88C5\u5907\u548C\u804C\u4E1A\u51ED\u8BC1\u3002",
+          name: "\u5BA1\u660E"
+        },
         { id: "room_shop_chest", type: "chest", x: 640, y: 300, label: "\u8D27\u67B6", reward: 30 }
       ],
       home: [
-        { id: "room_home_npc", type: "npc", x: 240, y: 300, label: "\u8001\u4F1A\u8BA1", text: "\u5BB6\u867D\u7136\u7B80\u5355\uFF0C\u4F46\u8D26\u672C\u90FD\u6574\u7406\u5F97\u5F88\u6E05\u695A\u3002\u522B\u5FD8\u4E86\u53BB\u590D\u4E60\u4F1A\u8BA1\u7B49\u5F0F\u3002", name: "\u8001\u4F1A\u8BA1" },
+        {
+          id: "room_home_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u8001\u4F1A\u8BA1",
+          text: "\u5BB6\u867D\u7136\u7B80\u5355\uFF0C\u4F46\u8D26\u672C\u90FD\u6574\u7406\u5F97\u5F88\u6E05\u695A\u3002\u522B\u5FD8\u4E86\u53BB\u590D\u4E60\u4F1A\u8BA1\u7B49\u5F0F\u3002",
+          name: "\u8001\u4F1A\u8BA1"
+        },
         { id: "room_home_chest", type: "chest", x: 660, y: 320, label: "\u8D26\u672C\u7BB1", reward: 40 }
       ],
-      workshop: [
-        { id: "room_workshop_bench", type: "bench", x: 300, y: 300, label: "\u6253\u9020\u53F0" }
-      ],
+      workshop: [{ id: "room_workshop_bench", type: "bench", x: 300, y: 300, label: "\u6253\u9020\u53F0" }],
       archive: [
-        { id: "room_archive_npc", type: "npc", x: 240, y: 300, label: "\u6863\u6848\u5458", text: "\u8FD9\u91CC\u7684\u6863\u6848\u90FD\u9700\u8981\u91CD\u65B0\u6838\u5BF9\u3002\u51FB\u8D25\u51ED\u8BC1\u7EB8\u9E64\u540E\uFF0C\u8BB0\u5F97\u6765\u627E\u6211\u4EA4\u4ED8\u4EFB\u52A1\u3002", name: "\u6863\u6848\u5458" },
+        {
+          id: "room_archive_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u6863\u6848\u5458",
+          text: "\u8FD9\u91CC\u7684\u6863\u6848\u90FD\u9700\u8981\u91CD\u65B0\u6838\u5BF9\u3002\u51FB\u8D25\u51ED\u8BC1\u7EB8\u9E64\u540E\uFF0C\u8BB0\u5F97\u6765\u627E\u6211\u4EA4\u4ED8\u4EFB\u52A1\u3002",
+          name: "\u6863\u6848\u5458"
+        },
         { id: "room_archive_chest", type: "chest", x: 640, y: 300, label: "\u6863\u6848\u7BB1", reward: 35 }
       ],
       ledger: [
-        { id: "room_ledger_npc", type: "npc", x: 240, y: 300, label: "\u8D26\u623F\u5148\u751F", text: "\u65E7\u8D26\u623F\u7684\u8D26\u672C\u5F88\u591A\uFF0C\u4F46\u90FD\u80FD\u5BF9\u4E0A\u3002\u4F60\u53EF\u4EE5\u5728\u8FD9\u91CC\u590D\u4E60\u501F\u8D37\u65B9\u5411\u3002", name: "\u8D26\u623F\u5148\u751F" },
+        {
+          id: "room_ledger_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u8D26\u623F\u5148\u751F",
+          text: "\u65E7\u8D26\u623F\u7684\u8D26\u672C\u5F88\u591A\uFF0C\u4F46\u90FD\u80FD\u5BF9\u4E0A\u3002\u4F60\u53EF\u4EE5\u5728\u8FD9\u91CC\u590D\u4E60\u501F\u8D37\u65B9\u5411\u3002",
+          name: "\u8D26\u623F\u5148\u751F"
+        },
         { id: "room_ledger_chest", type: "chest", x: 640, y: 300, label: "\u65E7\u8D26\u7BB1", reward: 45 }
       ],
       audit_room: [
-        { id: "room_audit_npc", type: "npc", x: 240, y: 300, label: "\u5BA1\u8BA1\u5E08", text: "\u5BA1\u8BA1\u5DE5\u4F5C\u53F0\u5B58\u653E\u7740\u8BC1\u636E\u5E95\u7A3F\u3002\u5148\u638C\u63E1\u5BA1\u8BA1\u76EE\u6807\uFF0C\u518D\u53BB\u6311\u6218\u5BA1\u8BA1\u94C1\u5821\u3002", name: "\u5BA1\u8BA1\u5E08" },
+        {
+          id: "room_audit_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u5BA1\u8BA1\u5E08",
+          text: "\u5BA1\u8BA1\u5DE5\u4F5C\u53F0\u5B58\u653E\u7740\u8BC1\u636E\u5E95\u7A3F\u3002\u5148\u638C\u63E1\u5BA1\u8BA1\u76EE\u6807\uFF0C\u518D\u53BB\u6311\u6218\u5BA1\u8BA1\u94C1\u5821\u3002",
+          name: "\u5BA1\u8BA1\u5E08"
+        },
         { id: "room_audit_chest", type: "chest", x: 640, y: 300, label: "\u8BC1\u636E\u67DC", reward: 40 }
       ],
       finance_room: [
-        { id: "room_finance_npc", type: "npc", x: 240, y: 300, label: "\u8D22\u52A1\u5206\u6790\u5E08", text: "\u8D22\u52A1\u5206\u6790\u5BA4\u7528\u6765\u8BA1\u7B97\u73B0\u91D1\u6D41\u548C\u8D44\u672C\u6210\u672C\u3002\u7B54\u5BF9\u8D22\u52A1\u9898\u76EE\u4F1A\u66F4\u5BB9\u6613\u7406\u89E3\u6760\u6746\u3002", name: "\u8D22\u52A1\u5206\u6790\u5E08" },
+        {
+          id: "room_finance_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u8D22\u52A1\u5206\u6790\u5E08",
+          text: "\u8D22\u52A1\u5206\u6790\u5BA4\u7528\u6765\u8BA1\u7B97\u73B0\u91D1\u6D41\u548C\u8D44\u672C\u6210\u672C\u3002\u7B54\u5BF9\u8D22\u52A1\u9898\u76EE\u4F1A\u66F4\u5BB9\u6613\u7406\u89E3\u6760\u6746\u3002",
+          name: "\u8D22\u52A1\u5206\u6790\u5E08"
+        },
         { id: "room_finance_chest", type: "chest", x: 640, y: 300, label: "\u9884\u7B97\u7BB1", reward: 42 }
       ],
       tax_room: [
-        { id: "room_tax_npc", type: "npc", x: 240, y: 300, label: "\u7A0E\u52A1\u987E\u95EE", text: "\u7A0E\u6CD5\u54A8\u8BE2\u5904\u6574\u7406\u4E86\u8BB8\u591A\u7EB3\u7A0E\u8C03\u6574\u8868\u3002\u589E\u503C\u7A0E\u548C\u4F01\u4E1A\u6240\u5F97\u7A0E\u662F\u8003\u8BD5\u91CD\u70B9\u3002", name: "\u7A0E\u52A1\u987E\u95EE" },
+        {
+          id: "room_tax_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u7A0E\u52A1\u987E\u95EE",
+          text: "\u7A0E\u6CD5\u54A8\u8BE2\u5904\u6574\u7406\u4E86\u8BB8\u591A\u7EB3\u7A0E\u8C03\u6574\u8868\u3002\u589E\u503C\u7A0E\u548C\u4F01\u4E1A\u6240\u5F97\u7A0E\u662F\u8003\u8BD5\u91CD\u70B9\u3002",
+          name: "\u7A0E\u52A1\u987E\u95EE"
+        },
         { id: "room_tax_chest", type: "chest", x: 640, y: 300, label: "\u7A0E\u5355\u67DC", reward: 44 }
       ],
       law_room: [
-        { id: "room_law_npc", type: "npc", x: 240, y: 300, label: "\u6CD5\u52A1\u5B98", text: "\u7ECF\u6D4E\u6CD5\u56FE\u4E66\u9986\u85CF\u6709\u516C\u53F8\u6CD5\u3001\u5408\u540C\u6CD5\u548C\u8BC1\u5238\u6CD5\u6761\u6587\u3002\u9047\u5230\u7EA0\u7EB7\u65F6\u53EF\u4EE5\u6765\u8FD9\u91CC\u590D\u4E60\u3002", name: "\u6CD5\u52A1\u5B98" },
+        {
+          id: "room_law_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u6CD5\u52A1\u5B98",
+          text: "\u7ECF\u6D4E\u6CD5\u56FE\u4E66\u9986\u85CF\u6709\u516C\u53F8\u6CD5\u3001\u5408\u540C\u6CD5\u548C\u8BC1\u5238\u6CD5\u6761\u6587\u3002\u9047\u5230\u7EA0\u7EB7\u65F6\u53EF\u4EE5\u6765\u8FD9\u91CC\u590D\u4E60\u3002",
+          name: "\u6CD5\u52A1\u5B98"
+        },
         { id: "room_law_chest", type: "chest", x: 640, y: 300, label: "\u6CD5\u5178\u7BB1", reward: 46 }
       ],
       strategy_room: [
-        { id: "room_strategy_npc", type: "npc", x: 240, y: 300, label: "\u6218\u7565\u5B98", text: "\u6218\u7565\u6C99\u76D8\u5BA4\u7528\u4E8E\u63A8\u6F14\u5E76\u8D2D\u548C\u4EF7\u503C\u94FE\u3002\u591A\u601D\u8003\u5168\u5C40\uFF0C\u624D\u80FD\u5236\u5B9A\u6700\u5408\u9002\u7684\u65B9\u6848\u3002", name: "\u6218\u7565\u5B98" },
+        {
+          id: "room_strategy_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u6218\u7565\u5B98",
+          text: "\u6218\u7565\u6C99\u76D8\u5BA4\u7528\u4E8E\u63A8\u6F14\u5E76\u8D2D\u548C\u4EF7\u503C\u94FE\u3002\u591A\u601D\u8003\u5168\u5C40\uFF0C\u624D\u80FD\u5236\u5B9A\u6700\u5408\u9002\u7684\u65B9\u6848\u3002",
+          name: "\u6218\u7565\u5B98"
+        },
         { id: "room_strategy_chest", type: "chest", x: 640, y: 300, label: "\u6C99\u76D8\u7BB1", reward: 48 }
       ],
       audit_meeting: [
-        { id: "room_audit_meeting_npc", type: "npc", x: 240, y: 300, label: "\u4F1A\u8BAE\u957F", text: "\u5BA1\u8BA1\u4F1A\u8BAE\u5BA4\u7528\u6765\u590D\u6838\u5BA1\u8BA1\u8BA1\u5212\u3002\u5148\u660E\u786E\u91CD\u8981\u6027\u6C34\u5E73\uFF0C\u518D\u51B3\u5B9A\u8BC1\u636E\u6536\u96C6\u7684\u8303\u56F4\u3002", name: "\u4F1A\u8BAE\u957F" },
+        {
+          id: "room_audit_meeting_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u4F1A\u8BAE\u957F",
+          text: "\u5BA1\u8BA1\u4F1A\u8BAE\u5BA4\u7528\u6765\u590D\u6838\u5BA1\u8BA1\u8BA1\u5212\u3002\u5148\u660E\u786E\u91CD\u8981\u6027\u6C34\u5E73\uFF0C\u518D\u51B3\u5B9A\u8BC1\u636E\u6536\u96C6\u7684\u8303\u56F4\u3002",
+          name: "\u4F1A\u8BAE\u957F"
+        },
         { id: "room_audit_meeting_chest", type: "chest", x: 640, y: 300, label: "\u7EAA\u8981\u7BB1", reward: 50 }
       ],
       audit_evidence: [
-        { id: "room_audit_evidence_npc", type: "npc", x: 240, y: 300, label: "\u8BC1\u636E\u4FDD\u7BA1\u5458", text: "\u8BC1\u636E\u5E93\u91CC\u7684\u51FD\u8BC1\u3001\u76D1\u76D8\u8BB0\u5F55\u548C\u5206\u6790\u7A0B\u5E8F\u6750\u6599\u90FD\u8981\u5206\u7C7B\u4FDD\u5B58\u3002\u8BC1\u636E\u7684\u5145\u5206\u6027\u548C\u9002\u5F53\u6027\u90FD\u5F88\u91CD\u8981\u3002", name: "\u8BC1\u636E\u4FDD\u7BA1\u5458" },
+        {
+          id: "room_audit_evidence_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u8BC1\u636E\u4FDD\u7BA1\u5458",
+          text: "\u8BC1\u636E\u5E93\u91CC\u7684\u51FD\u8BC1\u3001\u76D1\u76D8\u8BB0\u5F55\u548C\u5206\u6790\u7A0B\u5E8F\u6750\u6599\u90FD\u8981\u5206\u7C7B\u4FDD\u5B58\u3002\u8BC1\u636E\u7684\u5145\u5206\u6027\u548C\u9002\u5F53\u6027\u90FD\u5F88\u91CD\u8981\u3002",
+          name: "\u8BC1\u636E\u4FDD\u7BA1\u5458"
+        },
         { id: "room_audit_evidence_chest", type: "chest", x: 640, y: 300, label: "\u8BC1\u636E\u67DC", reward: 52 }
       ],
       audit_chief: [
-        { id: "room_audit_chief_npc", type: "npc", x: 240, y: 300, label: "\u5BA1\u8BA1\u957F", text: "\u5BA1\u8BA1\u957F\u529E\u516C\u5BA4\u8D1F\u8D23\u6700\u7EC8\u5224\u65AD\u3002\u53EA\u6709\u8BC1\u636E\u5145\u5206\u3001\u7A0B\u5E8F\u5B8C\u6574\uFF0C\u624D\u80FD\u5F62\u6210\u53EF\u4FE1\u7684\u5BA1\u8BA1\u7ED3\u8BBA\u3002", name: "\u5BA1\u8BA1\u957F" },
+        {
+          id: "room_audit_chief_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u5BA1\u8BA1\u957F",
+          text: "\u5BA1\u8BA1\u957F\u529E\u516C\u5BA4\u8D1F\u8D23\u6700\u7EC8\u5224\u65AD\u3002\u53EA\u6709\u8BC1\u636E\u5145\u5206\u3001\u7A0B\u5E8F\u5B8C\u6574\uFF0C\u624D\u80FD\u5F62\u6210\u53EF\u4FE1\u7684\u5BA1\u8BA1\u7ED3\u8BBA\u3002",
+          name: "\u5BA1\u8BA1\u957F"
+        },
         { id: "room_audit_chief_chest", type: "chest", x: 640, y: 300, label: "\u5BA1\u6279\u7BB1", reward: 54 }
       ],
       capital_cashflow: [
-        { id: "room_capital_cashflow_npc", type: "npc", x: 240, y: 300, label: "\u73B0\u91D1\u6D41\u6559\u7EC3", text: "\u73B0\u91D1\u6D41\u6F14\u7EC3\u573A\u7528\u6765\u8BAD\u7EC3\u7ECF\u8425\u3001\u6295\u8D44\u548C\u7B79\u8D44\u6D3B\u52A8\u7684\u5206\u7C7B\u3002\u8BB0\u5F97\u5148\u5224\u65AD\u4E1A\u52A1\u5B9E\u8D28\uFF0C\u518D\u5F52\u5165\u5BF9\u5E94\u6D3B\u52A8\u3002", name: "\u73B0\u91D1\u6D41\u6559\u7EC3" },
+        {
+          id: "room_capital_cashflow_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u73B0\u91D1\u6D41\u6559\u7EC3",
+          text: "\u73B0\u91D1\u6D41\u6F14\u7EC3\u573A\u7528\u6765\u8BAD\u7EC3\u7ECF\u8425\u3001\u6295\u8D44\u548C\u7B79\u8D44\u6D3B\u52A8\u7684\u5206\u7C7B\u3002\u8BB0\u5F97\u5148\u5224\u65AD\u4E1A\u52A1\u5B9E\u8D28\uFF0C\u518D\u5F52\u5165\u5BF9\u5E94\u6D3B\u52A8\u3002",
+          name: "\u73B0\u91D1\u6D41\u6559\u7EC3"
+        },
         { id: "room_capital_cashflow_chest", type: "chest", x: 640, y: 300, label: "\u73B0\u91D1\u6D41\u7BB1", reward: 56 }
       ],
       capital_structure: [
-        { id: "room_capital_structure_npc", type: "npc", x: 240, y: 300, label: "\u8D44\u672C\u7ED3\u6784\u5E08", text: "\u8D44\u672C\u7ED3\u6784\u5B9E\u9A8C\u5BA4\u7814\u7A76\u503A\u52A1\u548C\u6743\u76CA\u7684\u914D\u6BD4\u3002\u8D22\u52A1\u6760\u6746\u8D8A\u9AD8\uFF0C\u98CE\u9669\u548C\u671F\u671B\u62A5\u916C\u901A\u5E38\u4E5F\u8D8A\u9AD8\u3002", name: "\u8D44\u672C\u7ED3\u6784\u5E08" },
+        {
+          id: "room_capital_structure_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u8D44\u672C\u7ED3\u6784\u5E08",
+          text: "\u8D44\u672C\u7ED3\u6784\u5B9E\u9A8C\u5BA4\u7814\u7A76\u503A\u52A1\u548C\u6743\u76CA\u7684\u914D\u6BD4\u3002\u8D22\u52A1\u6760\u6746\u8D8A\u9AD8\uFF0C\u98CE\u9669\u548C\u671F\u671B\u62A5\u916C\u901A\u5E38\u4E5F\u8D8A\u9AD8\u3002",
+          name: "\u8D44\u672C\u7ED3\u6784\u5E08"
+        },
         { id: "room_capital_structure_chest", type: "chest", x: 640, y: 300, label: "\u6760\u6746\u7BB1", reward: 58 }
       ],
       capital_investment: [
-        { id: "room_capital_investment_npc", type: "npc", x: 240, y: 300, label: "\u6295\u8D44\u987E\u95EE", text: "\u6295\u8D44\u51B3\u7B56\u5BA4\u7528\u51C0\u73B0\u503C\u548C\u5185\u90E8\u62A5\u916C\u7387\u8BC4\u4F30\u9879\u76EE\u3002\u5173\u6CE8\u589E\u91CF\u73B0\u91D1\u6D41\uFF0C\u800C\u4E0D\u662F\u5386\u53F2\u6C89\u6CA1\u6210\u672C\u3002", name: "\u6295\u8D44\u987E\u95EE" },
+        {
+          id: "room_capital_investment_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u6295\u8D44\u987E\u95EE",
+          text: "\u6295\u8D44\u51B3\u7B56\u5BA4\u7528\u51C0\u73B0\u503C\u548C\u5185\u90E8\u62A5\u916C\u7387\u8BC4\u4F30\u9879\u76EE\u3002\u5173\u6CE8\u589E\u91CF\u73B0\u91D1\u6D41\uFF0C\u800C\u4E0D\u662F\u5386\u53F2\u6C89\u6CA1\u6210\u672C\u3002",
+          name: "\u6295\u8D44\u987E\u95EE"
+        },
         { id: "room_capital_investment_chest", type: "chest", x: 640, y: 300, label: "\u51B3\u7B56\u7BB1", reward: 60 }
       ],
       tax_vat: [
-        { id: "room_tax_vat_npc", type: "npc", x: 240, y: 300, label: "\u589E\u503C\u7A0E\u8BB2\u5E08", text: "\u589E\u503C\u7A0E\u6F14\u7EC3\u573A\u7528\u6765\u8BAD\u7EC3\u9500\u9879\u7A0E\u989D\u3001\u8FDB\u9879\u7A0E\u989D\u548C\u5E94\u7EB3\u7A0E\u989D\u8BA1\u7B97\u3002\u5148\u5206\u6E05\u4E00\u822C\u8BA1\u7A0E\u548C\u7B80\u6613\u8BA1\u7A0E\u3002", name: "\u589E\u503C\u7A0E\u8BB2\u5E08" },
+        {
+          id: "room_tax_vat_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u589E\u503C\u7A0E\u8BB2\u5E08",
+          text: "\u589E\u503C\u7A0E\u6F14\u7EC3\u573A\u7528\u6765\u8BAD\u7EC3\u9500\u9879\u7A0E\u989D\u3001\u8FDB\u9879\u7A0E\u989D\u548C\u5E94\u7EB3\u7A0E\u989D\u8BA1\u7B97\u3002\u5148\u5206\u6E05\u4E00\u822C\u8BA1\u7A0E\u548C\u7B80\u6613\u8BA1\u7A0E\u3002",
+          name: "\u589E\u503C\u7A0E\u8BB2\u5E08"
+        },
         { id: "room_tax_vat_chest", type: "chest", x: 640, y: 300, label: "\u9500\u9879\u7BB1", reward: 62 }
       ],
       tax_cit: [
-        { id: "room_tax_cit_npc", type: "npc", x: 240, y: 300, label: "\u6240\u5F97\u7A0E\u987E\u95EE", text: "\u4F01\u4E1A\u6240\u5F97\u7A0E\u7533\u62A5\u5385\u6574\u7406\u6536\u5165\u603B\u989D\u3001\u514D\u7A0E\u6536\u5165\u548C\u5404\u9879\u6263\u9664\u3002\u5E94\u7EB3\u7A0E\u6240\u5F97\u989D\u662F\u8BA1\u7B97\u7A0E\u8D1F\u7684\u6838\u5FC3\u3002", name: "\u6240\u5F97\u7A0E\u987E\u95EE" },
+        {
+          id: "room_tax_cit_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u6240\u5F97\u7A0E\u987E\u95EE",
+          text: "\u4F01\u4E1A\u6240\u5F97\u7A0E\u7533\u62A5\u5385\u6574\u7406\u6536\u5165\u603B\u989D\u3001\u514D\u7A0E\u6536\u5165\u548C\u5404\u9879\u6263\u9664\u3002\u5E94\u7EB3\u7A0E\u6240\u5F97\u989D\u662F\u8BA1\u7B97\u7A0E\u8D1F\u7684\u6838\u5FC3\u3002",
+          name: "\u6240\u5F97\u7A0E\u987E\u95EE"
+        },
         { id: "room_tax_cit_chest", type: "chest", x: 640, y: 300, label: "\u7533\u62A5\u7BB1", reward: 64 }
       ],
       tax_incentive: [
-        { id: "room_tax_incentive_npc", type: "npc", x: 240, y: 300, label: "\u4F18\u60E0\u4E13\u5458", text: "\u7A0E\u6536\u4F18\u60E0\u5BA4\u5B58\u653E\u7814\u53D1\u52A0\u8BA1\u6263\u9664\u3001\u5C0F\u578B\u5FAE\u5229\u4F01\u4E1A\u4F18\u60E0\u548C\u9AD8\u65B0\u6280\u672F\u4F01\u4E1A\u7A0E\u7387\u7B49\u8D44\u6599\u3002", name: "\u4F18\u60E0\u4E13\u5458" },
+        {
+          id: "room_tax_incentive_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u4F18\u60E0\u4E13\u5458",
+          text: "\u7A0E\u6536\u4F18\u60E0\u5BA4\u5B58\u653E\u7814\u53D1\u52A0\u8BA1\u6263\u9664\u3001\u5C0F\u578B\u5FAE\u5229\u4F01\u4E1A\u4F18\u60E0\u548C\u9AD8\u65B0\u6280\u672F\u4F01\u4E1A\u7A0E\u7387\u7B49\u8D44\u6599\u3002",
+          name: "\u4F18\u60E0\u4E13\u5458"
+        },
         { id: "room_tax_incentive_chest", type: "chest", x: 640, y: 300, label: "\u4F18\u60E0\u7BB1", reward: 66 }
       ],
       law_contract: [
-        { id: "room_law_contract_npc", type: "npc", x: 240, y: 300, label: "\u5408\u540C\u5BA1\u67E5\u5458", text: "\u5408\u540C\u5BA1\u67E5\u5385\u7528\u6765\u5224\u65AD\u8981\u7EA6\u3001\u627F\u8BFA\u548C\u5408\u540C\u6548\u529B\u3002\u6CE8\u610F\u5F3A\u5236\u6027\u89C4\u5B9A\u548C\u683C\u5F0F\u6761\u6B3E\u7684\u89C4\u5219\u3002", name: "\u5408\u540C\u5BA1\u67E5\u5458" },
+        {
+          id: "room_law_contract_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u5408\u540C\u5BA1\u67E5\u5458",
+          text: "\u5408\u540C\u5BA1\u67E5\u5385\u7528\u6765\u5224\u65AD\u8981\u7EA6\u3001\u627F\u8BFA\u548C\u5408\u540C\u6548\u529B\u3002\u6CE8\u610F\u5F3A\u5236\u6027\u89C4\u5B9A\u548C\u683C\u5F0F\u6761\u6B3E\u7684\u89C4\u5219\u3002",
+          name: "\u5408\u540C\u5BA1\u67E5\u5458"
+        },
         { id: "room_law_contract_chest", type: "chest", x: 640, y: 300, label: "\u5408\u540C\u7BB1", reward: 68 }
       ],
       law_securities: [
-        { id: "room_law_securities_npc", type: "npc", x: 240, y: 300, label: "\u8BC1\u5238\u6CD5\u8BB2\u5E08", text: "\u8BC1\u5238\u6CD5\u8BB2\u5802\u91CD\u70B9\u8BB2\u89E3\u4FE1\u606F\u62AB\u9732\u3001\u4E0A\u5E02\u516C\u53F8\u6CBB\u7406\u548C\u8BC1\u5238\u53D1\u884C\u6CE8\u518C\u5236\u5EA6\u3002", name: "\u8BC1\u5238\u6CD5\u8BB2\u5E08" },
+        {
+          id: "room_law_securities_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u8BC1\u5238\u6CD5\u8BB2\u5E08",
+          text: "\u8BC1\u5238\u6CD5\u8BB2\u5802\u91CD\u70B9\u8BB2\u89E3\u4FE1\u606F\u62AB\u9732\u3001\u4E0A\u5E02\u516C\u53F8\u6CBB\u7406\u548C\u8BC1\u5238\u53D1\u884C\u6CE8\u518C\u5236\u5EA6\u3002",
+          name: "\u8BC1\u5238\u6CD5\u8BB2\u5E08"
+        },
         { id: "room_law_securities_chest", type: "chest", x: 640, y: 300, label: "\u62AB\u9732\u7BB1", reward: 70 }
       ],
       law_bankruptcy: [
-        { id: "room_law_bankruptcy_npc", type: "npc", x: 240, y: 300, label: "\u7834\u4EA7\u7BA1\u7406\u4EBA", text: "\u7834\u4EA7\u6CD5\u5EAD\u5904\u7406\u6E05\u7B97\u548C\u91CD\u6574\u7A0B\u5E8F\u3002\u7834\u4EA7\u8D39\u7528\u548C\u5171\u76CA\u503A\u52A1\u901A\u5E38\u4F18\u5148\u6E05\u507F\u3002", name: "\u7834\u4EA7\u7BA1\u7406\u4EBA" },
+        {
+          id: "room_law_bankruptcy_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u7834\u4EA7\u7BA1\u7406\u4EBA",
+          text: "\u7834\u4EA7\u6CD5\u5EAD\u5904\u7406\u6E05\u7B97\u548C\u91CD\u6574\u7A0B\u5E8F\u3002\u7834\u4EA7\u8D39\u7528\u548C\u5171\u76CA\u503A\u52A1\u901A\u5E38\u4F18\u5148\u6E05\u507F\u3002",
+          name: "\u7834\u4EA7\u7BA1\u7406\u4EBA"
+        },
         { id: "room_law_bankruptcy_chest", type: "chest", x: 640, y: 300, label: "\u91CD\u6574\u7BB1", reward: 72 }
       ],
       strategy_sandbox: [
-        { id: "room_strategy_sandbox_npc", type: "npc", x: 240, y: 300, label: "\u6218\u7565\u5BFC\u5E08", text: "\u6218\u7565\u6C99\u76D8\u5385\u7528\u6765\u63A8\u6F14\u7ADE\u4E89\u6218\u7565\u548C\u8D44\u6E90\u914D\u7F6E\u3002\u5148\u5224\u65AD\u5E02\u573A\u73AF\u5883\uFF0C\u518D\u9009\u62E9\u6210\u672C\u9886\u5148\u6216\u5DEE\u5F02\u5316\u3002", name: "\u6218\u7565\u5BFC\u5E08" },
+        {
+          id: "room_strategy_sandbox_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u6218\u7565\u5BFC\u5E08",
+          text: "\u6218\u7565\u6C99\u76D8\u5385\u7528\u6765\u63A8\u6F14\u7ADE\u4E89\u6218\u7565\u548C\u8D44\u6E90\u914D\u7F6E\u3002\u5148\u5224\u65AD\u5E02\u573A\u73AF\u5883\uFF0C\u518D\u9009\u62E9\u6210\u672C\u9886\u5148\u6216\u5DEE\u5F02\u5316\u3002",
+          name: "\u6218\u7565\u5BFC\u5E08"
+        },
         { id: "room_strategy_sandbox_chest", type: "chest", x: 640, y: 300, label: "\u6C99\u76D8\u7BB1", reward: 74 }
       ],
       strategy_five: [
-        { id: "room_strategy_five_npc", type: "npc", x: 240, y: 300, label: "\u7ADE\u4E89\u5206\u6790\u5E08", text: "\u4E94\u529B\u51B3\u7B56\u5BA4\u7814\u7A76\u73B0\u6709\u7ADE\u4E89\u8005\u3001\u6F5C\u5728\u8FDB\u5165\u8005\u3001\u66FF\u4EE3\u54C1\u3001\u4F9B\u5E94\u5546\u548C\u8D2D\u4E70\u8005\u7684\u8BAE\u4EF7\u80FD\u529B\u3002", name: "\u7ADE\u4E89\u5206\u6790\u5E08" },
+        {
+          id: "room_strategy_five_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u7ADE\u4E89\u5206\u6790\u5E08",
+          text: "\u4E94\u529B\u51B3\u7B56\u5BA4\u7814\u7A76\u73B0\u6709\u7ADE\u4E89\u8005\u3001\u6F5C\u5728\u8FDB\u5165\u8005\u3001\u66FF\u4EE3\u54C1\u3001\u4F9B\u5E94\u5546\u548C\u8D2D\u4E70\u8005\u7684\u8BAE\u4EF7\u80FD\u529B\u3002",
+          name: "\u7ADE\u4E89\u5206\u6790\u5E08"
+        },
         { id: "room_strategy_five_chest", type: "chest", x: 640, y: 300, label: "\u4E94\u529B\u7BB1", reward: 76 }
       ],
       strategy_ma: [
-        { id: "room_strategy_ma_npc", type: "npc", x: 240, y: 300, label: "\u5E76\u8D2D\u987E\u95EE", text: "\u5E76\u8D2D\u5B9E\u9A8C\u5BA4\u5206\u6790\u6A2A\u5411\u3001\u7EB5\u5411\u548C\u591A\u5143\u5316\u5E76\u8D2D\u3002\u5E76\u8D2D\u6210\u529F\u7684\u5173\u952E\u662F\u6218\u7565\u534F\u540C\u548C\u6574\u5408\u80FD\u529B\u3002", name: "\u5E76\u8D2D\u987E\u95EE" },
+        {
+          id: "room_strategy_ma_npc",
+          type: "npc",
+          x: 240,
+          y: 300,
+          label: "\u5E76\u8D2D\u987E\u95EE",
+          text: "\u5E76\u8D2D\u5B9E\u9A8C\u5BA4\u5206\u6790\u6A2A\u5411\u3001\u7EB5\u5411\u548C\u591A\u5143\u5316\u5E76\u8D2D\u3002\u5E76\u8D2D\u6210\u529F\u7684\u5173\u952E\u662F\u6218\u7565\u534F\u540C\u548C\u6574\u5408\u80FD\u529B\u3002",
+          name: "\u5E76\u8D2D\u987E\u95EE"
+        },
         { id: "room_strategy_ma_chest", type: "chest", x: 640, y: 300, label: "\u5E76\u8D2D\u7BB1", reward: 78 }
       ]
     };
@@ -4601,50 +5300,567 @@
     const ALL_SKILLS = {
       lending_slash: { id: "lending_slash", name: "\u501F\u8D37\u65A9", mp: 8, desc: "\u7269\u7406\u4F24\u5BB3\xD71.2", point: "\u501F\u8D37\u65B9\u5411", power: 1.2 },
       trial_balance: { id: "trial_balance", name: "\u8BD5\u7B97\u5E73\u8861", mp: 12, desc: "\u56DE\u590D HP 15%", point: "\u8BD5\u7B97\u5E73\u8861", power: 0 },
-      subject_switch: { id: "subject_switch", name: "\u79D1\u76EE\u5207\u6362", mp: 10, desc: "ATK+30%\uFF0C\u6301\u7EED 3 \u56DE\u5408", point: "\u79D1\u76EE\u5206\u7C7B", power: 1.3 },
+      subject_switch: {
+        id: "subject_switch",
+        name: "\u79D1\u76EE\u5207\u6362",
+        mp: 10,
+        desc: "ATK+30%\uFF0C\u6301\u7EED 3 \u56DE\u5408",
+        point: "\u79D1\u76EE\u5206\u7C7B",
+        power: 1.3
+      },
       entry_combo: { id: "entry_combo", name: "\u5206\u5F55\u8FDE\u51FB", mp: 16, desc: "\u4E24\u6B21\u653B\u51FB\xD70.8", point: "\u4F1A\u8BA1\u8981\u7D20", power: 1.6 },
       consolidation: { id: "consolidation", name: "\u5408\u5E76\u62A5\u8868", mp: 24, desc: "\u5F3A\u529B AOE \u4F24\u5BB3", point: "\u62A5\u8868", power: 2.2 },
       audit_adjust: { id: "audit_adjust", name: "\u5BA1\u8BA1\u8C03\u6574", mp: 10, desc: "\u8BC1\u636E\u653B\u51FB\xD71.3", point: "\u5BA1\u8BA1\u8BC1\u636E", power: 1.3 },
-      evidence_check: { id: "evidence_check", name: "\u8BC1\u636E\u6536\u96C6", mp: 12, desc: "\u76EE\u6807\u653B\u51FB\xD71.4", point: "\u5BA1\u8BA1\u76EE\u6807", power: 1.4 },
+      evidence_check: {
+        id: "evidence_check",
+        name: "\u8BC1\u636E\u6536\u96C6",
+        mp: 12,
+        desc: "\u76EE\u6807\u653B\u51FB\xD71.4",
+        point: "\u5BA1\u8BA1\u76EE\u6807",
+        power: 1.4
+      },
       control_test: { id: "control_test", name: "\u63A7\u5236\u6D4B\u8BD5", mp: 14, desc: "\u5185\u63A7\u653B\u51FB\xD71.5", point: "\u5185\u90E8\u63A7\u5236", power: 1.5 },
-      opinion_judge: { id: "opinion_judge", name: "\u610F\u89C1\u7B7E\u53D1", mp: 18, desc: "\u610F\u89C1\u653B\u51FB\xD71.8", point: "\u5BA1\u8BA1\u610F\u89C1", power: 1.8 },
-      time_value: { id: "time_value", name: "\u590D\u5229\u65A9", mp: 10, desc: "\u65F6\u95F4\u4EF7\u503C\u653B\u51FB\xD71.3", point: "\u8D27\u5E01\u65F6\u95F4\u4EF7\u503C", power: 1.3 },
+      opinion_judge: {
+        id: "opinion_judge",
+        name: "\u610F\u89C1\u7B7E\u53D1",
+        mp: 18,
+        desc: "\u610F\u89C1\u653B\u51FB\xD71.8",
+        point: "\u5BA1\u8BA1\u610F\u89C1",
+        power: 1.8
+      },
+      time_value: {
+        id: "time_value",
+        name: "\u590D\u5229\u65A9",
+        mp: 10,
+        desc: "\u65F6\u95F4\u4EF7\u503C\u653B\u51FB\xD71.3",
+        point: "\u8D27\u5E01\u65F6\u95F4\u4EF7\u503C",
+        power: 1.3
+      },
       capital_cost: { id: "capital_cost", name: "\u8D44\u672C\u6210\u672C", mp: 12, desc: "\u6210\u672C\u653B\u51FB\xD71.4", point: "\u8D44\u672C\u6210\u672C", power: 1.4 },
-      leverage_strike: { id: "leverage_strike", name: "\u6760\u6746\u8FDE\u51FB", mp: 14, desc: "\u6760\u6746\u653B\u51FB\xD71.5", point: "\u8D22\u52A1\u6760\u6746", power: 1.5 },
+      leverage_strike: {
+        id: "leverage_strike",
+        name: "\u6760\u6746\u8FDE\u51FB",
+        mp: 14,
+        desc: "\u6760\u6746\u653B\u51FB\xD71.5",
+        point: "\u8D22\u52A1\u6760\u6746",
+        power: 1.5
+      },
       budget_blast: { id: "budget_blast", name: "\u8D44\u672C\u9884\u7B97", mp: 18, desc: "\u9884\u7B97\u653B\u51FB\xD71.8", point: "\u8D44\u672C\u9884\u7B97", power: 1.8 },
       vat_arrow: { id: "vat_arrow", name: "\u589E\u503C\u7A0E\u7BAD", mp: 10, desc: "\u589E\u503C\u7A0E\u653B\u51FB\xD71.3", point: "\u589E\u503C\u7A0E", power: 1.3 },
-      cit_storm: { id: "cit_storm", name: "\u6240\u5F97\u7A0E\u7206", mp: 12, desc: "\u4F01\u4E1A\u6240\u5F97\u7A0E\u653B\u51FB\xD71.4", point: "\u4F01\u4E1A\u6240\u5F97\u7A0E", power: 1.4 },
+      cit_storm: {
+        id: "cit_storm",
+        name: "\u6240\u5F97\u7A0E\u7206",
+        mp: 12,
+        desc: "\u4F01\u4E1A\u6240\u5F97\u7A0E\u653B\u51FB\xD71.4",
+        point: "\u4F01\u4E1A\u6240\u5F97\u7A0E",
+        power: 1.4
+      },
       iit_burn: { id: "iit_burn", name: "\u4E2A\u7A0E\u707C\u70E7", mp: 14, desc: "\u4E2A\u4EBA\u6240\u5F97\u7A0E\u653B\u51FB\xD71.5", point: "\u4E2A\u4EBA\u6240\u5F97\u7A0E", power: 1.5 },
-      tax_incentive: { id: "tax_incentive", name: "\u4F18\u60E0\u9677\u9631", mp: 18, desc: "\u7A0E\u6536\u4F18\u60E0\u653B\u51FB\xD71.8", point: "\u7A0E\u6536\u4F18\u60E0", power: 1.8 },
+      tax_incentive: {
+        id: "tax_incentive",
+        name: "\u4F18\u60E0\u9677\u9631",
+        mp: 18,
+        desc: "\u7A0E\u6536\u4F18\u60E0\u653B\u51FB\xD71.8",
+        point: "\u7A0E\u6536\u4F18\u60E0",
+        power: 1.8
+      },
       company_law: { id: "company_law", name: "\u516C\u53F8\u6CD5\u76FE", mp: 10, desc: "\u516C\u53F8\u6CD5\u653B\u51FB\xD71.3", point: "\u516C\u53F8\u6CD5", power: 1.3 },
-      contract_guard: { id: "contract_guard", name: "\u5408\u540C\u62A4\u76FE", mp: 12, desc: "\u5408\u540C\u6CD5\u653B\u51FB\xD71.4", point: "\u5408\u540C\u6CD5", power: 1.4 },
-      securities_bless: { id: "securities_bless", name: "\u8BC1\u5238\u795D\u798F", mp: 14, desc: "\u8BC1\u5238\u6CD5\u653B\u51FB\xD71.5", point: "\u8BC1\u5238\u6CD5", power: 1.5 },
-      bankruptcy_cleanse: { id: "bankruptcy_cleanse", name: "\u7834\u4EA7\u51C0\u5316", mp: 18, desc: "\u7834\u4EA7\u6CD5\u653B\u51FB\xD71.8", point: "\u7834\u4EA7\u6CD5", power: 1.8 },
+      contract_guard: {
+        id: "contract_guard",
+        name: "\u5408\u540C\u62A4\u76FE",
+        mp: 12,
+        desc: "\u5408\u540C\u6CD5\u653B\u51FB\xD71.4",
+        point: "\u5408\u540C\u6CD5",
+        power: 1.4
+      },
+      securities_bless: {
+        id: "securities_bless",
+        name: "\u8BC1\u5238\u795D\u798F",
+        mp: 14,
+        desc: "\u8BC1\u5238\u6CD5\u653B\u51FB\xD71.5",
+        point: "\u8BC1\u5238\u6CD5",
+        power: 1.5
+      },
+      bankruptcy_cleanse: {
+        id: "bankruptcy_cleanse",
+        name: "\u7834\u4EA7\u51C0\u5316",
+        mp: 18,
+        desc: "\u7834\u4EA7\u6CD5\u653B\u51FB\xD71.8",
+        point: "\u7834\u4EA7\u6CD5",
+        power: 1.8
+      },
       swot_call: { id: "swot_call", name: "SWOT\u53EC\u5524", mp: 10, desc: "SWOT\u653B\u51FB\xD71.3", point: "SWOT", power: 1.3 },
       five_force: { id: "five_force", name: "\u4E94\u529B\u7ED3\u754C", mp: 12, desc: "\u4E94\u529B\u653B\u51FB\xD71.4", point: "\u4E94\u529B\u6A21\u578B", power: 1.4 },
       value_chain: { id: "value_chain", name: "\u4EF7\u503C\u94FE\u65A9", mp: 14, desc: "\u4EF7\u503C\u94FE\u653B\u51FB\xD71.5", point: "\u4EF7\u503C\u94FE", power: 1.5 },
       m_a_fusion: { id: "m_a_fusion", name: "\u5E76\u8D2D\u878D\u5408", mp: 18, desc: "\u5E76\u8D2D\u653B\u51FB\xD71.8", point: "\u5E76\u8D2D\u6218\u7565", power: 1.8 },
       ledger_guard: { id: "ledger_guard", name: "\u8D26\u7C3F\u62A4\u76FE", mp: 14, desc: "\u8D26\u7C3F\u653B\u51FB\xD71.4", point: "\u8D26\u7C3F", power: 1.4 },
       report_verdict: { id: "report_verdict", name: "\u62A5\u8868\u88C1\u51B3", mp: 22, desc: "\u62A5\u8868\u653B\u51FB\xD72.0", point: "\u62A5\u8868", power: 2 },
-      risk_strike: { id: "risk_strike", name: "\u98CE\u9669\u7A81\u88AD", mp: 16, desc: "\u5BA1\u8BA1\u98CE\u9669\u653B\u51FB\xD71.6", point: "\u5BA1\u8BA1\u98CE\u9669", power: 1.6 },
-      materiality_judge: { id: "materiality_judge", name: "\u91CD\u8981\u6027\u88C1\u65AD", mp: 20, desc: "\u91CD\u8981\u6027\u653B\u51FB\xD72.0", point: "\u5BA1\u8BA1\u91CD\u8981\u6027", power: 2 },
-      npv_judgment: { id: "npv_judgment", name: "\u51C0\u73B0\u503C\u88C1\u51B3", mp: 16, desc: "\u51C0\u73B0\u503C\u653B\u51FB\xD71.6", point: "\u8D44\u672C\u9884\u7B97", power: 1.6 },
-      duPont_blade: { id: "duPont_blade", name: "\u675C\u90A6\u5229\u5203", mp: 20, desc: "\u8D22\u52A1\u5206\u6790\u653B\u51FB\xD72.0", point: "\u8D22\u52A1\u5206\u6790", power: 2 },
+      risk_strike: {
+        id: "risk_strike",
+        name: "\u98CE\u9669\u7A81\u88AD",
+        mp: 16,
+        desc: "\u5BA1\u8BA1\u98CE\u9669\u653B\u51FB\xD71.6",
+        point: "\u5BA1\u8BA1\u98CE\u9669",
+        power: 1.6
+      },
+      materiality_judge: {
+        id: "materiality_judge",
+        name: "\u91CD\u8981\u6027\u88C1\u65AD",
+        mp: 20,
+        desc: "\u91CD\u8981\u6027\u653B\u51FB\xD72.0",
+        point: "\u5BA1\u8BA1\u91CD\u8981\u6027",
+        power: 2
+      },
+      npv_judgment: {
+        id: "npv_judgment",
+        name: "\u51C0\u73B0\u503C\u88C1\u51B3",
+        mp: 16,
+        desc: "\u51C0\u73B0\u503C\u653B\u51FB\xD71.6",
+        point: "\u8D44\u672C\u9884\u7B97",
+        power: 1.6
+      },
+      duPont_blade: {
+        id: "duPont_blade",
+        name: "\u675C\u90A6\u5229\u5203",
+        mp: 20,
+        desc: "\u8D22\u52A1\u5206\u6790\u653B\u51FB\xD72.0",
+        point: "\u8D22\u52A1\u5206\u6790",
+        power: 2
+      },
       vat_refund: { id: "vat_refund", name: "\u8FDB\u9879\u56DE\u6D41", mp: 16, desc: "\u589E\u503C\u7A0E\u653B\u51FB\xD71.6", point: "\u589E\u503C\u7A0E", power: 1.6 },
-      land_tax_wave: { id: "land_tax_wave", name: "\u571F\u5730\u589E\u503C\u7A0E\u6D6A", mp: 20, desc: "\u571F\u5730\u589E\u503C\u7A0E\u653B\u51FB\xD72.0", point: "\u571F\u5730\u589E\u503C\u7A0E", power: 2 },
-      board_guard: { id: "board_guard", name: "\u8463\u4E8B\u4F1A\u4E4B\u76FE", mp: 16, desc: "\u516C\u53F8\u6CBB\u7406\u653B\u51FB\xD71.6", point: "\u516C\u53F8\u6CBB\u7406", power: 1.6 },
-      bankruptcy_order: { id: "bankruptcy_order", name: "\u7834\u4EA7\u5E8F\u66F2", mp: 20, desc: "\u7834\u4EA7\u6CD5\u653B\u51FB\xD72.0", point: "\u7834\u4EA7\u6CD5", power: 2 },
+      land_tax_wave: {
+        id: "land_tax_wave",
+        name: "\u571F\u5730\u589E\u503C\u7A0E\u6D6A",
+        mp: 20,
+        desc: "\u571F\u5730\u589E\u503C\u7A0E\u653B\u51FB\xD72.0",
+        point: "\u571F\u5730\u589E\u503C\u7A0E",
+        power: 2
+      },
+      board_guard: {
+        id: "board_guard",
+        name: "\u8463\u4E8B\u4F1A\u4E4B\u76FE",
+        mp: 16,
+        desc: "\u516C\u53F8\u6CBB\u7406\u653B\u51FB\xD71.6",
+        point: "\u516C\u53F8\u6CBB\u7406",
+        power: 1.6
+      },
+      bankruptcy_order: {
+        id: "bankruptcy_order",
+        name: "\u7834\u4EA7\u5E8F\u66F2",
+        mp: 20,
+        desc: "\u7834\u4EA7\u6CD5\u653B\u51FB\xD72.0",
+        point: "\u7834\u4EA7\u6CD5",
+        power: 2
+      },
       bcg_star: { id: "bcg_star", name: "\u660E\u661F\u77E9\u9635", mp: 16, desc: "\u6CE2\u58EB\u987F\u77E9\u9635\u653B\u51FB\xD71.6", point: "\u6CE2\u58EB\u987F\u77E9\u9635", power: 1.6 },
-      balanced_score: { id: "balanced_score", name: "\u5E73\u8861\u8BA1\u5206\u65A9", mp: 20, desc: "\u5E73\u8861\u8BA1\u5206\u5361\u653B\u51FB\xD72.0", point: "\u5E73\u8861\u8BA1\u5206\u5361", power: 2 }
+      balanced_score: {
+        id: "balanced_score",
+        name: "\u5E73\u8861\u8BA1\u5206\u65A9",
+        mp: 20,
+        desc: "\u5E73\u8861\u8BA1\u5206\u5361\u653B\u51FB\xD72.0",
+        point: "\u5E73\u8861\u8BA1\u5206\u5361",
+        power: 2
+      },
+      cash_flow_slash: {
+        id: "cash_flow_slash",
+        name: "\u73B0\u91D1\u6D41\u65A9",
+        mp: 16,
+        desc: "\u73B0\u91D1\u6D41\u91CF\u653B\u51FB\xD71.7",
+        point: "\u73B0\u91D1\u6D41\u91CF",
+        power: 1.7
+      },
+      inventory_swing: {
+        id: "inventory_swing",
+        name: "\u5B58\u8D27\u8F6E\u8F6C",
+        mp: 16,
+        desc: "\u5B58\u8D27\u653B\u51FB\xD71.6",
+        point: "\u5B58\u8D27",
+        power: 1.6
+      },
+      fixed_asset_guard: {
+        id: "fixed_asset_guard",
+        name: "\u8D44\u4EA7\u62A4\u7532",
+        mp: 18,
+        desc: "\u56FA\u5B9A\u8D44\u4EA7\u653B\u51FB\xD71.7",
+        point: "\u56FA\u5B9A\u8D44\u4EA7",
+        power: 1.7
+      },
+      equity_order: {
+        id: "equity_order",
+        name: "\u6743\u76CA\u79E9\u5E8F",
+        mp: 18,
+        desc: "\u6240\u6709\u8005\u6743\u76CA\u653B\u51FB\xD71.8",
+        point: "\u6240\u6709\u8005\u6743\u76CA",
+        power: 1.8
+      },
+      profit_verdict: { id: "profit_verdict", name: "\u5229\u6DA6\u7EC8\u5BA1", mp: 22, desc: "\u5229\u6DA6\u653B\u51FB\xD72.0", point: "\u5229\u6DA6", power: 2 },
+      planning_map: {
+        id: "planning_map",
+        name: "\u8BA1\u5212\u6784\u56FE",
+        mp: 16,
+        desc: "\u5BA1\u8BA1\u8BA1\u5212\u653B\u51FB\xD71.6",
+        point: "\u5BA1\u8BA1\u8BA1\u5212",
+        power: 1.6
+      },
+      procedure_chain: {
+        id: "procedure_chain",
+        name: "\u7A0B\u5E8F\u94FE\u51FB",
+        mp: 18,
+        desc: "\u5BA1\u8BA1\u7A0B\u5E8F\u653B\u51FB\xD71.7",
+        point: "\u5BA1\u8BA1\u7A0B\u5E8F",
+        power: 1.7
+      },
+      sampling_net: {
+        id: "sampling_net",
+        name: "\u62BD\u6837\u7F51",
+        mp: 18,
+        desc: "\u5BA1\u8BA1\u62BD\u6837\u653B\u51FB\xD71.8",
+        point: "\u5BA1\u8BA1\u62BD\u6837",
+        power: 1.8
+      },
+      assertion_check: {
+        id: "assertion_check",
+        name: "\u8BA4\u5B9A\u6821\u9A8C",
+        mp: 20,
+        desc: "\u7BA1\u7406\u5C42\u8BA4\u5B9A\u653B\u51FB\xD71.8",
+        point: "\u7BA1\u7406\u5C42\u8BA4\u5B9A",
+        power: 1.8
+      },
+      fraud_radar: {
+        id: "fraud_radar",
+        name: "\u821E\u5F0A\u96F7\u8FBE",
+        mp: 22,
+        desc: "\u821E\u5F0A\u98CE\u9669\u653B\u51FB\xD72.0",
+        point: "\u821E\u5F0A\u98CE\u9669",
+        power: 2
+      },
+      clearance_final: {
+        id: "clearance_final",
+        name: "\u8BC1\u636E\u7EC8\u5BA1",
+        mp: 22,
+        desc: "\u5BA1\u8BA1\u8BC1\u636E\u653B\u51FB\xD72.0",
+        point: "\u5BA1\u8BA1\u8BC1\u636E",
+        power: 2
+      },
+      working_capital: {
+        id: "working_capital",
+        name: "\u8425\u8FD0\u8D44\u672C",
+        mp: 16,
+        desc: "\u8425\u8FD0\u8D44\u672C\u653B\u51FB\xD71.6",
+        point: "\u8425\u8FD0\u8D44\u672C",
+        power: 1.6
+      },
+      risk_reward: {
+        id: "risk_reward",
+        name: "\u98CE\u9669\u56DE\u62A5",
+        mp: 18,
+        desc: "\u98CE\u9669\u4E0E\u62A5\u916C\u653B\u51FB\xD71.7",
+        point: "\u98CE\u9669\u4E0E\u62A5\u916C",
+        power: 1.7
+      },
+      operating_leverage: {
+        id: "operating_leverage",
+        name: "\u7ECF\u8425\u6760\u6746",
+        mp: 18,
+        desc: "\u7ECF\u8425\u6760\u6746\u653B\u51FB\xD71.8",
+        point: "\u7ECF\u8425\u6760\u6746",
+        power: 1.8
+      },
+      cvp_pierce: {
+        id: "cvp_pierce",
+        name: "\u672C\u91CF\u5229\u7A7F\u523A",
+        mp: 20,
+        desc: "\u672C\u91CF\u5229\u5206\u6790\u653B\u51FB\xD71.8",
+        point: "\u672C\u91CF\u5229\u5206\u6790",
+        power: 1.8
+      },
+      dividend_flow: {
+        id: "dividend_flow",
+        name: "\u80A1\u5229\u6D2A\u6D41",
+        mp: 22,
+        desc: "\u80A1\u5229\u653F\u7B56\u653B\u51FB\xD72.0",
+        point: "\u80A1\u5229\u653F\u7B56",
+        power: 2
+      },
+      analysis_breakthrough: {
+        id: "analysis_breakthrough",
+        name: "\u8D22\u52A1\u7A7F\u900F",
+        mp: 22,
+        desc: "\u8D22\u52A1\u5206\u6790\u653B\u51FB\xD72.1",
+        point: "\u8D22\u52A1\u5206\u6790",
+        power: 2.1
+      },
+      consumption_arrow: {
+        id: "consumption_arrow",
+        name: "\u6D88\u8D39\u7A0E\u7BAD",
+        mp: 16,
+        desc: "\u6D88\u8D39\u7A0E\u653B\u51FB\xD71.6",
+        point: "\u6D88\u8D39\u7A0E",
+        power: 1.6
+      },
+      invoice_seal: {
+        id: "invoice_seal",
+        name: "\u53D1\u7968\u5C01\u5370",
+        mp: 18,
+        desc: "\u53D1\u7968\u7BA1\u7406\u653B\u51FB\xD71.7",
+        point: "\u53D1\u7968\u7BA1\u7406",
+        power: 1.7
+      },
+      property_tax_wall: {
+        id: "property_tax_wall",
+        name: "\u623F\u4EA7\u7A0E\u5899",
+        mp: 18,
+        desc: "\u623F\u4EA7\u7A0E\u653B\u51FB\xD71.7",
+        point: "\u623F\u4EA7\u7A0E",
+        power: 1.7
+      },
+      stamp_ritual: { id: "stamp_ritual", name: "\u5370\u82B1\u4EEA\u5F0F", mp: 20, desc: "\u5370\u82B1\u7A0E\u653B\u51FB\xD71.8", point: "\u5370\u82B1\u7A0E", power: 1.8 },
+      vehicle_strike: {
+        id: "vehicle_strike",
+        name: "\u8F66\u8F86\u8D2D\u7F6E\u65A9",
+        mp: 20,
+        desc: "\u8F66\u8F86\u8D2D\u7F6E\u7A0E\u653B\u51FB\xD71.8",
+        point: "\u8F66\u8F86\u8D2D\u7F6E\u7A0E",
+        power: 1.8
+      },
+      collection_order: {
+        id: "collection_order",
+        name: "\u5F81\u7BA1\u79E9\u5E8F",
+        mp: 22,
+        desc: "\u7A0E\u6536\u5F81\u7BA1\u653B\u51FB\xD72.0",
+        point: "\u7A0E\u6536\u5F81\u7BA1",
+        power: 2
+      },
+      negotiable_guard: {
+        id: "negotiable_guard",
+        name: "\u7968\u636E\u62A4\u76FE",
+        mp: 16,
+        desc: "\u7968\u636E\u6CD5\u653B\u51FB\xD71.6",
+        point: "\u7968\u636E\u6CD5",
+        power: 1.6
+      },
+      property_order: {
+        id: "property_order",
+        name: "\u7269\u6743\u79E9\u5E8F",
+        mp: 18,
+        desc: "\u7269\u6743\u6CD5\u653B\u51FB\xD71.7",
+        point: "\u7269\u6743\u6CD5",
+        power: 1.7
+      },
+      anti_monopoly: {
+        id: "anti_monopoly",
+        name: "\u53CD\u5784\u65AD\u65A9",
+        mp: 18,
+        desc: "\u53CD\u5784\u65AD\u6CD5\u653B\u51FB\xD71.8",
+        point: "\u53CD\u5784\u65AD\u6CD5",
+        power: 1.8
+      },
+      partnership_bond: {
+        id: "partnership_bond",
+        name: "\u5408\u4F19\u5951\u7EA6",
+        mp: 20,
+        desc: "\u5408\u4F19\u4F01\u4E1A\u6CD5\u653B\u51FB\xD71.8",
+        point: "\u5408\u4F19\u4F01\u4E1A\u6CD5",
+        power: 1.8
+      },
+      governance_rule: {
+        id: "governance_rule",
+        name: "\u6CBB\u7406\u89C4\u5219",
+        mp: 22,
+        desc: "\u516C\u53F8\u6CBB\u7406\u653B\u51FB\xD72.0",
+        point: "\u516C\u53F8\u6CBB\u7406",
+        power: 2
+      },
+      contract_review: {
+        id: "contract_review",
+        name: "\u5408\u540C\u590D\u6838",
+        mp: 22,
+        desc: "\u5408\u540C\u6CD5\u653B\u51FB\xD72.0",
+        point: "\u5408\u540C\u6CD5",
+        power: 2
+      },
+      risk_control: {
+        id: "risk_control",
+        name: "\u98CE\u9669\u63A7\u5236",
+        mp: 16,
+        desc: "\u98CE\u9669\u7BA1\u7406\u653B\u51FB\xD71.6",
+        point: "\u98CE\u9669\u7BA1\u7406",
+        power: 1.6
+      },
+      risk_type: { id: "risk_type", name: "\u98CE\u9669\u8BC6\u8FA8", mp: 18, desc: "\u98CE\u9669\u7C7B\u578B\u653B\u51FB\xD71.7", point: "\u98CE\u9669\u7C7B\u578B", power: 1.7 },
+      strategy_type: {
+        id: "strategy_type",
+        name: "\u6218\u7565\u7C7B\u578B",
+        mp: 18,
+        desc: "\u516C\u53F8\u6218\u7565\u7C7B\u578B\u653B\u51FB\xD71.8",
+        point: "\u516C\u53F8\u6218\u7565\u7C7B\u578B",
+        power: 1.8
+      },
+      balanced_exec: {
+        id: "balanced_exec",
+        name: "\u5E73\u8861\u6267\u884C",
+        mp: 22,
+        desc: "\u5E73\u8861\u8BA1\u5206\u5361\u653B\u51FB\xD72.0",
+        point: "\u5E73\u8861\u8BA1\u5206\u5361",
+        power: 2
+      },
+      value_chain_combo: {
+        id: "value_chain_combo",
+        name: "\u4EF7\u503C\u94FE\u8FDE\u51FB",
+        mp: 22,
+        desc: "\u4EF7\u503C\u94FE\u653B\u51FB\xD72.0",
+        point: "\u4EF7\u503C\u94FE",
+        power: 2
+      },
+      merger_storm: {
+        id: "merger_storm",
+        name: "\u5E76\u8D2D\u98CE\u66B4",
+        mp: 24,
+        desc: "\u5E76\u8D2D\u6218\u7565\u653B\u51FB\xD72.1",
+        point: "\u5E76\u8D2D\u6218\u7565",
+        power: 2.1
+      }
     };
     const SKILLS = ALL_SKILLS;
     const JOBS = {
-      accountant: { id: "accountant", name: "\u7C3F\u8BB0\u5251\u58EB", subject: "\u4F1A\u8BA1", skills: ["lending_slash", "trial_balance", "subject_switch", "entry_combo", "consolidation", "ledger_guard", "report_verdict"], atk: 2, def: 0, mp: 0, desc: "\u5747\u8861\u7A33\u5B9A\uFF0C\u4F1A\u8BA1\u57FA\u7840" },
-      auditor: { id: "auditor", name: "\u5BA1\u8BA1\u6CD5\u5E08", subject: "\u5BA1\u8BA1", skills: ["audit_adjust", "evidence_check", "control_test", "opinion_judge", "risk_strike", "materiality_judge"], atk: 0, def: 2, mp: 10, desc: "\u8BC1\u636E\u4E0E\u63A7\u5236" },
-      finance: { id: "finance", name: "\u8D22\u7BA1\u6E38\u4FA0", subject: "\u8D22\u7BA1", skills: ["time_value", "capital_cost", "leverage_strike", "budget_blast", "npv_judgment", "duPont_blade"], atk: 2, def: 0, mp: 0, desc: "\u9AD8\u56DE\u62A5\u8BA1\u7B97" },
-      tax: { id: "tax", name: "\u7A0E\u6CD5\u5F13\u624B", subject: "\u7A0E\u6CD5", skills: ["vat_arrow", "cit_storm", "iit_burn", "tax_incentive", "vat_refund", "land_tax_wave"], atk: 1, def: 0, mp: 4, desc: "\u8FDC\u7A0B\u4E0E\u6301\u7EED\u4F24\u5BB3" },
-      law: { id: "law", name: "\u7ECF\u6D4E\u6CD5\u796D\u53F8", subject: "\u7ECF\u6D4E\u6CD5", skills: ["company_law", "contract_guard", "securities_bless", "bankruptcy_cleanse", "board_guard", "bankruptcy_order"], atk: 0, def: 2, mp: 6, desc: "\u62A4\u76FE\u4E0E\u6CBB\u7597" },
-      strategy: { id: "strategy", name: "\u6218\u7565\u53EC\u5524\u5E08", subject: "\u6218\u7565", skills: ["swot_call", "five_force", "value_chain", "m_a_fusion", "bcg_star", "balanced_score"], atk: 0, def: 0, mp: 12, desc: "\u591A\u5355\u4F4D\u4E0E\u5168\u5C40" }
+      accountant: {
+        id: "accountant",
+        name: "\u7C3F\u8BB0\u5251\u58EB",
+        subject: "\u4F1A\u8BA1",
+        skills: [
+          "lending_slash",
+          "trial_balance",
+          "subject_switch",
+          "entry_combo",
+          "consolidation",
+          "ledger_guard",
+          "report_verdict",
+          "cash_flow_slash",
+          "inventory_swing",
+          "fixed_asset_guard",
+          "equity_order",
+          "profit_verdict"
+        ],
+        atk: 2,
+        def: 0,
+        mp: 0,
+        desc: "\u5747\u8861\u7A33\u5B9A\uFF0C\u4F1A\u8BA1\u57FA\u7840"
+      },
+      auditor: {
+        id: "auditor",
+        name: "\u5BA1\u8BA1\u6CD5\u5E08",
+        subject: "\u5BA1\u8BA1",
+        skills: [
+          "audit_adjust",
+          "evidence_check",
+          "control_test",
+          "opinion_judge",
+          "risk_strike",
+          "materiality_judge",
+          "planning_map",
+          "procedure_chain",
+          "sampling_net",
+          "assertion_check",
+          "fraud_radar",
+          "clearance_final"
+        ],
+        atk: 0,
+        def: 2,
+        mp: 10,
+        desc: "\u8BC1\u636E\u4E0E\u63A7\u5236"
+      },
+      finance: {
+        id: "finance",
+        name: "\u8D22\u7BA1\u6E38\u4FA0",
+        subject: "\u8D22\u7BA1",
+        skills: [
+          "time_value",
+          "capital_cost",
+          "leverage_strike",
+          "budget_blast",
+          "npv_judgment",
+          "duPont_blade",
+          "working_capital",
+          "risk_reward",
+          "operating_leverage",
+          "cvp_pierce",
+          "dividend_flow",
+          "analysis_breakthrough"
+        ],
+        atk: 2,
+        def: 0,
+        mp: 0,
+        desc: "\u9AD8\u56DE\u62A5\u8BA1\u7B97"
+      },
+      tax: {
+        id: "tax",
+        name: "\u7A0E\u6CD5\u5F13\u624B",
+        subject: "\u7A0E\u6CD5",
+        skills: [
+          "vat_arrow",
+          "cit_storm",
+          "iit_burn",
+          "tax_incentive",
+          "vat_refund",
+          "land_tax_wave",
+          "consumption_arrow",
+          "invoice_seal",
+          "property_tax_wall",
+          "stamp_ritual",
+          "vehicle_strike",
+          "collection_order"
+        ],
+        atk: 1,
+        def: 0,
+        mp: 4,
+        desc: "\u8FDC\u7A0B\u4E0E\u6301\u7EED\u4F24\u5BB3"
+      },
+      law: {
+        id: "law",
+        name: "\u7ECF\u6D4E\u6CD5\u796D\u53F8",
+        subject: "\u7ECF\u6D4E\u6CD5",
+        skills: [
+          "company_law",
+          "contract_guard",
+          "securities_bless",
+          "bankruptcy_cleanse",
+          "board_guard",
+          "bankruptcy_order",
+          "negotiable_guard",
+          "property_order",
+          "anti_monopoly",
+          "partnership_bond",
+          "governance_rule",
+          "contract_review"
+        ],
+        atk: 0,
+        def: 2,
+        mp: 6,
+        desc: "\u62A4\u76FE\u4E0E\u6CBB\u7597"
+      },
+      strategy: {
+        id: "strategy",
+        name: "\u6218\u7565\u53EC\u5524\u5E08",
+        subject: "\u6218\u7565",
+        skills: [
+          "swot_call",
+          "five_force",
+          "value_chain",
+          "m_a_fusion",
+          "bcg_star",
+          "balanced_score",
+          "risk_control",
+          "risk_type",
+          "strategy_type",
+          "balanced_exec",
+          "value_chain_combo",
+          "merger_storm"
+        ],
+        atk: 0,
+        def: 0,
+        mp: 12,
+        desc: "\u591A\u5355\u4F4D\u4E0E\u5168\u5C40"
+      }
     };
     const MONSTER_SPRITE = {
       paper_crane: "paper_crane",
@@ -4854,15 +6070,64 @@
     const AUDIT_ENTITIES = [
       { id: "audit_gate_back", type: "zone_gate", x: 520, y: 410, label: "\u8FD4\u56DE\u91D1\u7B97\u539F\u91CE", target: "gold_field" },
       { id: "audit_gate_capital", type: "zone_gate", x: 760, y: 400, label: "\u8D44\u672C\u5BC6\u6797\u5165\u53E3", target: "capital_forest" },
-      { id: "audit_npc", type: "npc", x: 430, y: 340, label: "\u5BA1\u8BA1\u7EDF\u9886", text: "\u5BA1\u8BA1\u94C1\u5821\u8D1F\u8D23\u68C0\u9A8C\u8BC1\u636E\u94FE\u3002\u51FB\u8D25\u5E95\u7A3F\u9B54\u50CF\u548C\u51FD\u8BC1\u5E7D\u7075\u540E\uFF0C\u51ED\u8BC1\u5DE8\u50CF\u4F1A\u51FA\u73B0\u3002", name: "\u5BA1\u8BA1\u7EDF\u9886" },
+      {
+        id: "audit_npc",
+        type: "npc",
+        x: 430,
+        y: 340,
+        label: "\u5BA1\u8BA1\u7EDF\u9886",
+        text: "\u5BA1\u8BA1\u94C1\u5821\u8D1F\u8D23\u68C0\u9A8C\u8BC1\u636E\u94FE\u3002\u51FB\u8D25\u5E95\u7A3F\u9B54\u50CF\u548C\u51FD\u8BC1\u5E7D\u7075\u540E\uFF0C\u51ED\u8BC1\u5DE8\u50CF\u4F1A\u51FA\u73B0\u3002",
+        name: "\u5BA1\u8BA1\u7EDF\u9886"
+      },
       { id: "audit_chest", type: "chest", x: 650, y: 300, label: "\u5BA1\u8BA1\u6218\u5229\u7BB1", reward: 60 },
-      { id: "audit_stone", type: "stone", x: 250, y: 300, label: "\u8BC1\u636E\u7891", point: "\u5BA1\u8BA1\u8BC1\u636E", tip: "\u5BA1\u8BA1\u8BC1\u636E\u9700\u8981\u5177\u5907\u5145\u5206\u6027\u548C\u9002\u5F53\u6027\u3002\u5916\u90E8\u72EC\u7ACB\u6765\u6E90\u7684\u4E66\u9762\u8BC1\u636E\u901A\u5E38\u66F4\u53EF\u9760\u3002" },
+      {
+        id: "audit_stone",
+        type: "stone",
+        x: 250,
+        y: 300,
+        label: "\u8BC1\u636E\u7891",
+        point: "\u5BA1\u8BA1\u8BC1\u636E",
+        tip: "\u5BA1\u8BA1\u8BC1\u636E\u9700\u8981\u5177\u5907\u5145\u5206\u6027\u548C\u9002\u5F53\u6027\u3002\u5916\u90E8\u72EC\u7ACB\u6765\u6E90\u7684\u4E66\u9762\u8BC1\u636E\u901A\u5E38\u66F4\u53EF\u9760\u3002"
+      },
       { id: "door_audit_meeting", type: "door", x: 560, y: 360, label: "\u5BA1\u8BA1\u4F1A\u8BAE\u5BA4", target: "audit_meeting" },
       { id: "door_audit_evidence", type: "door", x: 680, y: 360, label: "\u8BC1\u636E\u5E93", target: "audit_evidence" },
       { id: "door_audit_chief", type: "door", x: 480, y: 380, label: "\u5BA1\u8BA1\u957F\u529E\u516C\u5BA4", target: "audit_chief" },
-      { id: "audit_monster_1", type: "monster", x: 680, y: 220, label: "\u5E95\u7A3F\u9B54\u50CF", point: "\u5BA1\u8BA1\u8BC1\u636E", hp: 60, attack: 12, exp: 40, gold: 30 },
-      { id: "audit_monster_2", type: "monster", x: 220, y: 420, label: "\u51FD\u8BC1\u5E7D\u7075", point: "\u51FD\u8BC1", hp: 55, attack: 11, exp: 36, gold: 28 },
-      { id: "audit_boss", type: "boss", x: 120, y: 180, label: "\u51ED\u8BC1\u5DE8\u50CF", point: "\u5BA1\u8BA1\u8BC1\u636E", hp: 130, attack: 15, exp: 90, gold: 60 }
+      {
+        id: "audit_monster_1",
+        type: "monster",
+        x: 680,
+        y: 220,
+        label: "\u5E95\u7A3F\u9B54\u50CF",
+        point: "\u5BA1\u8BA1\u8BC1\u636E",
+        hp: 60,
+        attack: 12,
+        exp: 40,
+        gold: 30
+      },
+      {
+        id: "audit_monster_2",
+        type: "monster",
+        x: 220,
+        y: 420,
+        label: "\u51FD\u8BC1\u5E7D\u7075",
+        point: "\u51FD\u8BC1",
+        hp: 55,
+        attack: 11,
+        exp: 36,
+        gold: 28
+      },
+      {
+        id: "audit_boss",
+        type: "boss",
+        x: 120,
+        y: 180,
+        label: "\u51ED\u8BC1\u5DE8\u50CF",
+        point: "\u5BA1\u8BA1\u8BC1\u636E",
+        hp: 130,
+        attack: 15,
+        exp: 90,
+        gold: 60
+      }
     ];
     const CAPITAL_BUILDING_REGIONS = [
       { y0: 8, y1: 19, x0: 24, x1: 35 },
@@ -4909,15 +6174,71 @@
     const CAPITAL_ENTITIES = [
       { id: "capital_gate_back", type: "zone_gate", x: 520, y: 410, label: "\u8FD4\u56DE\u5BA1\u8BA1\u94C1\u5821", target: "audit_tower" },
       { id: "capital_gate_tax", type: "zone_gate", x: 760, y: 400, label: "\u7A0E\u7387\u8352\u539F\u5165\u53E3", target: "tax_wasteland" },
-      { id: "capital_npc", type: "npc", x: 430, y: 340, label: "\u8D22\u7BA1\u5BFC\u5E08", text: "\u8D44\u672C\u5BC6\u6797\u91CC\u7684\u73B0\u91D1\u6D41\u72FC\u548C\u6760\u6746\u6811\u7CBE\u4F1A\u626D\u66F2\u8D22\u52A1\u5206\u6790\u3002\u8083\u6E05\u5B83\u4EEC\u540E\uFF0C\u4F30\u503C\u6811\u738B\u4F1A\u73B0\u8EAB\u3002", name: "\u8D22\u7BA1\u5BFC\u5E08" },
+      {
+        id: "capital_npc",
+        type: "npc",
+        x: 430,
+        y: 340,
+        label: "\u8D22\u7BA1\u5BFC\u5E08",
+        text: "\u8D44\u672C\u5BC6\u6797\u91CC\u7684\u73B0\u91D1\u6D41\u72FC\u548C\u6760\u6746\u6811\u7CBE\u4F1A\u626D\u66F2\u8D22\u52A1\u5206\u6790\u3002\u8083\u6E05\u5B83\u4EEC\u540E\uFF0C\u4F30\u503C\u6811\u738B\u4F1A\u73B0\u8EAB\u3002",
+        name: "\u8D22\u7BA1\u5BFC\u5E08"
+      },
       { id: "capital_chest", type: "chest", x: 650, y: 300, label: "\u8D44\u672C\u6218\u5229\u7BB1", reward: 70 },
-      { id: "capital_stone", type: "stone", x: 250, y: 300, label: "\u73B0\u91D1\u6D41\u7891", point: "\u73B0\u91D1\u6D41\u91CF", tip: "\u6295\u8D44\u3001\u7ECF\u8425\u548C\u7B79\u8D44\u6D3B\u52A8\u6784\u6210\u73B0\u91D1\u6D41\u91CF\u8868\u3002\u8D44\u672C\u9884\u7B97\u66F4\u5173\u6CE8\u9879\u76EE\u672A\u6765\u7684\u589E\u91CF\u73B0\u91D1\u6D41\u3002" },
+      {
+        id: "capital_stone",
+        type: "stone",
+        x: 250,
+        y: 300,
+        label: "\u73B0\u91D1\u6D41\u7891",
+        point: "\u73B0\u91D1\u6D41\u91CF",
+        tip: "\u6295\u8D44\u3001\u7ECF\u8425\u548C\u7B79\u8D44\u6D3B\u52A8\u6784\u6210\u73B0\u91D1\u6D41\u91CF\u8868\u3002\u8D44\u672C\u9884\u7B97\u66F4\u5173\u6CE8\u9879\u76EE\u672A\u6765\u7684\u589E\u91CF\u73B0\u91D1\u6D41\u3002"
+      },
       { id: "door_capital_cashflow", type: "door", x: 560, y: 360, label: "\u73B0\u91D1\u6D41\u6F14\u7EC3\u573A", target: "capital_cashflow" },
-      { id: "door_capital_structure", type: "door", x: 680, y: 360, label: "\u8D44\u672C\u7ED3\u6784\u5B9E\u9A8C\u5BA4", target: "capital_structure" },
+      {
+        id: "door_capital_structure",
+        type: "door",
+        x: 680,
+        y: 360,
+        label: "\u8D44\u672C\u7ED3\u6784\u5B9E\u9A8C\u5BA4",
+        target: "capital_structure"
+      },
       { id: "door_capital_invest", type: "door", x: 480, y: 380, label: "\u6295\u8D44\u51B3\u7B56\u5BA4", target: "capital_investment" },
-      { id: "capital_monster_1", type: "monster", x: 680, y: 220, label: "\u73B0\u91D1\u6D41\u72FC", point: "\u73B0\u91D1\u6D41\u91CF", hp: 62, attack: 13, exp: 44, gold: 34 },
-      { id: "capital_monster_2", type: "monster", x: 220, y: 420, label: "\u6760\u6746\u6811\u7CBE", point: "\u8D22\u52A1\u6760\u6746", hp: 58, attack: 12, exp: 40, gold: 32 },
-      { id: "capital_boss", type: "boss", x: 120, y: 180, label: "\u4F30\u503C\u6811\u738B", point: "\u8D44\u672C\u9884\u7B97", hp: 140, attack: 16, exp: 100, gold: 70 }
+      {
+        id: "capital_monster_1",
+        type: "monster",
+        x: 680,
+        y: 220,
+        label: "\u73B0\u91D1\u6D41\u72FC",
+        point: "\u73B0\u91D1\u6D41\u91CF",
+        hp: 62,
+        attack: 13,
+        exp: 44,
+        gold: 34
+      },
+      {
+        id: "capital_monster_2",
+        type: "monster",
+        x: 220,
+        y: 420,
+        label: "\u6760\u6746\u6811\u7CBE",
+        point: "\u8D22\u52A1\u6760\u6746",
+        hp: 58,
+        attack: 12,
+        exp: 40,
+        gold: 32
+      },
+      {
+        id: "capital_boss",
+        type: "boss",
+        x: 120,
+        y: 180,
+        label: "\u4F30\u503C\u6811\u738B",
+        point: "\u8D44\u672C\u9884\u7B97",
+        hp: 140,
+        attack: 16,
+        exp: 100,
+        gold: 70
+      }
     ];
     const TAX_BUILDING_REGIONS = [
       { y0: 8, y1: 19, x0: 24, x1: 35 },
@@ -4964,15 +6285,64 @@
     const TAX_ENTITIES = [
       { id: "tax_gate_back", type: "zone_gate", x: 520, y: 410, label: "\u8FD4\u56DE\u8D44\u672C\u5BC6\u6797", target: "capital_forest" },
       { id: "tax_gate_law", type: "zone_gate", x: 760, y: 400, label: "\u6CD5\u6761\u795E\u6BBF\u5165\u53E3", target: "law_temple" },
-      { id: "tax_npc", type: "npc", x: 430, y: 340, label: "\u7A0E\u52A1\u5B98", text: "\u7A0E\u7387\u8352\u539F\u7684\u53D1\u7968\u9B54\u50CF\u548C\u903E\u671F\u7A0E\u517D\u4F1A\u6270\u4E71\u7EB3\u7A0E\u7533\u62A5\u3002\u8083\u6E05\u5B83\u4EEC\u540E\uFF0C\u7A0E\u7AE0\u5DE8\u50CF\u4F1A\u51FA\u73B0\u3002", name: "\u7A0E\u52A1\u5B98" },
+      {
+        id: "tax_npc",
+        type: "npc",
+        x: 430,
+        y: 340,
+        label: "\u7A0E\u52A1\u5B98",
+        text: "\u7A0E\u7387\u8352\u539F\u7684\u53D1\u7968\u9B54\u50CF\u548C\u903E\u671F\u7A0E\u517D\u4F1A\u6270\u4E71\u7EB3\u7A0E\u7533\u62A5\u3002\u8083\u6E05\u5B83\u4EEC\u540E\uFF0C\u7A0E\u7AE0\u5DE8\u50CF\u4F1A\u51FA\u73B0\u3002",
+        name: "\u7A0E\u52A1\u5B98"
+      },
       { id: "tax_chest", type: "chest", x: 650, y: 300, label: "\u7A0E\u6536\u6218\u5229\u7BB1", reward: 80 },
-      { id: "tax_stone", type: "stone", x: 250, y: 300, label: "\u53D1\u7968\u7891", point: "\u53D1\u7968\u7BA1\u7406", tip: "\u589E\u503C\u7A0E\u4E13\u7528\u53D1\u7968\u662F\u5408\u6CD5\u62B5\u6263\u8FDB\u9879\u7A0E\u989D\u7684\u91CD\u8981\u51ED\u8BC1\uFF0C\u53D1\u7968\u7BA1\u7406\u76F4\u63A5\u5F71\u54CD\u7A0E\u52A1\u5904\u7406\u3002" },
+      {
+        id: "tax_stone",
+        type: "stone",
+        x: 250,
+        y: 300,
+        label: "\u53D1\u7968\u7891",
+        point: "\u53D1\u7968\u7BA1\u7406",
+        tip: "\u589E\u503C\u7A0E\u4E13\u7528\u53D1\u7968\u662F\u5408\u6CD5\u62B5\u6263\u8FDB\u9879\u7A0E\u989D\u7684\u91CD\u8981\u51ED\u8BC1\uFF0C\u53D1\u7968\u7BA1\u7406\u76F4\u63A5\u5F71\u54CD\u7A0E\u52A1\u5904\u7406\u3002"
+      },
       { id: "door_tax_vat", type: "door", x: 560, y: 360, label: "\u589E\u503C\u7A0E\u6F14\u7EC3\u573A", target: "tax_vat" },
       { id: "door_tax_cit", type: "door", x: 680, y: 360, label: "\u4F01\u4E1A\u6240\u5F97\u7A0E\u7533\u62A5\u5385", target: "tax_cit" },
       { id: "door_tax_incentive", type: "door", x: 480, y: 380, label: "\u7A0E\u6536\u4F18\u60E0\u5BA4", target: "tax_incentive" },
-      { id: "tax_monster_1", type: "monster", x: 680, y: 220, label: "\u53D1\u7968\u9B54\u50CF", point: "\u53D1\u7968\u7BA1\u7406", hp: 64, attack: 14, exp: 48, gold: 36 },
-      { id: "tax_monster_2", type: "monster", x: 220, y: 420, label: "\u903E\u671F\u7A0E\u517D", point: "\u7A0E\u6536\u5F81\u7BA1", hp: 60, attack: 13, exp: 44, gold: 34 },
-      { id: "tax_boss", type: "boss", x: 120, y: 180, label: "\u7A0E\u7AE0\u5DE8\u50CF", point: "\u4F01\u4E1A\u6240\u5F97\u7A0E", hp: 150, attack: 17, exp: 110, gold: 80 }
+      {
+        id: "tax_monster_1",
+        type: "monster",
+        x: 680,
+        y: 220,
+        label: "\u53D1\u7968\u9B54\u50CF",
+        point: "\u53D1\u7968\u7BA1\u7406",
+        hp: 64,
+        attack: 14,
+        exp: 48,
+        gold: 36
+      },
+      {
+        id: "tax_monster_2",
+        type: "monster",
+        x: 220,
+        y: 420,
+        label: "\u903E\u671F\u7A0E\u517D",
+        point: "\u7A0E\u6536\u5F81\u7BA1",
+        hp: 60,
+        attack: 13,
+        exp: 44,
+        gold: 34
+      },
+      {
+        id: "tax_boss",
+        type: "boss",
+        x: 120,
+        y: 180,
+        label: "\u7A0E\u7AE0\u5DE8\u50CF",
+        point: "\u4F01\u4E1A\u6240\u5F97\u7A0E",
+        hp: 150,
+        attack: 17,
+        exp: 110,
+        gold: 80
+      }
     ];
     const LAW_BUILDING_REGIONS = [
       { y0: 8, y1: 19, x0: 24, x1: 35 },
@@ -5019,15 +6389,64 @@
     const LAW_ENTITIES = [
       { id: "law_gate_back", type: "zone_gate", x: 520, y: 410, label: "\u8FD4\u56DE\u7A0E\u7387\u8352\u539F", target: "tax_wasteland" },
       { id: "law_gate_strategy", type: "zone_gate", x: 760, y: 400, label: "\u6218\u7565\u661F\u5854\u5165\u53E3", target: "strategy_star" },
-      { id: "law_npc", type: "npc", x: 430, y: 340, label: "\u6CD5\u52A1\u5B98", text: "\u6CD5\u6761\u795E\u6BBF\u7684\u5408\u540C\u9B54\u50CF\u548C\u7834\u4EA7\u5E7D\u7075\u4F1A\u626D\u66F2\u6CD5\u5F8B\u6761\u6587\u3002\u8083\u6E05\u5B83\u4EEC\u540E\uFF0C\u6CD5\u69CC\u88C1\u51B3\u8005\u4F1A\u73B0\u8EAB\u3002", name: "\u6CD5\u52A1\u5B98" },
+      {
+        id: "law_npc",
+        type: "npc",
+        x: 430,
+        y: 340,
+        label: "\u6CD5\u52A1\u5B98",
+        text: "\u6CD5\u6761\u795E\u6BBF\u7684\u5408\u540C\u9B54\u50CF\u548C\u7834\u4EA7\u5E7D\u7075\u4F1A\u626D\u66F2\u6CD5\u5F8B\u6761\u6587\u3002\u8083\u6E05\u5B83\u4EEC\u540E\uFF0C\u6CD5\u69CC\u88C1\u51B3\u8005\u4F1A\u73B0\u8EAB\u3002",
+        name: "\u6CD5\u52A1\u5B98"
+      },
       { id: "law_chest", type: "chest", x: 650, y: 300, label: "\u6CD5\u6761\u6218\u5229\u7BB1", reward: 90 },
-      { id: "law_stone", type: "stone", x: 250, y: 300, label: "\u5408\u540C\u6CD5\u7891", point: "\u5408\u540C\u6CD5", tip: "\u5408\u540C\u901A\u5E38\u7ECF\u8981\u7EA6\u548C\u627F\u8BFA\u4E24\u4E2A\u9636\u6BB5\u6210\u7ACB\u3002\u5408\u540C\u5185\u5BB9\u8FDD\u53CD\u5F3A\u5236\u6027\u89C4\u5B9A\u7684\uFF0C\u53EF\u80FD\u65E0\u6548\u3002" },
+      {
+        id: "law_stone",
+        type: "stone",
+        x: 250,
+        y: 300,
+        label: "\u5408\u540C\u6CD5\u7891",
+        point: "\u5408\u540C\u6CD5",
+        tip: "\u5408\u540C\u901A\u5E38\u7ECF\u8981\u7EA6\u548C\u627F\u8BFA\u4E24\u4E2A\u9636\u6BB5\u6210\u7ACB\u3002\u5408\u540C\u5185\u5BB9\u8FDD\u53CD\u5F3A\u5236\u6027\u89C4\u5B9A\u7684\uFF0C\u53EF\u80FD\u65E0\u6548\u3002"
+      },
       { id: "door_law_contract", type: "door", x: 560, y: 360, label: "\u5408\u540C\u5BA1\u67E5\u5385", target: "law_contract" },
       { id: "door_law_securities", type: "door", x: 680, y: 360, label: "\u8BC1\u5238\u6CD5\u8BB2\u5802", target: "law_securities" },
       { id: "door_law_bankruptcy", type: "door", x: 480, y: 380, label: "\u7834\u4EA7\u6CD5\u5EAD", target: "law_bankruptcy" },
-      { id: "law_monster_1", type: "monster", x: 680, y: 220, label: "\u5408\u540C\u9B54\u50CF", point: "\u5408\u540C\u6CD5", hp: 66, attack: 15, exp: 52, gold: 38 },
-      { id: "law_monster_2", type: "monster", x: 220, y: 420, label: "\u7834\u4EA7\u5E7D\u7075", point: "\u7834\u4EA7\u6CD5", hp: 62, attack: 14, exp: 48, gold: 36 },
-      { id: "law_boss", type: "boss", x: 120, y: 180, label: "\u6CD5\u69CC\u88C1\u51B3\u8005", point: "\u8BC1\u5238\u6CD5", hp: 160, attack: 18, exp: 120, gold: 90 }
+      {
+        id: "law_monster_1",
+        type: "monster",
+        x: 680,
+        y: 220,
+        label: "\u5408\u540C\u9B54\u50CF",
+        point: "\u5408\u540C\u6CD5",
+        hp: 66,
+        attack: 15,
+        exp: 52,
+        gold: 38
+      },
+      {
+        id: "law_monster_2",
+        type: "monster",
+        x: 220,
+        y: 420,
+        label: "\u7834\u4EA7\u5E7D\u7075",
+        point: "\u7834\u4EA7\u6CD5",
+        hp: 62,
+        attack: 14,
+        exp: 48,
+        gold: 36
+      },
+      {
+        id: "law_boss",
+        type: "boss",
+        x: 120,
+        y: 180,
+        label: "\u6CD5\u69CC\u88C1\u51B3\u8005",
+        point: "\u8BC1\u5238\u6CD5",
+        hp: 160,
+        attack: 18,
+        exp: 120,
+        gold: 90
+      }
     ];
     const STRATEGY_BUILDING_REGIONS = [
       { y0: 8, y1: 19, x0: 24, x1: 35 },
@@ -5073,16 +6492,76 @@
     const strategyMapGrid = buildStrategyMapGrid();
     const STRATEGY_ENTITIES = [
       { id: "strategy_gate_back", type: "zone_gate", x: 520, y: 410, label: "\u8FD4\u56DE\u6CD5\u6761\u795E\u6BBF", target: "law_temple" },
-      { id: "strategy_npc", type: "npc", x: 430, y: 340, label: "\u6218\u7565\u5B98", text: "\u6218\u7565\u661F\u5854\u7684\u8FF7\u96FE\u517D\u548C\u5E76\u8D2D\u5DE8\u50CF\u4F1A\u6270\u4E71\u51B3\u7B56\u3002\u8083\u6E05\u5B83\u4EEC\u540E\uFF0C\u5E76\u8D2D\u9738\u4E3B\u4F1A\u6321\u4F4F\u901A\u5F80\u6700\u7EC8\u8BD5\u70BC\u7684\u8DEF\u3002", name: "\u6218\u7565\u5B98" },
+      {
+        id: "strategy_npc",
+        type: "npc",
+        x: 430,
+        y: 340,
+        label: "\u6218\u7565\u5B98",
+        text: "\u6218\u7565\u661F\u5854\u7684\u8FF7\u96FE\u517D\u548C\u5E76\u8D2D\u5DE8\u50CF\u4F1A\u6270\u4E71\u51B3\u7B56\u3002\u8083\u6E05\u5B83\u4EEC\u540E\uFF0C\u5E76\u8D2D\u9738\u4E3B\u4F1A\u6321\u4F4F\u901A\u5F80\u6700\u7EC8\u8BD5\u70BC\u7684\u8DEF\u3002",
+        name: "\u6218\u7565\u5B98"
+      },
       { id: "strategy_chest", type: "chest", x: 650, y: 300, label: "\u6218\u7565\u6218\u5229\u7BB1", reward: 100 },
-      { id: "strategy_stone", type: "stone", x: 250, y: 300, label: "SWOT\u7891", point: "SWOT", tip: "SWOT \u5206\u6790\u7ED3\u5408\u4F18\u52BF\u3001\u52A3\u52BF\u3001\u673A\u4F1A\u548C\u5A01\u80C1\uFF0C\u662F\u5236\u5B9A\u6218\u7565\u7684\u57FA\u7840\u5DE5\u5177\u3002" },
+      {
+        id: "strategy_stone",
+        type: "stone",
+        x: 250,
+        y: 300,
+        label: "SWOT\u7891",
+        point: "SWOT",
+        tip: "SWOT \u5206\u6790\u7ED3\u5408\u4F18\u52BF\u3001\u52A3\u52BF\u3001\u673A\u4F1A\u548C\u5A01\u80C1\uFF0C\u662F\u5236\u5B9A\u6218\u7565\u7684\u57FA\u7840\u5DE5\u5177\u3002"
+      },
       { id: "door_strategy_sandbox", type: "door", x: 560, y: 360, label: "\u6218\u7565\u6C99\u76D8\u5385", target: "strategy_sandbox" },
       { id: "door_strategy_five", type: "door", x: 680, y: 360, label: "\u4E94\u529B\u51B3\u7B56\u5BA4", target: "strategy_five" },
       { id: "door_strategy_ma", type: "door", x: 480, y: 380, label: "\u5E76\u8D2D\u5B9E\u9A8C\u5BA4", target: "strategy_ma" },
-      { id: "strategy_monster_1", type: "monster", x: 680, y: 220, label: "\u6218\u7565\u8FF7\u96FE\u517D", point: "SWOT", hp: 68, attack: 16, exp: 56, gold: 40 },
-      { id: "strategy_monster_2", type: "monster", x: 220, y: 420, label: "\u5E76\u8D2D\u5DE8\u50CF", point: "\u5E76\u8D2D\u6218\u7565", hp: 64, attack: 15, exp: 52, gold: 38 },
-      { id: "strategy_boss", type: "boss", x: 120, y: 180, label: "\u5E76\u8D2D\u9738\u4E3B", point: "\u5E76\u8D2D\u6218\u7565", hp: 170, attack: 19, exp: 130, gold: 100 },
-      { id: "final_boss", type: "boss", x: 480, y: 220, label: "\u516D\u57DF\u5931\u8861\u4E4B\u4E3B", point: "\u516D\u57DF\u5E73\u8861", hp: 260, attack: 20, exp: 300, gold: 200 }
+      {
+        id: "strategy_monster_1",
+        type: "monster",
+        x: 680,
+        y: 220,
+        label: "\u6218\u7565\u8FF7\u96FE\u517D",
+        point: "SWOT",
+        hp: 68,
+        attack: 16,
+        exp: 56,
+        gold: 40
+      },
+      {
+        id: "strategy_monster_2",
+        type: "monster",
+        x: 220,
+        y: 420,
+        label: "\u5E76\u8D2D\u5DE8\u50CF",
+        point: "\u5E76\u8D2D\u6218\u7565",
+        hp: 64,
+        attack: 15,
+        exp: 52,
+        gold: 38
+      },
+      {
+        id: "strategy_boss",
+        type: "boss",
+        x: 120,
+        y: 180,
+        label: "\u5E76\u8D2D\u9738\u4E3B",
+        point: "\u5E76\u8D2D\u6218\u7565",
+        hp: 170,
+        attack: 19,
+        exp: 130,
+        gold: 100
+      },
+      {
+        id: "final_boss",
+        type: "boss",
+        x: 480,
+        y: 220,
+        label: "\u516D\u57DF\u5931\u8861\u4E4B\u4E3B",
+        point: "\u516D\u57DF\u5E73\u8861",
+        hp: 260,
+        attack: 20,
+        exp: 300,
+        gold: 200
+      }
     ];
     function tileAt(tx, ty) {
       if (tx < 0 || ty < 0 || tx >= MAP_W || ty >= MAP_H) return 3;
@@ -5248,7 +6727,10 @@
     function inferQuestionDifficulty(q) {
       const text = String(q.point) + String(q.q);
       if (/合并报表|每股收益|企业价值|土地增值税|破产|证券|并购|平衡计分卡|波士顿/.test(text)) return "expert";
-      if (/凭证|账簿|会计等式|借贷方向|科目分类|试算平衡|审计目标|审计证据|货币时间价值|风险与报酬|增值税|公司法|合同法|票据法|SWOT|五力|价值链/.test(text)) return "basic";
+      if (/凭证|账簿|会计等式|借贷方向|科目分类|试算平衡|审计目标|审计证据|货币时间价值|风险与报酬|增值税|公司法|合同法|票据法|SWOT|五力|价值链/.test(
+        text
+      ))
+        return "basic";
       return "advanced";
     }
     function ensureQuestionMetadata() {
@@ -5386,9 +6868,11 @@
         dust: "assets/effects/dust.png"
       };
       for (const [key, src] of Object.entries(coreFiles)) {
-        tasks.push(loadImage(src).then((img) => () => {
-          assets[key] = img;
-        }));
+        tasks.push(
+          loadImage(src).then((img) => () => {
+            assets[key] = img;
+          })
+        );
       }
       const themeTilesets = {
         audit_tower: "assets/tiles/formal_audit.png",
@@ -5398,9 +6882,11 @@
         strategy_star: "assets/tiles/formal_strategy.png"
       };
       for (const [zone, src] of Object.entries(themeTilesets)) {
-        tasks.push(loadImage(src).then((img) => () => {
-          assets.formalTilesets[zone] = img;
-        }));
+        tasks.push(
+          loadImage(src).then((img) => () => {
+            assets.formalTilesets[zone] = img;
+          })
+        );
       }
       const battleBgs = {
         gold_field: "assets/battle_bg/gold_field.png",
@@ -5410,9 +6896,11 @@
         town_court: "assets/battle_bg/town_court.png"
       };
       for (const [key, src] of Object.entries(battleBgs)) {
-        tasks.push(loadImage(src).then((img) => () => {
-          assets.battleBgs[key] = img;
-        }));
+        tasks.push(
+          loadImage(src).then((img) => () => {
+            assets.battleBgs[key] = img;
+          })
+        );
       }
       const propFiles = {
         chest: "chest.png",
@@ -5424,20 +6912,26 @@
         torch: "torch.png"
       };
       for (const [key, file] of Object.entries(propFiles)) {
-        tasks.push(loadImage("assets/props/" + file).then((img) => () => {
-          assets.props[key] = img;
-        }));
+        tasks.push(
+          loadImage("assets/props/" + file).then((img) => () => {
+            assets.props[key] = img;
+          })
+        );
       }
       for (const jobId of Object.keys(JOBS)) {
-        tasks.push(loadImage("assets/characters/player_" + jobId + ".png").then((img) => () => {
-          assets.playerSheets[jobId] = img;
-        }));
+        tasks.push(
+          loadImage("assets/characters/player_" + jobId + ".png").then((img) => () => {
+            assets.playerSheets[jobId] = img;
+          })
+        );
       }
       for (const monsterId of Object.keys(MONSTER_SPRITE)) {
         const monsterAssetId = MONSTER_SPRITE[monsterId] || monsterId;
-        tasks.push(loadImage("assets/monsters/monster_" + monsterAssetId + ".png").then((img) => () => {
-          assets.monsterSheets[monsterId] = img;
-        }));
+        tasks.push(
+          loadImage("assets/monsters/monster_" + monsterAssetId + ".png").then((img) => () => {
+            assets.monsterSheets[monsterId] = img;
+          })
+        );
       }
       const setters = await Promise.all(tasks);
       setters.forEach((fn) => fn());
@@ -5829,7 +7323,8 @@
         strategy_star: "\u6218\u7565\u661F\u5854"
       };
       const subEl = document.querySelector(".hero-sub");
-      if (subEl) subEl.textContent = state.room ? ((_a = ROOMS[state.room]) == null ? void 0 : _a.name) || "\u5BA4\u5185\u573A\u666F" : zoneNames[state.zone] || state.zone;
+      if (subEl)
+        subEl.textContent = state.room ? ((_a = ROOMS[state.room]) == null ? void 0 : _a.name) || "\u5BA4\u5185\u573A\u666F" : zoneNames[state.zone] || state.zone;
       updateMinimap();
     }
     function updateMinimap() {
@@ -5842,7 +7337,11 @@
           if (e.type === "monster" && (state.monstersKilledIds || []).includes(e.id)) return false;
           if (e.type === "boss" && (!isBossUnlocked(e) || isBossDefeated(e))) return false;
           return true;
-        }).map((e) => ({ x: e.x, y: e.y, c: e.type === "boss" ? "#c43d2e" : e.type === "monster" ? "#b23b2b" : e.type === "npc" ? "#3f8ec4" : "#f2d175" })),
+        }).map((e) => ({
+          x: e.x,
+          y: e.y,
+          c: e.type === "boss" ? "#c43d2e" : e.type === "monster" ? "#b23b2b" : e.type === "npc" ? "#3f8ec4" : "#f2d175"
+        })),
         { x: state.player.x, y: state.player.y, c: "#ffffff" }
       ];
       marks.forEach((m) => {
@@ -6201,7 +7700,15 @@
       }
       if (assets.playerSword && assets.playerSword._box) {
         const frame = animFrame(assets.playerSword, 10);
-        drawTintedFrame(assets.playerSword, 120 + playerDx, 300, 160, 160, frame, JOB_TINT[state.jobs.current] || JOB_TINT.accountant);
+        drawTintedFrame(
+          assets.playerSword,
+          120 + playerDx,
+          300,
+          160,
+          160,
+          frame,
+          JOB_TINT[state.jobs.current] || JOB_TINT.accountant
+        );
       } else {
         const playerSheet = assets.playerSheets[state.jobs.current] || assets.playerSheets.accountant;
         if (playerSheet) {
@@ -6504,7 +8011,14 @@
         activateRegionTasks(target);
         save();
         updateHUD();
-        const names = { audit_tower: "\u5BA1\u8BA1\u94C1\u5821", capital_forest: "\u8D44\u672C\u5BC6\u6797", tax_wasteland: "\u7A0E\u7387\u8352\u539F", law_temple: "\u6CD5\u6761\u795E\u6BBF", strategy_star: "\u6218\u7565\u661F\u5854", gold_field: "\u91D1\u7B97\u539F\u91CE" };
+        const names = {
+          audit_tower: "\u5BA1\u8BA1\u94C1\u5821",
+          capital_forest: "\u8D44\u672C\u5BC6\u6797",
+          tax_wasteland: "\u7A0E\u7387\u8352\u539F",
+          law_temple: "\u6CD5\u6761\u795E\u6BBF",
+          strategy_star: "\u6218\u7565\u661F\u5854",
+          gold_field: "\u91D1\u7B97\u539F\u91CE"
+        };
         playZoneBgm(target);
         showToast("\u8FDB\u5165" + (names[target] || target));
       });
@@ -7211,17 +8725,17 @@
       updateHUD();
     }
     const ACTION_HANDLERS = {
-      "start": (dataset) => startGame(),
-      "continue": (dataset) => continueGame(),
-      "about": (dataset) => openAbout(),
-      "ending": (dataset) => showEnding(),
+      start: (dataset) => startGame(),
+      continue: (dataset) => continueGame(),
+      about: (dataset) => openAbout(),
+      ending: (dataset) => showEnding(),
       "check-update": (dataset) => checkForUpdates(),
       "install-pwa": (dataset) => installPwa(),
-      "close": (dataset) => {
+      close: (dataset) => {
         closeModal();
         if (state.screen === "battle") openBattleModal();
       },
-      "learn": (dataset) => {
+      learn: (dataset) => {
         showToast("\u63D0\u793A\uFF1A\u8D44\u4EA7 = \u8D1F\u503A + \u6240\u6709\u8005\u6743\u76CA");
         closeModal();
       },
@@ -7245,7 +8759,7 @@
       "use-item": (dataset) => {
         useItem(dataset.item);
       },
-      "shop": (dataset) => {
+      shop: (dataset) => {
         openShop();
       },
       "shop-buy": (dataset) => {
@@ -7299,10 +8813,10 @@
       "quiz-continue": (dataset) => {
         continueQuiz();
       },
-      "book": (dataset) => {
+      book: (dataset) => {
         openBook();
       },
-      "menu": (dataset) => {
+      menu: (dataset) => {
         openModal(`
         <div class="modal-box">
           <div class="modal-title">\u83DC\u5355</div>
@@ -7330,31 +8844,31 @@
         </div>
       `);
       },
-      "report": (dataset) => {
+      report: (dataset) => {
         openReport();
       },
-      "tasks": (dataset) => {
+      tasks: (dataset) => {
         openTasks();
       },
-      "equip": (dataset) => {
+      equip: (dataset) => {
         openEquip();
       },
       "skill-tree": (dataset) => {
         openSkillTree();
       },
-      "craft": (dataset) => {
+      craft: (dataset) => {
         openCraft();
       },
       "craft-item": (dataset) => {
         craftItem(dataset.item);
       },
-      "enhance": (dataset) => {
+      enhance: (dataset) => {
         openEnhance();
       },
       "enhance-item": (dataset) => {
         enhanceItem(dataset.slot);
       },
-      "achievements": (dataset) => {
+      achievements: (dataset) => {
         openAchievements();
       },
       "world-map": (dataset) => {
@@ -7363,10 +8877,10 @@
       "world-zone": (dataset) => {
         changeZone(dataset.zone);
       },
-      "partner": (dataset) => {
+      partner: (dataset) => {
         openPartner();
       },
-      "title": (dataset) => {
+      title: (dataset) => {
         save();
         showTitle();
       },
@@ -7459,19 +8973,19 @@
         sfx("click");
         openSettings();
       },
-      "settings": (dataset) => {
+      settings: (dataset) => {
         openSettings();
       },
       "settings-back": (dataset) => {
         openSettings();
       },
-      "challenge": (dataset) => {
+      challenge: (dataset) => {
         openChallengeSetup();
       },
       "challenge-start": (dataset) => {
         startChallenge(dataset.mode);
       },
-      "plan": (dataset) => {
+      plan: (dataset) => {
         openPlan();
       },
       "point-map": (dataset) => {
@@ -7538,7 +9052,7 @@
           openQuiz(q);
         }
       },
-      "tutorial": (dataset) => {
+      tutorial: (dataset) => {
         openTutorial();
       },
       "story-next": (dataset) => {
@@ -7599,7 +9113,7 @@
           showToast("\u5BFC\u5165\u5931\u8D25\uFF1A\u5B58\u6863\u683C\u5F0F\u4E0D\u6B63\u786E");
         }
       },
-      "reset": (dataset) => {
+      reset: (dataset) => {
         resetSave();
         showTitle();
       }
@@ -7654,7 +9168,8 @@
       const dt = Math.min(0.05, (t - lastTime) / 1e3 || 0.016);
       lastTime = t;
       if (state.screen === "map") updateMap(dt);
-      if (state.screen === "map" || state.screen === "battle") state.week.playSeconds = (state.week.playSeconds || 0) + dt;
+      if (state.screen === "map" || state.screen === "battle")
+        state.week.playSeconds = (state.week.playSeconds || 0) + dt;
       render();
       requestAnimationFrame(loop);
     }
