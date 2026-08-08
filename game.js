@@ -2206,6 +2206,243 @@
     return { openModal, closeModal, showToast, openSettings, showTitle };
   }
 
+  // src/render/learningUi.js
+  function createLearningUi(deps) {
+    const {
+      getState,
+      openModal,
+      QUESTIONS: QUESTIONS2,
+      POINTS: POINTS2,
+      ACHIEVEMENTS: ACHIEVEMENTS2,
+      formatDuration: formatDuration2,
+      isSystemUnlocked,
+      systemLockTip,
+      showToast,
+      getCurrentJob,
+      getLevelTitle,
+      MAIN_STEP_LABELS,
+      menuButton
+    } = deps;
+    function openBook() {
+      const state = getState();
+      if (!isSystemUnlocked("book")) {
+        showToast(systemLockTip("book", "\u9519\u9898\u672C") + " \u89E3\u9501");
+        return;
+      }
+      const wrong = state.wrongQuestions.map((id) => QUESTIONS2.find((q) => q.id === id)).filter(Boolean);
+      const masteredIds = Object.entries(state.reviewMap || {}).filter(([id, rec]) => rec.mastered && !state.wrongQuestions.includes(Number(id))).map(([id]) => Number(id));
+      const mastered = masteredIds.map((id) => QUESTIONS2.find((q) => q.id === id)).filter(Boolean);
+      if (!wrong.length && !mastered.length) {
+        openModal(`
+        <div class="modal-box">
+          <div class="modal-title">\u9519\u9898\u672C \xB7 \u5DF2\u6E05\u96F6</div>
+          <div class="modal-text">\u5F53\u524D\u6CA1\u6709\u5F85\u590D\u4E60\u9519\u9898\u3002\u7EE7\u7EED\u4FDD\u6301\u5B66\u4E60\u8282\u594F\uFF0C\u628A\u6BCF\u6B21\u7B54\u9519\u90FD\u53D8\u6210\u638C\u63E1\u70B9\u3002</div>
+          <div class="modal-actions">
+            <button class="pixel-btn" data-action="challenge-start" data-mode="mock">\u6A21\u62DF\u8003 5 \u9898</button>
+            <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">\u667A\u80FD\u590D\u4E60</button>
+            <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
+          </div>
+        </div>
+      `);
+        return;
+      }
+      const columns = [
+        {
+          title: "\u672A\u638C\u63E1",
+          items: wrong.filter((q) => {
+            const rec = state.reviewMap[q.id];
+            return !rec || rec.count < 1;
+          })
+        },
+        {
+          title: "\u6A21\u7CCA",
+          items: wrong.filter((q) => {
+            const rec = state.reviewMap[q.id];
+            return rec && rec.count >= 1 && !rec.mastered;
+          })
+        },
+        { title: "\u5DF2\u638C\u63E1", items: mastered }
+      ];
+      const renderBookItems = (items, locked) => items.length ? items.map((q) => {
+        const rec = state.reviewMap[q.id] || { count: 0 };
+        return `
+            <div class="book-card">
+              <div><span class="book-point">${q.point}</span><span class="book-status">${locked ? "\u5DF2\u638C\u63E1" : `\u590D\u4E60 ${rec.count} \u6B21`}</span></div>
+              <div style="margin:6px 0;font-weight:900;">${q.q}</div>
+              <div class="caption">${q.explain}</div>
+              ${locked ? "" : `<div class="modal-actions"><button class="pixel-btn small" data-action="review-question" data-id="${q.id}">\u590D\u4E60\u672C\u9898</button></div>`}
+            </div>
+          `;
+      }).join("") : `<div class="book-card caption">\u6682\u65E0</div>`;
+      const columnsHtml = columns.map((col) => `
+        <div class="book-column">
+          <div class="book-column-title">${col.title} \xB7 ${col.items.length}</div>
+          ${renderBookItems(col.items, col.title === "\u5DF2\u638C\u63E1")}
+        </div>
+      `).join("");
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u9519\u9898\u672C \xB7 ${wrong.length} \u9053</div>
+        <div class="modal-text">\u6309\u590D\u4E60\u72B6\u6001\u5206\u4E3A\u672A\u638C\u63E1\u3001\u6A21\u7CCA\u548C\u5DF2\u638C\u63E1\uFF0C\u4FBF\u4E8E\u9488\u5BF9\u6027\u590D\u4E60\u3002</div>
+        <div class="book-columns">${columnsHtml}</div>
+        <div class="modal-actions">
+          <button class="pixel-btn" data-action="challenge-start" data-mode="wrong">\u9519\u9898\u4E13\u7EC3</button>
+          <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">\u667A\u80FD\u590D\u4E60</button>
+          <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
+        </div>
+      </div>
+    `);
+    }
+    function openReport() {
+      const state = getState();
+      const p = state.player;
+      const acc = state.answered ? Math.round(state.correct / state.answered * 100) : 0;
+      const taskDone = state.tasks.filter((t) => t.done).length;
+      const coverage = Math.round(Object.keys(state.pointProgress).length / POINTS2.length * 100);
+      const pointAccuracy = (point) => {
+        const total = state.pointProgress[point] || 0;
+        if (!total) return 100;
+        return Math.round((state.pointCorrect[point] || 0) / total * 100);
+      };
+      const weakPoints = POINTS2.filter((p2) => (state.pointProgress[p2] || 0) > 0).sort((a, b) => pointAccuracy(a) - pointAccuracy(b)).slice(0, 5);
+      const weakCards = weakPoints.length ? weakPoints.map((point) => {
+        const value = pointAccuracy(point);
+        return `
+            <div class="report-card">
+              <div style="font-weight:900;">${point}</div>
+              <div class="report-bar"><div style="width:${value}%"></div></div>
+              <div class="caption">${value}%</div>
+            </div>
+          `;
+      }).join("") : `<div class="report-card"><div class="num">\u2014</div><div>\u6682\u65E0\u8584\u5F31\u70B9</div></div>`;
+      const historyCards = state.examHistory.length ? state.examHistory.slice(-3).map((h) => `<div class="report-card"><div class="num">${h.acc}%</div><div>${h.date} \xB7 ${h.correct}/${h.total}</div></div>`).join("") : `<div class="report-card"><div class="num">\u2014</div><div>\u6682\u65E0\u590D\u4E60\u6311\u6218</div></div>`;
+      const clearedZones = [state.auditCleared, state.capitalCleared, state.taxCleared, state.lawCleared, state.strategyCleared].filter(Boolean).length;
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u5B66\u4E60\u62A5\u544A \xB7 ${getCurrentJob().name}</div>
+        <div class="modal-text">
+          \u516D\u57DF\u4E3B\u7EBF\uFF1A${MAIN_STEP_LABELS[state.mainStep] || (state.gameCompleted ? "\u5DF2\u901A\u5173" : "\u91D1\u7B97\u539F\u91CE\u4E3B\u7EBF\u4E2D")} \xB7 \u79F0\u53F7\uFF1A${getLevelTitle(p.level) || "\u89C1\u4E60\u52C7\u8005"} \xB7 \u4ECA\u65E5\u76EE\u6807 ${state.daily.answered}/${state.daily.target}
+        </div>
+        <div class="report-grid">
+          <div class="report-card"><div class="num">${p.level}</div><div>\u7B49\u7EA7</div></div>
+          <div class="report-card"><div class="num">${state.answered}</div><div>\u5DF2\u7B54\u9898</div></div>
+          <div class="report-card"><div class="num">${acc}%</div><div>\u6B63\u786E\u7387</div></div>
+          <div class="report-card"><div class="num">${coverage}%</div><div>\u8003\u7EB2\u8986\u76D6</div></div>
+          <div class="report-card"><div class="num">${taskDone}/${state.tasks.length}</div><div>\u4EFB\u52A1</div></div>
+          <div class="report-card"><div class="num">${state.achievements.length}/${Object.keys(ACHIEVEMENTS2).length}</div><div>\u6210\u5C31</div></div>
+        </div>
+        <div class="modal-text"><b>\u8003\u7EB2\u8986\u76D6</b></div>
+        <div class="report-bar"><div style="width:${coverage}%"></div></div>
+        <div class="modal-text"><b>\u8584\u5F31\u70B9 Top5</b></div>
+        <div class="report-grid">${weakCards}</div>
+        <div class="modal-text"><b>\u6700\u8FD1\u590D\u4E60\u6311\u6218</b></div>
+        <div class="report-grid">${historyCards}</div>
+        <div class="modal-text">
+          \u9519\u9898\uFF1A${state.wrongQuestions.length} \xB7 \u666E\u901A\u602A\uFF1A${state.monstersKilled || 0} \xB7 \u533A\u57DF\u8083\u6E05\uFF1A${clearedZones} / 5 \xB7 BOSS\uFF1A${state.bossKilled ? "\u5DF2\u51FB\u8D25" : "\u672A\u51FB\u8D25"}<br>
+          \u88C5\u5907\uFF1A${state.weapon.name} / ${state.armor.name} \xB7 \u6280\u80FD\u70B9\uFF1A${p.skillPoints}<br>
+          \u6750\u6599\uFF1A\u91D1\u7B97\u77F3 \xD7${state.inventory.materials.stone || 0} \xB7 \u58A8\u6E0D\u6B8B\u9875 \xD7${state.inventory.materials.ink || 0} \xB7 \u7B97\u76D8\u73E0 \xD7${state.inventory.materials.beads || 0}
+        </div>
+        <div class="modal-actions">
+          <button class="pixel-btn" data-action="close">\u8FD4\u56DE</button>
+          ${menuButton("\u6253\u5F00\u9519\u9898\u672C", "book", "book")}
+          ${menuButton("\u590D\u4E60\u6311\u6218", "challenge", "challenge")}
+          <button class="pixel-btn secondary" data-action="plan">\u5B66\u4E60\u8BA1\u5212</button>
+          <button class="pixel-btn secondary" data-action="weekly-report">\u5B66\u4E60\u5468\u62A5</button>
+          <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">\u667A\u80FD\u590D\u4E60</button>
+          <button class="pixel-btn secondary" data-action="point-map">\u8003\u7EB2\u5BFC\u822A</button>
+        </div>
+      </div>
+    `);
+    }
+    function drawWeeklyReport() {
+      const state = getState();
+      const canvas = document.getElementById("weeklyCanvas");
+      if (!canvas) return;
+      const c = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+      c.clearRect(0, 0, w, h);
+      c.fillStyle = "#17130f";
+      c.fillRect(0, 0, w, h);
+      c.fillStyle = "#6d4327";
+      c.fillRect(0, 0, w, 8);
+      c.fillStyle = "#f2c95f";
+      c.fillRect(0, 0, 180, 8);
+      c.fillStyle = "#ffe49a";
+      c.font = "bold 30px 'Microsoft YaHei'";
+      c.fillText("\u6CE8\u4F1A\u7EAA\u5143 \xB7 \u5B66\u4E60\u5468\u62A5", 28, 54);
+      c.fillStyle = "#d8c191";
+      c.font = "bold 15px 'Microsoft YaHei'";
+      c.fillText("\u5468\u8D77\u59CB " + state.week.weekStart, 28, 84);
+      const stats = [
+        { label: "\u7B54\u9898", value: state.week.answered || 0 },
+        { label: "\u6B63\u786E\u7387", value: state.week.answered ? Math.round(state.week.correct / state.week.answered * 100) + "%" : "0%" },
+        { label: "\u65F6\u957F", value: formatDuration2(state.week.playSeconds) }
+      ];
+      stats.forEach((s, i) => {
+        const x = 36 + i * 190;
+        c.fillStyle = "rgba(255, 244, 214, 0.08)";
+        c.fillRect(x, 110, 160, 74);
+        c.strokeStyle = "rgba(242, 201, 95, 0.45)";
+        c.lineWidth = 2;
+        c.strokeRect(x, 110, 160, 74);
+        c.fillStyle = "#ffd66b";
+        c.font = "bold 24px 'Microsoft YaHei'";
+        c.fillText(String(s.value), x + 12, 145);
+        c.fillStyle = "#d8c191";
+        c.font = "bold 13px 'Microsoft YaHei'";
+        c.fillText(s.label, x + 12, 170);
+      });
+      c.fillStyle = "#fff2d0";
+      c.font = "bold 17px 'Microsoft YaHei'";
+      c.fillText("\u79D1\u76EE\u5206\u5E03", 36, 232);
+      const subjects = Object.entries(state.week.subjects || {}).sort((a, b) => b[1] - a[1]).slice(0, 6);
+      subjects.forEach(([name, count], i) => {
+        const y = 252 + i * 38;
+        c.fillStyle = "#d8c191";
+        c.font = "bold 13px 'Microsoft YaHei'";
+        c.fillText(name, 36, y);
+        c.fillStyle = "rgba(255, 244, 214, 0.12)";
+        c.fillRect(130, y - 12, 360, 10);
+        c.fillStyle = "#f2c95f";
+        c.fillRect(130, y - 12, Math.min(360, count * 40), 10);
+      });
+    }
+    function openWeeklyReport() {
+      const state = getState();
+      const week = state.week;
+      const acc = week.answered ? Math.round(week.correct / week.answered * 100) : 0;
+      const subjects = Object.entries(week.subjects || {}).sort((a, b) => b[1] - a[1]);
+      const strong = subjects[0] ? subjects[0][0] : "\u6682\u65E0";
+      const historyCards = state.weeklyHistory.length ? state.weeklyHistory.slice(0, 3).map((h) => {
+        const hAcc = h.answered ? Math.round(h.correct / h.answered * 100) : 0;
+        return `<div class="report-card"><div class="num">${h.answered}</div><div>${h.weekStart} \xB7 \u6B63\u786E\u7387 ${hAcc}%</div></div>`;
+      }).join("") : `<div class="report-card"><div class="num">\u2014</div><div>\u6682\u65E0\u5386\u53F2\u5468\u62A5</div></div>`;
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u5B66\u4E60\u5468\u62A5</div>
+        <div class="report-grid">
+          <div class="report-card"><div class="num">${week.answered}</div><div>\u672C\u5468\u7B54\u9898</div></div>
+          <div class="report-card"><div class="num">${acc}%</div><div>\u672C\u5468\u6B63\u786E\u7387</div></div>
+          <div class="report-card"><div class="num">${strong}</div><div>\u6700\u5F3A\u79D1\u76EE</div></div>
+        </div>
+        <div class="report-bar"><div style="width:${acc}%"></div></div>
+        <div class="modal-text">\u5468\u8D77\u59CB ${week.weekStart} \xB7 \u672C\u5468\u5B66\u4E60\u65F6\u957F ${formatDuration2(week.playSeconds)}</div>
+        <canvas id="weeklyCanvas" class="world-map-canvas" width="800" height="360"></canvas>
+        <div class="modal-text"><b>\u6700\u8FD1\u5386\u53F2</b></div>
+        <div class="report-grid">${historyCards}</div>
+        <div class="modal-actions">
+          <button class="pixel-btn" data-action="download-weekly">\u4E0B\u8F7D\u5468\u62A5</button>
+          <button class="pixel-btn secondary" data-action="share-weekly">\u590D\u5236\u5206\u4EAB\u6587\u6848</button>
+          <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
+        </div>
+      </div>
+    `);
+      drawWeeklyReport();
+    }
+    return { openBook, openReport, openWeeklyReport };
+  }
+
   // src/game.js
   (() => {
     "use strict";
@@ -2687,6 +2924,22 @@
     });
     const { openQuiz, startQuizTimer, resolveAnswer, continueQuiz } = learningSystem;
     openQuizRef = openQuiz;
+    const learningUi = createLearningUi({
+      getState: () => state,
+      openModal,
+      QUESTIONS,
+      POINTS,
+      ACHIEVEMENTS,
+      formatDuration,
+      isSystemUnlocked,
+      systemLockTip,
+      showToast,
+      getCurrentJob,
+      getLevelTitle,
+      MAIN_STEP_LABELS,
+      menuButton
+    });
+    const { openBook, openReport, openWeeklyReport } = learningUi;
     if (state.soundEnabled === void 0) state.soundEnabled = true;
     if (!state.weapon) state.weapon = { id: "pencil_sword", name: "\u94C5\u7B14\u77ED\u5251", atk: 5 };
     if (!state.armor) state.armor = { id: "apprentice_robe", name: "\u5B66\u5F92\u5E03\u8863", def: 2 };
@@ -6418,222 +6671,6 @@
         }
       }
       if (unlocked.length) showToast(unlocked.join(" \xB7 "), 3e3);
-    }
-    function openBook() {
-      if (!isSystemUnlocked("book")) {
-        showToast(systemLockTip("book", "\u9519\u9898\u672C") + " \u89E3\u9501");
-        return;
-      }
-      const wrong = state.wrongQuestions.map((id) => QUESTIONS.find((q) => q.id === id)).filter(Boolean);
-      const masteredIds = Object.entries(state.reviewMap || {}).filter(([id, rec]) => rec.mastered && !state.wrongQuestions.includes(Number(id))).map(([id]) => Number(id));
-      const mastered = masteredIds.map((id) => QUESTIONS.find((q) => q.id === id)).filter(Boolean);
-      if (!wrong.length && !mastered.length) {
-        openModal(`
-        <div class="modal-box">
-          <div class="modal-title">\u9519\u9898\u672C \xB7 \u5DF2\u6E05\u96F6</div>
-          <div class="modal-text">\u5F53\u524D\u6CA1\u6709\u5F85\u590D\u4E60\u9519\u9898\u3002\u7EE7\u7EED\u4FDD\u6301\u5B66\u4E60\u8282\u594F\uFF0C\u628A\u6BCF\u6B21\u7B54\u9519\u90FD\u53D8\u6210\u638C\u63E1\u70B9\u3002</div>
-          <div class="modal-actions">
-            <button class="pixel-btn" data-action="challenge-start" data-mode="mock">\u6A21\u62DF\u8003 5 \u9898</button>
-            <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">\u667A\u80FD\u590D\u4E60</button>
-            <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
-          </div>
-        </div>
-      `);
-        return;
-      }
-      const columns = [
-        {
-          title: "\u672A\u638C\u63E1",
-          items: wrong.filter((q) => {
-            const rec = state.reviewMap[q.id];
-            return !rec || rec.count < 1;
-          })
-        },
-        {
-          title: "\u6A21\u7CCA",
-          items: wrong.filter((q) => {
-            const rec = state.reviewMap[q.id];
-            return rec && rec.count >= 1 && !rec.mastered;
-          })
-        },
-        { title: "\u5DF2\u638C\u63E1", items: mastered }
-      ];
-      const renderBookItems = (items, locked) => items.length ? items.map((q) => {
-        const rec = state.reviewMap[q.id] || { count: 0 };
-        return `
-            <div class="book-card">
-              <div><span class="book-point">${q.point}</span><span class="book-status">${locked ? "\u5DF2\u638C\u63E1" : `\u590D\u4E60 ${rec.count} \u6B21`}</span></div>
-              <div style="margin:6px 0;font-weight:900;">${q.q}</div>
-              <div class="caption">${q.explain}</div>
-              ${locked ? "" : `<div class="modal-actions"><button class="pixel-btn small" data-action="review-question" data-id="${q.id}">\u590D\u4E60\u672C\u9898</button></div>`}
-            </div>
-          `;
-      }).join("") : `<div class="book-card caption">\u6682\u65E0</div>`;
-      const columnsHtml = columns.map((col) => `
-        <div class="book-column">
-          <div class="book-column-title">${col.title} \xB7 ${col.items.length}</div>
-          ${renderBookItems(col.items, col.title === "\u5DF2\u638C\u63E1")}
-        </div>
-      `).join("");
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u9519\u9898\u672C \xB7 ${wrong.length} \u9053</div>
-        <div class="modal-text">\u6309\u590D\u4E60\u72B6\u6001\u5206\u4E3A\u672A\u638C\u63E1\u3001\u6A21\u7CCA\u548C\u5DF2\u638C\u63E1\uFF0C\u4FBF\u4E8E\u9488\u5BF9\u6027\u590D\u4E60\u3002</div>
-        <div class="book-columns">${columnsHtml}</div>
-        <div class="modal-actions">
-          <button class="pixel-btn" data-action="challenge-start" data-mode="wrong">\u9519\u9898\u4E13\u7EC3</button>
-          <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">\u667A\u80FD\u590D\u4E60</button>
-          <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
-        </div>
-      </div>
-    `);
-    }
-    function openReport() {
-      const p = state.player;
-      const acc = state.answered ? Math.round(state.correct / state.answered * 100) : 0;
-      const taskDone = state.tasks.filter((t) => t.done).length;
-      const coverage = Math.round(Object.keys(state.pointProgress).length / POINTS.length * 100);
-      const pointAccuracy = (point) => {
-        const total = state.pointProgress[point] || 0;
-        if (!total) return 100;
-        return Math.round((state.pointCorrect[point] || 0) / total * 100);
-      };
-      const weakPoints = POINTS.filter((p2) => (state.pointProgress[p2] || 0) > 0).sort((a, b) => pointAccuracy(a) - pointAccuracy(b)).slice(0, 5);
-      const weakCards = weakPoints.length ? weakPoints.map((point) => {
-        const value = pointAccuracy(point);
-        return `
-            <div class="report-card">
-              <div style="font-weight:900;">${point}</div>
-              <div class="report-bar"><div style="width:${value}%"></div></div>
-              <div class="caption">${value}%</div>
-            </div>
-          `;
-      }).join("") : `<div class="report-card"><div class="num">\u2014</div><div>\u6682\u65E0\u8584\u5F31\u70B9</div></div>`;
-      const historyCards = state.examHistory.length ? state.examHistory.slice(-3).map((h) => `<div class="report-card"><div class="num">${h.acc}%</div><div>${h.date} \xB7 ${h.correct}/${h.total}</div></div>`).join("") : `<div class="report-card"><div class="num">\u2014</div><div>\u6682\u65E0\u590D\u4E60\u6311\u6218</div></div>`;
-      const clearedZones = [state.auditCleared, state.capitalCleared, state.taxCleared, state.lawCleared, state.strategyCleared].filter(Boolean).length;
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u5B66\u4E60\u62A5\u544A \xB7 ${getCurrentJob().name}</div>
-        <div class="modal-text">
-          \u516D\u57DF\u4E3B\u7EBF\uFF1A${MAIN_STEP_LABELS[state.mainStep] || (state.gameCompleted ? "\u5DF2\u901A\u5173" : "\u91D1\u7B97\u539F\u91CE\u4E3B\u7EBF\u4E2D")} \xB7 \u79F0\u53F7\uFF1A${getLevelTitle(p.level) || "\u89C1\u4E60\u52C7\u8005"} \xB7 \u4ECA\u65E5\u76EE\u6807 ${state.daily.answered}/${state.daily.target}
-        </div>
-        <div class="report-grid">
-          <div class="report-card"><div class="num">${p.level}</div><div>\u7B49\u7EA7</div></div>
-          <div class="report-card"><div class="num">${state.answered}</div><div>\u5DF2\u7B54\u9898</div></div>
-          <div class="report-card"><div class="num">${acc}%</div><div>\u6B63\u786E\u7387</div></div>
-          <div class="report-card"><div class="num">${coverage}%</div><div>\u8003\u7EB2\u8986\u76D6</div></div>
-          <div class="report-card"><div class="num">${taskDone}/${state.tasks.length}</div><div>\u4EFB\u52A1</div></div>
-          <div class="report-card"><div class="num">${state.achievements.length}/${Object.keys(ACHIEVEMENTS).length}</div><div>\u6210\u5C31</div></div>
-        </div>
-        <div class="modal-text"><b>\u8003\u7EB2\u8986\u76D6</b></div>
-        <div class="report-bar"><div style="width:${coverage}%"></div></div>
-        <div class="modal-text"><b>\u8584\u5F31\u70B9 Top5</b></div>
-        <div class="report-grid">${weakCards}</div>
-        <div class="modal-text"><b>\u6700\u8FD1\u590D\u4E60\u6311\u6218</b></div>
-        <div class="report-grid">${historyCards}</div>
-        <div class="modal-text">
-          \u9519\u9898\uFF1A${state.wrongQuestions.length} \xB7 \u666E\u901A\u602A\uFF1A${state.monstersKilled || 0} \xB7 \u533A\u57DF\u8083\u6E05\uFF1A${clearedZones} / 5 \xB7 BOSS\uFF1A${state.bossKilled ? "\u5DF2\u51FB\u8D25" : "\u672A\u51FB\u8D25"}<br>
-          \u88C5\u5907\uFF1A${state.weapon.name} / ${state.armor.name} \xB7 \u6280\u80FD\u70B9\uFF1A${p.skillPoints}<br>
-          \u6750\u6599\uFF1A\u91D1\u7B97\u77F3 \xD7${state.inventory.materials.stone || 0} \xB7 \u58A8\u6E0D\u6B8B\u9875 \xD7${state.inventory.materials.ink || 0} \xB7 \u7B97\u76D8\u73E0 \xD7${state.inventory.materials.beads || 0}
-        </div>
-        <div class="modal-actions">
-          <button class="pixel-btn" data-action="close">\u8FD4\u56DE</button>
-          ${menuButton("\u6253\u5F00\u9519\u9898\u672C", "book", "book")}
-          ${menuButton("\u590D\u4E60\u6311\u6218", "challenge", "challenge")}
-          <button class="pixel-btn secondary" data-action="plan">\u5B66\u4E60\u8BA1\u5212</button>
-          <button class="pixel-btn secondary" data-action="weekly-report">\u5B66\u4E60\u5468\u62A5</button>
-          <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">\u667A\u80FD\u590D\u4E60</button>
-          <button class="pixel-btn secondary" data-action="point-map">\u8003\u7EB2\u5BFC\u822A</button>
-        </div>
-      </div>
-    `);
-    }
-    function openWeeklyReport() {
-      const week = state.week;
-      const acc = week.answered ? Math.round(week.correct / week.answered * 100) : 0;
-      const subjects = Object.entries(week.subjects || {}).sort((a, b) => b[1] - a[1]);
-      const strong = subjects[0] ? subjects[0][0] : "\u6682\u65E0";
-      const historyCards = state.weeklyHistory.length ? state.weeklyHistory.slice(0, 3).map((h) => {
-        const hAcc = h.answered ? Math.round(h.correct / h.answered * 100) : 0;
-        return `<div class="report-card"><div class="num">${h.answered}</div><div>${h.weekStart} \xB7 \u6B63\u786E\u7387 ${hAcc}%</div></div>`;
-      }).join("") : `<div class="report-card"><div class="num">\u2014</div><div>\u6682\u65E0\u5386\u53F2\u5468\u62A5</div></div>`;
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u5B66\u4E60\u5468\u62A5</div>
-        <div class="report-grid">
-          <div class="report-card"><div class="num">${week.answered}</div><div>\u672C\u5468\u7B54\u9898</div></div>
-          <div class="report-card"><div class="num">${acc}%</div><div>\u672C\u5468\u6B63\u786E\u7387</div></div>
-          <div class="report-card"><div class="num">${strong}</div><div>\u6700\u5F3A\u79D1\u76EE</div></div>
-        </div>
-        <div class="report-bar"><div style="width:${acc}%"></div></div>
-        <div class="modal-text">\u5468\u8D77\u59CB ${week.weekStart} \xB7 \u672C\u5468\u5B66\u4E60\u65F6\u957F ${formatDuration(week.playSeconds)}</div>
-        <canvas id="weeklyCanvas" class="world-map-canvas" width="800" height="360"></canvas>
-        <div class="modal-text"><b>\u6700\u8FD1\u5386\u53F2</b></div>
-        <div class="report-grid">${historyCards}</div>
-        <div class="modal-actions">
-          <button class="pixel-btn" data-action="download-weekly">\u4E0B\u8F7D\u5468\u62A5</button>
-          <button class="pixel-btn secondary" data-action="share-weekly">\u590D\u5236\u5206\u4EAB\u6587\u6848</button>
-          <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
-        </div>
-      </div>
-    `);
-      drawWeeklyReport();
-    }
-    function drawWeeklyReport() {
-      const canvas2 = document.getElementById("weeklyCanvas");
-      if (!canvas2) return;
-      const c = canvas2.getContext("2d");
-      const w = canvas2.width;
-      const h = canvas2.height;
-      c.clearRect(0, 0, w, h);
-      c.fillStyle = "#17130f";
-      c.fillRect(0, 0, w, h);
-      c.fillStyle = "#6d4327";
-      c.fillRect(0, 0, w, 8);
-      c.fillStyle = "#f2c95f";
-      c.fillRect(0, 0, 180, 8);
-      c.fillStyle = "#ffe49a";
-      c.font = "bold 30px 'Microsoft YaHei'";
-      c.fillText("\u6CE8\u4F1A\u7EAA\u5143 \xB7 \u5B66\u4E60\u5468\u62A5", 28, 54);
-      c.fillStyle = "#d8c191";
-      c.font = "bold 15px 'Microsoft YaHei'";
-      c.fillText("\u5468\u8D77\u59CB " + state.week.weekStart, 28, 84);
-      const stats = [
-        { label: "\u7B54\u9898", value: state.week.answered || 0 },
-        { label: "\u6B63\u786E\u7387", value: state.week.answered ? Math.round(state.week.correct / state.week.answered * 100) + "%" : "0%" },
-        { label: "\u65F6\u957F", value: formatDuration(state.week.playSeconds) }
-      ];
-      stats.forEach((s, i) => {
-        const x = 36 + i * 190;
-        c.fillStyle = "rgba(255, 244, 214, 0.08)";
-        c.fillRect(x, 110, 160, 74);
-        c.strokeStyle = "rgba(242, 201, 95, 0.45)";
-        c.lineWidth = 2;
-        c.strokeRect(x, 110, 160, 74);
-        c.fillStyle = "#ffd66b";
-        c.font = "bold 24px 'Microsoft YaHei'";
-        c.fillText(String(s.value), x + 12, 145);
-        c.fillStyle = "#d8c191";
-        c.font = "bold 13px 'Microsoft YaHei'";
-        c.fillText(s.label, x + 12, 170);
-      });
-      c.fillStyle = "#fff2d0";
-      c.font = "bold 17px 'Microsoft YaHei'";
-      c.fillText("\u79D1\u76EE\u5206\u5E03", 36, 232);
-      const subjects = Object.entries(state.week.subjects || {}).sort((a, b) => b[1] - a[1]).slice(0, 6);
-      subjects.forEach(([name, count], i) => {
-        const y = 252 + i * 38;
-        c.fillStyle = "#d8c191";
-        c.font = "bold 13px 'Microsoft YaHei'";
-        c.fillText(name, 36, y);
-        c.fillStyle = "rgba(255, 244, 214, 0.12)";
-        c.fillRect(130, y - 12, 360, 10);
-        c.fillStyle = "#f2c95f";
-        c.fillRect(130, y - 12, Math.min(360, count * 40), 10);
-        c.fillStyle = "#fff2d0";
-        c.font = "bold 13px 'Microsoft YaHei'";
-        c.fillText(String(count), 500, y);
-      });
     }
     function showEnding() {
       const subjects = [

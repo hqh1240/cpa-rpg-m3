@@ -26,6 +26,7 @@ CPA_RPG_M2_Demo/
       save.js             # localStorage 存档
     render/
       battle.js           # 战斗面板、技能选择、道具选择
+      learningUi.js       # 错题本、学习报告、学习周报
       mapTiles.js         # tileset 底图、建筑、装饰
       ui.js               # 弹窗、Toast、标题页、设置面板
   tests/
@@ -74,6 +75,6 @@ npm run dev
 
 ## 后续拆分计划
 
-1. 将错题本、学习报告、周报等学习记录 UI 拆到独立模块。
-2. 将地图编排、房间渲染、玩家/NPC/怪物绘制拆到 `src/render/`。
+1. 将地图编排、房间渲染、玩家/NPC/怪物绘制拆到 `src/render/`。
+2. 将事件分发器、世界地图、职业/伙伴等 UI 拆到独立模块。
 3. 增加类型检查、Lint、单元测试和 CI 自动部署。
