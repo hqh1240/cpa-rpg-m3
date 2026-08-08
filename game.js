@@ -624,8 +624,8 @@
   window.getRandomQuestions = getRandomQuestions;
 
   // src/core/config.js
-  var GAME_VERSION = "0.9.1";
-  var BUILD_LABEL = "M3 \u53EF\u73A9\u6027\u4F18\u5316 \xB7 2026-08-08";
+  var GAME_VERSION = "0.9.2";
+  var BUILD_LABEL = "M3 \u9519\u9898 Boss \u4E0E\u5730\u7262 \xB7 2026-08-08";
   var SAVE_KEY = "cpa_rpg_m3_save_v1";
   var SYSTEM_UNLOCK_LEVELS = {
     skill: 3,
@@ -698,7 +698,9 @@
     task25: { name: "\u4EFB\u52A1\u5927\u5E08", desc: "\u5B8C\u6210 25 \u4E2A\u4EFB\u52A1", type: "\u6210\u957F", reward: { gold: 300, exp: 300, skillPoints: 3 } },
     weekly20: { name: "\u5468\u62A5\u5E38\u5BA2", desc: "\u5355\u5468\u5B8C\u6210 20 \u9053\u9898", type: "\u5B66\u4E60", reward: { gold: 100, exp: 100, skillPoints: 2 } },
     all_zone_bosses: { name: "\u4E94\u57DF\u8BA8\u4F10", desc: "\u51FB\u8D25\u5BA1\u8BA1\u3001\u8D22\u7BA1\u3001\u7A0E\u6CD5\u3001\u7ECF\u6D4E\u6CD5\u548C\u6218\u7565\u533A\u57DF Boss", type: "\u533A\u57DF", reward: { gold: 300, exp: 300, skillPoints: 3 } },
-    final_clear: { name: "\u516D\u57DF\u5E73\u8861", desc: "\u51FB\u8D25\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\uFF0C\u5B8C\u6210\u6700\u7EC8\u8BD5\u70BC", type: "\u7EC8\u5C40", reward: { gold: 500, exp: 500, skillPoints: 5 } }
+    final_clear: { name: "\u516D\u57DF\u5E73\u8861", desc: "\u51FB\u8D25\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\uFF0C\u5B8C\u6210\u6700\u7EC8\u8BD5\u70BC", type: "\u7EC8\u5C40", reward: { gold: 500, exp: 500, skillPoints: 5 } },
+    wrong_boss_clear: { name: "\u9519\u9898\u514B\u661F", desc: "\u51FB\u8D25\u7531\u81EA\u8EAB\u9519\u9898\u51DD\u805A\u7684\u9519\u9898\u9B54\u50CF", type: "\u5B66\u4E60", reward: { gold: 80, exp: 120, skillPoints: 1 } },
+    dungeon_clear: { name: "\u5730\u7262\u5F81\u670D\u8005", desc: "\u5355\u65E5\u901A\u5173\u6BCF\u65E5\u6311\u6218\u5730\u7262\u5168\u90E8 5 \u5C42", type: "\u533A\u57DF", reward: { gold: 150, exp: 150, skillPoints: 2 } }
   };
 
   // src/systems/save.js
@@ -722,6 +724,8 @@
         ...state,
         quiz: void 0,
         battle: void 0,
+        challenge: void 0,
+        dungeon: void 0,
         _lastQuizCorrect: void 0,
         _lastLearningGain: void 0,
         player: { ...state.player, moveTarget: null }
@@ -1288,6 +1292,7 @@
       addEffect,
       getQuestionsByPoint: getQuestionsByPoint2,
       getRandomQuestions: getRandomQuestions2,
+      getWrongQuestionsForPoint,
       maybeLevelUp,
       gainPartnerExp,
       updateTask,
@@ -1307,16 +1312,21 @@
       REGION_BOSS_INTRO,
       getSkills
     } = deps;
-    function startBattle(monster, isBoss, isTraining = false) {
+    function startBattle(monster, isBoss, isTraining = false, isDungeon = false) {
       const state = getState();
       state.screen = "battle";
       playBgm2(BGM_BATTLE2);
-      const regionInfo = BATTLE_REGIONS[getMonsterType(monster.id)] || BATTLE_REGIONS.paper_crane;
+      let regionInfo = BATTLE_REGIONS[getMonsterType(monster.id)] || BATTLE_REGIONS.paper_crane;
+      if (isDungeon) regionInfo = { id: "dungeon", bg: null, label: "\u6BCF\u65E5\u6311\u6218\u5730\u7262" };
+      else if (monster.isWrongBoss) regionInfo = { id: "wrong", bg: null, label: "\u9519\u9898\u9B54\u50CF" };
       const battleMonster = { ...monster };
       state.battle = {
         monster: battleMonster,
         isBoss,
         isTraining,
+        isDungeon,
+        isWrongBoss: !!monster.isWrongBoss,
+        wrongSolved: 0,
         region: regionInfo,
         hp: battleMonster.hp,
         maxHp: battleMonster.hp,
@@ -1384,7 +1394,8 @@
       state.player.mp -= skill.mp;
       state.pendingSkill = skill;
       const weakPoint = state.battle && state.battle.bossMechanicInfo && state.battle.bossMechanicInfo.key === "final_boss" && state.battle.finalWeakIndex !== null ? FINAL_BOSS_WEAK_POINTS[state.battle.finalWeakIndex] : skill.point;
-      const q = getQuestionsByPoint2(weakPoint, 1)[0] || getRandomQuestions2(1)[0];
+      const wrongPool = state.battle && state.battle.isWrongBoss ? getWrongQuestionsForPoint(weakPoint) : [];
+      const q = wrongPool[0] || getQuestionsByPoint2(weakPoint, 1)[0] || getRandomQuestions2(1)[0];
       state.quiz = {
         q,
         callback: (correct) => {
@@ -1392,6 +1403,17 @@
           const sk = current.pendingSkill;
           current.pendingSkill = null;
           if (!sk) return;
+          if (correct && current.battle && current.battle.isWrongBoss && current.wrongQuestions.includes(q.id)) {
+            current.wrongQuestions = current.wrongQuestions.filter((id) => id !== q.id);
+            const rec = current.reviewMap[q.id];
+            if (rec) {
+              rec.mastered = true;
+              rec.count = Math.max(rec.count || 0, 5);
+              rec.next = Date.now() + 30 * 864e5;
+            }
+            current.battle.wrongSolved = (current.battle.wrongSolved || 0) + 1;
+            current.battle.feedback += "<br>\u9519\u9898\u5370\u8BB0\u5DF2\u6D88\u9664\uFF0C\u9B54\u50CF\u5931\u53BB\u4E00\u9053\u9632\u62A4\u3002";
+          }
           if (sk.power === 0) {
             if (correct) {
               current.battle.combo += 1;
@@ -1455,6 +1477,7 @@
       } else if (action === "run") {
         if (Math.random() < 0.7) {
           showToast("\u6210\u529F\u9003\u8DD1");
+          if (state.dungeon) state.dungeon = null;
           state.screen = "map";
           playZoneBgm2(state.zone || "gold_field");
           delete state.battle;
@@ -1525,6 +1548,12 @@
         const mechanic = BOSS_MECHANICS[state.battle.monster.id];
         if (mechanic) {
           state.battle.bossMechanicInfo = { ...mechanic, key: state.battle.monster.id };
+        } else if (state.battle.isWrongBoss) {
+          state.battle.bossMechanicInfo = {
+            name: "\u9519\u9898\u53CD\u566C",
+            desc: "\u7B54\u9519\u4F1A\u79EF\u7D2F\u9519\u9898\u5370\u8BB0\uFF0C\u9B54\u50CF\u53CD\u51FB\u529B\u63D0\u5347",
+            key: "wrong_boss"
+          };
         }
         state.battle.feedback += `<br>${bossName}\u8FDB\u5165\u7B2C\u4E8C\u9636\u6BB5${state.battle.bossMechanicInfo ? "\uFF1A" + state.battle.bossMechanicInfo.name : "\uFF1A\u62A5\u8868\u9519\u4E71"}\uFF01\u653B\u51FB\u529B\u63D0\u5347\u3002${state.battle.bossMechanicInfo ? " \u4E13\u5C5E\u673A\u5236\uFF1A" + state.battle.bossMechanicInfo.desc : ""}`;
         sfx2("wrong");
@@ -1553,7 +1582,8 @@
         scaledAttack - state.player.defense - getArmorDef() - getJobBonus("def") + Math.floor(Math.random() * 4) - 2
       );
       const surgeBonus = state.battle.strategySurge ? 4 : 0;
-      const finalDmg = dmg + surgeBonus;
+      const wrongBonus = state.battle.wrongCharge ? Math.min(10, state.battle.wrongCharge * 2) : 0;
+      const finalDmg = dmg + surgeBonus + wrongBonus;
       state.player.hp -= finalDmg;
       addEffect("-" + finalDmg, 220, 360, "#ff6b6b");
       state.battle.shakeUntil = Date.now() + 180;
@@ -1564,7 +1594,10 @@
         state.player.hp = Math.round(state.player.maxHp * 0.5);
         const lostGold = Math.floor(state.player.gold * 0.1);
         state.player.gold -= lostGold;
-        showToast(`\u6218\u6597\u5931\u8D25\uFF0C\u635F\u5931 ${lostGold} \u91D1\u5E01\u540E\u6062\u590D 50% HP`);
+        showToast(
+          state.dungeon ? "\u6BCF\u65E5\u5730\u7262\u6311\u6218\u5931\u8D25\uFF0C\u635F\u5931 " + lostGold + " \u91D1\u5E01\u540E\u6062\u590D 50% HP" : `\u6218\u6597\u5931\u8D25\uFF0C\u635F\u5931 ${lostGold} \u91D1\u5E01\u540E\u6062\u590D 50% HP`
+        );
+        if (state.dungeon) state.dungeon = null;
         state.screen = "map";
         playZoneBgm2(state.zone || "gold_field");
         delete state.battle;
@@ -1594,6 +1627,9 @@
       } else if (key === "final_boss") {
         b.finalWeakIndex = (b.turn - 1) % FINAL_BOSS_WEAK_POINTS.length;
         b.feedback += `<br>\u516D\u57DF\u5931\u8861\uFF0C\u5F53\u524D\u5F31\u70B9\u8F6C\u5411\uFF1A${FINAL_BOSS_WEAK_POINTS[b.finalWeakIndex]}\u3002`;
+      } else if (key === "wrong_boss") {
+        b.wrongCharge = (b.wrongCharge || 0) + 1;
+        b.feedback += "<br>\u9519\u9898\u5370\u8BB0\u51DD\u805A\uFF0C\u9B54\u50CF\u53CD\u51FB\u529B\u63D0\u5347\u3002";
       }
     }
     function endBattle(win) {
@@ -1604,15 +1640,18 @@
         sfx2("win");
         const p = state.player;
         const isTraining = !!state.battle.isTraining;
+        const isDungeon = !!state.battle.isDungeon;
+        const isWrongBoss = !!state.battle.isWrongBoss;
         const trainingUsed = state.daily.trainingCount || 0;
         const fullTrainingReward = !isTraining || trainingUsed < 3;
+        const fixedReward = fullTrainingReward && !isDungeon && !isWrongBoss;
         if (isTraining) state.daily.trainingCount = trainingUsed + 1;
-        if (fullTrainingReward) {
+        if (fixedReward) {
           state.partner.mood = Math.min(100, state.partner.mood + 4);
           gainPartnerExp(15);
           p.gold += b.monster.gold;
           p.exp += b.monster.exp;
-        } else {
+        } else if (isTraining && !fullTrainingReward) {
           showToast("\u4ECA\u65E5\u8BAD\u7EC3\u5956\u52B1\u6B21\u6570\u5DF2\u7528\u5B8C\uFF0C\u672C\u573A\u4E0D\u83B7\u5F97\u989D\u5916\u91D1\u5E01\u3001\u7ECF\u9A8C\u6216\u6389\u843D");
         }
         const drops = {
@@ -1636,7 +1675,7 @@
           strategy_monster_2: { beads: 1 },
           strategy_boss: { credential: 2 }
         };
-        const drop = fullTrainingReward ? drops[b.monster.id] || {} : {};
+        const drop = fixedReward ? drops[b.monster.id] || {} : {};
         const materialNames = { stone: "\u91D1\u7B97\u77F3", ink: "\u58A8\u6E0D\u6B8B\u9875", beads: "\u7B97\u76D8\u73E0", credential: "\u5408\u5E76\u51ED\u8BC1" };
         const dropText = Object.entries(drop).map(([key, count]) => {
           state.inventory.materials[key] = (state.inventory.materials[key] || 0) + count;
@@ -1663,6 +1702,18 @@
           activateRegionTasks(state.zone);
           updateTask(ZONE_BOSS_TASK[b.monster.id], 1);
           if (Object.values(ZONE_BOSS_STATE).every((flag) => state[flag])) unlockAchievement("all_zone_bosses");
+        } else if (isWrongBoss) {
+          if (!state.daily.wrongBossDefeated) {
+            state.daily.wrongBossDefeated = true;
+            p.gold += b.monster.gold;
+            p.exp += b.monster.exp;
+            p.skillPoints += 1;
+            unlockAchievement("wrong_boss_clear");
+            showToast("\u9519\u9898\u9B54\u50CF\u5DF2\u8BA8\u4F10\uFF0C\u4ECA\u65E5\u5956\u52B1\u5DF2\u9886\u53D6");
+          } else {
+            showToast("\u4ECA\u65E5\u9519\u9898\u9B54\u50CF\u5956\u52B1\u5DF2\u9886\u53D6\uFF0C\u672C\u573A\u4E0D\u518D\u53D1\u653E\u989D\u5916\u5956\u52B1");
+          }
+        } else if (isDungeon) {
         } else if (!isTraining) {
           state.monstersKilled = (state.monstersKilled || 0) + 1;
           if (!state.monstersKilledIds) state.monstersKilledIds = [];
@@ -1710,7 +1761,7 @@
             }
           }
         }
-        if (!isTraining) {
+        if (!isTraining && !isDungeon && !isWrongBoss) {
           if (b.monster.id === "boss_1") updateTask("main", 1);
           else if (!b.isBoss) updateTask("defeat3", 1);
           if (!b.isBoss && b.monster.id === "monster_2") updateTask("defeat_ink", 1);
@@ -1723,31 +1774,37 @@
         maybeLevelUp();
         save();
         updateHUD();
-        const shownExp = fullTrainingReward ? b.monster.exp : 0;
-        const shownGold = fullTrainingReward ? b.monster.gold : 0;
+        const shownExp = fixedReward ? b.monster.exp : 0;
+        const shownGold = fixedReward ? b.monster.gold : 0;
+        const isFinalDungeonWave = isDungeon && state.dungeon && state.dungeon.index + 1 >= state.dungeon.waves.length;
+        const victoryTitle = isDungeon ? "\u6BCF\u65E5\u5730\u7262 \xB7 \u7A81\u7834" : isWrongBoss ? "\u9519\u9898\u9B54\u50CF\u8BA8\u4F10" : "\u6218\u6597\u80DC\u5229";
+        const victoryBanner = isDungeon ? `\u7A81\u7834\u7B2C ${state.dungeon.index + 1} / ${state.dungeon.waves.length} \u5C42` : `\u51FB\u8D25 ${b.monster.label}`;
+        const victoryInfo = isDungeon ? isFinalDungeonWave ? "\u4F60\u5DF2\u7A81\u7834\u5730\u7262\u6700\u540E\u4E00\u5C42\uFF0C\u9886\u53D6\u901A\u5173\u5956\u52B1\u540E\u5C06\u5B8C\u6210\u4ECA\u65E5\u6311\u6218\u3002" : `\u4E0B\u4E00\u5C42\u5C06\u51FA\u73B0\u66F4\u5F3A\u654C\u4EBA\uFF0C\u6218\u6597\u5956\u52B1\u7EDF\u4E00\u5728\u901A\u5173\u540E\u7ED3\u7B97\u3002` : isWrongBoss ? `\u9519\u9898\u9B54\u50CF\u5DF2\u88AB\u51FB\u8D25\uFF0C${state.battle.wrongSolved || 0} \u9053\u9519\u9898\u5370\u8BB0\u5728\u6218\u6597\u4E2D\u6D88\u9664\u3002` : b.monster.id === "final_boss" ? "\u4F60\u51FB\u8D25\u4E86\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\u3002\u4F1A\u8BA1\u3001\u5BA1\u8BA1\u3001\u8D22\u7BA1\u3001\u7A0E\u6CD5\u3001\u7ECF\u6D4E\u6CD5\u548C\u6218\u7565\u516D\u57DF\u91CD\u65B0\u5E73\u8861\uFF0C\u8BB0\u8D26\u5927\u9646\u6062\u590D\u4E86\u79E9\u5E8F\u3002" : b.monster.id === "boss_1" ? "\u4F60\u51FB\u8D25\u4E86\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u3002\u5C0F\u5206\uFF1A\u501F\u8D37\u91CD\u65B0\u5E73\u8861\u4E86\uFF0C\u8C22\u8C22\u4F60\uFF0C\u4F1A\u8BA1\u52C7\u8005\u3002<br>\u4E0B\u4E00\u7AD9\uFF1A\u5BA1\u8BA1\u94C1\u5821\u3002\u5B8C\u6574\u533A\u57DF\u7684\u5192\u9669\u5C06\u5728\u540E\u7EED\u7248\u672C\u89E3\u9501\u3002" : ZONE_BOSS_STATE[b.monster.id] ? `\u4F60\u51FB\u8D25\u4E86${b.monster.label}\u3002${((_a = REGION_BOSS_INTRO[b.monster.id]) == null ? void 0 : _a.text) || "\u533A\u57DF\u79E9\u5E8F\u6B63\u5728\u6062\u590D\u3002"}` : state.zone === "strategy_star" ? "\u6218\u7565\u661F\u5854\u7684\u8FF7\u96FE\u6B63\u5728\u6D88\u6563\uFF0C\u4F60\u5DF2\u63A5\u8FD1\u516D\u57DF\u5E73\u8861\u3002" : state.zone === "law_temple" ? "\u6CD5\u6761\u795E\u6BBF\u7684\u89C4\u5219\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u5DE9\u56FA\u7ECF\u6D4E\u6CD5\u77E5\u8BC6\u3002" : state.zone === "tax_wasteland" ? "\u7A0E\u7387\u8352\u539F\u7684\u7533\u62A5\u79E9\u5E8F\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u638C\u63E1\u7A0E\u6CD5\u89C4\u5219\u3002" : state.zone === "capital_forest" ? "\u8D44\u672C\u5BC6\u6797\u4E2D\u7684\u8D22\u52A1\u5F02\u5E38\u6B63\u5728\u6D88\u9000\uFF0C\u7EE7\u7EED\u6DF1\u5316\u8D22\u7BA1\u77E5\u8BC6\u3002" : state.zone === "audit_tower" ? "\u5BA1\u8BA1\u94C1\u5821\u7684\u8BC1\u636E\u94FE\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u68C0\u67E5\u5269\u4F59\u5F02\u5E38\u3002" : "\u7EE7\u7EED\u63A2\u7D22\u91D1\u7B97\u539F\u91CE\u3002";
+        const victoryActions = isDungeon ? `${isFinalDungeonWave ? '<button class="pixel-btn" data-action="dungeon-finish">\u9886\u53D6\u901A\u5173\u5956\u52B1</button>' : '<button class="pixel-btn" data-action="dungeon-next">\u8FDB\u5165\u4E0B\u4E00\u5C42</button>'}
+           <button class="pixel-btn secondary" data-action="dungeon-leave">\u79BB\u5F00\u5730\u7262</button>` : `<button class="pixel-btn" data-action="close">\u8FD4\u56DE\u5730\u56FE</button>
+           ${b.monster.id === "final_boss" ? '<button class="pixel-btn secondary" data-action="ending">\u67E5\u770B\u7ED3\u5C40</button>' : ""}`;
         openModal(`
         <div class="modal-box victory">
-          <div class="modal-title">\u6218\u6597\u80DC\u5229</div>
-          <div class="result-banner correct">\u51FB\u8D25 ${b.monster.label}</div>
+          <div class="modal-title">${victoryTitle}</div>
+          <div class="result-banner correct">${victoryBanner}</div>
           <div class="reward-grid">
             <div class="report-card"><div class="num">${shownExp}</div><div>\u7ECF\u9A8C</div></div>
             <div class="report-card"><div class="num">${shownGold} G</div><div>\u91D1\u5E01</div></div>
             <div class="report-card"><div class="num">${dropText ? "\u83B7\u5F97" : "\u2014"}</div><div>${dropText || "\u65E0\u6389\u843D"}</div></div>
           </div>
-          <div class="info-card">${b.monster.id === "final_boss" ? "\u4F60\u51FB\u8D25\u4E86\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\u3002\u4F1A\u8BA1\u3001\u5BA1\u8BA1\u3001\u8D22\u7BA1\u3001\u7A0E\u6CD5\u3001\u7ECF\u6D4E\u6CD5\u548C\u6218\u7565\u516D\u57DF\u91CD\u65B0\u5E73\u8861\uFF0C\u8BB0\u8D26\u5927\u9646\u6062\u590D\u4E86\u79E9\u5E8F\u3002" : b.monster.id === "boss_1" ? "\u4F60\u51FB\u8D25\u4E86\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u3002\u5C0F\u5206\uFF1A\u501F\u8D37\u91CD\u65B0\u5E73\u8861\u4E86\uFF0C\u8C22\u8C22\u4F60\uFF0C\u4F1A\u8BA1\u52C7\u8005\u3002<br>\u4E0B\u4E00\u7AD9\uFF1A\u5BA1\u8BA1\u94C1\u5821\u3002\u5B8C\u6574\u533A\u57DF\u7684\u5192\u9669\u5C06\u5728\u540E\u7EED\u7248\u672C\u89E3\u9501\u3002" : ZONE_BOSS_STATE[b.monster.id] ? `\u4F60\u51FB\u8D25\u4E86${b.monster.label}\u3002${((_a = REGION_BOSS_INTRO[b.monster.id]) == null ? void 0 : _a.text) || "\u533A\u57DF\u79E9\u5E8F\u6B63\u5728\u6062\u590D\u3002"}` : state.zone === "strategy_star" ? "\u6218\u7565\u661F\u5854\u7684\u8FF7\u96FE\u6B63\u5728\u6D88\u6563\uFF0C\u4F60\u5DF2\u63A5\u8FD1\u516D\u57DF\u5E73\u8861\u3002" : state.zone === "law_temple" ? "\u6CD5\u6761\u795E\u6BBF\u7684\u89C4\u5219\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u5DE9\u56FA\u7ECF\u6D4E\u6CD5\u77E5\u8BC6\u3002" : state.zone === "tax_wasteland" ? "\u7A0E\u7387\u8352\u539F\u7684\u7533\u62A5\u79E9\u5E8F\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u638C\u63E1\u7A0E\u6CD5\u89C4\u5219\u3002" : state.zone === "capital_forest" ? "\u8D44\u672C\u5BC6\u6797\u4E2D\u7684\u8D22\u52A1\u5F02\u5E38\u6B63\u5728\u6D88\u9000\uFF0C\u7EE7\u7EED\u6DF1\u5316\u8D22\u7BA1\u77E5\u8BC6\u3002" : state.zone === "audit_tower" ? "\u5BA1\u8BA1\u94C1\u5821\u7684\u8BC1\u636E\u94FE\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u68C0\u67E5\u5269\u4F59\u5F02\u5E38\u3002" : "\u7EE7\u7EED\u63A2\u7D22\u91D1\u7B97\u539F\u91CE\u3002"}</div>
-          <div class="modal-actions">
-            <button class="pixel-btn" data-action="close">\u8FD4\u56DE\u5730\u56FE</button>
-            ${b.monster.id === "final_boss" ? '<button class="pixel-btn secondary" data-action="ending">\u67E5\u770B\u7ED3\u5C40</button>' : ""}
-          </div>
+          <div class="info-card">${victoryInfo}</div>
+          <div class="modal-actions">${victoryActions}</div>
         </div>
       `);
-        if (state.gameCompleted) advanceMainStory(8);
-        else if (state.strategyCleared) advanceMainStory(7);
-        else if (state.lawCleared) advanceMainStory(6);
-        else if (state.taxCleared) advanceMainStory(5);
-        else if (state.capitalCleared) advanceMainStory(4);
-        else if (state.auditCleared) advanceMainStory(3);
-        else if (state.bossKilled) advanceMainStory(2);
+        if (!isDungeon && !isWrongBoss) {
+          if (state.gameCompleted) advanceMainStory(8);
+          else if (state.strategyCleared) advanceMainStory(7);
+          else if (state.lawCleared) advanceMainStory(6);
+          else if (state.taxCleared) advanceMainStory(5);
+          else if (state.capitalCleared) advanceMainStory(4);
+          else if (state.auditCleared) advanceMainStory(3);
+          else if (state.bossKilled) advanceMainStory(2);
+        }
       }
       state.screen = "map";
       playZoneBgm2(state.zone || "gold_field");
@@ -2176,6 +2233,9 @@
           state.battle.auditMarkActive = false;
           state.player.hp = Math.max(1, state.player.hp - 6);
           state.battle.feedback += "<br>\u5BA1\u8BA1\u6807\u8BB0\u53CD\u566C\uFF0C\u53D7\u5230 6 \u70B9\u4F24\u5BB3\u3002";
+        } else if (state.battle && state.battle.bossMechanicInfo && state.battle.bossMechanicInfo.key === "wrong_boss") {
+          state.battle.wrongCharge = (state.battle.wrongCharge || 0) + 1;
+          state.battle.feedback += "<br>\u9519\u9898\u53CD\u566C\uFF1A\u9B54\u50CF\u5438\u6536\u9519\u8BEF\u5370\u8BB0\uFF0C\u53CD\u51FB\u529B\u63D0\u5347\u3002";
         }
       }
       sfx2(correct ? "correct" : "wrong");
@@ -3240,6 +3300,7 @@
         <div class="modal-actions">
           <button class="pixel-btn" data-action="challenge-start" data-mode="wrong">\u9519\u9898\u4E13\u7EC3</button>
           <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">\u667A\u80FD\u590D\u4E60</button>
+          <button class="pixel-btn secondary" data-action="wrong-boss">\u9519\u9898 Boss</button>
           <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
         </div>
       </div>
@@ -4127,7 +4188,6 @@
       formalTilesets: {},
       interior: null,
       interiorTileset: null,
-      battleBgs: {},
       playerIdle: null,
       playerWalk: null,
       playerSword: null,
@@ -4592,8 +4652,12 @@
         target: 5,
         done: false,
         challengeCount: 0,
-        trainingCount: 0
+        trainingCount: 0,
+        dungeonCleared: false,
+        dungeonBestWave: 0,
+        wrongBossDefeated: false
       },
+      dungeon: null,
       plan: { enabled: true, dailyTarget: 5, subjects: [], streakDays: 0 },
       week: { weekStart: currentWeekKey(), answered: 0, correct: 0, subjects: {}, playSeconds: 0 },
       weeklyHistory: [],
@@ -4695,6 +4759,7 @@
       addEffect,
       getQuestionsByPoint,
       getRandomQuestions,
+      getWrongQuestionsForPoint,
       maybeLevelUp,
       gainPartnerExp,
       updateTask,
@@ -4849,13 +4914,19 @@
         target: state.plan.dailyTarget || 5,
         done: false,
         challengeCount: 0,
-        trainingCount: 0
+        trainingCount: 0,
+        dungeonCleared: false,
+        dungeonBestWave: 0,
+        wrongBossDefeated: false
       };
     } else {
       state.daily.target = state.plan.dailyTarget || state.daily.target;
     }
     if (state.daily.challengeCount === void 0) state.daily.challengeCount = 0;
     if (state.daily.trainingCount === void 0) state.daily.trainingCount = 0;
+    if (state.daily.dungeonCleared === void 0) state.daily.dungeonCleared = false;
+    if (state.daily.dungeonBestWave === void 0) state.daily.dungeonBestWave = 0;
+    if (state.daily.wrongBossDefeated === void 0) state.daily.wrongBossDefeated = false;
     if (!state.settings)
       state.settings = {
         shake: true,
@@ -6805,6 +6876,102 @@
         gold: base.gold
       };
     }
+    const DUNGEON_POOL = {
+      gold_field: {
+        normals: [
+          { label: "\u8D26\u672C\u53F2\u83B1\u59C6", point: "\u4F1A\u8BA1\u7B49\u5F0F", hp: 48, attack: 10, exp: 30, gold: 20 },
+          { label: "\u5206\u5F55\u98DE\u86FE", point: "\u501F\u8D37\u65B9\u5411", hp: 52, attack: 11, exp: 34, gold: 22 },
+          { label: "\u4F59\u989D\u87F9", point: "\u8BD5\u7B97\u5E73\u8861", hp: 56, attack: 12, exp: 38, gold: 24 }
+        ],
+        boss: { label: "\u91D1\u7B97\u5730\u7262\u5DE8\u50CF", point: "\u62A5\u8868", hp: 150, attack: 17, exp: 110, gold: 80 }
+      },
+      audit_tower: {
+        normals: [
+          { label: "\u5E95\u7A3F\u8759\u8760", point: "\u5BA1\u8BA1\u8BC1\u636E", hp: 58, attack: 12, exp: 40, gold: 26 },
+          { label: "\u51FD\u8BC1\u86C7", point: "\u51FD\u8BC1", hp: 62, attack: 13, exp: 44, gold: 28 },
+          { label: "\u63A7\u5236\u5080\u5121", point: "\u5185\u90E8\u63A7\u5236", hp: 66, attack: 14, exp: 48, gold: 30 }
+        ],
+        boss: { label: "\u8BC1\u636E\u738B\u5EA7\u5B88\u536B", point: "\u5BA1\u8BA1\u76EE\u6807", hp: 170, attack: 19, exp: 130, gold: 90 }
+      },
+      capital_forest: {
+        normals: [
+          { label: "\u73B0\u503C\u9E7F", point: "\u8D27\u5E01\u65F6\u95F4\u4EF7\u503C", hp: 60, attack: 13, exp: 42, gold: 28 },
+          { label: "\u6760\u6746\u72FC", point: "\u8D22\u52A1\u6760\u6746", hp: 64, attack: 14, exp: 46, gold: 30 },
+          { label: "\u73B0\u91D1\u6D41\u661F", point: "\u73B0\u91D1\u6D41\u91CF", hp: 68, attack: 15, exp: 50, gold: 32 }
+        ],
+        boss: { label: "\u8D44\u672C\u6811\u738B\u5B88\u536B", point: "\u8D44\u672C\u9884\u7B97", hp: 190, attack: 21, exp: 150, gold: 100 }
+      },
+      tax_wasteland: {
+        normals: [
+          { label: "\u53D1\u7968\u9E70", point: "\u53D1\u7968\u7BA1\u7406", hp: 62, attack: 14, exp: 44, gold: 30 },
+          { label: "\u903E\u671F\u7A0E\u517D", point: "\u7A0E\u6536\u5F81\u7BA1", hp: 66, attack: 15, exp: 48, gold: 32 },
+          { label: "\u7533\u62A5\u8717\u725B", point: "\u4F01\u4E1A\u6240\u5F97\u7A0E", hp: 70, attack: 16, exp: 52, gold: 34 }
+        ],
+        boss: { label: "\u7A0E\u7AE0\u5730\u7262\u5DE8\u50CF", point: "\u7A0E\u6CD5", hp: 210, attack: 23, exp: 170, gold: 110 }
+      },
+      law_temple: {
+        normals: [
+          { label: "\u5408\u540C\u7532\u866B", point: "\u5408\u540C\u6CD5", hp: 64, attack: 15, exp: 46, gold: 32 },
+          { label: "\u7834\u4EA7\u9E26", point: "\u7834\u4EA7\u6CD5", hp: 68, attack: 16, exp: 50, gold: 34 },
+          { label: "\u8BC1\u5238\u9E3D", point: "\u8BC1\u5238\u6CD5", hp: 72, attack: 17, exp: 54, gold: 36 }
+        ],
+        boss: { label: "\u6CD5\u5178\u5BA1\u5224\u8005", point: "\u7ECF\u6D4E\u6CD5", hp: 230, attack: 25, exp: 190, gold: 120 }
+      },
+      strategy_star: {
+        normals: [
+          { label: "\u4E94\u529B\u72EE", point: "\u4E94\u529B\u6A21\u578B", hp: 66, attack: 16, exp: 48, gold: 34 },
+          { label: "\u4EF7\u503C\u94FE\u8718\u86DB", point: "\u4EF7\u503C\u94FE", hp: 70, attack: 17, exp: 52, gold: 36 },
+          { label: "\u98CE\u9669\u732B\u5934\u9E70", point: "\u98CE\u9669\u7BA1\u7406", hp: 74, attack: 18, exp: 56, gold: 38 }
+        ],
+        boss: { label: "\u5E76\u8D2D\u5730\u7262\u9738\u4E3B", point: "\u5E76\u8D2D\u6218\u7565", hp: 250, attack: 27, exp: 210, gold: 130 }
+      }
+    };
+    function getWorstWrongPoint() {
+      var _a;
+      const counts = {};
+      for (const id of state.wrongQuestions || []) {
+        const q = QUESTIONS.find((item) => item.id === id);
+        if (!q) continue;
+        counts[q.point] = (counts[q.point] || 0) + 1;
+      }
+      return ((_a = Object.entries(counts).sort((a, b) => b[1] - a[1])[0]) == null ? void 0 : _a[0]) || "\u516D\u79D1\u9519\u9898";
+    }
+    function getWrongBossMonster() {
+      const wrongCount = Math.max(1, state.wrongQuestions.length || 1);
+      const levelScale = 1 + (state.player.level - 1) * 0.08;
+      return {
+        id: "wrong_boss",
+        type: "boss",
+        isWrongBoss: true,
+        wrongCount,
+        label: "\u9519\u9898\u9B54\u50CF",
+        point: getWorstWrongPoint(),
+        hp: Math.round((90 + wrongCount * 14) * levelScale),
+        attack: 12 + Math.floor(wrongCount / 3) + Math.floor(state.player.level * 0.5),
+        exp: 70 + wrongCount * 14,
+        gold: 60 + wrongCount * 10
+      };
+    }
+    function generateDungeonWaves() {
+      const zone = state.zone || "gold_field";
+      const pool = DUNGEON_POOL[zone] || DUNGEON_POOL.gold_field;
+      const levelScale = 1 + (state.player.level - 1) * 0.07;
+      const waves = pool.normals.slice(0, 4).map((m, i) => ({
+        ...m,
+        id: `dungeon_${zone}_${i + 1}`,
+        type: "monster",
+        hp: Math.round(m.hp * levelScale),
+        attack: m.attack + Math.floor(state.player.level * 0.4)
+      }));
+      waves.push({
+        ...pool.boss,
+        id: `dungeon_${zone}_boss`,
+        type: "boss",
+        hp: Math.round(pool.boss.hp * levelScale),
+        attack: pool.boss.attack + Math.floor(state.player.level * 0.7)
+      });
+      return waves;
+    }
     function tileAt(tx, ty) {
       if (tx < 0 || ty < 0 || tx >= MAP_W || ty >= MAP_H) return 3;
       return getCurrentMapGrid()[ty][tx];
@@ -6967,6 +7134,10 @@
         return !rec || !rec.next || rec.next <= now;
       }).length;
     }
+    function getWrongQuestionsForPoint(point) {
+      const wrongIds = new Set(state.wrongQuestions || []);
+      return QUESTIONS.filter((q) => wrongIds.has(q.id) && (!point || q.point === point));
+    }
     function pointSubject(point) {
       for (const [subject, points] of Object.entries(PLAN_SUBJECT_POINTS)) {
         if (points.includes(point)) return subject;
@@ -7011,6 +7182,15 @@
       if (id === "law_boss") return "trial_ghost";
       if (id === "strategy_boss") return "merge_giant";
       if (id === "final_boss") return "final_boss";
+      if (id === "wrong_boss") return "final_boss";
+      if (id.startsWith("dungeon_")) {
+        if (id.includes("audit")) return "ink_blob";
+        if (id.includes("capital")) return "abacus_golem";
+        if (id.includes("tax")) return "merge_giant";
+        if (id.includes("law")) return "trial_ghost";
+        if (id.includes("strategy")) return "paper_crane";
+        return "paper_crane";
+      }
       return "paper_crane";
     }
     function getActiveEntities() {
@@ -7137,20 +7317,6 @@
           })
         );
       }
-      const battleBgs = {
-        gold_field: "assets/battle_bg/gold_field.png",
-        audit_archive: "assets/battle_bg/audit_archive.png",
-        lake_field: "assets/battle_bg/lake_field.png",
-        bright_wild: "assets/battle_bg/bright_wild.png",
-        town_court: "assets/battle_bg/town_court.png"
-      };
-      for (const [key, src] of Object.entries(battleBgs)) {
-        tasks.push(
-          loadImage(src).then((img) => () => {
-            assets.battleBgs[key] = img;
-          })
-        );
-      }
       const propFiles = {
         chest: "chest.png",
         chestOpen: "chest_open.png",
@@ -7201,16 +7367,6 @@
       assets.goblinIdle._frames = 8;
       assets.goblinAttack._frameWidth = 96;
       assets.goblinAttack._frames = 9;
-      for (const [key, img] of Object.entries(assets.battleBgs)) {
-        if (!img || !img.width) continue;
-        const clean = document.createElement("canvas");
-        clean.width = img.width;
-        clean.height = Math.round(img.height * 0.84);
-        const c = clean.getContext("2d");
-        c.imageSmoothingEnabled = false;
-        c.drawImage(img, 0, 0, img.width, clean.height, 0, 0, clean.width, clean.height);
-        assets.battleBgs[key] = clean;
-      }
     }
     function save() {
       persistSave(state);
@@ -7778,32 +7934,36 @@
       ctx.stroke();
       drawFrame(assets.playerIdle, px, py, 72, 48, animFrame(assets.playerIdle, 3, 2));
     }
-    function drawCoverToCanvas(img) {
-      const scale = Math.max(W / img.width, H2 / img.height);
-      const sw = W / scale;
-      const sh = H2 / scale;
-      ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, 0, 0, W, H2);
-    }
     function drawRegionBattleBackground() {
       const region = state.battle.region || BATTLE_REGIONS.paper_crane;
-      const img = assets.battleBgs[region.bg] || assets.scene;
-      if (img) drawCoverToCanvas(img);
-      else drawSceneCover();
-      const themeColors = {
-        accounting: ["rgba(212, 160, 23, 0.34)", "rgba(212, 160, 23, 0.02)"],
-        auditing: ["rgba(65, 105, 225, 0.36)", "rgba(65, 105, 225, 0.03)"],
-        finance: ["rgba(46, 139, 87, 0.34)", "rgba(46, 139, 87, 0.02)"],
-        tax: ["rgba(255, 99, 71, 0.34)", "rgba(255, 99, 71, 0.02)"],
-        law: ["rgba(123, 104, 238, 0.38)", "rgba(123, 104, 238, 0.03)"],
-        strategy: ["rgba(135, 206, 235, 0.34)", "rgba(135, 206, 235, 0.02)"]
+      const battleThemes = {
+        accounting: { sky: ["#4b3518", "#17130f"], accent: "#f2c95f", hill: "#4c3a24", wall: "#7a5a32" },
+        auditing: { sky: ["#25365c", "#101522"], accent: "#6fa8ff", hill: "#2c3b5c", wall: "#35456b" },
+        finance: { sky: ["#173d2c", "#0b1c14"], accent: "#6fdb9a", hill: "#28513b", wall: "#2f6b4b" },
+        tax: { sky: ["#4a2d1d", "#1a100c"], accent: "#ff9b5c", hill: "#5a3a27", wall: "#7b4c31" },
+        law: { sky: ["#322b4e", "#16121f"], accent: "#ba9cff", hill: "#41375e", wall: "#5d4e83" },
+        strategy: { sky: ["#1f4b61", "#0c1a22"], accent: "#aee8ff", hill: "#285267", wall: "#356a80" },
+        dungeon: { sky: ["#181b2a", "#0c0d15"], accent: "#6fa8ff", hill: "#23263a", wall: "#2f3550" },
+        wrong: { sky: ["#2b1d34", "#120d18"], accent: "#b06cff", hill: "#3b2b47", wall: "#5a3f70" }
       };
-      const colors = themeColors[region.id] || themeColors.accounting;
+      const theme = battleThemes[region.id] || battleThemes.dungeon;
       const grad = ctx.createLinearGradient(0, 0, 0, H2);
-      grad.addColorStop(0, colors[0]);
-      grad.addColorStop(1, colors[1]);
+      grad.addColorStop(0, theme.sky[0]);
+      grad.addColorStop(1, theme.sky[1]);
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, W, H2);
+      ctx.fillStyle = theme.accent;
+      ctx.globalAlpha = 0.22;
+      ctx.fillRect(Math.round(W * 0.7), 42, 52, 52);
+      ctx.globalAlpha = 1;
+      for (let i = 0; i < 6; i++) {
+        const mx = i * 150 - 20;
+        const peakY = 70 + i * 37 % 46;
+        ctx.fillStyle = theme.hill;
+        ctx.fillRect(mx, H2 * 0.28 - peakY + 54, 150, peakY + 90);
+        ctx.fillStyle = "rgba(0, 0, 0, 0.12)";
+        ctx.fillRect(mx + 104, H2 * 0.28 - peakY + 54, 46, peakY + 90);
+      }
       if (getFormalTileset()) {
         const floorTiles = {
           accounting: { tx: 9, ty: 6 },
@@ -7811,14 +7971,23 @@
           finance: { tx: 4, ty: 4 },
           tax: { tx: 7, ty: 8 },
           law: { tx: 1, ty: 4 },
-          strategy: { tx: 9, ty: 6 }
+          strategy: { tx: 9, ty: 6 },
+          dungeon: { tx: 1, ty: 4 },
+          wrong: { tx: 4, ty: 7 }
         };
         const floor = floorTiles[region.id] || floorTiles.accounting;
+        const wallY = H2 - 238;
+        for (let x = -12; x < W + 12; x += 48) {
+          drawFormalTileScaled(0, 8, x, wallY, 3);
+        }
+        for (let x = 12; x < W; x += 96) {
+          drawFormalTileScaled(1, 8, x, wallY - 36, 3);
+        }
         const floorY = H2 - 118;
         for (let x = 0; x < W; x += TILE) {
           drawFormalTile(floor.tx, floor.ty, x, floorY);
         }
-        ctx.fillStyle = "rgba(16, 12, 8, 0.26)";
+        ctx.fillStyle = "rgba(8, 6, 4, 0.4)";
         ctx.fillRect(0, floorY, W, 118);
       }
       const now = Date.now();
@@ -7828,7 +7997,9 @@
         finance: { count: 12, tint: "rgba(111, 219, 154, 0.72)" },
         tax: { count: 16, tint: "rgba(255, 168, 91, 0.72)" },
         law: { count: 8, tint: "rgba(186, 160, 255, 0.72)" },
-        strategy: { count: 18, tint: "rgba(235, 248, 255, 0.8)" }
+        strategy: { count: 18, tint: "rgba(235, 248, 255, 0.8)" },
+        dungeon: { count: 14, tint: "rgba(111, 168, 255, 0.72)" },
+        wrong: { count: 16, tint: "rgba(176, 108, 255, 0.76)" }
       };
       const cfg = particleConfig[region.id] || particleConfig.accounting;
       if (assets.dust) {
@@ -8658,6 +8829,8 @@
           <button class="pixel-btn secondary" data-action="challenge-start" data-mode="adaptive">\u81EA\u9002\u5E94\u8BAD\u7EC3</button>
           <button class="pixel-btn secondary" data-action="challenge-start" data-mode="mock">\u6A21\u62DF\u8003 10 \u9898</button>
           <button class="pixel-btn secondary" data-action="training-start">\u6BCF\u65E5\u8BAD\u7EC3\u573A</button>
+          <button class="pixel-btn secondary" data-action="dungeon">\u6BCF\u65E5\u6311\u6218\u5730\u7262</button>
+          <button class="pixel-btn secondary" data-action="wrong-boss">\u9519\u9898 Boss</button>
         </div>
         <div class="modal-actions">
           <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
@@ -8693,6 +8866,110 @@
         </div>
       </div>
     `);
+    }
+    function openWrongBossSetup() {
+      if (!isSystemUnlocked("book")) {
+        showToast(systemLockTip("book", "\u9519\u9898 Boss") + " \u89E3\u9501");
+        return;
+      }
+      const wrongCount = state.wrongQuestions.length || 0;
+      if (wrongCount < 1) {
+        showToast("\u81F3\u5C11\u79EF\u7D2F 1 \u9053\u9519\u9898\u540E\uFF0C\u624D\u80FD\u53EC\u5524\u9519\u9898\u9B54\u50CF");
+        return;
+      }
+      const monster = getWrongBossMonster();
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u9519\u9898\u9B54\u50CF \xB7 BOSS</div>
+        <div class="info-card">
+          \u9519\u9898\u9B54\u50CF\u7531\u4F60\u7684\u77E5\u8BC6\u8584\u5F31\u70B9\u51DD\u805A\u800C\u6210\u3002\u5F53\u524D\u9519\u9898 ${wrongCount} \u9053\uFF0C\u5F31\u70B9\u4E3A\u201C${monster.point}\u201D\u3002<br><br>
+          \u6218\u6597\u4E2D\u4F18\u5148\u62BD\u53D6\u9519\u9898\u6C60\u9898\u76EE\uFF0C\u7B54\u5BF9\u4F1A\u76F4\u63A5\u6D88\u9664\u5BF9\u5E94\u9519\u9898\u5370\u8BB0\u5E76\u9020\u6210\u9AD8\u989D\u4F24\u5BB3\uFF1B\u7B54\u9519\u4F1A\u5F3A\u5316\u9B54\u50CF\u7684\u9519\u9898\u53CD\u566C\u3002
+        </div>
+        <div class="report-grid">
+          <div class="report-card"><div class="num">${monster.hp}</div><div>HP</div></div>
+          <div class="report-card"><div class="num">${monster.attack}</div><div>\u653B\u51FB</div></div>
+          <div class="report-card"><div class="num">${monster.gold} G</div><div>\u91D1\u5E01</div></div>
+        </div>
+        <div class="modal-actions">
+          <button class="pixel-btn" data-action="wrong-boss-start">\u6311\u6218\u9519\u9898\u9B54\u50CF</button>
+          <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
+        </div>
+      </div>
+    `);
+    }
+    function openDungeonSetup() {
+      if (!isSystemUnlocked("challenge")) {
+        showToast(systemLockTip("challenge", "\u6BCF\u65E5\u6311\u6218\u5730\u7262") + " \u89E3\u9501");
+        return;
+      }
+      const daily = state.daily;
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u6BCF\u65E5\u6311\u6218\u5730\u7262</div>
+        <div class="info-card">
+          \u8FDE\u7EED\u7A81\u7834 5 \u5C42\u5F53\u524D\u533A\u57DF\u7684\u6218\u6597\u526F\u672C\uFF0C\u6700\u540E\u4E00\u5C42\u4E3A\u5730\u7262 Boss\u3002\u6BCF\u65E5\u9996\u6B21\u901A\u5173\u53EF\u83B7\u5F97\u91D1\u5E01\u3001\u7ECF\u9A8C\u548C\u6280\u80FD\u70B9\u3002<br><br>
+          \u4ECA\u65E5\u72B6\u6001\uFF1A${daily.dungeonCleared ? "\u5DF2\u901A\u5173" : "\u672A\u901A\u5173"} \xB7 \u6700\u4F73\u5C42\u6570\uFF1A${daily.dungeonBestWave || 0} / 5
+        </div>
+        <div class="modal-actions">
+          <button class="pixel-btn" data-action="dungeon-start">${daily.dungeonCleared ? "\u67E5\u770B\u5730\u7262\uFF08\u4ECA\u65E5\u65E0\u5956\u52B1\uFF09" : "\u8FDB\u5165\u5730\u7262"}</button>
+          <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
+        </div>
+      </div>
+    `);
+    }
+    function startWrongBossBattle() {
+      startBattle(getWrongBossMonster(), true);
+    }
+    function startDailyDungeon() {
+      const waves = generateDungeonWaves();
+      state.dungeon = { waves, index: 0, totalWaves: waves.length, startedAt: Date.now() };
+      startBattle(waves[0], false, false, true);
+    }
+    function dungeonNext() {
+      const d = state.dungeon;
+      if (!d) return;
+      d.index += 1;
+      if (d.index >= d.waves.length) {
+        finishDungeon();
+        return;
+      }
+      const wave = d.waves[d.index];
+      closeModal();
+      startBattle(wave, wave.type === "boss", false, true);
+    }
+    function finishDungeon() {
+      const d = state.dungeon;
+      if (!d) return;
+      state.daily.dungeonCleared = true;
+      state.daily.dungeonBestWave = Math.max(state.daily.dungeonBestWave || 0, d.totalWaves);
+      const gold = 120 + d.totalWaves * 20;
+      const exp = 150 + d.totalWaves * 25;
+      state.player.gold += gold;
+      state.player.exp += exp;
+      state.player.skillPoints += 2;
+      unlockAchievement("dungeon_clear");
+      maybeLevelUp();
+      save();
+      updateHUD();
+      state.dungeon = null;
+      openModal(`
+      <div class="modal-box victory">
+        <div class="modal-title">\u6BCF\u65E5\u6311\u6218\u5730\u7262 \xB7 \u901A\u5173</div>
+        <div class="result-banner correct">\u8FDE\u7EED\u7A81\u7834 ${d.totalWaves} \u5C42</div>
+        <div class="reward-grid">
+          <div class="report-card"><div class="num">${gold} G</div><div>\u91D1\u5E01</div></div>
+          <div class="report-card"><div class="num">${exp}</div><div>\u7ECF\u9A8C</div></div>
+          <div class="report-card"><div class="num">+2</div><div>\u6280\u80FD\u70B9</div></div>
+        </div>
+        <div class="info-card">\u6BCF\u65E5\u6311\u6218\u5730\u7262\u4ECA\u65E5\u5DF2\u5B8C\u6210\u3002\u660E\u5929\u4F1A\u751F\u6210\u65B0\u7684\u6311\u6218\uFF0C\u5730\u56FE\u602A\u7269\u548C\u91C7\u96C6\u70B9\u4E5F\u4F1A\u540C\u6B65\u5237\u65B0\u3002</div>
+        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
+      </div>
+    `);
+    }
+    function dungeonLeave() {
+      state.dungeon = null;
+      closeModal();
+      showToast("\u5DF2\u79BB\u5F00\u6BCF\u65E5\u6311\u6218\u5730\u7262");
     }
     function startChallenge(mode) {
       if (mode === "plan" && !state.plan.enabled) {
@@ -9153,6 +9430,8 @@
             ${menuButton("\u4F19\u4F34", "partner", "partner")}
             ${menuButton("\u590D\u4E60\u6311\u6218", "challenge", "challenge")}
             ${menuButton("\u6BCF\u65E5\u8BAD\u7EC3", "training-start", "challenge")}
+            ${menuButton("\u6BCF\u65E5\u5730\u7262", "dungeon", "challenge")}
+            ${menuButton("\u9519\u9898 Boss", "wrong-boss", "book")}
             <button class="pixel-btn secondary" data-action="plan">\u5B66\u4E60\u8BA1\u5212</button>
             <button class="pixel-btn secondary" data-action="weekly-report">\u5B66\u4E60\u5468\u62A5</button>
             <button class="pixel-btn secondary" data-action="challenge-start" data-mode="smart">\u667A\u80FD\u590D\u4E60${dueCount ? ` \xB7 \u4ECA\u65E5\u5230\u671F ${dueCount}` : ""}</button>
@@ -9318,6 +9597,27 @@
       },
       "training-start-battle": (dataset) => {
         startBattle(getTrainingMonster(), false, true);
+      },
+      "wrong-boss": (dataset) => {
+        openWrongBossSetup();
+      },
+      "wrong-boss-start": (dataset) => {
+        startWrongBossBattle();
+      },
+      dungeon: (dataset) => {
+        openDungeonSetup();
+      },
+      "dungeon-start": (dataset) => {
+        startDailyDungeon();
+      },
+      "dungeon-next": (dataset) => {
+        dungeonNext();
+      },
+      "dungeon-finish": (dataset) => {
+        finishDungeon();
+      },
+      "dungeon-leave": (dataset) => {
+        dungeonLeave();
       },
       plan: (dataset) => {
         openPlan();
@@ -9598,6 +9898,12 @@
       openEnhance,
       openPartner,
       openChallengeSetup,
+      openWrongBossSetup,
+      openDungeonSetup,
+      startWrongBossBattle,
+      startDailyDungeon,
+      dungeonNext,
+      finishDungeon,
       openPlan,
       openWeeklyReport,
       openPointMap,
