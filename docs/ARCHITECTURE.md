@@ -24,10 +24,14 @@ CPA_RPG_M2_Demo/
       quests.js           # 任务进度与交付
       quiz.js             # 抽题、洗牌、判题、限时
       save.js             # localStorage 存档
+      events.js           # 键盘、鼠标、模态框事件分发
     render/
       battle.js           # 战斗面板、技能选择、道具选择
+      characters.js       # 玩家、NPC、怪物绘制
       learningUi.js       # 错题本、学习报告、学习周报
+      map.js              # 地图编排、房间渲染
       mapTiles.js         # tileset 底图、建筑、装饰
+      panels.js           # 任务、成就、世界地图、职业、伙伴、学习计划
       ui.js               # 弹窗、Toast、标题页、设置面板
   tests/
     smoke.mjs             # file:// 冒烟测试
@@ -75,6 +79,5 @@ npm run dev
 
 ## 后续拆分计划
 
-1. 将地图编排、房间渲染、玩家/NPC/怪物绘制拆到 `src/render/`。
-2. 将事件分发器、世界地图、职业/伙伴等 UI 拆到独立模块。
-3. 增加类型检查、Lint、单元测试和 CI 自动部署。
+1. 将 `handleAction` 进一步拆为按模块分发的 action 表。
+2. 增加类型检查、Lint、单元测试和 CI 自动部署。

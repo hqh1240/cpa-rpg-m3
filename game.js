@@ -2098,6 +2098,607 @@
     return { drawTileMap, drawDecorations };
   }
 
+  // src/render/map.js
+  function createMapRenderer(deps) {
+    const {
+      ctx,
+      assets,
+      W,
+      H: H2,
+      getState,
+      getActiveEntities,
+      drawNpcSprite,
+      drawChest,
+      drawExit,
+      drawBench,
+      drawEntityLabel,
+      drawPlayerSprite,
+      drawSceneCover,
+      drawTileMap,
+      drawDecorations,
+      drawSign,
+      drawStone,
+      drawCollect,
+      drawPortal,
+      drawLandmark,
+      drawDoor,
+      drawMonsterSprite,
+      drawPlayerIndicator,
+      getMapEffects,
+      isBossUnlocked,
+      isBossDefeated
+    } = deps;
+    function drawMap() {
+      const state = getState();
+      const mapEffects = getMapEffects();
+      if (state.room) {
+        drawRoomBackground(state.room);
+        getActiveEntities().forEach((e) => {
+          if (e.type === "npc") drawNpcSprite(e, e.x - 24, e.y - 48, 48, 48);
+          else if (e.type === "chest") drawChest(e.x, e.y, state.openedChests.includes(e.id));
+          else if (e.type === "exit") drawExit(e);
+          else if (e.type === "bench") drawBench(e);
+          drawEntityLabel(e);
+        });
+        drawPlayerSprite(state.player.x - 28, state.player.y - 64, 56, 56);
+        return;
+      }
+      if (state.zone === "gold_field" && assets.scene) {
+        drawSceneCover();
+      } else {
+        drawTileMap();
+        drawDecorations();
+      }
+      const zoneTints = {
+        audit_tower: "rgba(65, 105, 225, 0.08)",
+        capital_forest: "rgba(46, 139, 87, 0.10)",
+        tax_wasteland: "rgba(228, 87, 46, 0.10)",
+        law_temple: "rgba(107, 91, 149, 0.12)",
+        strategy_star: "rgba(58, 143, 183, 0.12)"
+      };
+      if (zoneTints[state.zone]) {
+        ctx.fillStyle = zoneTints[state.zone];
+        ctx.fillRect(0, 0, W, H2);
+      }
+      const light = ctx.createRadialGradient(W / 2, H2 * 0.42, 60, W / 2, H2 * 0.42, W * 0.72);
+      light.addColorStop(0, "rgba(255, 236, 180, 0.14)");
+      light.addColorStop(1, "rgba(255, 236, 180, 0)");
+      ctx.fillStyle = light;
+      ctx.fillRect(0, 0, W, H2);
+      getActiveEntities().forEach((e) => {
+        if (e.type === "npc") drawNpcSprite(e, e.x - 24, e.y - 48, 48, 48);
+        else if (e.type === "chest") drawChest(e.x, e.y, state.openedChests.includes(e.id));
+        else if (e.type === "sign") drawSign(e);
+        else if (e.type === "stone") drawStone(e.x, e.y);
+        else if (e.type === "collect") {
+          if (!state.collectedMaterialIds.includes(e.id)) {
+            drawCollect(e);
+            drawEntityLabel(e);
+          }
+        } else if (e.type === "portal" || e.type === "zone_gate") {
+          drawPortal(e);
+          drawEntityLabel(e);
+        } else if (e.type === "landmark") {
+          drawLandmark(e);
+          drawEntityLabel(e);
+        } else if (e.type === "door") {
+          drawDoor(e);
+          drawEntityLabel(e);
+        } else if (e.type === "monster") {
+          if (!(state.monstersKilledIds || []).includes(e.id)) {
+            drawMonsterSprite(e, e.x - 32, e.y - 48, 64, 64, false);
+            drawEntityLabel(e);
+          }
+        } else if (e.type === "boss") {
+          if (isBossUnlocked(e) && !isBossDefeated(e)) {
+            drawMonsterSprite(e, e.x - 60, e.y - 88, 120, 120, true);
+            drawEntityLabel(e);
+          }
+        } else {
+          drawEntityLabel(e);
+        }
+      });
+      drawPlayerIndicator(state.player.x, state.player.y);
+      drawPlayerSprite(state.player.x - 28, state.player.y - 64, 56, 56);
+      const now = Date.now();
+      for (let i = mapEffects.length - 1; i >= 0; i--) {
+        const e = mapEffects[i];
+        if (now - e.born > 1e3) {
+          mapEffects.splice(i, 1);
+          continue;
+        }
+        const age = now - e.born;
+        ctx.globalAlpha = Math.max(0, 1 - age / 1e3);
+        ctx.fillStyle = e.color;
+        ctx.font = "bold 20px 'Microsoft YaHei'";
+        ctx.fillText(e.text, e.x, e.y - age * 0.03);
+        ctx.globalAlpha = 1;
+      }
+    }
+    function drawInteriorTile2(col, row, dx, dy, scale = 3) {
+      if (!assets.interiorTileset) return;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(assets.interiorTileset, col * 16, row * 16, 16, 16, dx, dy, 16 * scale, 16 * scale);
+    }
+    function drawFormalRoomFurniture(roomId) {
+      if (!assets.interiorTileset) return;
+      if (roomId === "shop") {
+        drawInteriorTile2(4, 0, 120, 250, 4);
+        drawInteriorTile2(5, 0, 184, 250, 4);
+        drawInteriorTile2(6, 0, 540, 160, 3);
+        drawInteriorTile2(7, 0, 588, 160, 3);
+        drawInteriorTile2(8, 0, 540, 220, 3);
+        drawInteriorTile2(9, 0, 588, 220, 3);
+      } else if (roomId === "home") {
+        drawInteriorTile2(4, 1, 520, 180, 4);
+        drawInteriorTile2(5, 1, 584, 180, 4);
+        drawInteriorTile2(6, 1, 648, 180, 4);
+        drawInteriorTile2(4, 0, 130, 250, 3);
+        drawInteriorTile2(5, 0, 178, 250, 3);
+      } else if (roomId === "workshop" || roomId === "audit_meeting" || roomId === "strategy_sandbox") {
+        drawInteriorTile2(0, 1, 100, 220, 4);
+        drawInteriorTile2(1, 1, 164, 220, 4);
+        drawInteriorTile2(0, 1, 500, 180, 4);
+        drawInteriorTile2(1, 1, 564, 180, 4);
+      } else if (roomId === "archive" || roomId === "audit_evidence" || roomId === "law_securities") {
+        drawInteriorTile2(8, 1, 480, 150, 4);
+        drawInteriorTile2(9, 1, 544, 150, 4);
+        drawInteriorTile2(8, 1, 608, 150, 4);
+        drawInteriorTile2(4, 0, 120, 240, 3);
+        drawInteriorTile2(5, 0, 168, 240, 3);
+      } else if (roomId === "ledger" || roomId === "capital_structure" || roomId === "tax_cit") {
+        drawInteriorTile2(8, 1, 480, 170, 4);
+        drawInteriorTile2(9, 1, 544, 170, 4);
+        drawInteriorTile2(4, 0, 120, 230, 3);
+        drawInteriorTile2(5, 0, 168, 230, 3);
+      } else {
+        drawInteriorTile2(4, 0, 130, 230, 3);
+        drawInteriorTile2(5, 0, 178, 230, 3);
+        drawInteriorTile2(6, 0, 520, 200, 3);
+        drawInteriorTile2(7, 0, 568, 200, 3);
+      }
+    }
+    function drawRoomBackground(roomId) {
+      const state = getState();
+      ctx.fillStyle = "#241a14";
+      ctx.fillRect(0, 0, W, H2);
+      if (assets.interior) {
+        const img = assets.interior;
+        const scale = Math.max(W / img.width, H2 / img.height);
+        const sw = W / scale;
+        const sh = H2 / scale;
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, 0, 0, W, H2);
+        ctx.fillStyle = "rgba(30, 22, 16, 0.30)";
+        ctx.fillRect(0, 0, W, H2);
+      } else {
+        ctx.fillStyle = "#6d4327";
+        ctx.fillRect(0, 0, W, 78);
+        ctx.fillStyle = "#8f5a33";
+        ctx.fillRect(0, 0, W, 8);
+        ctx.fillStyle = "#a9784a";
+        ctx.fillRect(0, 78, W, H2 - 78);
+        ctx.strokeStyle = "#7a4a28";
+        ctx.lineWidth = 2;
+        for (let y = 78; y < H2; y += 34) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(W, y);
+          ctx.stroke();
+        }
+      }
+      if (roomId === "shop") {
+        ctx.fillStyle = "#5c3a1e";
+        ctx.fillRect(120, 250, 170, 70);
+        ctx.fillStyle = "#b97b38";
+        ctx.fillRect(120, 250, 170, 16);
+        ctx.fillStyle = "#4a2e1a";
+        ctx.fillRect(540, 160, 230, 130);
+        ctx.fillStyle = "#c69a5d";
+        ctx.fillRect(548, 170, 214, 12);
+        ctx.fillRect(548, 210, 214, 12);
+        ctx.fillRect(548, 250, 214, 12);
+      } else if (roomId === "home") {
+        ctx.fillStyle = "#4a2e1a";
+        ctx.fillRect(520, 180, 260, 150);
+        ctx.fillStyle = "#c76a4f";
+        ctx.fillRect(532, 192, 236, 100);
+        ctx.fillStyle = "#f2d9b0";
+        ctx.fillRect(540, 192, 220, 18);
+        ctx.fillStyle = "#5c3a1e";
+        ctx.fillRect(130, 250, 180, 80);
+        ctx.fillStyle = "#8a5a2c";
+        ctx.fillRect(130, 250, 180, 14);
+        ctx.fillStyle = "#f2d175";
+        ctx.fillRect(150, 270, 50, 8);
+      } else if (roomId === "archive") {
+        ctx.fillStyle = "#4a2e1a";
+        ctx.fillRect(480, 150, 260, 210);
+        ctx.fillStyle = "#8f6b3f";
+        ctx.fillRect(492, 162, 236, 20);
+        ctx.fillRect(492, 210, 236, 20);
+        ctx.fillRect(492, 258, 236, 20);
+        ctx.fillStyle = "#6d4327";
+        ctx.fillRect(120, 240, 220, 120);
+        ctx.fillStyle = "#b97b38";
+        ctx.fillRect(120, 240, 220, 16);
+      } else if (roomId === "ledger") {
+        ctx.fillStyle = "#4a2e1a";
+        ctx.fillRect(480, 170, 260, 220);
+        ctx.fillStyle = "#8f6b3f";
+        ctx.fillRect(492, 182, 236, 18);
+        ctx.fillStyle = "#5c3a1e";
+        ctx.fillRect(120, 230, 220, 130);
+        ctx.fillStyle = "#8a5a2c";
+        ctx.fillRect(120, 230, 220, 16);
+        ctx.fillStyle = "#f2d175";
+        ctx.fillRect(140, 260, 60, 10);
+        ctx.fillRect(220, 260, 60, 10);
+      } else if (roomId === "audit_room") {
+        ctx.fillStyle = "#2b3045";
+        ctx.fillRect(120, 170, 240, 210);
+        ctx.fillStyle = "#4169e1";
+        ctx.fillRect(132, 182, 216, 20);
+        ctx.fillRect(132, 230, 216, 20);
+        ctx.fillRect(132, 278, 216, 20);
+        ctx.fillStyle = "#b8c4d8";
+        ctx.fillRect(500, 190, 280, 220);
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.arc(640, 300, 46, 0, Math.PI * 2);
+        ctx.strokeStyle = "#4169e1";
+        ctx.lineWidth = 5;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(676, 336);
+        ctx.lineTo(716, 376);
+        ctx.stroke();
+      } else if (roomId === "finance_room") {
+        ctx.fillStyle = "#245228";
+        ctx.fillRect(120, 230, 240, 150);
+        ctx.fillStyle = "#2e8b57";
+        ctx.fillRect(120, 230, 240, 18);
+        ctx.fillStyle = "#9bc86f";
+        ctx.fillRect(140, 270, 70, 18);
+        ctx.fillRect(140, 310, 70, 18);
+        ctx.fillStyle = "#f2c95f";
+        ctx.fillRect(500, 170, 280, 240);
+        ctx.fillStyle = "#173a2a";
+        ctx.fillRect(520, 190, 100, 60);
+        ctx.fillRect(520, 270, 100, 60);
+        ctx.fillRect(640, 230, 100, 60);
+        ctx.fillStyle = "#ffffff";
+        for (let i = 0; i < 8; i++) {
+          const bx = 120 + i * 90 + Math.sin(Date.now() / 700 + i) * 8;
+          ctx.fillRect(bx, 430 - i * 14, 3, 3);
+        }
+      } else if (roomId === "tax_room") {
+        ctx.fillStyle = "#7a3218";
+        ctx.fillRect(120, 210, 260, 180);
+        ctx.fillStyle = "#e4572e";
+        ctx.fillRect(120, 210, 260, 18);
+        ctx.fillStyle = "#f2c14e";
+        ctx.fillRect(140, 250, 70, 12);
+        ctx.fillRect(140, 280, 70, 12);
+        ctx.fillRect(140, 310, 70, 12);
+        ctx.fillStyle = "#4a2a1a";
+        ctx.fillRect(500, 180, 280, 230);
+        ctx.fillStyle = "#fff2cf";
+        ctx.fillRect(520, 200, 90, 14);
+        ctx.fillRect(520, 226, 90, 14);
+        ctx.fillRect(520, 252, 90, 14);
+        ctx.fillRect(640, 200, 90, 14);
+        ctx.fillRect(640, 226, 90, 14);
+      } else if (roomId === "law_room") {
+        ctx.fillStyle = "#3a2a3a";
+        ctx.fillRect(120, 160, 260, 230);
+        ctx.fillStyle = "#6b5b95";
+        ctx.fillRect(132, 172, 236, 18);
+        ctx.fillRect(132, 220, 236, 18);
+        ctx.fillRect(132, 268, 236, 18);
+        ctx.fillStyle = "#d8c8e8";
+        ctx.fillRect(520, 210, 260, 180);
+        ctx.fillStyle = "#8a7bb8";
+        ctx.beginPath();
+        ctx.moveTo(640, 220);
+        ctx.lineTo(700, 220);
+        ctx.lineTo(680, 250);
+        ctx.lineTo(620, 250);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = "#f2c95f";
+        ctx.fillRect(644, 250, 12, 60);
+        ctx.fillRect(610, 250, 80, 10);
+      } else if (roomId === "strategy_room") {
+        ctx.fillStyle = "#173a5c";
+        ctx.fillRect(120, 190, 260, 200);
+        ctx.fillStyle = "#3a8fb7";
+        ctx.fillRect(120, 190, 260, 18);
+        ctx.fillStyle = "#8fd3f2";
+        for (let i = 0; i < 8; i++) {
+          for (let j = 0; j < 5; j++) {
+            ctx.fillRect(150 + i * 24, 230 + j * 22, 14, 10);
+          }
+        }
+        ctx.fillStyle = "#1d3557";
+        ctx.fillRect(500, 170, 280, 230);
+        ctx.fillStyle = "#ffd166";
+        ctx.fillRect(530, 200, 90, 60);
+        ctx.fillRect(650, 200, 90, 60);
+        ctx.fillRect(530, 280, 90, 60);
+        ctx.fillRect(650, 280, 90, 60);
+      } else if (roomId === "audit_meeting") {
+        ctx.fillStyle = "#2b3045";
+        ctx.fillRect(120, 210, 720, 190);
+        ctx.fillStyle = "#4169e1";
+        ctx.fillRect(120, 210, 720, 18);
+        ctx.fillStyle = "#b8c4d8";
+        ctx.fillRect(180, 260, 560, 18);
+        ctx.fillRect(180, 320, 560, 18);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(300, 240, 320, 10);
+        ctx.fillStyle = "#6f7d8f";
+        for (let i = 0; i < 6; i++) {
+          ctx.fillRect(160 + i * 110, 280, 70, 16);
+        }
+      } else if (roomId === "audit_evidence") {
+        ctx.fillStyle = "#1f2733";
+        ctx.fillRect(120, 150, 260, 270);
+        ctx.fillStyle = "#4169e1";
+        ctx.fillRect(132, 162, 236, 18);
+        ctx.fillRect(132, 210, 236, 18);
+        ctx.fillRect(132, 258, 236, 18);
+        ctx.fillRect(132, 306, 236, 18);
+        ctx.fillStyle = "#8f6b3f";
+        ctx.fillRect(500, 180, 280, 240);
+        ctx.fillStyle = "#f2c95f";
+        ctx.fillRect(520, 200, 80, 40);
+        ctx.fillRect(640, 200, 80, 40);
+        ctx.fillRect(520, 280, 80, 40);
+        ctx.fillRect(640, 280, 80, 40);
+        ctx.fillStyle = "#5c3a1e";
+        ctx.fillRect(520, 232, 80, 6);
+        ctx.fillRect(640, 232, 80, 6);
+        ctx.fillRect(520, 312, 80, 6);
+        ctx.fillRect(640, 312, 80, 6);
+      } else if (roomId === "audit_chief") {
+        ctx.fillStyle = "#3a2e24";
+        ctx.fillRect(120, 200, 280, 190);
+        ctx.fillStyle = "#6d4327";
+        ctx.fillRect(120, 200, 280, 18);
+        ctx.fillStyle = "#8a5a2c";
+        ctx.fillRect(150, 260, 220, 16);
+        ctx.fillStyle = "#f2d175";
+        ctx.fillRect(170, 300, 60, 40);
+        ctx.fillRect(250, 300, 60, 40);
+        ctx.fillStyle = "#2b3045";
+        ctx.fillRect(500, 170, 280, 230);
+        ctx.fillStyle = "#b8c4d8";
+        ctx.fillRect(520, 190, 240, 60);
+        ctx.fillStyle = "#ffd166";
+        ctx.fillRect(680, 300, 70, 40);
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 28px 'Microsoft YaHei'";
+        ctx.fillText("\u5DF2\u5BA1", 696, 328);
+      } else if (roomId === "capital_cashflow") {
+        ctx.fillStyle = "#245228";
+        ctx.fillRect(120, 190, 720, 220);
+        ctx.fillStyle = "#2e8b57";
+        ctx.fillRect(120, 190, 720, 18);
+        ctx.fillStyle = "#9bc86f";
+        for (let i = 0; i < 5; i++) {
+          ctx.fillRect(170 + i * 130, 250, 90, 22);
+          ctx.fillRect(170 + i * 130, 320, 90, 22);
+        }
+        ctx.fillStyle = "#f2c95f";
+        for (let i = 0; i < 5; i++) {
+          ctx.fillRect(200 + i * 130, 225, 12, 12);
+          ctx.fillRect(200 + i * 130, 295, 12, 12);
+        }
+      } else if (roomId === "capital_structure") {
+        ctx.fillStyle = "#173a2a";
+        ctx.fillRect(120, 200, 300, 200);
+        ctx.fillStyle = "#2e8b57";
+        ctx.fillRect(120, 200, 300, 18);
+        ctx.fillStyle = "#9bc86f";
+        ctx.fillRect(150, 260, 240, 16);
+        ctx.fillRect(150, 300, 240, 16);
+        ctx.fillStyle = "#f2c95f";
+        ctx.fillRect(150, 240, 80, 14);
+        ctx.fillRect(310, 240, 80, 14);
+        ctx.fillStyle = "#3a8fb7";
+        ctx.fillRect(500, 170, 280, 230);
+        ctx.fillStyle = "#8fd3f2";
+        ctx.fillRect(520, 200, 110, 60);
+        ctx.fillRect(650, 200, 110, 60);
+        ctx.fillRect(520, 290, 110, 60);
+        ctx.fillRect(650, 290, 110, 60);
+      } else if (roomId === "capital_investment") {
+        ctx.fillStyle = "#1d3557";
+        ctx.fillRect(120, 170, 280, 240);
+        ctx.fillStyle = "#3a8fb7";
+        ctx.fillRect(120, 170, 280, 18);
+        ctx.fillStyle = "#8fd3f2";
+        ctx.fillRect(140, 210, 100, 50);
+        ctx.fillRect(260, 210, 100, 50);
+        ctx.fillRect(140, 280, 100, 50);
+        ctx.fillRect(260, 280, 100, 50);
+        ctx.fillStyle = "#ffd166";
+        ctx.fillRect(500, 190, 280, 220);
+        ctx.fillStyle = "#2b3045";
+        ctx.fillRect(520, 210, 100, 40);
+        ctx.fillRect(640, 210, 100, 40);
+        ctx.fillRect(520, 280, 100, 40);
+        ctx.fillRect(640, 280, 100, 40);
+      } else if (roomId === "tax_vat") {
+        ctx.fillStyle = "#7a3218";
+        ctx.fillRect(120, 190, 720, 220);
+        ctx.fillStyle = "#e4572e";
+        ctx.fillRect(120, 190, 720, 18);
+        ctx.fillStyle = "#fff2cf";
+        for (let i = 0; i < 6; i++) {
+          ctx.fillRect(160 + i * 110, 240, 80, 30);
+          ctx.fillRect(160 + i * 110, 300, 80, 30);
+        }
+        ctx.fillStyle = "#f2c14e";
+        for (let i = 0; i < 6; i++) {
+          ctx.fillRect(180 + i * 110, 260, 40, 10);
+          ctx.fillRect(180 + i * 110, 320, 40, 10);
+        }
+      } else if (roomId === "tax_cit") {
+        ctx.fillStyle = "#4a2a1a";
+        ctx.fillRect(120, 200, 300, 200);
+        ctx.fillStyle = "#e4572e";
+        ctx.fillRect(120, 200, 300, 18);
+        ctx.fillStyle = "#f2c14e";
+        ctx.fillRect(150, 250, 240, 16);
+        ctx.fillRect(150, 290, 240, 16);
+        ctx.fillRect(150, 330, 240, 16);
+        ctx.fillStyle = "#fff2cf";
+        ctx.fillRect(500, 180, 280, 230);
+        ctx.fillStyle = "#4a2a1a";
+        ctx.fillRect(520, 200, 90, 50);
+        ctx.fillRect(640, 200, 90, 50);
+        ctx.fillRect(520, 280, 90, 50);
+        ctx.fillRect(640, 280, 90, 50);
+      } else if (roomId === "tax_incentive") {
+        ctx.fillStyle = "#245228";
+        ctx.fillRect(120, 170, 280, 240);
+        ctx.fillStyle = "#2e8b57";
+        ctx.fillRect(120, 170, 280, 18);
+        ctx.fillStyle = "#9bc86f";
+        ctx.fillRect(150, 210, 100, 50);
+        ctx.fillRect(280, 210, 100, 50);
+        ctx.fillRect(150, 290, 100, 50);
+        ctx.fillRect(280, 290, 100, 50);
+        ctx.fillStyle = "#f2c95f";
+        ctx.fillRect(500, 190, 280, 220);
+        ctx.fillStyle = "#245228";
+        ctx.fillRect(520, 210, 100, 40);
+        ctx.fillRect(650, 210, 100, 40);
+        ctx.fillRect(520, 290, 100, 40);
+        ctx.fillRect(650, 290, 100, 40);
+      } else if (roomId === "law_contract") {
+        ctx.fillStyle = "#3a2a3a";
+        ctx.fillRect(120, 190, 720, 220);
+        ctx.fillStyle = "#6b5b95";
+        ctx.fillRect(120, 190, 720, 18);
+        ctx.fillStyle = "#d8c8e8";
+        for (let i = 0; i < 5; i++) {
+          ctx.fillRect(160 + i * 130, 240, 90, 30);
+          ctx.fillRect(160 + i * 130, 300, 90, 30);
+        }
+        ctx.fillStyle = "#f2c95f";
+        ctx.beginPath();
+        ctx.moveTo(820, 230);
+        ctx.lineTo(860, 230);
+        ctx.lineTo(845, 270);
+        ctx.lineTo(800, 270);
+        ctx.closePath();
+        ctx.fill();
+      } else if (roomId === "law_securities") {
+        ctx.fillStyle = "#2b3045";
+        ctx.fillRect(120, 170, 280, 240);
+        ctx.fillStyle = "#4169e1";
+        ctx.fillRect(120, 170, 280, 18);
+        ctx.fillStyle = "#b8c4d8";
+        ctx.fillRect(140, 210, 240, 16);
+        ctx.fillRect(140, 250, 240, 16);
+        ctx.fillRect(140, 290, 240, 16);
+        ctx.fillStyle = "#87ceeb";
+        ctx.fillRect(500, 190, 280, 220);
+        ctx.fillStyle = "#1d3557";
+        ctx.fillRect(520, 210, 100, 50);
+        ctx.fillRect(650, 210, 100, 50);
+        ctx.fillRect(520, 290, 100, 50);
+        ctx.fillRect(650, 290, 100, 50);
+      } else if (roomId === "law_bankruptcy") {
+        ctx.fillStyle = "#241a14";
+        ctx.fillRect(120, 170, 720, 240);
+        ctx.fillStyle = "#5c3a1e";
+        ctx.fillRect(120, 170, 720, 18);
+        ctx.fillStyle = "#8a5a2c";
+        ctx.fillRect(200, 260, 560, 16);
+        ctx.fillStyle = "#d8c8e8";
+        ctx.fillRect(380, 220, 200, 34);
+        ctx.fillStyle = "#f2c95f";
+        ctx.fillRect(720, 250, 60, 18);
+        ctx.fillRect(740, 268, 18, 70);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(180, 180, 90, 60);
+        ctx.fillRect(690, 180, 90, 60);
+      } else if (roomId === "strategy_sandbox") {
+        ctx.fillStyle = "#173a5c";
+        ctx.fillRect(120, 190, 720, 220);
+        ctx.fillStyle = "#3a8fb7";
+        ctx.fillRect(120, 190, 720, 18);
+        ctx.fillStyle = "#8fd3f2";
+        for (let i = 0; i < 7; i++) {
+          ctx.fillRect(150 + i * 90, 230, 60, 60);
+          ctx.fillRect(150 + i * 90, 320, 60, 60);
+        }
+        ctx.fillStyle = "#ffd166";
+        for (let i = 0; i < 7; i++) {
+          ctx.fillRect(180 + i * 90, 250, 16, 16);
+          ctx.fillRect(180 + i * 90, 340, 16, 16);
+        }
+      } else if (roomId === "strategy_five") {
+        ctx.fillStyle = "#1d3557";
+        ctx.fillRect(120, 170, 280, 240);
+        ctx.fillStyle = "#3a8fb7";
+        ctx.fillRect(120, 170, 280, 18);
+        ctx.fillStyle = "#8fd3f2";
+        for (let i = 0; i < 5; i++) {
+          ctx.fillRect(150 + i * 44, 220, 34, 120);
+        }
+        ctx.fillStyle = "#ffd166";
+        ctx.fillRect(500, 190, 280, 220);
+        ctx.fillStyle = "#173a5c";
+        ctx.fillRect(520, 210, 80, 40);
+        ctx.fillRect(620, 210, 80, 40);
+        ctx.fillRect(720, 210, 40, 40);
+        ctx.fillRect(520, 280, 80, 40);
+        ctx.fillRect(620, 280, 80, 40);
+        ctx.fillRect(720, 280, 40, 40);
+      } else if (roomId === "strategy_ma") {
+        ctx.fillStyle = "#2b3045";
+        ctx.fillRect(120, 170, 280, 240);
+        ctx.fillStyle = "#4169e1";
+        ctx.fillRect(120, 170, 280, 18);
+        ctx.fillStyle = "#b8c4d8";
+        ctx.fillRect(150, 210, 100, 50);
+        ctx.fillRect(280, 210, 100, 50);
+        ctx.fillRect(150, 290, 100, 50);
+        ctx.fillRect(280, 290, 100, 50);
+        ctx.fillStyle = "#ffd166";
+        ctx.fillRect(200, 240, 130, 10);
+        ctx.fillRect(200, 320, 130, 10);
+        ctx.fillStyle = "#f2c95f";
+        ctx.fillRect(500, 190, 280, 220);
+        ctx.fillStyle = "#1d3557";
+        ctx.fillRect(520, 210, 90, 50);
+        ctx.fillRect(650, 210, 90, 50);
+        ctx.fillRect(520, 290, 90, 50);
+        ctx.fillRect(650, 290, 90, 50);
+      } else {
+        ctx.fillStyle = "#4a2e1a";
+        ctx.fillRect(100, 220, 220, 120);
+        ctx.fillStyle = "#8a5a2c";
+        ctx.fillRect(100, 220, 220, 18);
+        ctx.fillStyle = "#5c3a1e";
+        ctx.fillRect(500, 180, 240, 150);
+        ctx.fillStyle = "#7a4a28";
+        ctx.fillRect(500, 180, 240, 18);
+        ctx.fillStyle = "#f2d175";
+        ctx.fillRect(560, 250, 40, 20);
+        ctx.fillRect(640, 250, 40, 20);
+      }
+      ctx.fillStyle = "rgba(255, 230, 180, 0.12)";
+      ctx.fillRect(0, 78, W, 14);
+    }
+    return { drawMap, drawRoomBackground };
+  }
+
   // src/render/ui.js
   function createUiSystem(deps) {
     const {
@@ -2443,6 +3044,661 @@
     return { openBook, openReport, openWeeklyReport };
   }
 
+  // src/render/characters.js
+  var PLAYER_DIR_COL = { down: 0, right: 1, left: 2, up: 3 };
+  var JOB_TINT = {
+    accountant: "rgba(212, 160, 23, 0.72)",
+    auditor: "rgba(65, 105, 225, 0.72)",
+    finance: "rgba(46, 139, 87, 0.72)",
+    tax: "rgba(228, 87, 46, 0.72)",
+    law: "rgba(107, 91, 149, 0.72)",
+    strategy: "rgba(58, 143, 183, 0.72)"
+  };
+  var MONSTER_TINT = {
+    paper_crane: "rgba(255, 214, 102, 0.62)",
+    ink_blob: "rgba(70, 80, 140, 0.68)",
+    abacus_golem: "rgba(184, 124, 62, 0.68)",
+    trial_ghost: "rgba(154, 164, 220, 0.66)",
+    merge_giant: "rgba(192, 72, 62, 0.66)",
+    final_boss: "rgba(104, 62, 188, 0.74)"
+  };
+  var NPC_JOB_SPRITE = {
+    npc_xiaofen: "accountant",
+    npc_shenming: "auditor",
+    npc_old: "law",
+    room_shop_npc: "auditor",
+    room_home_npc: "law",
+    room_archive_npc: "auditor",
+    room_ledger_npc: "finance",
+    room_audit_npc: "auditor",
+    room_finance_npc: "finance",
+    room_tax_npc: "tax",
+    room_law_npc: "law",
+    room_strategy_npc: "strategy",
+    audit_npc: "auditor",
+    room_audit_meeting_npc: "auditor",
+    room_audit_evidence_npc: "auditor",
+    room_audit_chief_npc: "auditor",
+    capital_npc: "finance",
+    room_capital_cashflow_npc: "finance",
+    room_capital_structure_npc: "finance",
+    room_capital_investment_npc: "finance",
+    tax_npc: "tax",
+    room_tax_vat_npc: "tax",
+    room_tax_cit_npc: "tax",
+    room_tax_incentive_npc: "tax",
+    law_npc: "law",
+    room_law_contract_npc: "law",
+    room_law_securities_npc: "law",
+    room_law_bankruptcy_npc: "law",
+    strategy_npc: "strategy",
+    room_strategy_sandbox_npc: "strategy",
+    room_strategy_five_npc: "strategy",
+    room_strategy_ma_npc: "strategy"
+  };
+  function createCharacterRenderer(deps) {
+    const {
+      ctx,
+      assets,
+      getState,
+      getKeys,
+      getTouch,
+      getMonsterType
+    } = deps;
+    function drawFrame(img, x, y, dw, dh, frame = 0) {
+      ctx.imageSmoothingEnabled = false;
+      const b = img._box || { x: 0, y: 0, w: 96, h: 64 };
+      const sx = b.x + (img._frameWidth ? frame * img._frameWidth : 0);
+      ctx.drawImage(img, sx, b.y, b.w, b.h, x, y, dw, dh);
+    }
+    function animFrame(img, fps = 8, maxFrames = 0) {
+      const total = maxFrames || img._frames || 1;
+      return Math.floor(performance.now() / (1e3 / fps)) % total;
+    }
+    function drawTintedFrame(img, x, y, w, h, frame, tint) {
+      ctx.save();
+      ctx.imageSmoothingEnabled = false;
+      drawFrame(img, x, y, w, h, frame);
+      if (tint) {
+        ctx.globalCompositeOperation = "source-atop";
+        ctx.fillStyle = tint;
+        ctx.fillRect(x, y, w, h);
+      }
+      ctx.restore();
+    }
+    function drawTintedEffect(img, frame, x, y, w, h, tint) {
+      if (!img) return;
+      ctx.save();
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(img, frame * 16, 0, 16, img.height, x, y, w, h);
+      if (tint) {
+        ctx.globalCompositeOperation = "source-atop";
+        ctx.fillStyle = tint;
+        ctx.fillRect(x, y, w, h);
+      }
+      ctx.restore();
+    }
+    function isPlayerMoving() {
+      const state = getState();
+      const keys = getKeys();
+      const touch = getTouch();
+      return Boolean(
+        state.player.moveTarget || keys.ArrowUp || keys.ArrowDown || keys.ArrowLeft || keys.ArrowRight || keys.w || keys.s || keys.a || keys.d || keys.W || keys.S || keys.A || keys.D || touch.up || touch.down || touch.left || touch.right
+      );
+    }
+    function drawPlayerSprite(x, y, w, h) {
+      const state = getState();
+      const facing = state.player.facing || "down";
+      const moving = isPlayerMoving();
+      const img = moving ? assets.playerWalk : assets.playerIdle;
+      const tint = JOB_TINT[state.jobs.current] || JOB_TINT.accountant;
+      if (img && img._box) {
+        const frame = animFrame(img, moving ? 9 : 4, moving ? 8 : 2);
+        if (facing === "left" || facing === "right") {
+          ctx.save();
+          ctx.translate(x + w / 2, 0);
+          ctx.scale(facing === "left" ? -1 : 1, 1);
+          ctx.translate(-(x + w / 2), 0);
+          drawTintedFrame(img, x, y, w, h, frame, tint);
+          ctx.restore();
+        } else {
+          drawTintedFrame(img, x, y, w, h, frame, tint);
+        }
+        ctx.fillStyle = "rgba(30, 20, 10, 0.22)";
+        ctx.beginPath();
+        ctx.ellipse(x + w / 2, y + h - 2, w * 0.32, h * 0.07, 0, 0, Math.PI * 2);
+        ctx.fill();
+        return;
+      }
+      const sheet = assets.playerSheets[state.jobs.current] || assets.playerSheets.accountant;
+      if (sheet) {
+        const col = PLAYER_DIR_COL[facing] || 0;
+        const row = moving ? Math.floor(performance.now() / 110) % 3 : 0;
+        ctx.drawImage(sheet, col * 16, row * 16, 16, 16, x, y, w, h);
+      }
+    }
+    function drawMonsterSprite(m, x, y, w, h, isBoss) {
+      const type = getMonsterType(m.id);
+      const tint = MONSTER_TINT[type] || MONSTER_TINT.paper_crane;
+      const img = isBoss ? assets.goblinAttack : assets.goblinIdle;
+      if (img && img._box) {
+        const frame = animFrame(img, isBoss ? 6 : 8);
+        drawTintedFrame(img, x, y, w, h, frame, tint);
+        ctx.fillStyle = "rgba(30, 20, 10, 0.22)";
+        ctx.beginPath();
+        ctx.ellipse(x + w / 2, y + h - 3, w * 0.3, h * 0.06, 0, 0, Math.PI * 2);
+        ctx.fill();
+        return;
+      }
+      const sheet = assets.monsterSheets[type] || assets.monsterSheets.paper_crane;
+      if (sheet) {
+        ctx.imageSmoothingEnabled = false;
+        const frame = Math.floor(performance.now() / (isBoss ? 190 : 240)) % 2;
+        ctx.drawImage(sheet, 0, frame * 16, 16, 16, x, y, w, h);
+        ctx.fillStyle = "rgba(30, 20, 10, 0.22)";
+        ctx.beginPath();
+        ctx.ellipse(x + w / 2, y + h - 3, w * 0.3, h * 0.06, 0, 0, Math.PI * 2);
+        ctx.fill();
+        return;
+      }
+      drawFrame(assets.goblinIdle, x - 8, y - 8, w + 16, h + 16, animFrame(assets.goblinIdle, 5));
+    }
+    function drawNpcSprite(e, x, y, w, h) {
+      const jobId = NPC_JOB_SPRITE[e.id] || "accountant";
+      if (assets.playerIdle && assets.playerIdle._box) {
+        const frame = animFrame(assets.playerIdle, 3, 2);
+        drawTintedFrame(assets.playerIdle, x, y, w, h, frame, JOB_TINT[jobId] || JOB_TINT.accountant);
+        ctx.fillStyle = "rgba(30, 20, 10, 0.2)";
+        ctx.beginPath();
+        ctx.ellipse(x + w / 2, y + h - 2, w * 0.3, h * 0.06, 0, 0, Math.PI * 2);
+        ctx.fill();
+        return;
+      }
+      const sheet = assets.playerSheets[jobId] || assets.playerSheets.accountant;
+      if (sheet) {
+        ctx.drawImage(sheet, 0, 0, 16, 16, x, y, w, h);
+        return;
+      }
+      drawFrame(assets.playerIdle, x - 8, y - 8, w + 16, h + 16, animFrame(assets.playerIdle, 3, 2));
+    }
+    return {
+      drawFrame,
+      animFrame,
+      drawTintedFrame,
+      drawTintedEffect,
+      drawPlayerSprite,
+      drawMonsterSprite,
+      drawNpcSprite
+    };
+  }
+
+  // src/render/panels.js
+  var JOB_QUESTIONS2 = [
+    {
+      q: "\u4F60\u66F4\u559C\u6B22\u54EA\u79CD\u5B66\u4E60\u65B9\u5F0F\uFF1F",
+      options: [
+        { label: "\u9010\u7B14\u6838\u5BF9\u5206\u5F55\u4E0E\u89C4\u5219", value: "accountant,law" },
+        { label: "\u7528\u6570\u5B57\u548C\u6A21\u578B\u505A\u8BA1\u7B97", value: "finance,tax" },
+        { label: "\u68C0\u67E5\u8BC1\u636E\u3001\u8BC6\u522B\u98CE\u9669", value: "auditor" },
+        { label: "\u4ECE\u5168\u5C40\u770B\u8D8B\u52BF\u548C\u51B3\u7B56", value: "strategy" }
+      ]
+    },
+    {
+      q: "\u6218\u6597\u4E2D\u4F60\u66F4\u503E\u5411\u4E8E\uFF1F",
+      options: [
+        { label: "\u5747\u8861\u653B\u51FB\uFF0C\u7A33\u5B9A\u63A8\u8FDB", value: "accountant" },
+        { label: "\u9AD8\u4F24\u5BB3\u8F93\u51FA", value: "finance,tax" },
+        { label: "\u9632\u5FA1\u3001\u62A4\u76FE\u548C\u63A7\u5236", value: "auditor,law" },
+        { label: "\u53EC\u5524\u4E0E\u5168\u5C40\u5F71\u54CD", value: "strategy" }
+      ]
+    },
+    {
+      q: "\u4F60\u5E0C\u671B\u804C\u4E1A\u6280\u80FD\u504F\u5411\u54EA\u4E2A\u65B9\u5411\uFF1F",
+      options: [
+        { label: "\u4F1A\u8BA1\u57FA\u7840\u4E0E\u5206\u5F55\u8FDE\u51FB", value: "accountant" },
+        { label: "\u5BA1\u8BA1\u8BC1\u636E\u4E0E\u63A7\u5236\u6D4B\u8BD5", value: "auditor" },
+        { label: "\u8D22\u7BA1\u8BA1\u7B97\u4E0E\u8D44\u672C\u9884\u7B97", value: "finance" },
+        { label: "\u7A0E\u6CD5\u8FDC\u7A0B\u4E0E\u7A0E\u6536\u4F18\u60E0", value: "tax" },
+        { label: "\u7ECF\u6D4E\u6CD5\u62A4\u76FE\u4E0E\u89C4\u5219", value: "law" },
+        { label: "\u6218\u7565\u51B3\u7B56\u4E0E\u5168\u5C40\u6307\u6325", value: "strategy" }
+      ]
+    }
+  ];
+  function createPanelsUi(deps) {
+    const {
+      getState,
+      openModal,
+      showToast,
+      isSystemUnlocked,
+      systemLockTip,
+      save,
+      getJobs,
+      ACHIEVEMENTS: ACHIEVEMENTS2,
+      PLAN_SUBJECT_POINTS
+    } = deps;
+    function openTasks() {
+      const state = getState();
+      const rows = state.tasks.map((t) => {
+        const reward = t.reward || { gold: 30, exp: 40, skillPoints: 1 };
+        const pct = Math.min(100, Math.round(t.progress / t.target * 100));
+        return `
+          <div class="book-card">
+            <div><b>${t.done ? "\u2714 " : ""}${t.title}</b><span class="book-status">${t.deliverable ? "\u5F85\u4EA4\u4ED8" : t.done ? "\u5DF2\u5B8C\u6210" : `${t.progress}/${t.target}`}</span></div>
+            <div class="caption">${t.desc}</div>
+            <div class="report-bar"><div style="width:${pct}%"></div></div>
+            <div class="caption">\u5956\u52B1\uFF1A${reward.gold} G \xB7 ${reward.exp} \u7ECF\u9A8C \xB7 ${reward.skillPoints} \u6280\u80FD\u70B9</div>
+          </div>
+        `;
+      }).join("");
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u4EFB\u52A1 \xB7 ${state.tasks.filter((t) => t.done).length}/${state.tasks.length}</div>
+        <div class="modal-text">\u5B8C\u6210\u4EFB\u52A1\u4F1A\u83B7\u5F97\u91D1\u5E01\u3001\u7ECF\u9A8C\u548C\u6280\u80FD\u70B9\u5956\u52B1\u3002</div>
+        ${rows}
+        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
+      </div>
+    `);
+    }
+    function openAchievements() {
+      const state = getState();
+      const rows = Object.entries(ACHIEVEMENTS2).map(([id, a]) => {
+        const unlocked = state.achievements.includes(id);
+        return `
+          <div class="book-card" style="${unlocked ? "" : "opacity:0.62;"}">
+            <div><b>${unlocked ? "\u2714 " : "\u{1F512} "}${a.name}</b><span class="book-status">${unlocked ? "\u5DF2\u89E3\u9501" : "\u672A\u89E3\u9501"}</span></div>
+            <div class="caption">${a.type}</div>
+            <div class="caption">${a.desc}</div>
+            <div class="caption">\u5956\u52B1\uFF1A${a.reward.gold || 0} G / ${a.reward.exp || 0} \u7ECF\u9A8C / ${a.reward.skillPoints || 0} \u6280\u80FD\u70B9</div>
+          </div>
+        `;
+      }).join("");
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u6210\u5C31 \xB7 ${state.achievements.length}/${Object.keys(ACHIEVEMENTS2).length}</div>
+        <div class="modal-text">\u5B8C\u6210\u6218\u6597\u3001\u5B66\u4E60\u3001\u63A2\u7D22\u548C\u6210\u957F\u76EE\u6807\u5373\u53EF\u89E3\u9501\u5956\u52B1\u3002</div>
+        ${rows}
+        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
+      </div>
+    `);
+    }
+    function drawWorldMapCanvas() {
+      const state = getState();
+      const canvas = document.getElementById("worldMapCanvas");
+      if (!canvas) return;
+      const c = canvas.getContext("2d");
+      const regions = [
+        { name: "\u91D1\u7B97\u539F\u91CE", color: "#d4a017", open: true },
+        { name: "\u5BA1\u8BA1\u94C1\u5821", color: "#4169e1", open: !!state.bossKilled },
+        { name: "\u8D44\u672C\u5BC6\u6797", color: "#2e8b57", open: !!state.auditCleared },
+        { name: "\u7A0E\u7387\u8352\u539F", color: "#e4572e", open: !!state.capitalCleared },
+        { name: "\u6CD5\u6761\u795E\u6BBF", color: "#6b5b95", open: !!state.taxCleared },
+        { name: "\u6218\u7565\u661F\u5854", color: "#3a8fb7", open: !!state.lawCleared || !!state.gameCompleted }
+      ];
+      c.clearRect(0, 0, canvas.width, canvas.height);
+      c.fillStyle = "#17130f";
+      c.fillRect(0, 0, canvas.width, canvas.height);
+      c.fillStyle = "rgba(255, 228, 154, 0.08)";
+      for (let i = 0; i < 90; i++) {
+        c.fillRect(i * 97 % canvas.width, i * 41 % canvas.height, 2, 2);
+      }
+      regions.forEach((r, i) => {
+        const x = 24 + i * 134;
+        const y = 30;
+        const w = 116;
+        const h = 190;
+        c.fillStyle = r.open ? "rgba(24, 20, 16, 0.96)" : "rgba(24, 20, 16, 0.62)";
+        c.fillRect(x, y, w, h);
+        c.fillStyle = r.color;
+        c.fillRect(x, y, w, 8);
+        c.fillRect(x, y + 34, w, 4);
+        c.fillStyle = r.open ? "#f2c95f" : "#9a8570";
+        c.font = "bold 18px 'Microsoft YaHei'";
+        c.textAlign = "center";
+        c.fillText(r.name, x + w / 2, y + 26);
+        c.font = "bold 13px 'Microsoft YaHei'";
+        c.fillText(r.open ? "\u5DF2\u5F00\u653E" : "\u672A\u89E3\u9501", x + w / 2, y + 64);
+        c.strokeStyle = "rgba(255, 244, 214, 0.28)";
+        c.lineWidth = 2;
+        c.strokeRect(x + 14, y + 78, w - 28, h - 96);
+        c.textAlign = "left";
+      });
+    }
+    function openWorldMap() {
+      const state = getState();
+      const regions = [
+        { name: "\u91D1\u7B97\u539F\u91CE", subject: "\u4F1A\u8BA1", status: "\u5DF2\u5F00\u653E \xB7 5\u4E2A\u5BA4\u5185\u8BD5\u70BC\u70B9", color: "#d4a017", zone: "gold_field" },
+        { name: "\u5BA1\u8BA1\u94C1\u5821", subject: "\u5BA1\u8BA1", status: state.auditBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.bossKilled ? "\u5DF2\u5F00\u653E" : "\u51FB\u8D25\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u540E\u89E3\u9501", color: "#4169e1", zone: state.bossKilled ? "audit_tower" : null },
+        { name: "\u8D44\u672C\u5BC6\u6797", subject: "\u8D22\u7BA1", status: state.capitalBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.auditCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u5BA1\u8BA1\u94C1\u5821\u540E\u89E3\u9501", color: "#2e8b57", zone: state.auditCleared ? "capital_forest" : null },
+        { name: "\u7A0E\u7387\u8352\u539F", subject: "\u7A0E\u6CD5", status: state.taxBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.capitalCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u8D44\u672C\u5BC6\u6797\u540E\u89E3\u9501", color: "#e4572e", zone: state.capitalCleared ? "tax_wasteland" : null },
+        { name: "\u6CD5\u6761\u795E\u6BBF", subject: "\u7ECF\u6D4E\u6CD5", status: state.lawBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.taxCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u7A0E\u7387\u8352\u539F\u540E\u89E3\u9501", color: "#6b5b95", zone: state.taxCleared ? "law_temple" : null },
+        { name: "\u6218\u7565\u661F\u5854", subject: "\u6218\u7565", status: state.gameCompleted ? "\u5DF2\u901A\u5173" : state.strategyBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.lawCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u6CD5\u6761\u795E\u6BBF\u540E\u89E3\u9501", color: "#3a8fb7", zone: state.lawCleared || state.gameCompleted ? "strategy_star" : null }
+      ];
+      const cards = regions.map((r) => `
+        <div class="panel-light" style="padding:12px;margin-bottom:8px;border-left:6px solid ${r.color};">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;"><b>${r.name}</b> \xB7 ${r.subject}${r.zone ? `<button class="pixel-btn small" data-action="world-zone" data-zone="${r.zone}">\u524D\u5F80</button>` : ""}</div>
+          <div class="caption">${r.status}</div>
+        </div>
+      `).join("");
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u8BB0\u8D26\u5927\u9646 \xB7 \u4E16\u754C\u5730\u56FE</div>
+        <div class="modal-text">\u516D\u533A\u57DF\u5BF9\u5E94\u516D\u79D1\uFF0C\u5B8C\u6574\u5546\u4E1A\u5316\u7248\u672C\u5C06\u9010\u6B65\u5F00\u653E\u3002\u91D1\u7B97\u539F\u91CE\u76EE\u524D\u53EF\u8FDB\u5165\u5546\u5E97\u3001\u5DE5\u574A\u3001\u6863\u6848\u5BA4\u3001\u65E7\u8D26\u623F\uFF0C\u4EE5\u53CA\u5BA1\u8BA1\u3001\u8D22\u7BA1\u3001\u7A0E\u6CD5\u3001\u7ECF\u6D4E\u6CD5\u3001\u6218\u7565\u4E94\u4E2A\u4E3B\u9898\u623F\u95F4\u3002</div>
+        <canvas id="worldMapCanvas" class="world-map-canvas" width="840" height="260"></canvas>
+        ${cards}
+        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
+      </div>
+    `);
+      drawWorldMapCanvas();
+    }
+    function openPartner() {
+      const state = getState();
+      if (!isSystemUnlocked("partner")) {
+        showToast(systemLockTip("partner", "\u4F19\u4F34") + " \u89E3\u9501");
+        return;
+      }
+      const partner = state.partner;
+      const moodLevel = partner.mood < 40 ? "\u964C\u751F" : partner.mood < 70 ? "\u719F\u6089" : "\u4FE1\u8D56";
+      const hpPct = Math.round(partner.hp / partner.maxHp * 100);
+      const expPct = Math.round(partner.exp / partner.expNext * 100);
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u4F19\u4F34 \xB7 ${partner.name}</div>
+        <div class="modal-text">\u8BB0\u8D26\u7CBE\u7075\u4F1A\u5728\u6218\u6597\u4E2D\u81EA\u52A8\u534F\u52A9\u653B\u51FB\u3002\u597D\u611F\u5EA6\u8D8A\u9AD8\uFF0C\u534F\u52A9\u4F24\u5BB3\u8D8A\u9AD8\u3002</div>
+        <div class="report-grid">
+          <div class="report-card"><div class="num">${partner.level}</div><div>\u7B49\u7EA7</div></div>
+          <div class="report-card"><div class="num">${partner.atk + partner.level}</div><div>\u653B\u51FB</div></div>
+          <div class="report-card"><div class="num">${partner.mood}/100</div><div>\u597D\u611F \xB7 ${moodLevel}</div></div>
+        </div>
+        <div class="modal-text"><b>HP</b></div>
+        <div class="report-bar"><div style="width:${hpPct}%"></div></div>
+        <div class="modal-text"><b>\u7ECF\u9A8C</b></div>
+        <div class="report-bar"><div style="width:${expPct}%"></div></div>
+        <div class="modal-text">\u6280\u80FD\uFF1A${partner.skill}\uFF08\u597D\u611F\u226570 \u65F6\uFF0C\u6BCF\u573A\u6218\u6597\u9996\u6B21\u6280\u80FD\u7B54\u5BF9\u4F24\u5BB3\u63D0\u5347 30%\uFF09</div>
+        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
+      </div>
+    `);
+    }
+    function renderJobQuestion() {
+      const state = getState();
+      const quiz = state.jobQuiz;
+      if (!quiz) return;
+      const item = JOB_QUESTIONS2[quiz.idx];
+      const options = item.options.map((opt, i) => `<button class="pixel-btn option" data-action="job-quiz-answer" data-value="${opt.value}"><span class="tag">${String.fromCharCode(65 + i)}</span>${opt.label}</button>`).join("");
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u804C\u4E1A\u63A8\u8350 \xB7 \u7B2C ${quiz.idx + 1}/${JOB_QUESTIONS2.length} \u9898</div>
+        <div class="info-card">${item.q}</div>
+        <div class="quiz-options">${options}</div>
+      </div>
+    `);
+    }
+    function openJobQuiz() {
+      const state = getState();
+      const scores = {};
+      for (const jobId of Object.keys(getJobs())) scores[jobId] = 0;
+      state.jobQuiz = { idx: 0, scores };
+      renderJobQuestion();
+    }
+    function finishJobQuiz() {
+      const state = getState();
+      const quiz = state.jobQuiz;
+      if (!quiz) return;
+      const sorted = Object.entries(quiz.scores).sort((a, b) => b[1] - a[1]);
+      const best = sorted[0][0];
+      const job = getJobs()[best];
+      if (state.jobs.unlocked.includes(best)) {
+        state.jobs.current = best;
+        save();
+      }
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u63A8\u8350\u804C\u4E1A \xB7 ${job.name}</div>
+        <div class="info-card">
+          ${job.desc}<br><br>
+          ${state.jobs.unlocked.includes(best) ? "\u5DF2\u4E3A\u4F60\u5207\u6362\u5230\u8BE5\u804C\u4E1A\u3002" : "\u8BE5\u804C\u4E1A\u5C1A\u672A\u89E3\u9501\uFF0C\u53EF\u5728\u540E\u7EED\u533A\u57DF\u901A\u8FC7\u5546\u5E97\u6216\u5267\u60C5\u89E3\u9501\u540E\u5207\u6362\u3002"}
+        </div>
+        <div class="modal-actions">
+          <button class="pixel-btn" data-action="job-recommend-continue">\u8FDB\u5165\u88C5\u5907\u4E0E\u6280\u80FD</button>
+          <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
+        </div>
+      </div>
+    `);
+    }
+    function openPlan() {
+      const state = getState();
+      const plan = state.plan;
+      const progress = Math.min(100, Math.round(state.daily.answered / Math.max(1, state.daily.target) * 100));
+      const targetBtns = [5, 10, 15, 20].map((n) => `<button class="pixel-btn small ${plan.dailyTarget === n ? "" : "secondary"}" data-action="plan-target" data-target="${n}">${n}\u9898</button>`).join("");
+      const subjectBtns = [
+        `<button class="pixel-btn small ${plan.subjects.length === 0 ? "" : "secondary"}" data-action="plan-subject" data-subject="__all">\u5168\u90E8\u79D1\u76EE</button>`,
+        ...Object.keys(PLAN_SUBJECT_POINTS).map(
+          (subject) => `<button class="pixel-btn small ${plan.subjects.includes(subject) ? "" : "secondary"}" data-action="plan-subject" data-subject="${subject}">${subject}</button>`
+        )
+      ].join("");
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u5B66\u4E60\u8BA1\u5212</div>
+        <div class="report-grid">
+          <div class="report-card"><div class="num">${state.daily.answered}/${state.daily.target}</div><div>\u4ECA\u65E5\u8FDB\u5EA6</div></div>
+          <div class="report-card"><div class="num">${progress}%</div><div>\u5B8C\u6210\u7387</div></div>
+          <div class="report-card"><div class="num">${plan.subjects.length ? plan.subjects.join("\u3001") : "\u5168\u90E8"}</div><div>\u79D1\u76EE\u504F\u597D</div></div>
+        </div>
+        <div class="report-bar"><div style="width:${progress}%"></div></div>
+        <div class="modal-text"><b>\u6BCF\u65E5\u76EE\u6807</b></div>
+        <div class="modal-actions">${targetBtns}</div>
+        <div class="modal-text"><b>\u79D1\u76EE\u504F\u597D</b><br>\u672A\u9009\u62E9\u65F6\u4ECE\u5168\u90E8\u79D1\u76EE\u62BD\u53D6\u9898\u76EE\u3002</div>
+        <div class="modal-actions">${subjectBtns}</div>
+        <div class="modal-actions">
+          <button class="pixel-btn" data-action="challenge-start" data-mode="plan">\u5F00\u59CB\u4ECA\u65E5\u8BA1\u5212</button>
+          <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
+        </div>
+      </div>
+    `);
+    }
+    function openPointMap() {
+      const sections = Object.entries(PLAN_SUBJECT_POINTS).map(([subject, points]) => {
+        const chips = points.map((point) => `<button class="pixel-btn small point-chip" data-action="point-quiz" data-point="${point}">${point}</button>`).join("");
+        return `
+          <div class="book-card">
+            <span class="book-point">${subject}</span>
+            <div class="point-grid">${chips}</div>
+          </div>
+        `;
+      }).join("");
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u8003\u7EB2\u5BFC\u822A</div>
+        <div class="info-card">\u6309\u79D1\u76EE\u6D4F\u89C8 CPA \u8003\u70B9\uFF0C\u70B9\u51FB\u8003\u70B9\u53EF\u76F4\u63A5\u5F00\u59CB 1 \u9053\u9898\u8FDB\u884C\u9488\u5BF9\u6027\u590D\u4E60\u3002</div>
+        ${sections}
+        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
+      </div>
+    `);
+    }
+    return {
+      openTasks,
+      openAchievements,
+      openWorldMap,
+      openPartner,
+      openJobQuiz,
+      renderJobQuestion,
+      finishJobQuiz,
+      openPlan,
+      openPointMap
+    };
+  }
+
+  // src/systems/events.js
+  function createEventDispatcher(deps) {
+    const {
+      window: window2,
+      document: document2,
+      modal,
+      canvas,
+      W,
+      keys,
+      touch,
+      getState,
+      setInstallPrompt,
+      setPwaInstalled,
+      showToast,
+      tryInteract,
+      openEquip,
+      openWorldMap,
+      openTasks,
+      openSkillTree,
+      openPlan,
+      handleAction,
+      tooltip,
+      showTooltip,
+      moveTooltip,
+      hideTooltip,
+      resolveAnswer,
+      getActiveEntities,
+      isBossUnlocked,
+      isBossDefeated,
+      interact,
+      entityTooltip
+    } = deps;
+    function bindEvents() {
+      window2.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        setInstallPrompt(e);
+      });
+      window2.addEventListener("appinstalled", () => {
+        setPwaInstalled(true);
+        setInstallPrompt(null);
+        showToast("\u6E38\u620F\u5DF2\u5B89\u88C5\uFF0C\u53EF\u4ECE\u684C\u9762\u6216\u5F00\u59CB\u83DC\u5355\u542F\u52A8");
+      });
+      if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+        window2.addEventListener("load", () => {
+          navigator.serviceWorker.register("sw.js").catch(() => {
+          });
+        });
+      }
+      document2.addEventListener("keydown", (e) => {
+        keys[e.key] = true;
+        const state = getState();
+        const key = e.key.toLowerCase();
+        const inField = document2.activeElement && /^(INPUT|TEXTAREA)$/i.test(document2.activeElement.tagName);
+        if (inField) return;
+        if (key === "e" && state.screen === "map" && modal.classList.contains("hidden")) {
+          tryInteract();
+        }
+        if (modal.classList.contains("hidden")) {
+          if (state.screen === "map") {
+            if (key === "i" || key === "c") openEquip();
+            else if (key === "m") openWorldMap();
+            else if (key === "q") openTasks();
+            else if (key === "k") openSkillTree();
+            else if (key === "p") openPlan();
+          }
+        } else if (e.code === "Space" || key === " ") {
+          const storyNext = modal.querySelector('[data-action="story-next"]');
+          const quizContinue = modal.querySelector('[data-action="quiz-continue"]');
+          if (storyNext) storyNext.click();
+          else if (quizContinue) quizContinue.click();
+          else if (state.screen === "title" && modal.querySelector('[data-action="start"]')) modal.querySelector('[data-action="start"]').click();
+          e.preventDefault();
+        }
+      });
+      document2.addEventListener("keyup", (e) => {
+        keys[e.key] = false;
+      });
+      modal.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-action]");
+        if (!btn) return;
+        const action = btn.dataset.action;
+        handleAction(action, btn.dataset);
+      });
+      modal.addEventListener("mouseover", (e) => {
+        const tipTarget = e.target.closest("[data-tip]");
+        if (tipTarget) showTooltip(tipTarget.dataset.tip, e.clientX, e.clientY);
+      });
+      modal.addEventListener("mousemove", (e) => {
+        if (!tooltip.classList.contains("hidden")) moveTooltip(e.clientX, e.clientY);
+      });
+      modal.addEventListener("mouseout", (e) => {
+        if (!e.relatedTarget || !modal.contains(e.relatedTarget)) hideTooltip();
+      });
+      modal.addEventListener("click", (e) => {
+        const answerBtn = e.target.closest("[data-answer]");
+        const state = getState();
+        if (!answerBtn || !state.quiz) return;
+        if (state.quiz.q.type === "multiple") {
+          answerBtn.classList.toggle("selected");
+          return;
+        }
+        state._lastQuizCorrect = Number(answerBtn.dataset.answer) === state.quiz.q.answer;
+        resolveAnswer(Number(answerBtn.dataset.answer));
+      });
+      document2.querySelectorAll("[data-action]").forEach((btn) => {
+        btn.addEventListener("click", () => handleAction(btn.dataset.action, btn.dataset));
+      });
+      document2.querySelectorAll("[data-touch]").forEach((btn) => {
+        const dir = btn.dataset.touch;
+        const set = (v) => touch[dir] = v;
+        btn.addEventListener("pointerdown", () => set(true));
+        btn.addEventListener("pointerup", () => set(false));
+        btn.addEventListener("pointerleave", () => set(false));
+      });
+      document2.getElementById("touchInteract").addEventListener("click", () => {
+        tryInteract();
+      });
+      canvas.addEventListener("click", (e) => {
+        const state = getState();
+        if (state.screen !== "map") return;
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX - rect.left) * W / rect.width;
+        const y = (e.clientY - rect.top) * H / rect.height;
+        let best = null;
+        let bestDist = 80;
+        getActiveEntities().forEach((entity) => {
+          if (entity.type === "chest" && state.openedChests.includes(entity.id)) return;
+          if (entity.type === "collect" && state.collectedMaterialIds.includes(entity.id)) return;
+          if (entity.type === "monster" && (state.monstersKilledIds || []).includes(entity.id)) return;
+          if (entity.type === "boss" && (!isBossUnlocked(entity) || isBossDefeated(entity))) return;
+          const d = Math.hypot(entity.x + 16 - x, entity.y + 20 - y);
+          if (d < bestDist) {
+            bestDist = d;
+            best = entity;
+          }
+        });
+        if (best) {
+          interact(best);
+        } else {
+          state.player.moveTarget = { x, y };
+        }
+      });
+      canvas.addEventListener("pointermove", (e) => {
+        const state = getState();
+        if (state.screen !== "map" || !modal.classList.contains("hidden")) {
+          hideTooltip();
+          return;
+        }
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX - rect.left) * W / rect.width;
+        const y = (e.clientY - rect.top) * H / rect.height;
+        let best = null;
+        let bestDist = 70;
+        getActiveEntities().forEach((entity) => {
+          if (entity.type === "chest" && state.openedChests.includes(entity.id)) return;
+          if (entity.type === "collect" && state.collectedMaterialIds.includes(entity.id)) return;
+          if (entity.type === "monster" && (state.monstersKilledIds || []).includes(entity.id)) return;
+          if (entity.type === "boss" && (!isBossUnlocked(entity) || isBossDefeated(entity))) return;
+          const d = Math.hypot(entity.x + 16 - x, entity.y + 20 - y);
+          if (d < bestDist) {
+            bestDist = d;
+            best = entity;
+          }
+        });
+        if (best) showTooltip(entityTooltip(best), e.clientX, e.clientY);
+        else hideTooltip();
+      });
+      canvas.addEventListener("pointerleave", hideTooltip);
+    }
+    return { bindEvents };
+  }
+
   // src/game.js
   (() => {
     "use strict";
@@ -2459,7 +3715,7 @@
     const hud = document.getElementById("hud");
     const touchControls = document.getElementById("touchControls");
     const W = canvas.width;
-    const H = canvas.height;
+    const H2 = canvas.height;
     let deferredInstallPrompt = null;
     let pwaInstalled = false;
     const assets = {
@@ -2940,6 +4196,28 @@
       menuButton
     });
     const { openBook, openReport, openWeeklyReport } = learningUi;
+    const panelsUi = createPanelsUi({
+      getState: () => state,
+      openModal,
+      showToast,
+      isSystemUnlocked,
+      systemLockTip,
+      save,
+      getJobs: () => JOBS,
+      ACHIEVEMENTS,
+      PLAN_SUBJECT_POINTS
+    });
+    const {
+      openTasks,
+      openAchievements,
+      openWorldMap,
+      openPartner,
+      openJobQuiz,
+      renderJobQuestion,
+      finishJobQuiz,
+      openPlan,
+      openPointMap
+    } = panelsUi;
     if (state.soundEnabled === void 0) state.soundEnabled = true;
     if (!state.weapon) state.weapon = { id: "pencil_sword", name: "\u94C5\u7B14\u77ED\u5251", atk: 5 };
     if (!state.armor) state.armor = { id: "apprentice_robe", name: "\u5B66\u5F92\u5E03\u8863", def: 2 };
@@ -3270,7 +4548,6 @@
       law: { id: "law", name: "\u7ECF\u6D4E\u6CD5\u796D\u53F8", subject: "\u7ECF\u6D4E\u6CD5", skills: ["company_law", "contract_guard", "securities_bless", "bankruptcy_cleanse", "board_guard", "bankruptcy_order"], atk: 0, def: 2, mp: 6, desc: "\u62A4\u76FE\u4E0E\u6CBB\u7597" },
       strategy: { id: "strategy", name: "\u6218\u7565\u53EC\u5524\u5E08", subject: "\u6218\u7565", skills: ["swot_call", "five_force", "value_chain", "m_a_fusion", "bcg_star", "balanced_score"], atk: 0, def: 0, mp: 12, desc: "\u591A\u5355\u4F4D\u4E0E\u5168\u5C40" }
     };
-    const PLAYER_DIR_COL = { down: 0, right: 1, left: 2, up: 3 };
     const MONSTER_SPRITE = {
       paper_crane: "paper_crane",
       ink_blob: "ink_blob",
@@ -3297,6 +4574,52 @@
       drawSceneCover
     });
     const { drawTileMap, drawDecorations } = mapTilesRenderer;
+    const characterRenderer = createCharacterRenderer({
+      ctx,
+      assets,
+      getState: () => state,
+      getKeys: () => keys,
+      getTouch: () => touch,
+      getMonsterType
+    });
+    const {
+      drawFrame,
+      animFrame,
+      drawTintedFrame,
+      drawTintedEffect,
+      drawPlayerSprite,
+      drawMonsterSprite,
+      drawNpcSprite
+    } = characterRenderer;
+    const mapRenderer = createMapRenderer({
+      ctx,
+      assets,
+      W,
+      H: H2,
+      getState: () => state,
+      getActiveEntities,
+      drawNpcSprite,
+      drawChest,
+      drawExit,
+      drawBench,
+      drawEntityLabel,
+      drawPlayerSprite,
+      drawSceneCover,
+      drawTileMap,
+      drawDecorations,
+      drawSign,
+      drawStone,
+      drawCollect,
+      drawPortal,
+      drawLandmark,
+      drawDoor,
+      drawMonsterSprite,
+      drawPlayerIndicator,
+      getMapEffects: () => mapEffects,
+      isBossUnlocked,
+      isBossDefeated
+    });
+    const { drawMap, drawRoomBackground } = mapRenderer;
     const MAP_BUILDING_REGIONS = [
       { y0: 9, y1: 11, x0: 32, x1: 35 },
       { y0: 13, y1: 16, x0: 39, x1: 44 },
@@ -3891,7 +5214,7 @@
       return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
     }
     function canMoveTo(x, y) {
-      if (x < 8 || y < 8 || x > W - 8 || y > H - 8) return false;
+      if (x < 8 || y < 8 || x > W - 8 || y > H2 - 8) return false;
       const body = playerBody(x, y);
       if (!state.room) {
         const probes = [
@@ -4294,95 +5617,11 @@
     }
     function drawSceneCover() {
       const img = assets.scene;
-      const scale = Math.max(W / img.width, H / img.height);
+      const scale = Math.max(W / img.width, H2 / img.height);
       const sw = W / scale;
-      const sh = H / scale;
+      const sh = H2 / scale;
       ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, 0, 0, W, H);
-    }
-    function drawFrame(img, x, y, dw, dh, frame = 0) {
-      ctx.imageSmoothingEnabled = false;
-      const b = img._box || { x: 0, y: 0, w: 96, h: 64 };
-      const sx = b.x + (img._frameWidth ? frame * img._frameWidth : 0);
-      ctx.drawImage(img, sx, b.y, b.w, b.h, x, y, dw, dh);
-    }
-    function animFrame(img, fps = 8, maxFrames = 0) {
-      const total = maxFrames || img._frames || 1;
-      return Math.floor(performance.now() / (1e3 / fps)) % total;
-    }
-    const JOB_TINT = {
-      accountant: "rgba(212, 160, 23, 0.72)",
-      auditor: "rgba(65, 105, 225, 0.72)",
-      finance: "rgba(46, 139, 87, 0.72)",
-      tax: "rgba(228, 87, 46, 0.72)",
-      law: "rgba(107, 91, 149, 0.72)",
-      strategy: "rgba(58, 143, 183, 0.72)"
-    };
-    const MONSTER_TINT = {
-      paper_crane: "rgba(255, 214, 102, 0.62)",
-      ink_blob: "rgba(70, 80, 140, 0.68)",
-      abacus_golem: "rgba(184, 124, 62, 0.68)",
-      trial_ghost: "rgba(154, 164, 220, 0.66)",
-      merge_giant: "rgba(192, 72, 62, 0.66)",
-      final_boss: "rgba(104, 62, 188, 0.74)"
-    };
-    function drawTintedFrame(img, x, y, w, h, frame, tint) {
-      ctx.save();
-      ctx.imageSmoothingEnabled = false;
-      drawFrame(img, x, y, w, h, frame);
-      if (tint) {
-        ctx.globalCompositeOperation = "source-atop";
-        ctx.fillStyle = tint;
-        ctx.fillRect(x, y, w, h);
-      }
-      ctx.restore();
-    }
-    function drawTintedEffect(img, frame, x, y, w, h, tint) {
-      if (!img) return;
-      ctx.save();
-      ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(img, frame * 16, 0, 16, img.height, x, y, w, h);
-      if (tint) {
-        ctx.globalCompositeOperation = "source-atop";
-        ctx.fillStyle = tint;
-        ctx.fillRect(x, y, w, h);
-      }
-      ctx.restore();
-    }
-    function isPlayerMoving() {
-      return Boolean(
-        state.player.moveTarget || keys.ArrowUp || keys.ArrowDown || keys.ArrowLeft || keys.ArrowRight || keys.w || keys.s || keys.a || keys.d || keys.W || keys.S || keys.A || keys.D || touch.up || touch.down || touch.left || touch.right
-      );
-    }
-    function drawPlayerSprite(x, y, w, h) {
-      const facing = state.player.facing || "down";
-      const moving = isPlayerMoving();
-      const img = moving ? assets.playerWalk : assets.playerIdle;
-      const tint = JOB_TINT[state.jobs.current] || JOB_TINT.accountant;
-      if (img && img._box) {
-        const frame = animFrame(img, moving ? 9 : 4, moving ? 8 : 2);
-        if (facing === "left" || facing === "right") {
-          ctx.save();
-          ctx.translate(x + w / 2, 0);
-          ctx.scale(facing === "left" ? -1 : 1, 1);
-          ctx.translate(-(x + w / 2), 0);
-          drawTintedFrame(img, x, y, w, h, frame, tint);
-          ctx.restore();
-        } else {
-          drawTintedFrame(img, x, y, w, h, frame, tint);
-        }
-        ctx.fillStyle = "rgba(30, 20, 10, 0.22)";
-        ctx.beginPath();
-        ctx.ellipse(x + w / 2, y + h - 2, w * 0.32, h * 0.07, 0, 0, Math.PI * 2);
-        ctx.fill();
-        return;
-      }
-      const sheet = assets.playerSheets[state.jobs.current] || assets.playerSheets.accountant;
-      if (sheet) {
-        const col = PLAYER_DIR_COL[facing] || 0;
-        const row = moving ? Math.floor(performance.now() / 110) % 3 : 0;
-        ctx.drawImage(sheet, col * 16, row * 16, 16, 16, x, y, w, h);
-      }
+      ctx.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, 0, 0, W, H2);
     }
     function drawChest(x, y, opened) {
       const img = opened ? assets.props.chestOpen : assets.props.chest;
@@ -4443,84 +5682,6 @@
       ctx.fillStyle = "#fff2d0";
       ctx.fillText(label, x, y);
       ctx.restore();
-    }
-    function drawMonsterSprite(m, x, y, w, h, isBoss) {
-      const type = getMonsterType(m.id);
-      const tint = MONSTER_TINT[type] || MONSTER_TINT.paper_crane;
-      const img = isBoss ? assets.goblinAttack : assets.goblinIdle;
-      if (img && img._box) {
-        const frame = animFrame(img, isBoss ? 6 : 8);
-        drawTintedFrame(img, x, y, w, h, frame, tint);
-        ctx.fillStyle = "rgba(30, 20, 10, 0.22)";
-        ctx.beginPath();
-        ctx.ellipse(x + w / 2, y + h - 3, w * 0.3, h * 0.06, 0, 0, Math.PI * 2);
-        ctx.fill();
-        return;
-      }
-      const sheet = assets.monsterSheets[type] || assets.monsterSheets.paper_crane;
-      if (sheet) {
-        ctx.imageSmoothingEnabled = false;
-        const frame = Math.floor(performance.now() / (isBoss ? 190 : 240)) % 2;
-        ctx.drawImage(sheet, 0, frame * 16, 16, 16, x, y, w, h);
-        ctx.fillStyle = "rgba(30, 20, 10, 0.22)";
-        ctx.beginPath();
-        ctx.ellipse(x + w / 2, y + h - 3, w * 0.3, h * 0.06, 0, 0, Math.PI * 2);
-        ctx.fill();
-        return;
-      }
-      drawFrame(assets.goblinIdle, x - 8, y - 8, w + 16, h + 16, animFrame(assets.goblinIdle, 5));
-    }
-    const NPC_JOB_SPRITE = {
-      npc_xiaofen: "accountant",
-      npc_shenming: "auditor",
-      npc_old: "law",
-      room_shop_npc: "auditor",
-      room_home_npc: "law",
-      room_archive_npc: "auditor",
-      room_ledger_npc: "finance",
-      room_audit_npc: "auditor",
-      room_finance_npc: "finance",
-      room_tax_npc: "tax",
-      room_law_npc: "law",
-      room_strategy_npc: "strategy",
-      audit_npc: "auditor",
-      room_audit_meeting_npc: "auditor",
-      room_audit_evidence_npc: "auditor",
-      room_audit_chief_npc: "auditor",
-      capital_npc: "finance",
-      room_capital_cashflow_npc: "finance",
-      room_capital_structure_npc: "finance",
-      room_capital_investment_npc: "finance",
-      tax_npc: "tax",
-      room_tax_vat_npc: "tax",
-      room_tax_cit_npc: "tax",
-      room_tax_incentive_npc: "tax",
-      law_npc: "law",
-      room_law_contract_npc: "law",
-      room_law_securities_npc: "law",
-      room_law_bankruptcy_npc: "law",
-      strategy_npc: "strategy",
-      room_strategy_sandbox_npc: "strategy",
-      room_strategy_five_npc: "strategy",
-      room_strategy_ma_npc: "strategy"
-    };
-    function drawNpcSprite(e, x, y, w, h) {
-      const jobId = NPC_JOB_SPRITE[e.id] || "accountant";
-      if (assets.playerIdle && assets.playerIdle._box) {
-        const frame = animFrame(assets.playerIdle, 3, 2);
-        drawTintedFrame(assets.playerIdle, x, y, w, h, frame, JOB_TINT[jobId] || JOB_TINT.accountant);
-        ctx.fillStyle = "rgba(30, 20, 10, 0.2)";
-        ctx.beginPath();
-        ctx.ellipse(x + w / 2, y + h - 2, w * 0.3, h * 0.06, 0, 0, Math.PI * 2);
-        ctx.fill();
-        return;
-      }
-      const sheet = assets.playerSheets[jobId] || assets.playerSheets.accountant;
-      if (sheet) {
-        ctx.drawImage(sheet, 0, 0, 16, 16, x, y, w, h);
-        return;
-      }
-      drawFrame(assets.playerIdle, x - 8, y - 8, w + 16, h + 16, animFrame(assets.playerIdle, 3, 2));
     }
     function drawSign(e) {
       const x = e.x;
@@ -4589,97 +5750,12 @@
       marks.forEach((m) => {
         const cell = document.createElement("div");
         const col = Math.max(1, Math.min(7, Math.round(m.x / W * 7)));
-        const row = Math.max(1, Math.min(7, Math.round(m.y / H * 7)));
+        const row = Math.max(1, Math.min(7, Math.round(m.y / H2 * 7)));
         cell.style.gridColumn = col;
         cell.style.gridRow = row;
         cell.style.background = m.c;
         map.appendChild(cell);
       });
-    }
-    function drawMap() {
-      if (state.room) {
-        drawRoomBackground(state.room);
-        getActiveEntities().forEach((e) => {
-          if (e.type === "npc") drawNpcSprite(e, e.x - 24, e.y - 48, 48, 48);
-          else if (e.type === "chest") drawChest(e.x, e.y, state.openedChests.includes(e.id));
-          else if (e.type === "exit") drawExit(e);
-          else if (e.type === "bench") drawBench(e);
-          drawEntityLabel(e);
-        });
-        drawPlayerSprite(state.player.x - 28, state.player.y - 64, 56, 56);
-        return;
-      }
-      if (state.zone === "gold_field" && assets.scene) {
-        drawSceneCover();
-      } else {
-        drawTileMap();
-        drawDecorations();
-      }
-      const zoneTints = {
-        audit_tower: "rgba(65, 105, 225, 0.08)",
-        capital_forest: "rgba(46, 139, 87, 0.10)",
-        tax_wasteland: "rgba(228, 87, 46, 0.10)",
-        law_temple: "rgba(107, 91, 149, 0.12)",
-        strategy_star: "rgba(58, 143, 183, 0.12)"
-      };
-      if (zoneTints[state.zone]) {
-        ctx.fillStyle = zoneTints[state.zone];
-        ctx.fillRect(0, 0, W, H);
-      }
-      const light = ctx.createRadialGradient(W / 2, H * 0.42, 60, W / 2, H * 0.42, W * 0.72);
-      light.addColorStop(0, "rgba(255, 236, 180, 0.14)");
-      light.addColorStop(1, "rgba(255, 236, 180, 0)");
-      ctx.fillStyle = light;
-      ctx.fillRect(0, 0, W, H);
-      getActiveEntities().forEach((e) => {
-        if (e.type === "npc") drawNpcSprite(e, e.x - 24, e.y - 48, 48, 48);
-        else if (e.type === "chest") drawChest(e.x, e.y, state.openedChests.includes(e.id));
-        else if (e.type === "sign") drawSign(e);
-        else if (e.type === "stone") drawStone(e.x, e.y);
-        else if (e.type === "collect") {
-          if (!state.collectedMaterialIds.includes(e.id)) {
-            drawCollect(e);
-            drawEntityLabel(e);
-          }
-        } else if (e.type === "portal" || e.type === "zone_gate") {
-          drawPortal(e);
-          drawEntityLabel(e);
-        } else if (e.type === "landmark") {
-          drawLandmark(e);
-          drawEntityLabel(e);
-        } else if (e.type === "door") {
-          drawDoor(e);
-          drawEntityLabel(e);
-        } else if (e.type === "monster") {
-          if (!(state.monstersKilledIds || []).includes(e.id)) {
-            drawMonsterSprite(e, e.x - 32, e.y - 48, 64, 64, false);
-            drawEntityLabel(e);
-          }
-        } else if (e.type === "boss") {
-          if (isBossUnlocked(e) && !isBossDefeated(e)) {
-            drawMonsterSprite(e, e.x - 60, e.y - 88, 120, 120, true);
-            drawEntityLabel(e);
-          }
-        } else {
-          drawEntityLabel(e);
-        }
-      });
-      drawPlayerIndicator(state.player.x, state.player.y);
-      drawPlayerSprite(state.player.x - 28, state.player.y - 64, 56, 56);
-      const now = Date.now();
-      for (let i = mapEffects.length - 1; i >= 0; i--) {
-        const e = mapEffects[i];
-        if (now - e.born > 1e3) {
-          mapEffects.splice(i, 1);
-          continue;
-        }
-        const age = now - e.born;
-        ctx.globalAlpha = Math.max(0, 1 - age / 1e3);
-        ctx.fillStyle = e.color;
-        ctx.font = "bold 20px 'Microsoft YaHei'";
-        ctx.fillText(e.text, e.x, e.y - age * 0.03);
-        ctx.globalAlpha = 1;
-      }
     }
     function drawCollect(e) {
       const x = e.x;
@@ -4783,486 +5859,6 @@
       ctx.ellipse(x + 18, y + 18, 16, 10, 0, 0, Math.PI * 2);
       ctx.fill();
     }
-    function drawInteriorTile(col, row, dx, dy, scale = 3) {
-      if (!assets.interiorTileset) return;
-      ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(assets.interiorTileset, col * 16, row * 16, 16, 16, dx, dy, 16 * scale, 16 * scale);
-    }
-    function drawFormalRoomFurniture(roomId) {
-      if (!assets.interiorTileset) return;
-      if (roomId === "shop") {
-        drawInteriorTile(4, 0, 120, 250, 4);
-        drawInteriorTile(5, 0, 184, 250, 4);
-        drawInteriorTile(6, 0, 540, 160, 3);
-        drawInteriorTile(7, 0, 588, 160, 3);
-        drawInteriorTile(8, 0, 540, 220, 3);
-        drawInteriorTile(9, 0, 588, 220, 3);
-      } else if (roomId === "home") {
-        drawInteriorTile(4, 1, 520, 180, 4);
-        drawInteriorTile(5, 1, 584, 180, 4);
-        drawInteriorTile(6, 1, 648, 180, 4);
-        drawInteriorTile(4, 0, 130, 250, 3);
-        drawInteriorTile(5, 0, 178, 250, 3);
-      } else if (roomId === "workshop" || roomId === "audit_meeting" || roomId === "strategy_sandbox") {
-        drawInteriorTile(0, 1, 100, 220, 4);
-        drawInteriorTile(1, 1, 164, 220, 4);
-        drawInteriorTile(0, 1, 500, 180, 4);
-        drawInteriorTile(1, 1, 564, 180, 4);
-      } else if (roomId === "archive" || roomId === "audit_evidence" || roomId === "law_securities") {
-        drawInteriorTile(8, 1, 480, 150, 4);
-        drawInteriorTile(9, 1, 544, 150, 4);
-        drawInteriorTile(8, 1, 608, 150, 4);
-        drawInteriorTile(4, 0, 120, 240, 3);
-        drawInteriorTile(5, 0, 168, 240, 3);
-      } else if (roomId === "ledger" || roomId === "capital_structure" || roomId === "tax_cit") {
-        drawInteriorTile(8, 1, 480, 170, 4);
-        drawInteriorTile(9, 1, 544, 170, 4);
-        drawInteriorTile(4, 0, 120, 230, 3);
-        drawInteriorTile(5, 0, 168, 230, 3);
-      } else {
-        drawInteriorTile(4, 0, 130, 230, 3);
-        drawInteriorTile(5, 0, 178, 230, 3);
-        drawInteriorTile(6, 0, 520, 200, 3);
-        drawInteriorTile(7, 0, 568, 200, 3);
-      }
-    }
-    function drawRoomBackground(roomId) {
-      ctx.fillStyle = "#241a14";
-      ctx.fillRect(0, 0, W, H);
-      if (assets.interior) {
-        const img = assets.interior;
-        const scale = Math.max(W / img.width, H / img.height);
-        const sw = W / scale;
-        const sh = H / scale;
-        ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, 0, 0, W, H);
-        ctx.fillStyle = "rgba(30, 22, 16, 0.30)";
-        ctx.fillRect(0, 0, W, H);
-      } else {
-        ctx.fillStyle = "#6d4327";
-        ctx.fillRect(0, 0, W, 78);
-        ctx.fillStyle = "#8f5a33";
-        ctx.fillRect(0, 0, W, 8);
-        ctx.fillStyle = "#a9784a";
-        ctx.fillRect(0, 78, W, H - 78);
-        ctx.strokeStyle = "#7a4a28";
-        ctx.lineWidth = 2;
-        for (let y = 78; y < H; y += 34) {
-          ctx.beginPath();
-          ctx.moveTo(0, y);
-          ctx.lineTo(W, y);
-          ctx.stroke();
-        }
-      }
-      if (roomId === "shop") {
-        ctx.fillStyle = "#5c3a1e";
-        ctx.fillRect(120, 250, 170, 70);
-        ctx.fillStyle = "#b97b38";
-        ctx.fillRect(120, 250, 170, 16);
-        ctx.fillStyle = "#4a2e1a";
-        ctx.fillRect(540, 160, 230, 130);
-        ctx.fillStyle = "#c69a5d";
-        ctx.fillRect(548, 170, 214, 12);
-        ctx.fillRect(548, 210, 214, 12);
-        ctx.fillRect(548, 250, 214, 12);
-      } else if (roomId === "home") {
-        ctx.fillStyle = "#4a2e1a";
-        ctx.fillRect(520, 180, 260, 150);
-        ctx.fillStyle = "#c76a4f";
-        ctx.fillRect(532, 192, 236, 100);
-        ctx.fillStyle = "#f2d9b0";
-        ctx.fillRect(540, 192, 220, 18);
-        ctx.fillStyle = "#5c3a1e";
-        ctx.fillRect(130, 250, 180, 80);
-        ctx.fillStyle = "#8a5a2c";
-        ctx.fillRect(130, 250, 180, 14);
-        ctx.fillStyle = "#f2d175";
-        ctx.fillRect(150, 270, 50, 8);
-      } else if (roomId === "archive") {
-        ctx.fillStyle = "#4a2e1a";
-        ctx.fillRect(480, 150, 260, 210);
-        ctx.fillStyle = "#8f6b3f";
-        ctx.fillRect(492, 162, 236, 20);
-        ctx.fillRect(492, 210, 236, 20);
-        ctx.fillRect(492, 258, 236, 20);
-        ctx.fillStyle = "#6d4327";
-        ctx.fillRect(120, 240, 220, 120);
-        ctx.fillStyle = "#b97b38";
-        ctx.fillRect(120, 240, 220, 16);
-      } else if (roomId === "ledger") {
-        ctx.fillStyle = "#4a2e1a";
-        ctx.fillRect(480, 170, 260, 220);
-        ctx.fillStyle = "#8f6b3f";
-        ctx.fillRect(492, 182, 236, 18);
-        ctx.fillStyle = "#5c3a1e";
-        ctx.fillRect(120, 230, 220, 130);
-        ctx.fillStyle = "#8a5a2c";
-        ctx.fillRect(120, 230, 220, 16);
-        ctx.fillStyle = "#f2d175";
-        ctx.fillRect(140, 260, 60, 10);
-        ctx.fillRect(220, 260, 60, 10);
-      } else if (roomId === "audit_room") {
-        ctx.fillStyle = "#2b3045";
-        ctx.fillRect(120, 170, 240, 210);
-        ctx.fillStyle = "#4169e1";
-        ctx.fillRect(132, 182, 216, 20);
-        ctx.fillRect(132, 230, 216, 20);
-        ctx.fillRect(132, 278, 216, 20);
-        ctx.fillStyle = "#b8c4d8";
-        ctx.fillRect(500, 190, 280, 220);
-        ctx.fillStyle = "#ffffff";
-        ctx.beginPath();
-        ctx.arc(640, 300, 46, 0, Math.PI * 2);
-        ctx.strokeStyle = "#4169e1";
-        ctx.lineWidth = 5;
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(676, 336);
-        ctx.lineTo(716, 376);
-        ctx.stroke();
-      } else if (roomId === "finance_room") {
-        ctx.fillStyle = "#245228";
-        ctx.fillRect(120, 230, 240, 150);
-        ctx.fillStyle = "#2e8b57";
-        ctx.fillRect(120, 230, 240, 18);
-        ctx.fillStyle = "#9bc86f";
-        ctx.fillRect(140, 270, 70, 18);
-        ctx.fillRect(140, 310, 70, 18);
-        ctx.fillStyle = "#f2c95f";
-        ctx.fillRect(500, 170, 280, 240);
-        ctx.fillStyle = "#173a2a";
-        ctx.fillRect(520, 190, 100, 60);
-        ctx.fillRect(520, 270, 100, 60);
-        ctx.fillRect(640, 230, 100, 60);
-        ctx.fillStyle = "#ffffff";
-        for (let i = 0; i < 8; i++) {
-          const bx = 120 + i * 90 + Math.sin(Date.now() / 700 + i) * 8;
-          ctx.fillRect(bx, 430 - i * 14, 3, 3);
-        }
-      } else if (roomId === "tax_room") {
-        ctx.fillStyle = "#7a3218";
-        ctx.fillRect(120, 210, 260, 180);
-        ctx.fillStyle = "#e4572e";
-        ctx.fillRect(120, 210, 260, 18);
-        ctx.fillStyle = "#f2c14e";
-        ctx.fillRect(140, 250, 70, 12);
-        ctx.fillRect(140, 280, 70, 12);
-        ctx.fillRect(140, 310, 70, 12);
-        ctx.fillStyle = "#4a2a1a";
-        ctx.fillRect(500, 180, 280, 230);
-        ctx.fillStyle = "#fff2cf";
-        ctx.fillRect(520, 200, 90, 14);
-        ctx.fillRect(520, 226, 90, 14);
-        ctx.fillRect(520, 252, 90, 14);
-        ctx.fillRect(640, 200, 90, 14);
-        ctx.fillRect(640, 226, 90, 14);
-      } else if (roomId === "law_room") {
-        ctx.fillStyle = "#3a2a3a";
-        ctx.fillRect(120, 160, 260, 230);
-        ctx.fillStyle = "#6b5b95";
-        ctx.fillRect(132, 172, 236, 18);
-        ctx.fillRect(132, 220, 236, 18);
-        ctx.fillRect(132, 268, 236, 18);
-        ctx.fillStyle = "#d8c8e8";
-        ctx.fillRect(520, 210, 260, 180);
-        ctx.fillStyle = "#8a7bb8";
-        ctx.beginPath();
-        ctx.moveTo(640, 220);
-        ctx.lineTo(700, 220);
-        ctx.lineTo(680, 250);
-        ctx.lineTo(620, 250);
-        ctx.closePath();
-        ctx.fill();
-        ctx.fillStyle = "#f2c95f";
-        ctx.fillRect(644, 250, 12, 60);
-        ctx.fillRect(610, 250, 80, 10);
-      } else if (roomId === "strategy_room") {
-        ctx.fillStyle = "#173a5c";
-        ctx.fillRect(120, 190, 260, 200);
-        ctx.fillStyle = "#3a8fb7";
-        ctx.fillRect(120, 190, 260, 18);
-        ctx.fillStyle = "#8fd3f2";
-        for (let i = 0; i < 8; i++) {
-          for (let j = 0; j < 5; j++) {
-            ctx.fillRect(150 + i * 24, 230 + j * 22, 14, 10);
-          }
-        }
-        ctx.fillStyle = "#1d3557";
-        ctx.fillRect(500, 170, 280, 230);
-        ctx.fillStyle = "#ffd166";
-        ctx.fillRect(530, 200, 90, 60);
-        ctx.fillRect(650, 200, 90, 60);
-        ctx.fillRect(530, 280, 90, 60);
-        ctx.fillRect(650, 280, 90, 60);
-      } else if (roomId === "audit_meeting") {
-        ctx.fillStyle = "#2b3045";
-        ctx.fillRect(120, 210, 720, 190);
-        ctx.fillStyle = "#4169e1";
-        ctx.fillRect(120, 210, 720, 18);
-        ctx.fillStyle = "#b8c4d8";
-        ctx.fillRect(180, 260, 560, 18);
-        ctx.fillRect(180, 320, 560, 18);
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(300, 240, 320, 10);
-        ctx.fillStyle = "#6f7d8f";
-        for (let i = 0; i < 6; i++) {
-          ctx.fillRect(160 + i * 110, 280, 70, 16);
-        }
-      } else if (roomId === "audit_evidence") {
-        ctx.fillStyle = "#1f2733";
-        ctx.fillRect(120, 150, 260, 270);
-        ctx.fillStyle = "#4169e1";
-        ctx.fillRect(132, 162, 236, 18);
-        ctx.fillRect(132, 210, 236, 18);
-        ctx.fillRect(132, 258, 236, 18);
-        ctx.fillRect(132, 306, 236, 18);
-        ctx.fillStyle = "#8f6b3f";
-        ctx.fillRect(500, 180, 280, 240);
-        ctx.fillStyle = "#f2c95f";
-        ctx.fillRect(520, 200, 80, 40);
-        ctx.fillRect(640, 200, 80, 40);
-        ctx.fillRect(520, 280, 80, 40);
-        ctx.fillRect(640, 280, 80, 40);
-        ctx.fillStyle = "#5c3a1e";
-        ctx.fillRect(520, 232, 80, 6);
-        ctx.fillRect(640, 232, 80, 6);
-        ctx.fillRect(520, 312, 80, 6);
-        ctx.fillRect(640, 312, 80, 6);
-      } else if (roomId === "audit_chief") {
-        ctx.fillStyle = "#3a2e24";
-        ctx.fillRect(120, 200, 280, 190);
-        ctx.fillStyle = "#6d4327";
-        ctx.fillRect(120, 200, 280, 18);
-        ctx.fillStyle = "#8a5a2c";
-        ctx.fillRect(150, 260, 220, 16);
-        ctx.fillStyle = "#f2d175";
-        ctx.fillRect(170, 300, 60, 40);
-        ctx.fillRect(250, 300, 60, 40);
-        ctx.fillStyle = "#2b3045";
-        ctx.fillRect(500, 170, 280, 230);
-        ctx.fillStyle = "#b8c4d8";
-        ctx.fillRect(520, 190, 240, 60);
-        ctx.fillStyle = "#ffd166";
-        ctx.fillRect(680, 300, 70, 40);
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 28px 'Microsoft YaHei'";
-        ctx.fillText("\u5DF2\u5BA1", 696, 328);
-      } else if (roomId === "capital_cashflow") {
-        ctx.fillStyle = "#245228";
-        ctx.fillRect(120, 190, 720, 220);
-        ctx.fillStyle = "#2e8b57";
-        ctx.fillRect(120, 190, 720, 18);
-        ctx.fillStyle = "#9bc86f";
-        for (let i = 0; i < 5; i++) {
-          ctx.fillRect(170 + i * 130, 250, 90, 22);
-          ctx.fillRect(170 + i * 130, 320, 90, 22);
-        }
-        ctx.fillStyle = "#f2c95f";
-        for (let i = 0; i < 5; i++) {
-          ctx.fillRect(200 + i * 130, 225, 12, 12);
-          ctx.fillRect(200 + i * 130, 295, 12, 12);
-        }
-      } else if (roomId === "capital_structure") {
-        ctx.fillStyle = "#173a2a";
-        ctx.fillRect(120, 200, 300, 200);
-        ctx.fillStyle = "#2e8b57";
-        ctx.fillRect(120, 200, 300, 18);
-        ctx.fillStyle = "#9bc86f";
-        ctx.fillRect(150, 260, 240, 16);
-        ctx.fillRect(150, 300, 240, 16);
-        ctx.fillStyle = "#f2c95f";
-        ctx.fillRect(150, 240, 80, 14);
-        ctx.fillRect(310, 240, 80, 14);
-        ctx.fillStyle = "#3a8fb7";
-        ctx.fillRect(500, 170, 280, 230);
-        ctx.fillStyle = "#8fd3f2";
-        ctx.fillRect(520, 200, 110, 60);
-        ctx.fillRect(650, 200, 110, 60);
-        ctx.fillRect(520, 290, 110, 60);
-        ctx.fillRect(650, 290, 110, 60);
-      } else if (roomId === "capital_investment") {
-        ctx.fillStyle = "#1d3557";
-        ctx.fillRect(120, 170, 280, 240);
-        ctx.fillStyle = "#3a8fb7";
-        ctx.fillRect(120, 170, 280, 18);
-        ctx.fillStyle = "#8fd3f2";
-        ctx.fillRect(140, 210, 100, 50);
-        ctx.fillRect(260, 210, 100, 50);
-        ctx.fillRect(140, 280, 100, 50);
-        ctx.fillRect(260, 280, 100, 50);
-        ctx.fillStyle = "#ffd166";
-        ctx.fillRect(500, 190, 280, 220);
-        ctx.fillStyle = "#2b3045";
-        ctx.fillRect(520, 210, 100, 40);
-        ctx.fillRect(640, 210, 100, 40);
-        ctx.fillRect(520, 280, 100, 40);
-        ctx.fillRect(640, 280, 100, 40);
-      } else if (roomId === "tax_vat") {
-        ctx.fillStyle = "#7a3218";
-        ctx.fillRect(120, 190, 720, 220);
-        ctx.fillStyle = "#e4572e";
-        ctx.fillRect(120, 190, 720, 18);
-        ctx.fillStyle = "#fff2cf";
-        for (let i = 0; i < 6; i++) {
-          ctx.fillRect(160 + i * 110, 240, 80, 30);
-          ctx.fillRect(160 + i * 110, 300, 80, 30);
-        }
-        ctx.fillStyle = "#f2c14e";
-        for (let i = 0; i < 6; i++) {
-          ctx.fillRect(180 + i * 110, 260, 40, 10);
-          ctx.fillRect(180 + i * 110, 320, 40, 10);
-        }
-      } else if (roomId === "tax_cit") {
-        ctx.fillStyle = "#4a2a1a";
-        ctx.fillRect(120, 200, 300, 200);
-        ctx.fillStyle = "#e4572e";
-        ctx.fillRect(120, 200, 300, 18);
-        ctx.fillStyle = "#f2c14e";
-        ctx.fillRect(150, 250, 240, 16);
-        ctx.fillRect(150, 290, 240, 16);
-        ctx.fillRect(150, 330, 240, 16);
-        ctx.fillStyle = "#fff2cf";
-        ctx.fillRect(500, 180, 280, 230);
-        ctx.fillStyle = "#4a2a1a";
-        ctx.fillRect(520, 200, 90, 50);
-        ctx.fillRect(640, 200, 90, 50);
-        ctx.fillRect(520, 280, 90, 50);
-        ctx.fillRect(640, 280, 90, 50);
-      } else if (roomId === "tax_incentive") {
-        ctx.fillStyle = "#245228";
-        ctx.fillRect(120, 170, 280, 240);
-        ctx.fillStyle = "#2e8b57";
-        ctx.fillRect(120, 170, 280, 18);
-        ctx.fillStyle = "#9bc86f";
-        ctx.fillRect(150, 210, 100, 50);
-        ctx.fillRect(280, 210, 100, 50);
-        ctx.fillRect(150, 290, 100, 50);
-        ctx.fillRect(280, 290, 100, 50);
-        ctx.fillStyle = "#f2c95f";
-        ctx.fillRect(500, 190, 280, 220);
-        ctx.fillStyle = "#245228";
-        ctx.fillRect(520, 210, 100, 40);
-        ctx.fillRect(650, 210, 100, 40);
-        ctx.fillRect(520, 290, 100, 40);
-        ctx.fillRect(650, 290, 100, 40);
-      } else if (roomId === "law_contract") {
-        ctx.fillStyle = "#3a2a3a";
-        ctx.fillRect(120, 190, 720, 220);
-        ctx.fillStyle = "#6b5b95";
-        ctx.fillRect(120, 190, 720, 18);
-        ctx.fillStyle = "#d8c8e8";
-        for (let i = 0; i < 5; i++) {
-          ctx.fillRect(160 + i * 130, 240, 90, 30);
-          ctx.fillRect(160 + i * 130, 300, 90, 30);
-        }
-        ctx.fillStyle = "#f2c95f";
-        ctx.beginPath();
-        ctx.moveTo(820, 230);
-        ctx.lineTo(860, 230);
-        ctx.lineTo(845, 270);
-        ctx.lineTo(800, 270);
-        ctx.closePath();
-        ctx.fill();
-      } else if (roomId === "law_securities") {
-        ctx.fillStyle = "#2b3045";
-        ctx.fillRect(120, 170, 280, 240);
-        ctx.fillStyle = "#4169e1";
-        ctx.fillRect(120, 170, 280, 18);
-        ctx.fillStyle = "#b8c4d8";
-        ctx.fillRect(140, 210, 240, 16);
-        ctx.fillRect(140, 250, 240, 16);
-        ctx.fillRect(140, 290, 240, 16);
-        ctx.fillStyle = "#87ceeb";
-        ctx.fillRect(500, 190, 280, 220);
-        ctx.fillStyle = "#1d3557";
-        ctx.fillRect(520, 210, 100, 50);
-        ctx.fillRect(650, 210, 100, 50);
-        ctx.fillRect(520, 290, 100, 50);
-        ctx.fillRect(650, 290, 100, 50);
-      } else if (roomId === "law_bankruptcy") {
-        ctx.fillStyle = "#241a14";
-        ctx.fillRect(120, 170, 720, 240);
-        ctx.fillStyle = "#5c3a1e";
-        ctx.fillRect(120, 170, 720, 18);
-        ctx.fillStyle = "#8a5a2c";
-        ctx.fillRect(200, 260, 560, 16);
-        ctx.fillStyle = "#d8c8e8";
-        ctx.fillRect(380, 220, 200, 34);
-        ctx.fillStyle = "#f2c95f";
-        ctx.fillRect(720, 250, 60, 18);
-        ctx.fillRect(740, 268, 18, 70);
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(180, 180, 90, 60);
-        ctx.fillRect(690, 180, 90, 60);
-      } else if (roomId === "strategy_sandbox") {
-        ctx.fillStyle = "#173a5c";
-        ctx.fillRect(120, 190, 720, 220);
-        ctx.fillStyle = "#3a8fb7";
-        ctx.fillRect(120, 190, 720, 18);
-        ctx.fillStyle = "#8fd3f2";
-        for (let i = 0; i < 7; i++) {
-          ctx.fillRect(150 + i * 90, 230, 60, 60);
-          ctx.fillRect(150 + i * 90, 320, 60, 60);
-        }
-        ctx.fillStyle = "#ffd166";
-        for (let i = 0; i < 7; i++) {
-          ctx.fillRect(180 + i * 90, 250, 16, 16);
-          ctx.fillRect(180 + i * 90, 340, 16, 16);
-        }
-      } else if (roomId === "strategy_five") {
-        ctx.fillStyle = "#1d3557";
-        ctx.fillRect(120, 170, 280, 240);
-        ctx.fillStyle = "#3a8fb7";
-        ctx.fillRect(120, 170, 280, 18);
-        ctx.fillStyle = "#8fd3f2";
-        for (let i = 0; i < 5; i++) {
-          ctx.fillRect(150 + i * 44, 220, 34, 120);
-        }
-        ctx.fillStyle = "#ffd166";
-        ctx.fillRect(500, 190, 280, 220);
-        ctx.fillStyle = "#173a5c";
-        ctx.fillRect(520, 210, 80, 40);
-        ctx.fillRect(620, 210, 80, 40);
-        ctx.fillRect(720, 210, 40, 40);
-        ctx.fillRect(520, 280, 80, 40);
-        ctx.fillRect(620, 280, 80, 40);
-        ctx.fillRect(720, 280, 40, 40);
-      } else if (roomId === "strategy_ma") {
-        ctx.fillStyle = "#2b3045";
-        ctx.fillRect(120, 170, 280, 240);
-        ctx.fillStyle = "#4169e1";
-        ctx.fillRect(120, 170, 280, 18);
-        ctx.fillStyle = "#b8c4d8";
-        ctx.fillRect(150, 210, 100, 50);
-        ctx.fillRect(280, 210, 100, 50);
-        ctx.fillRect(150, 290, 100, 50);
-        ctx.fillRect(280, 290, 100, 50);
-        ctx.fillStyle = "#ffd166";
-        ctx.fillRect(200, 240, 130, 10);
-        ctx.fillRect(200, 320, 130, 10);
-        ctx.fillStyle = "#f2c95f";
-        ctx.fillRect(500, 190, 280, 220);
-        ctx.fillStyle = "#1d3557";
-        ctx.fillRect(520, 210, 90, 50);
-        ctx.fillRect(650, 210, 90, 50);
-        ctx.fillRect(520, 290, 90, 50);
-        ctx.fillRect(650, 290, 90, 50);
-      } else {
-        ctx.fillStyle = "#4a2e1a";
-        ctx.fillRect(100, 220, 220, 120);
-        ctx.fillStyle = "#8a5a2c";
-        ctx.fillRect(100, 220, 220, 18);
-        ctx.fillStyle = "#5c3a1e";
-        ctx.fillRect(500, 180, 240, 150);
-        ctx.fillStyle = "#7a4a28";
-        ctx.fillRect(500, 180, 240, 18);
-        ctx.fillStyle = "#f2d175";
-        ctx.fillRect(560, 250, 40, 20);
-        ctx.fillRect(640, 250, 40, 20);
-      }
-      ctx.fillStyle = "rgba(255, 230, 180, 0.12)";
-      ctx.fillRect(0, 78, W, 14);
-    }
     function drawDoor(e) {
       if (getFormalTileset()) {
         drawFormalTileScaled(1, 8, e.x - 16, e.y - 32, 3);
@@ -5337,11 +5933,11 @@
       drawFrame(assets.playerIdle, px, py, 72, 48, animFrame(assets.playerIdle, 3, 2));
     }
     function drawCoverToCanvas(img) {
-      const scale = Math.max(W / img.width, H / img.height);
+      const scale = Math.max(W / img.width, H2 / img.height);
       const sw = W / scale;
-      const sh = H / scale;
+      const sh = H2 / scale;
       ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, 0, 0, W, H);
+      ctx.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, 0, 0, W, H2);
     }
     function drawRegionBattleBackground() {
       const region = state.battle.region || BATTLE_REGIONS.paper_crane;
@@ -5357,11 +5953,11 @@
         strategy: ["rgba(135, 206, 235, 0.34)", "rgba(135, 206, 235, 0.02)"]
       };
       const colors = themeColors[region.id] || themeColors.accounting;
-      const grad = ctx.createLinearGradient(0, 0, 0, H);
+      const grad = ctx.createLinearGradient(0, 0, 0, H2);
       grad.addColorStop(0, colors[0]);
       grad.addColorStop(1, colors[1]);
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
+      ctx.fillRect(0, 0, W, H2);
       if (getFormalTileset()) {
         const floorTiles = {
           accounting: { tx: 9, ty: 6 },
@@ -5372,7 +5968,7 @@
           strategy: { tx: 9, ty: 6 }
         };
         const floor = floorTiles[region.id] || floorTiles.accounting;
-        const floorY = H - 118;
+        const floorY = H2 - 118;
         for (let x = 0; x < W; x += TILE) {
           drawFormalTile(floor.tx, floor.ty, x, floorY);
         }
@@ -5393,24 +5989,24 @@
         for (let i = 0; i < cfg.count; i++) {
           const frame = Math.floor(now / 90 + i * 2) % 9;
           const x = (i * 97 + now * 0.012 + Math.sin(now / 900 + i * 1.3) * 28) % (W - 40) + 20;
-          const y = (i * 61 + Math.cos(now / 800 + i) * 24 + H * 0.42) % (H * 0.55) + 40;
+          const y = (i * 61 + Math.cos(now / 800 + i) * 24 + H2 * 0.42) % (H2 * 0.55) + 40;
           const size = 8 + i % 4 * 4;
           drawTintedEffect(assets.dust, frame, x, y, size, size, cfg.tint);
         }
       } else {
         if (region.id === "accounting") {
           ctx.fillStyle = cfg.tint;
-          for (let i = 0; i < cfg.count; i++) ctx.fillRect((i * 73 + now * 0.012) % W, (i * 131 + H * 0.5) % H, 3, 3);
+          for (let i = 0; i < cfg.count; i++) ctx.fillRect((i * 73 + now * 0.012) % W, (i * 131 + H2 * 0.5) % H2, 3, 3);
         } else if (region.id === "finance") {
           ctx.fillStyle = cfg.tint;
           for (let i = 0; i < cfg.count; i++) {
             ctx.beginPath();
-            ctx.arc(70 + i * 82, H - (now * 0.018 + i * 53) % (H * 0.62), 4, 0, Math.PI * 2);
+            ctx.arc(70 + i * 82, H2 - (now * 0.018 + i * 53) % (H2 * 0.62), 4, 0, Math.PI * 2);
             ctx.fill();
           }
         } else {
           ctx.fillStyle = cfg.tint;
-          for (let i = 0; i < cfg.count; i++) ctx.fillRect((i * 61 + now * 0.01) % W, (i * 37 + H * 0.4) % H, 2, 2);
+          for (let i = 0; i < cfg.count; i++) ctx.fillRect((i * 61 + now * 0.01) % W, (i * 37 + H2 * 0.4) % H2, 2, 2);
         }
       }
     }
@@ -5492,15 +6088,15 @@
           const fadeIn = Math.min(1, enterAge / 220);
           const fadeOut = enterAge > 1450 ? (1800 - enterAge) / 350 : 1;
           ctx.fillStyle = `rgba(8, 5, 3, ${0.48 * fadeIn})`;
-          ctx.fillRect(0, 0, W, H);
+          ctx.fillRect(0, 0, W, H2);
           ctx.fillStyle = `rgba(255, 228, 154, ${0.95 * fadeIn * fadeOut})`;
           ctx.font = "bold 46px 'Microsoft YaHei'";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
-          ctx.fillText(m.label, W / 2, H * 0.32);
+          ctx.fillText(m.label, W / 2, H2 * 0.32);
           ctx.fillStyle = `rgba(255, 244, 214, ${0.72 * fadeIn * fadeOut})`;
           ctx.font = "bold 17px 'Microsoft YaHei'";
-          ctx.fillText("\u533A\u57DF\u5931\u8861\u4E4B\u6E90 \xB7 \u4E3B\u7EBF\u51B3\u6218", W / 2, H * 0.32 + 52);
+          ctx.fillText("\u533A\u57DF\u5931\u8861\u4E4B\u6E90 \xB7 \u4E3B\u7EBF\u51B3\u6218", W / 2, H2 * 0.32 + 52);
           ctx.textAlign = "left";
           ctx.textBaseline = "alphabetic";
         }
@@ -5563,7 +6159,7 @@
       if (now < state.battle.phaseFlashUntil) {
         const phaseAlpha = 0.18 + 0.08 * Math.sin(now / 90);
         ctx.fillStyle = `rgba(220, 40, 40, ${phaseAlpha})`;
-        ctx.fillRect(0, 0, W, H);
+        ctx.fillRect(0, 0, W, H2);
       }
       if (m.isBoss && state.battle.phase2) {
         const baseAlpha = state.battle.phase3 ? 0.3 : 0.16;
@@ -5591,12 +6187,12 @@
     }
     function drawTitleBackdrop() {
       drawSceneCover();
-      const grad = ctx.createLinearGradient(0, 0, 0, H);
+      const grad = ctx.createLinearGradient(0, 0, 0, H2);
       grad.addColorStop(0, "rgba(20, 14, 8, 0.28)");
       grad.addColorStop(0.55, "rgba(20, 14, 8, 0.12)");
       grad.addColorStop(1, "rgba(16, 10, 6, 0.62)");
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
+      ctx.fillRect(0, 0, W, H2);
       const subjects = [
         { name: "\u4F1A\u8BA1", color: "#d4a017" },
         { name: "\u5BA1\u8BA1", color: "#4169e1" },
@@ -5619,7 +6215,7 @@
       });
     }
     function render() {
-      ctx.clearRect(0, 0, W, H);
+      ctx.clearRect(0, 0, W, H2);
       if (state.screen === "map") drawMap();
       else if (state.screen === "battle") drawBattle();
       else drawTitleBackdrop();
@@ -6148,271 +6744,6 @@
       showToast("\u4E60\u5F97\u6280\u80FD\uFF1A" + skill.name);
       if (from === "skill-tree") openSkillTree();
       else openEquip();
-    }
-    function openTasks() {
-      const rows = state.tasks.map((t) => {
-        const reward = t.reward || { gold: 30, exp: 40, skillPoints: 1 };
-        const pct = Math.min(100, Math.round(t.progress / t.target * 100));
-        return `
-          <div class="book-card">
-            <div><b>${t.done ? "\u2714 " : ""}${t.title}</b><span class="book-status">${t.deliverable ? "\u5F85\u4EA4\u4ED8" : t.done ? "\u5DF2\u5B8C\u6210" : `${t.progress}/${t.target}`}</span></div>
-            <div class="caption">${t.desc}</div>
-            <div class="report-bar"><div style="width:${pct}%"></div></div>
-            <div class="caption">\u5956\u52B1\uFF1A${reward.gold} G \xB7 ${reward.exp} \u7ECF\u9A8C \xB7 ${reward.skillPoints} \u6280\u80FD\u70B9</div>
-          </div>
-        `;
-      }).join("");
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u4EFB\u52A1 \xB7 ${state.tasks.filter((t) => t.done).length}/${state.tasks.length}</div>
-        <div class="modal-text">\u5B8C\u6210\u4EFB\u52A1\u4F1A\u83B7\u5F97\u91D1\u5E01\u3001\u7ECF\u9A8C\u548C\u6280\u80FD\u70B9\u5956\u52B1\u3002</div>
-        ${rows}
-        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
-      </div>
-    `);
-    }
-    function openAchievements() {
-      const rows = Object.entries(ACHIEVEMENTS).map(([id, a]) => {
-        const unlocked = state.achievements.includes(id);
-        return `
-          <div class="book-card" style="${unlocked ? "" : "opacity:0.62;"}">
-            <div><b>${unlocked ? "\u2714 " : "\u{1F512} "}${a.name}</b><span class="book-status">${unlocked ? "\u5DF2\u89E3\u9501" : "\u672A\u89E3\u9501"}</span></div>
-            <div class="caption">${a.type}</div>
-            <div class="caption">${a.desc}</div>
-            <div class="caption">\u5956\u52B1\uFF1A${a.reward.gold || 0} G / ${a.reward.exp || 0} \u7ECF\u9A8C / ${a.reward.skillPoints || 0} \u6280\u80FD\u70B9</div>
-          </div>
-        `;
-      }).join("");
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u6210\u5C31 \xB7 ${state.achievements.length}/${Object.keys(ACHIEVEMENTS).length}</div>
-        <div class="modal-text">\u5B8C\u6210\u6218\u6597\u3001\u5B66\u4E60\u3001\u63A2\u7D22\u548C\u6210\u957F\u76EE\u6807\u5373\u53EF\u89E3\u9501\u5956\u52B1\u3002</div>
-        ${rows}
-        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
-      </div>
-    `);
-    }
-    function openWorldMap() {
-      const regions = [
-        { name: "\u91D1\u7B97\u539F\u91CE", subject: "\u4F1A\u8BA1", status: "\u5DF2\u5F00\u653E \xB7 5\u4E2A\u5BA4\u5185\u8BD5\u70BC\u70B9", color: "#d4a017", zone: "gold_field" },
-        { name: "\u5BA1\u8BA1\u94C1\u5821", subject: "\u5BA1\u8BA1", status: state.auditBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.bossKilled ? "\u5DF2\u5F00\u653E" : "\u51FB\u8D25\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u540E\u89E3\u9501", color: "#4169e1", zone: state.bossKilled ? "audit_tower" : null },
-        { name: "\u8D44\u672C\u5BC6\u6797", subject: "\u8D22\u7BA1", status: state.capitalBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.auditCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u5BA1\u8BA1\u94C1\u5821\u540E\u89E3\u9501", color: "#2e8b57", zone: state.auditCleared ? "capital_forest" : null },
-        { name: "\u7A0E\u7387\u8352\u539F", subject: "\u7A0E\u6CD5", status: state.taxBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.capitalCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u8D44\u672C\u5BC6\u6797\u540E\u89E3\u9501", color: "#e4572e", zone: state.capitalCleared ? "tax_wasteland" : null },
-        { name: "\u6CD5\u6761\u795E\u6BBF", subject: "\u7ECF\u6D4E\u6CD5", status: state.lawBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.taxCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u7A0E\u7387\u8352\u539F\u540E\u89E3\u9501", color: "#6b5b95", zone: state.taxCleared ? "law_temple" : null },
-        { name: "\u6218\u7565\u661F\u5854", subject: "\u6218\u7565", status: state.gameCompleted ? "\u5DF2\u901A\u5173" : state.strategyBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.lawCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u6CD5\u6761\u795E\u6BBF\u540E\u89E3\u9501", color: "#3a8fb7", zone: state.lawCleared || state.gameCompleted ? "strategy_star" : null }
-      ];
-      const cards = regions.map(
-        (r) => `
-          <div class="panel-light" style="padding:12px;margin-bottom:8px;border-left:6px solid ${r.color};">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;"><b>${r.name}</b> \xB7 ${r.subject}${r.zone ? `<button class="pixel-btn small" data-action="world-zone" data-zone="${r.zone}">\u524D\u5F80</button>` : ""}</div>
-            <div class="caption">${r.status}</div>
-          </div>
-        `
-      ).join("");
-      openModal(`
-        <div class="modal-box">
-          <div class="modal-title">\u8BB0\u8D26\u5927\u9646 \xB7 \u4E16\u754C\u5730\u56FE</div>
-          <div class="modal-text">\u516D\u533A\u57DF\u5BF9\u5E94\u516D\u79D1\uFF0C\u5B8C\u6574\u5546\u4E1A\u5316\u7248\u672C\u5C06\u9010\u6B65\u5F00\u653E\u3002\u91D1\u7B97\u539F\u91CE\u76EE\u524D\u53EF\u8FDB\u5165\u5546\u5E97\u3001\u5DE5\u574A\u3001\u6863\u6848\u5BA4\u3001\u65E7\u8D26\u623F\uFF0C\u4EE5\u53CA\u5BA1\u8BA1\u3001\u8D22\u7BA1\u3001\u7A0E\u6CD5\u3001\u7ECF\u6D4E\u6CD5\u3001\u6218\u7565\u4E94\u4E2A\u4E3B\u9898\u623F\u95F4\u3002</div>
-          <canvas id="worldMapCanvas" class="world-map-canvas" width="840" height="260"></canvas>
-          ${cards}
-          <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
-        </div>
-      `);
-      drawWorldMapCanvas();
-    }
-    function drawWorldMapCanvas() {
-      const canvas2 = document.getElementById("worldMapCanvas");
-      if (!canvas2) return;
-      const c = canvas2.getContext("2d");
-      const regions = [
-        { name: "\u91D1\u7B97\u539F\u91CE", color: "#d4a017", open: true },
-        { name: "\u5BA1\u8BA1\u94C1\u5821", color: "#4169e1", open: !!state.bossKilled },
-        { name: "\u8D44\u672C\u5BC6\u6797", color: "#2e8b57", open: !!state.auditCleared },
-        { name: "\u7A0E\u7387\u8352\u539F", color: "#e4572e", open: !!state.capitalCleared },
-        { name: "\u6CD5\u6761\u795E\u6BBF", color: "#6b5b95", open: !!state.taxCleared },
-        { name: "\u6218\u7565\u661F\u5854", color: "#3a8fb7", open: !!state.lawCleared || !!state.gameCompleted }
-      ];
-      c.clearRect(0, 0, canvas2.width, canvas2.height);
-      c.fillStyle = "#17130f";
-      c.fillRect(0, 0, canvas2.width, canvas2.height);
-      c.fillStyle = "rgba(255, 228, 154, 0.08)";
-      for (let i = 0; i < 90; i++) {
-        c.fillRect(i * 97 % canvas2.width, i * 41 % canvas2.height, 2, 2);
-      }
-      regions.forEach((r, i) => {
-        const x = 24 + i * 134;
-        const y = 30;
-        const w = 116;
-        const h = 190;
-        c.fillStyle = r.open ? "rgba(24, 20, 16, 0.96)" : "rgba(24, 20, 16, 0.62)";
-        c.fillRect(x, y, w, h);
-        c.fillStyle = r.color;
-        c.fillRect(x, y, w, 8);
-        c.fillRect(x, y + 34, w, 4);
-        c.fillStyle = r.open ? "#f2c95f" : "#9a8570";
-        c.font = "bold 18px 'Microsoft YaHei'";
-        c.textAlign = "center";
-        c.fillText(r.name, x + w / 2, y + 26);
-        c.font = "bold 13px 'Microsoft YaHei'";
-        c.fillText(r.open ? "\u5DF2\u5F00\u653E" : "\u672A\u89E3\u9501", x + w / 2, y + 64);
-        c.strokeStyle = "rgba(255, 244, 214, 0.28)";
-        c.lineWidth = 2;
-        c.strokeRect(x + 14, y + 78, w - 28, h - 96);
-        c.textAlign = "left";
-      });
-    }
-    function openPartner() {
-      if (!isSystemUnlocked("partner")) {
-        showToast(systemLockTip("partner", "\u4F19\u4F34") + " \u89E3\u9501");
-        return;
-      }
-      const partner = state.partner;
-      const moodLevel = partner.mood < 40 ? "\u964C\u751F" : partner.mood < 70 ? "\u719F\u6089" : "\u4FE1\u8D56";
-      const hpPct = Math.round(partner.hp / partner.maxHp * 100);
-      const expPct = Math.round(partner.exp / partner.expNext * 100);
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u4F19\u4F34 \xB7 ${partner.name}</div>
-        <div class="modal-text">
-          \u8BB0\u8D26\u7CBE\u7075\u4F1A\u5728\u6218\u6597\u4E2D\u81EA\u52A8\u534F\u52A9\u653B\u51FB\u3002\u597D\u611F\u5EA6\u8D8A\u9AD8\uFF0C\u534F\u52A9\u4F24\u5BB3\u8D8A\u9AD8\u3002
-        </div>
-        <div class="report-grid">
-          <div class="report-card"><div class="num">${partner.level}</div><div>\u7B49\u7EA7</div></div>
-          <div class="report-card"><div class="num">${partner.atk + partner.level}</div><div>\u653B\u51FB</div></div>
-          <div class="report-card"><div class="num">${partner.mood}/100</div><div>\u597D\u611F \xB7 ${moodLevel}</div></div>
-        </div>
-        <div class="modal-text"><b>HP</b></div>
-        <div class="report-bar"><div style="width:${hpPct}%"></div></div>
-        <div class="modal-text"><b>\u7ECF\u9A8C</b></div>
-        <div class="report-bar"><div style="width:${expPct}%"></div></div>
-        <div class="modal-text">\u6280\u80FD\uFF1A${partner.skill}\uFF08\u597D\u611F\u226570 \u65F6\uFF0C\u6BCF\u573A\u6218\u6597\u9996\u6B21\u6280\u80FD\u7B54\u5BF9\u4F24\u5BB3\u63D0\u5347 30%\uFF09</div>
-        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
-      </div>
-    `);
-    }
-    function openPlan() {
-      const plan = state.plan;
-      const progress = Math.min(100, Math.round(state.daily.answered / Math.max(1, state.daily.target) * 100));
-      const targetBtns = [5, 10, 15, 20].map((n) => `<button class="pixel-btn small ${plan.dailyTarget === n ? "" : "secondary"}" data-action="plan-target" data-target="${n}">${n}\u9898</button>`).join("");
-      const subjectBtns = [
-        `<button class="pixel-btn small ${plan.subjects.length === 0 ? "" : "secondary"}" data-action="plan-subject" data-subject="__all">\u5168\u90E8\u79D1\u76EE</button>`,
-        ...Object.keys(PLAN_SUBJECT_POINTS).map(
-          (subject) => `<button class="pixel-btn small ${plan.subjects.includes(subject) ? "" : "secondary"}" data-action="plan-subject" data-subject="${subject}">${subject}</button>`
-        )
-      ].join("");
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u5B66\u4E60\u8BA1\u5212</div>
-        <div class="report-grid">
-          <div class="report-card"><div class="num">${state.daily.answered}/${state.daily.target}</div><div>\u4ECA\u65E5\u8FDB\u5EA6</div></div>
-          <div class="report-card"><div class="num">${progress}%</div><div>\u5B8C\u6210\u7387</div></div>
-          <div class="report-card"><div class="num">${plan.subjects.length ? plan.subjects.join("\u3001") : "\u5168\u90E8"}</div><div>\u79D1\u76EE\u504F\u597D</div></div>
-        </div>
-        <div class="report-bar"><div style="width:${progress}%"></div></div>
-        <div class="modal-text"><b>\u6BCF\u65E5\u76EE\u6807</b></div>
-        <div class="modal-actions">${targetBtns}</div>
-        <div class="modal-text"><b>\u79D1\u76EE\u504F\u597D</b><br>\u672A\u9009\u62E9\u65F6\u4ECE\u5168\u90E8\u79D1\u76EE\u62BD\u53D6\u9898\u76EE\u3002</div>
-        <div class="modal-actions">${subjectBtns}</div>
-        <div class="modal-actions">
-          <button class="pixel-btn" data-action="challenge-start" data-mode="plan">\u5F00\u59CB\u4ECA\u65E5\u8BA1\u5212</button>
-          <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
-        </div>
-      </div>
-    `);
-    }
-    function openPointMap() {
-      const sections = Object.entries(PLAN_SUBJECT_POINTS).map(([subject, points]) => {
-        const chips = points.map((point) => `<button class="pixel-btn small point-chip" data-action="point-quiz" data-point="${point}">${point}</button>`).join("");
-        return `
-          <div class="book-card">
-            <span class="book-point">${subject}</span>
-            <div class="point-grid">${chips}</div>
-          </div>
-        `;
-      }).join("");
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u8003\u7EB2\u5BFC\u822A</div>
-        <div class="info-card">\u6309\u79D1\u76EE\u6D4F\u89C8 CPA \u8003\u70B9\uFF0C\u70B9\u51FB\u8003\u70B9\u53EF\u76F4\u63A5\u5F00\u59CB 1 \u9053\u9898\u8FDB\u884C\u9488\u5BF9\u6027\u590D\u4E60\u3002</div>
-        ${sections}
-        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
-      </div>
-    `);
-    }
-    const JOB_QUESTIONS = [
-      {
-        q: "\u4F60\u66F4\u559C\u6B22\u54EA\u79CD\u5B66\u4E60\u65B9\u5F0F\uFF1F",
-        options: [
-          { label: "\u9010\u7B14\u6838\u5BF9\u5206\u5F55\u4E0E\u89C4\u5219", value: "accountant,law" },
-          { label: "\u7528\u6570\u5B57\u548C\u6A21\u578B\u505A\u8BA1\u7B97", value: "finance,tax" },
-          { label: "\u68C0\u67E5\u8BC1\u636E\u3001\u8BC6\u522B\u98CE\u9669", value: "auditor" },
-          { label: "\u4ECE\u5168\u5C40\u770B\u8D8B\u52BF\u548C\u51B3\u7B56", value: "strategy" }
-        ]
-      },
-      {
-        q: "\u6218\u6597\u4E2D\u4F60\u66F4\u503E\u5411\u4E8E\uFF1F",
-        options: [
-          { label: "\u5747\u8861\u653B\u51FB\uFF0C\u7A33\u5B9A\u63A8\u8FDB", value: "accountant" },
-          { label: "\u9AD8\u4F24\u5BB3\u8F93\u51FA", value: "finance,tax" },
-          { label: "\u9632\u5FA1\u3001\u62A4\u76FE\u548C\u63A7\u5236", value: "auditor,law" },
-          { label: "\u53EC\u5524\u4E0E\u5168\u5C40\u5F71\u54CD", value: "strategy" }
-        ]
-      },
-      {
-        q: "\u4F60\u5E0C\u671B\u804C\u4E1A\u6280\u80FD\u504F\u5411\u54EA\u4E2A\u65B9\u5411\uFF1F",
-        options: [
-          { label: "\u4F1A\u8BA1\u57FA\u7840\u4E0E\u5206\u5F55\u8FDE\u51FB", value: "accountant" },
-          { label: "\u5BA1\u8BA1\u8BC1\u636E\u4E0E\u63A7\u5236\u6D4B\u8BD5", value: "auditor" },
-          { label: "\u8D22\u7BA1\u8BA1\u7B97\u4E0E\u8D44\u672C\u9884\u7B97", value: "finance" },
-          { label: "\u7A0E\u6CD5\u8FDC\u7A0B\u4E0E\u7A0E\u6536\u4F18\u60E0", value: "tax" },
-          { label: "\u7ECF\u6D4E\u6CD5\u62A4\u76FE\u4E0E\u89C4\u5219", value: "law" },
-          { label: "\u6218\u7565\u51B3\u7B56\u4E0E\u5168\u5C40\u6307\u6325", value: "strategy" }
-        ]
-      }
-    ];
-    function openJobQuiz() {
-      const scores = {};
-      for (const jobId of Object.keys(JOBS)) scores[jobId] = 0;
-      state.jobQuiz = { idx: 0, scores };
-      renderJobQuestion();
-    }
-    function renderJobQuestion() {
-      const quiz = state.jobQuiz;
-      if (!quiz) return;
-      const item = JOB_QUESTIONS[quiz.idx];
-      const options = item.options.map((opt, i) => `<button class="pixel-btn option" data-action="job-quiz-answer" data-value="${opt.value}"><span class="tag">${String.fromCharCode(65 + i)}</span>${opt.label}</button>`).join("");
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u804C\u4E1A\u63A8\u8350 \xB7 \u7B2C ${quiz.idx + 1}/${JOB_QUESTIONS.length} \u9898</div>
-        <div class="info-card">${item.q}</div>
-        <div class="quiz-options">${options}</div>
-      </div>
-    `);
-    }
-    function finishJobQuiz() {
-      const quiz = state.jobQuiz;
-      if (!quiz) return;
-      const sorted = Object.entries(quiz.scores).sort((a, b) => b[1] - a[1]);
-      const best = sorted[0][0];
-      const job = JOBS[best];
-      if (state.jobs.unlocked.includes(best)) {
-        state.jobs.current = best;
-        save();
-      }
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u63A8\u8350\u804C\u4E1A \xB7 ${job.name}</div>
-        <div class="info-card">
-          ${job.desc}<br><br>
-          ${state.jobs.unlocked.includes(best) ? "\u5DF2\u4E3A\u4F60\u5207\u6362\u5230\u8BE5\u804C\u4E1A\u3002" : "\u8BE5\u804C\u4E1A\u5C1A\u672A\u89E3\u9501\uFF0C\u53EF\u5728\u540E\u7EED\u533A\u57DF\u901A\u8FC7\u5546\u5E97\u6216\u5267\u60C5\u89E3\u9501\u540E\u5207\u6362\u3002"}
-        </div>
-        <div class="modal-actions">
-          <button class="pixel-btn" data-action="job-recommend-continue">\u8FDB\u5165\u88C5\u5907\u4E0E\u6280\u80FD</button>
-          <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
-        </div>
-      </div>
-    `);
-      state.jobQuiz = null;
     }
     function openChallengeSetup() {
       if (!isSystemUnlocked("challenge")) {
@@ -7102,142 +7433,40 @@
         showTitle();
       }
     }
-    function bindEvents() {
-      window.addEventListener("beforeinstallprompt", (e) => {
-        e.preventDefault();
-        deferredInstallPrompt = e;
-      });
-      window.addEventListener("appinstalled", () => {
-        pwaInstalled = true;
-        deferredInstallPrompt = null;
-        showToast("\u6E38\u620F\u5DF2\u5B89\u88C5\uFF0C\u53EF\u4ECE\u684C\u9762\u6216\u5F00\u59CB\u83DC\u5355\u542F\u52A8");
-      });
-      if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("sw.js").catch(() => {
-          });
-        });
-      }
-      document.addEventListener("keydown", (e) => {
-        keys[e.key] = true;
-        const key = e.key.toLowerCase();
-        const inField = document.activeElement && /^(INPUT|TEXTAREA)$/i.test(document.activeElement.tagName);
-        if (inField) return;
-        if (key === "e" && state.screen === "map" && modal.classList.contains("hidden")) {
-          tryInteract();
-        }
-        if (modal.classList.contains("hidden")) {
-          if (state.screen === "map") {
-            if (key === "i" || key === "c") openEquip();
-            else if (key === "m") openWorldMap();
-            else if (key === "q") openTasks();
-            else if (key === "k") openSkillTree();
-            else if (key === "p") openPlan();
-          }
-        } else if (e.code === "Space" || key === " ") {
-          const storyNext2 = modal.querySelector('[data-action="story-next"]');
-          const quizContinue = modal.querySelector('[data-action="quiz-continue"]');
-          if (storyNext2) storyNext2.click();
-          else if (quizContinue) quizContinue.click();
-          else if (state.screen === "title" && modal.querySelector('[data-action="start"]')) modal.querySelector('[data-action="start"]').click();
-          e.preventDefault();
-        }
-      });
-      document.addEventListener("keyup", (e) => {
-        keys[e.key] = false;
-      });
-      modal.addEventListener("click", (e) => {
-        const btn = e.target.closest("[data-action]");
-        if (!btn) return;
-        const action = btn.dataset.action;
-        if (action === "quiz-continue") {
-          state._lastQuizCorrect = state._lastQuizCorrect;
-        }
-        handleAction(action, btn.dataset);
-      });
-      modal.addEventListener("mouseover", (e) => {
-        const tipTarget = e.target.closest("[data-tip]");
-        if (tipTarget) showTooltip(tipTarget.dataset.tip, e.clientX, e.clientY);
-      });
-      modal.addEventListener("mousemove", (e) => {
-        if (!tooltip.classList.contains("hidden")) moveTooltip(e.clientX, e.clientY);
-      });
-      modal.addEventListener("mouseout", (e) => {
-        if (!e.relatedTarget || !modal.contains(e.relatedTarget)) hideTooltip();
-      });
-      modal.addEventListener("click", (e) => {
-        const answerBtn = e.target.closest("[data-answer]");
-        if (!answerBtn || !state.quiz) return;
-        if (state.quiz.q.type === "multiple") {
-          answerBtn.classList.toggle("selected");
-          return;
-        }
-        state._lastQuizCorrect = Number(answerBtn.dataset.answer) === state.quiz.q.answer;
-        resolveAnswer(Number(answerBtn.dataset.answer));
-      });
-      document.querySelectorAll("[data-action]").forEach((btn) => {
-        btn.addEventListener("click", () => handleAction(btn.dataset.action, btn.dataset));
-      });
-      document.querySelectorAll("[data-touch]").forEach((btn) => {
-        const dir = btn.dataset.touch;
-        const set = (v) => touch[dir] = v;
-        btn.addEventListener("pointerdown", () => set(true));
-        btn.addEventListener("pointerup", () => set(false));
-        btn.addEventListener("pointerleave", () => set(false));
-      });
-      document.getElementById("touchInteract").addEventListener("click", () => {
-        tryInteract();
-      });
-      canvas.addEventListener("click", (e) => {
-        if (state.screen !== "map") return;
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX - rect.left) * W / rect.width;
-        const y = (e.clientY - rect.top) * H / rect.height;
-        let best = null;
-        let bestDist = 80;
-        getActiveEntities().forEach((entity) => {
-          if (entity.type === "chest" && state.openedChests.includes(entity.id)) return;
-          if (entity.type === "collect" && state.collectedMaterialIds.includes(entity.id)) return;
-          if (entity.type === "monster" && (state.monstersKilledIds || []).includes(entity.id)) return;
-          if (entity.type === "boss" && (!isBossUnlocked(entity) || isBossDefeated(entity))) return;
-          const d = Math.hypot(entity.x + 16 - x, entity.y + 20 - y);
-          if (d < bestDist) {
-            bestDist = d;
-            best = entity;
-          }
-        });
-        if (best) {
-          interact(best);
-        } else {
-          state.player.moveTarget = { x, y };
-        }
-      });
-      canvas.addEventListener("pointermove", (e) => {
-        if (state.screen !== "map" || !modal.classList.contains("hidden")) {
-          hideTooltip();
-          return;
-        }
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX - rect.left) * W / rect.width;
-        const y = (e.clientY - rect.top) * H / rect.height;
-        let best = null;
-        let bestDist = 70;
-        getActiveEntities().forEach((entity) => {
-          if (entity.type === "chest" && state.openedChests.includes(entity.id)) return;
-          if (entity.type === "collect" && state.collectedMaterialIds.includes(entity.id)) return;
-          if (entity.type === "monster" && (state.monstersKilledIds || []).includes(entity.id)) return;
-          if (entity.type === "boss" && (!isBossUnlocked(entity) || isBossDefeated(entity))) return;
-          const d = Math.hypot(entity.x + 16 - x, entity.y + 20 - y);
-          if (d < bestDist) {
-            bestDist = d;
-            best = entity;
-          }
-        });
-        if (best) showTooltip(entityTooltip(best), e.clientX, e.clientY);
-        else hideTooltip();
-      });
-      canvas.addEventListener("pointerleave", hideTooltip);
-    }
+    const eventDispatcher = createEventDispatcher({
+      window,
+      document,
+      modal,
+      canvas,
+      W,
+      keys,
+      touch,
+      getState: () => state,
+      setInstallPrompt: (v) => {
+        deferredInstallPrompt = v;
+      },
+      setPwaInstalled: (v) => {
+        pwaInstalled = v;
+      },
+      showToast,
+      tryInteract,
+      openEquip,
+      openWorldMap,
+      openTasks,
+      openSkillTree,
+      openPlan,
+      handleAction,
+      tooltip,
+      showTooltip,
+      moveTooltip,
+      hideTooltip,
+      resolveAnswer,
+      getActiveEntities,
+      isBossUnlocked,
+      isBossDefeated,
+      interact,
+      entityTooltip
+    });
     let fpsFrames = 0;
     let fpsLast = performance.now();
     function loop(t) {
@@ -7263,7 +7492,7 @@
       try {
         await loadAssets();
         loadingPanel.classList.add("hidden");
-        bindEvents();
+        eventDispatcher.bindEvents();
         const params = new URLSearchParams(location.search);
         const autoStart = params.get("autostart") === "map";
         const unlockAll = params.get("unlock") === "all";
