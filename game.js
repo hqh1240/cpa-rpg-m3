@@ -1469,6 +1469,743 @@
     };
   }
 
+  // src/systems/economy.js
+  function createEconomySystem(deps) {
+    const {
+      getState,
+      openModal,
+      showToast,
+      save,
+      updateHUD,
+      sfx: sfx2,
+      updateTask,
+      unlockAchievement,
+      getWeaponAtk,
+      getArmorDef,
+      isSystemUnlocked,
+      systemLockTip
+    } = deps;
+    function openShop() {
+      const state = getState();
+      if (!isSystemUnlocked("shop")) {
+        showToast(systemLockTip("shop", "\u5546\u5E97") + " \u89E3\u9501");
+        return;
+      }
+      const ownedWeapon = state.weapon.id === "compounding_dagger";
+      const ownedArmor = state.armor.id === "audit_light_armor";
+      const items = [
+        { id: "hp_potion", name: "\u521D\u7EA7\u56DE\u590D\u836F\u6C34", desc: "\u6062\u590D 30 HP", price: 20, disabled: false },
+        { id: "mp_potion", name: "\u4EE5\u592A\u4E4B\u9732", desc: "\u6062\u590D 30 MP", price: 15, disabled: false },
+        { id: "compounding_dagger", name: "\u590D\u5229\u5315\u9996", desc: "ATK +8", price: 120, disabled: ownedWeapon },
+        { id: "audit_light_armor", name: "\u5BA1\u94C1\u8F7B\u7532", desc: "DEF +4", price: 150, disabled: ownedArmor },
+        { id: "job_token_finance", name: "\u8D22\u7BA1\u6E38\u4FA0\u804C\u4E1A\u51ED\u8BC1", desc: "\u89E3\u9501\u8D22\u7BA1\u6E38\u4FA0", price: 200, disabled: state.jobs.unlocked.includes("finance") },
+        { id: "job_token_tax", name: "\u7A0E\u6CD5\u5F13\u624B\u804C\u4E1A\u51ED\u8BC1", desc: "\u89E3\u9501\u7A0E\u6CD5\u5F13\u624B", price: 200, disabled: state.jobs.unlocked.includes("tax") },
+        { id: "job_token_law", name: "\u7ECF\u6D4E\u6CD5\u796D\u53F8\u804C\u4E1A\u51ED\u8BC1", desc: "\u89E3\u9501\u7ECF\u6D4E\u6CD5\u796D\u53F8", price: 200, disabled: state.jobs.unlocked.includes("law") },
+        { id: "job_token_strategy", name: "\u6218\u7565\u53EC\u5524\u5E08\u804C\u4E1A\u51ED\u8BC1", desc: "\u89E3\u9501\u6218\u7565\u53EC\u5524\u5E08", price: 200, disabled: state.jobs.unlocked.includes("strategy") }
+      ];
+      const rows = items.map((item) => {
+        const compare = item.id === "compounding_dagger" ? ` \xB7 \u5F53\u524D ${state.weapon.name} ATK ${getWeaponAtk()} \u2192 8` : item.id === "audit_light_armor" ? ` \xB7 \u5F53\u524D ${state.armor.name} DEF ${getArmorDef()} \u2192 4` : "";
+        return `
+          <div class="book-card" style="display:flex;justify-content:space-between;align-items:center;gap:10px;" data-tip="${item.name}\uFF1A${item.desc}${compare} \xB7 ${item.price} G">
+            <div><b>${item.name}</b><br><span class="caption">${item.desc} \xB7 ${item.price} G${item.disabled ? " \xB7 \u5DF2\u62E5\u6709" : ""}</span></div>
+            ${item.disabled ? "" : `<button class="pixel-btn small" data-action="shop-buy" data-item="${item.id}">\u8D2D\u4E70</button>`}
+          </div>
+        `;
+      }).join("");
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u5BA1\u660E\u6742\u8D27\u94FA</div>
+        <div class="modal-text">\u5F53\u524D\u91D1\u5E01\uFF1A${state.player.gold} G</div>
+        ${rows}
+        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u79BB\u5F00</button></div>
+      </div>
+    `);
+    }
+    function buyItem(itemId) {
+      const state = getState();
+      const prices = {
+        hp_potion: 20,
+        mp_potion: 15,
+        compounding_dagger: 120,
+        audit_light_armor: 150,
+        job_token_finance: 200,
+        job_token_tax: 200,
+        job_token_law: 200,
+        job_token_strategy: 200
+      };
+      const price = prices[itemId];
+      if (price === void 0) return;
+      if (state.player.gold < price) {
+        showToast("\u91D1\u5E01\u4E0D\u8DB3");
+        return;
+      }
+      state.player.gold -= price;
+      if (itemId === "hp_potion") state.inventory.hpPotion = (state.inventory.hpPotion || 0) + 1;
+      else if (itemId === "mp_potion") state.inventory.mpPotion = (state.inventory.mpPotion || 0) + 1;
+      else if (itemId === "compounding_dagger") state.weapon = { id: "compounding_dagger", name: "\u590D\u5229\u5315\u9996", atk: 8 };
+      else if (itemId === "audit_light_armor") state.armor = { id: "audit_light_armor", name: "\u5BA1\u94C1\u8F7B\u7532", def: 4 };
+      else if (itemId === "job_token_finance" && !state.jobs.unlocked.includes("finance")) state.jobs.unlocked.push("finance");
+      else if (itemId === "job_token_tax" && !state.jobs.unlocked.includes("tax")) state.jobs.unlocked.push("tax");
+      else if (itemId === "job_token_law" && !state.jobs.unlocked.includes("law")) state.jobs.unlocked.push("law");
+      else if (itemId === "job_token_strategy" && !state.jobs.unlocked.includes("strategy")) state.jobs.unlocked.push("strategy");
+      if (state.jobs.unlocked.length >= 6) unlockAchievement("all_jobs");
+      updateTask("shop_task", 1);
+      save();
+      updateHUD();
+      sfx2("item");
+      sfx2("gold");
+      showToast("\u8D2D\u4E70\u6210\u529F");
+      openShop();
+    }
+    function openCraft() {
+      const state = getState();
+      if (!isSystemUnlocked("craft")) {
+        showToast(systemLockTip("craft", "\u6253\u9020") + " \u89E3\u9501");
+        return;
+      }
+      const m = state.inventory.materials;
+      const recipes = [
+        { id: "hp_potion_craft", name: "\u9AD8\u7EA7\u56DE\u590D\u836F\u6C34", desc: "\u58A8\u6E0D\u6B8B\u9875 \xD71 \u2192 \u56DE\u590D\u836F\u6C34 \xD72", price: { ink: 1 }, disabled: m.ink < 1 },
+        { id: "mp_potion_craft", name: "\u4EE5\u592A\u836F\u5305", desc: "\u7B97\u76D8\u73E0 \xD71 \u2192 \u4EE5\u592A\u4E4B\u9732 \xD72", price: { beads: 1 }, disabled: m.beads < 1 },
+        { id: "craft_dagger", name: "\u590D\u5229\u5315\u9996", desc: "\u91D1\u7B97\u77F3 \xD72 + \u58A8\u6E0D\u6B8B\u9875 \xD71", price: { stone: 2, ink: 1 }, disabled: state.weapon.id === "compounding_dagger" || m.stone < 2 || m.ink < 1 },
+        { id: "craft_armor", name: "\u5BA1\u94C1\u8F7B\u7532", desc: "\u7B97\u76D8\u73E0 \xD72 + \u91D1\u7B97\u77F3 \xD71", price: { beads: 2, stone: 1 }, disabled: state.armor.id === "audit_light_armor" || m.beads < 2 || m.stone < 1 }
+      ];
+      const rows = recipes.map((r) => `
+        <div class="book-card" style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+          <div><b>${r.name}</b><br><span class="caption">${r.desc}</span></div>
+          ${r.disabled ? "" : `<button class="pixel-btn small" data-action="craft-item" data-item="${r.id}">\u6253\u9020</button>`}
+        </div>
+      `).join("");
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u6253\u9020\u5DE5\u574A</div>
+        <div class="modal-text">
+          \u91D1\u7B97\u77F3 \xD7${m.stone || 0} \xB7 \u58A8\u6E0D\u6B8B\u9875 \xD7${m.ink || 0} \xB7 \u7B97\u76D8\u73E0 \xD7${m.beads || 0} \xB7 \u5408\u5E76\u51ED\u8BC1 \xD7${m.credential || 0}
+        </div>
+        ${rows}
+        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
+      </div>
+    `);
+    }
+    function craftItem(itemId) {
+      const state = getState();
+      const recipes = {
+        hp_potion_craft: { name: "\u9AD8\u7EA7\u56DE\u590D\u836F\u6C34", price: { ink: 1 } },
+        mp_potion_craft: { name: "\u4EE5\u592A\u836F\u5305", price: { beads: 1 } },
+        craft_dagger: { name: "\u590D\u5229\u5315\u9996", price: { stone: 2, ink: 1 } },
+        craft_armor: { name: "\u5BA1\u94C1\u8F7B\u7532", price: { beads: 2, stone: 1 } }
+      };
+      const recipe = recipes[itemId];
+      if (!recipe) return;
+      const m = state.inventory.materials;
+      for (const [key, count] of Object.entries(recipe.price)) {
+        if ((m[key] || 0) < count) {
+          showToast("\u6750\u6599\u4E0D\u8DB3");
+          return;
+        }
+      }
+      for (const [key, count] of Object.entries(recipe.price)) m[key] -= count;
+      if (itemId === "hp_potion_craft") state.inventory.hpPotion = (state.inventory.hpPotion || 0) + 2;
+      else if (itemId === "mp_potion_craft") state.inventory.mpPotion = (state.inventory.mpPotion || 0) + 2;
+      else if (itemId === "craft_dagger") state.weapon = { id: "compounding_dagger", name: "\u590D\u5229\u5315\u9996", atk: 8 };
+      else if (itemId === "craft_armor") state.armor = { id: "audit_light_armor", name: "\u5BA1\u94C1\u8F7B\u7532", def: 4 };
+      updateTask("craft_task", 1);
+      save();
+      updateHUD();
+      sfx2("craft");
+      sfx2("levelup");
+      showToast("\u6253\u9020\u6210\u529F\uFF1A" + recipe.name);
+      openCraft();
+    }
+    function openEnhance() {
+      const state = getState();
+      if (!isSystemUnlocked("enhance")) {
+        showToast(systemLockTip("enhance", "\u88C5\u5907\u5F3A\u5316") + " \u89E3\u9501");
+        return;
+      }
+      const m = state.inventory.materials;
+      const wLevel = state.equipmentLevels.weapon || 0;
+      const aLevel = state.equipmentLevels.armor || 0;
+      const weaponCost = wLevel >= 5 ? null : { stone: 2 + wLevel, beads: 1, gold: 30 * (wLevel + 1) };
+      const armorCost = aLevel >= 5 ? null : { beads: 2 + aLevel, ink: 1, gold: 30 * (aLevel + 1) };
+      const weaponRow = weaponCost ? `<button class="pixel-btn small" data-action="enhance-item" data-slot="weapon">\u5F3A\u5316\u6B66\u5668</button>` : `<span style="color:#2f7a35;">\u5DF2\u6EE1\u7EA7</span>`;
+      const armorRow = armorCost ? `<button class="pixel-btn small" data-action="enhance-item" data-slot="armor">\u5F3A\u5316\u9632\u5177</button>` : `<span style="color:#2f7a35;">\u5DF2\u6EE1\u7EA7</span>`;
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u88C5\u5907\u5F3A\u5316</div>
+        <div class="modal-text">
+          \u91D1\u7B97\u77F3 \xD7${m.stone || 0} \xB7 \u58A8\u6E0D\u6B8B\u9875 \xD7${m.ink || 0} \xB7 \u7B97\u76D8\u73E0 \xD7${m.beads || 0} \xB7 \u91D1\u5E01 ${state.player.gold}
+        </div>
+        <div class="book-card">
+          <b>${state.weapon.name}</b> \xB7 \u5F3A\u5316 +${wLevel}\uFF08\u5F53\u524D ATK ${getWeaponAtk()}\uFF09
+          ${weaponCost ? `<div class="caption">\u6D88\u8017\uFF1A\u91D1\u7B97\u77F3 \xD7${weaponCost.stone} \xB7 \u7B97\u76D8\u73E0 \xD7${weaponCost.beads} \xB7 ${weaponCost.gold} G</div>` : ""}
+          ${weaponRow}
+        </div>
+        <div class="book-card">
+          <b>${state.armor.name}</b> \xB7 \u5F3A\u5316 +${aLevel}\uFF08\u5F53\u524D DEF ${getArmorDef()}\uFF09
+          ${armorCost ? `<div class="caption">\u6D88\u8017\uFF1A\u7B97\u76D8\u73E0 \xD7${armorCost.beads} \xB7 \u58A8\u6E0D\u6B8B\u9875 \xD7${armorCost.ink} \xB7 ${armorCost.gold} G</div>` : ""}
+          ${armorRow}
+        </div>
+        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
+      </div>
+    `);
+    }
+    function enhanceItem(slot) {
+      const state = getState();
+      const level = state.equipmentLevels[slot] || 0;
+      if (level >= 5) return;
+      const m = state.inventory.materials;
+      const cost = slot === "weapon" ? { stone: 2 + level, beads: 1, gold: 30 * (level + 1) } : { beads: 2 + level, ink: 1, gold: 30 * (level + 1) };
+      if ((m.stone || 0) < (cost.stone || 0) || (m.beads || 0) < (cost.beads || 0) || (m.ink || 0) < (cost.ink || 0) || state.player.gold < cost.gold) {
+        showToast("\u6750\u6599\u6216\u91D1\u5E01\u4E0D\u8DB3");
+        return;
+      }
+      if (cost.stone) m.stone -= cost.stone;
+      if (cost.beads) m.beads -= cost.beads;
+      if (cost.ink) m.ink -= cost.ink;
+      state.player.gold -= cost.gold;
+      state.equipmentLevels[slot] = level + 1;
+      updateTask("enhance_task", 1);
+      unlockAchievement("enhance1");
+      save();
+      updateHUD();
+      sfx2("enhance");
+      sfx2("levelup");
+      showToast(`${slot === "weapon" ? state.weapon.name : state.armor.name} \u5F3A\u5316\u81F3 +${level + 1}`);
+      openEnhance();
+    }
+    return { openShop, buyItem, openCraft, craftItem, openEnhance, enhanceItem };
+  }
+
+  // src/systems/learning.js
+  function createLearningSystem(deps) {
+    const {
+      getState,
+      openModal,
+      closeModal,
+      modal,
+      shuffleQuestion,
+      isCorrectAnswer,
+      getQuizTimeLimit,
+      pointSubject,
+      REVIEW_INTERVALS,
+      POINT_QUIZ_TASK,
+      POINTS: POINTS2,
+      updateTask,
+      unlockAchievement,
+      maybeLevelUp,
+      gainPartnerExp,
+      sfx: sfx2,
+      save,
+      showToast
+    } = deps;
+    function openQuiz(q) {
+      const state = getState();
+      q = shuffleQuestion(q);
+      if (state.quiz) state.quiz.q = q;
+      const isMulti = q.type === "multiple";
+      const timeLimit = getQuizTimeLimit();
+      const letters = ["A", "B", "C", "D"];
+      const optionsHtml = q.options.map(
+        (opt, i) => `
+          <button class="option${isMulti ? " multi-option" : ""}" data-answer="${i}"${isMulti ? ' data-multi="1"' : ""}>
+            <span class="tag">${letters[i]}</span>
+            ${opt}
+          </button>
+        `
+      ).join("");
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u77E5\u8BC6\u8BD5\u70BC</div>
+        <div class="quiz-timer" id="quizTimer">${timeLimit}s</div>
+        <div class="quiz-question">
+          <span class="quiz-point">\u8003\u70B9 \xB7 ${q.point}${q.type === "judge" ? " \xB7 \u5224\u65AD\u9898" : q.type === "multiple" ? " \xB7 \u591A\u9009\u9898" : ""}</span>
+          <div class="quiz-text">${q.q}</div>
+        </div>
+        <div class="quiz-options">${optionsHtml}</div>
+        ${isMulti ? `<div class="modal-actions"><button class="pixel-btn" data-action="quiz-confirm">\u786E\u8BA4\u7B54\u6848</button></div>` : ""}
+      </div>
+    `);
+      startQuizTimer();
+    }
+    function startQuizTimer() {
+      const state = getState();
+      const quiz = state.quiz;
+      if (!quiz) return;
+      if (quiz.timer) clearInterval(quiz.timer);
+      quiz.timeLeft = getQuizTimeLimit();
+      quiz.resolved = false;
+      const el = document.getElementById("quizTimer");
+      quiz.timer = setInterval(() => {
+        const current = getState();
+        if (!current.quiz || current.quiz !== quiz) {
+          clearInterval(quiz.timer);
+          return;
+        }
+        quiz.timeLeft -= 0.25;
+        const secs = Math.max(0, Math.ceil(quiz.timeLeft));
+        if (el) el.textContent = secs + "s";
+        modal.classList.toggle("quiz-danger", secs <= 5);
+        if (quiz.timeLeft <= 0) {
+          clearInterval(quiz.timer);
+          quiz.timer = null;
+          if (!quiz.resolved) resolveAnswer(quiz.q.type === "multiple" ? [] : -1);
+        }
+      }, 250);
+    }
+    function resolveAnswer(selected) {
+      const state = getState();
+      const quiz = state.quiz;
+      if (!quiz) return;
+      if (quiz.resolved) return;
+      quiz.resolved = true;
+      if (quiz.timer) {
+        clearInterval(quiz.timer);
+        quiz.timer = null;
+      }
+      modal.classList.remove("quiz-danger");
+      const q = quiz.q;
+      if (q.type === "multiple" && !Array.isArray(selected)) selected = [];
+      const correct = isCorrectAnswer(selected, q.answer);
+      state.answered += 1;
+      state.quizHistory = state.quizHistory || [];
+      state.quizHistory.push({ id: q.id, correct, at: Date.now() });
+      if (state.quizHistory.length > 60) state.quizHistory = state.quizHistory.slice(-60);
+      state.week.answered = (state.week.answered || 0) + 1;
+      state.daily.answered += 1;
+      if (!state.daily.done && state.daily.answered >= state.daily.target) {
+        state.daily.done = true;
+        state.player.gold += 20;
+        state.player.exp += 10;
+        maybeLevelUp();
+        showToast("\u4ECA\u65E5\u5B66\u4E60\u76EE\u6807\u5B8C\u6210\uFF01\u83B7\u5F97 20 \u91D1\u5E01\u300110 \u7ECF\u9A8C");
+      }
+      state.pointProgress[q.point] = (state.pointProgress[q.point] || 0) + 1;
+      if (correct) state.pointCorrect[q.point] = (state.pointCorrect[q.point] || 0) + 1;
+      if (correct) {
+        state.correct += 1;
+        state.quizStreak = (state.quizStreak || 0) + 1;
+        state.week.correct = (state.week.correct || 0) + 1;
+        const subject = pointSubject(q.point);
+        state.week.subjects[subject] = (state.week.subjects[subject] || 0) + 1;
+        state.partner.mood = Math.min(100, state.partner.mood + 3);
+        gainPartnerExp(5);
+        updateTask("answer10", 1);
+        if (POINT_QUIZ_TASK[q.point]) updateTask(POINT_QUIZ_TASK[q.point], 1);
+        if (state.correct >= 10) unlockAchievement("answer10");
+        if (state.correct >= 50) unlockAchievement("answer50");
+        if (state.correct >= 100) unlockAchievement("answer100");
+        if (state.quizStreak >= 10) unlockAchievement("streak10");
+        if (state.week.answered >= 20) unlockAchievement("weekly20");
+        const coverage = Math.round(Object.keys(state.pointProgress).length / Math.max(1, POINTS2.length) * 100);
+        if (coverage >= 60) unlockAchievement("coverage60");
+        if (coverage >= 90) unlockAchievement("coverage90");
+        state.player.exp += 2;
+        state._lastLearningGain = 2;
+        maybeLevelUp();
+        const rec = state.reviewMap[q.id];
+        if (rec && state.wrongQuestions.includes(q.id)) {
+          rec.count += 1;
+          const interval = REVIEW_INTERVALS[Math.min(rec.count - 1, REVIEW_INTERVALS.length - 1)];
+          rec.next = Date.now() + interval * 864e5;
+          if (rec.count >= 5) {
+            state.wrongQuestions = state.wrongQuestions.filter((id) => id !== q.id);
+            rec.mastered = true;
+            unlockAchievement("wrong_zero");
+            showToast("\u9519\u9898\u5DF2\u638C\u63E1\uFF1A" + q.point);
+          }
+        }
+      } else {
+        state.quizStreak = 0;
+        if (!state.reviewMap[q.id]) state.reviewMap[q.id] = { count: 0, mastered: false, next: Date.now() + 864e5 };
+        const rec = state.reviewMap[q.id];
+        rec.count = 0;
+        rec.mastered = false;
+        rec.next = Date.now() + 864e5;
+        if (!state.wrongQuestions.includes(q.id)) state.wrongQuestions.push(q.id);
+        if (state.battle && state.battle.bossMechanicInfo && state.battle.bossMechanicInfo.key === "audit_boss" && state.battle.auditMarkActive) {
+          state.battle.auditMarkActive = false;
+          state.player.hp = Math.max(1, state.player.hp - 6);
+          state.battle.feedback += "<br>\u5BA1\u8BA1\u6807\u8BB0\u53CD\u566C\uFF0C\u53D7\u5230 6 \u70B9\u4F24\u5BB3\u3002";
+        }
+      }
+      sfx2(correct ? "correct" : "wrong");
+      save();
+      const letters = ["A", "B", "C", "D"];
+      const selectedList = Array.isArray(selected) ? selected : [selected];
+      const answerList = Array.isArray(q.answer) ? q.answer : [q.answer];
+      const isChosen = (i) => selectedList.includes(i);
+      const isAnswer = (i) => answerList.includes(i);
+      const optionsHtml = q.options.map((opt, i) => {
+        let cls = "option";
+        if (isAnswer(i)) cls += " correct";
+        else if (isChosen(i) && !correct) cls += " wrong";
+        const mark = isAnswer(i) ? "\u6B63\u786E\u7B54\u6848" : isChosen(i) ? "\u4F60\u7684\u9009\u62E9" : "";
+        return `<div class="${cls} answer-item"><span class="tag">${letters[i]}</span><span>${opt}</span><span class="answer-mark${isChosen(i) && !correct && !isAnswer(i) ? " wrong-mark" : ""}">${mark}</span></div>`;
+      }).join("");
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u77E5\u8BC6\u8BD5\u70BC \xB7 \u7ED3\u679C</div>
+        <div class="result-banner ${correct ? "correct" : "wrong"}">${correct ? "\u56DE\u7B54\u6B63\u786E" : "\u56DE\u7B54\u9519\u8BEF"} \xB7 \u5DF2\u8BA1\u5165\u5B66\u4E60\u8BB0\u5F55</div>
+        ${correct ? `<div class="learning-gain">\u5B66\u4E60\u7ECF\u9A8C +${state._lastLearningGain || 2}</div>` : ""}
+        <div class="answer-review">
+          <div class="answer-list">${optionsHtml}</div>
+          <div class="feedback-card feedback">${q.explain}</div>
+        </div>
+        <div class="modal-actions">
+          <button class="pixel-btn" data-action="quiz-continue">\u7EE7\u7EED\u6218\u6597</button>
+        </div>
+      </div>
+    `);
+    }
+    function continueQuiz() {
+      const state = getState();
+      const quiz = state.quiz;
+      if (!quiz) return;
+      const callback = quiz.callback;
+      const answeredCorrectly = state._lastQuizCorrect;
+      state.quiz = null;
+      closeModal();
+      if (callback) callback(answeredCorrectly);
+    }
+    return { openQuiz, startQuizTimer, resolveAnswer, continueQuiz };
+  }
+
+  // src/render/mapTiles.js
+  function createMapTilesRenderer(deps) {
+    const {
+      ctx,
+      assets,
+      TILE,
+      MAP_W,
+      MAP_H,
+      getState,
+      getCurrentMapGrid,
+      getCurrentBuildingRegions,
+      DECOR_TILES,
+      entities,
+      SCENE_OBSTACLES,
+      drawSceneCover
+    } = deps;
+    function getTileSource(code, x, y) {
+      if (code === 0) {
+        const variants = [
+          { col: 0, row: 0 },
+          { col: 1, row: 0 },
+          { col: 0, row: 0 }
+        ];
+        return variants[(x + y) % variants.length];
+      }
+      if (code === 1) {
+        const variants = [
+          { col: 0, row: 1 },
+          { col: 1, row: 1 },
+          { col: 0, row: 2 },
+          { col: 1, row: 2 }
+        ];
+        return variants[(x * 3 + y) % variants.length];
+      }
+      if (code === 2) {
+        const variants = [
+          { col: 0, row: 4 },
+          { col: 1, row: 4 },
+          { col: 0, row: 5 },
+          { col: 1, row: 5 }
+        ];
+        return variants[(x + y) % variants.length];
+      }
+      if (code === 4) {
+        const variants = [
+          { col: 2, row: 0 },
+          { col: 3, row: 0 },
+          { col: 9, row: 0 },
+          { col: 11, row: 0 }
+        ];
+        return variants[(x * 5 + y * 3) % variants.length];
+      }
+      if (code === 6) return { col: 7, row: 3 };
+      if (code === 3) {
+        const variants = [
+          { col: 4, row: 0 },
+          { col: 5, row: 0 },
+          { col: 7, row: 0 }
+        ];
+        return variants[(x + y) % variants.length];
+      }
+      if (code === 7) return { col: 1, row: 0 };
+      return null;
+    }
+    function getFormalTileSource(code, x, y) {
+      if (code === 0) {
+        const variants = [
+          { tx: 9, ty: 6 },
+          { tx: 1, ty: 4 },
+          { tx: 4, ty: 4 }
+        ];
+        return variants[(x + y) % variants.length];
+      }
+      if (code === 1) {
+        const variants = [
+          { tx: 1, ty: 4 },
+          { tx: 4, ty: 4 },
+          { tx: 1, ty: 5 },
+          { tx: 2, ty: 5 }
+        ];
+        return variants[(x * 2 + y) % variants.length];
+      }
+      if (code === 2) {
+        const variants = [
+          { tx: 7, ty: 8 },
+          { tx: 8, ty: 8 },
+          { tx: 7, ty: 9 }
+        ];
+        return variants[(x + y) % variants.length];
+      }
+      if (code === 3 || code === 4) {
+        const variants = [
+          { tx: 4, ty: 7 },
+          { tx: 5, ty: 7 },
+          { tx: 6, ty: 7 }
+        ];
+        return variants[(x * 3 + y) % variants.length];
+      }
+      if (code === 6) return { tx: 4, ty: 7 };
+      if (code === 7) return { tx: 1, ty: 8 };
+      return null;
+    }
+    function getFormalTileset() {
+      const state = getState();
+      return state.zone && assets.formalTilesets[state.zone] || assets.formalTileset;
+    }
+    function drawFormalTile(tx, ty, dx, dy) {
+      const img = getFormalTileset();
+      if (!img) return;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(img, tx * TILE, ty * TILE, TILE, TILE, dx, dy, TILE, TILE);
+    }
+    function drawTileMap() {
+      if (!assets.tinyTilemap) {
+        drawSceneCover();
+        return;
+      }
+      const state = getState();
+      const officialOverlay = state.zone === "gold_field" && !!assets.scene;
+      const formalMode = !officialOverlay && !!getFormalTileset();
+      ctx.imageSmoothingEnabled = false;
+      for (let y = 0; y < MAP_H; y++) {
+        for (let x = 0; x < MAP_W; x++) {
+          const code = getCurrentMapGrid()[y][x];
+          if (officialOverlay && (code === 3 || code === 5)) continue;
+          const baseCode = code === 5 ? 1 : code;
+          const px = x * TILE;
+          const py = y * TILE;
+          if (formalMode) {
+            const fsrc = getFormalTileSource(baseCode, x, y);
+            if (fsrc) drawFormalTile(fsrc.tx, fsrc.ty, px, py);
+          } else {
+            const src = getTileSource(baseCode, x, y);
+            if (!src) continue;
+            ctx.drawImage(assets.tinyTilemap, src.col * 17, src.row * 17, TILE, TILE, px, py, TILE, TILE);
+          }
+        }
+      }
+      if (formalMode) drawFormalBuildings();
+      else if (!officialOverlay) drawKenneyBuildings();
+    }
+    function drawTinyTile(col, row, dx, dy, scale = 1) {
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(assets.tinyTilemap, col * 17, row * 17, TILE, TILE, dx, dy, TILE * scale, TILE * scale);
+    }
+    function drawKenneyBuildings() {
+      if (!assets.tinyTilemap) return;
+      ctx.imageSmoothingEnabled = false;
+      for (const region of getCurrentBuildingRegions()) {
+        const width = region.x1 - region.x0 + 1;
+        const houseCount = Math.max(1, Math.min(3, Math.floor(width / 3)));
+        const step = Math.floor(width / houseCount);
+        const roofY = region.y0 * TILE;
+        const wallY = roofY + TILE;
+        for (let i = 0; i < houseCount; i++) {
+          const hx = (region.x0 + i * step) * TILE;
+          drawTinyTile(4, 5, hx, roofY);
+          drawTinyTile(5, 5, hx + TILE, roofY);
+          drawTinyTile(0, 7, hx, wallY);
+          drawTinyTile(1, 7, hx + TILE, wallY);
+        }
+      }
+    }
+    function drawFormalBuildings() {
+      if (!getFormalTileset()) return;
+      ctx.imageSmoothingEnabled = false;
+      for (const region of getCurrentBuildingRegions()) {
+        const width = region.x1 - region.x0 + 1;
+        const buildingCount = Math.max(1, Math.min(3, Math.floor(width / 3)));
+        const step = Math.floor(width / buildingCount);
+        const y0 = region.y0 * TILE;
+        for (let i = 0; i < buildingCount; i++) {
+          const hx = (region.x0 + i * step) * TILE;
+          drawFormalTile(0, 8, hx, y0);
+          drawFormalTile(1, 8, hx + TILE, y0);
+          drawFormalTile(2, 8, hx, y0 + TILE);
+          drawFormalTile(3, 8, hx + TILE, y0 + TILE);
+        }
+      }
+    }
+    function decorHash(x, y) {
+      let h = x * 374761393 + y * 668265263 | 0;
+      h = (h ^ h >> 13) * 1274126177;
+      return ((h ^ h >> 16) >>> 0) / 4294967295;
+    }
+    function drawDecorations() {
+      const state = getState();
+      if (state.zone !== "gold_field") return;
+      if (!assets.tinyTilemap) return;
+      ctx.imageSmoothingEnabled = false;
+      for (let ty = 3; ty < MAP_H - 3; ty++) {
+        for (let tx = 3; tx < MAP_W - 3; tx++) {
+          if (getCurrentMapGrid()[ty][tx] !== 0) continue;
+          const r = decorHash(tx, ty);
+          if (r > (state.lowQuality ? 0.022 : 0.045)) continue;
+          const px = tx * TILE;
+          const py = ty * TILE;
+          const cx = px + 8;
+          const cy = py + 8;
+          let blocked = false;
+          for (const e of entities) {
+            if (Math.abs(e.x - cx) < 34 && Math.abs(e.y - cy) < 34) {
+              blocked = true;
+              break;
+            }
+          }
+          if (!blocked) {
+            for (const ob of SCENE_OBSTACLES) {
+              if (cx > ob.x - 20 && cx < ob.x + ob.w + 20 && cy > ob.y - 20 && cy < ob.y + ob.h + 20) {
+                blocked = true;
+                break;
+              }
+            }
+          }
+          if (blocked) continue;
+          const variant = r < 0.012 ? "grass" : r < 0.024 ? "flower" : "bush";
+          const list = DECOR_TILES[variant];
+          const tile = list[Math.floor(decorHash(tx + 7, ty + 13) * list.length)];
+          const sx = tile.col * 17;
+          const sy = tile.row * 17;
+          ctx.drawImage(assets.tinyTilemap, sx, sy, 16, 16, px + 4, py + 5, 20, 20);
+        }
+      }
+    }
+    return { drawTileMap, drawDecorations };
+  }
+
+  // src/render/ui.js
+  function createUiSystem(deps) {
+    const {
+      modal,
+      toast,
+      getState,
+      decorateModalButtons,
+      hideTooltip,
+      flushPendingStory,
+      GAME_VERSION: GAME_VERSION2,
+      BUILD_LABEL: BUILD_LABEL2,
+      installPwaButton,
+      hud
+    } = deps;
+    function openModal(html) {
+      const state = getState();
+      modal.innerHTML = html;
+      modal.classList.remove("hidden");
+      if (state.screen === "battle") modal.classList.add("battle-mode");
+      else modal.classList.remove("battle-mode");
+      decorateModalButtons();
+    }
+    function closeModal() {
+      hideTooltip();
+      modal.classList.add("hidden");
+      modal.classList.remove("battle-mode");
+      modal.innerHTML = "";
+      const state = getState();
+      if (state._pendingMainStory) setTimeout(flushPendingStory, 120);
+    }
+    function showToast(msg, ms = 1800) {
+      if (showToast._t) clearTimeout(showToast._t);
+      toast.classList.remove("achievement", "levelup");
+      toast.textContent = msg;
+      toast.classList.remove("hidden");
+      showToast._t = setTimeout(() => toast.classList.add("hidden"), ms);
+    }
+    function openSettings() {
+      const state = getState();
+      const s = state.settings;
+      const pct = (v) => Math.round(v * 100);
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u8BBE\u7F6E \xB7 \u97F3\u9891</div>
+        <div class="modal-text">
+          \u5168\u5C40\u97F3\u9891\uFF1A${state.soundEnabled ? "\u5F00" : "\u5173"}<br>
+          \u97F3\u4E50\uFF1A${s.musicEnabled ? "\u5F00" : "\u5173"} \u8DEF \u97F3\u91CF ${pct(s.musicVolume)}%<br>
+          \u97F3\u6548\uFF1A${s.sfxEnabled ? "\u5F00" : "\u5173"} \u8DEF \u97F3\u91CF ${pct(s.sfxVolume)}%<br>
+          \u5C4F\u5E55\u9707\u52A8\uFF1A${s.shake !== false ? "\u5F00" : "\u5173"}<br>
+          \u753B\u8D28\uFF1A${state.lowQuality ? "\u4F4E\uFF08\u81EA\u52A8\uFF09" : "\u9AD8\uFF08\u81EA\u52A8\uFF09"} \xB7 \u5B58\u6863\u7248\u672C\uFF1A${state.saveVersion || 3}
+        </div>
+        <div class="modal-actions">
+          <button class="pixel-btn" data-action="toggle-sound">\u5168\u5C40\u97F3\u9891</button>
+          <button class="pixel-btn secondary" data-action="toggle-music">\u97F3\u4E50</button>
+          <button class="pixel-btn secondary" data-action="toggle-sfx">\u97F3\u6548</button>
+          <button class="pixel-btn secondary" data-action="toggle-shake">\u5207\u6362\u9707\u52A8</button>
+        </div>
+        <div class="modal-actions">
+          <button class="pixel-btn secondary" data-action="music-down">\u97F3\u4E50-</button>
+          <button class="pixel-btn secondary" data-action="music-up">\u97F3\u4E50+</button>
+          <button class="pixel-btn secondary" data-action="sfx-down">\u97F3\u6548-</button>
+          <button class="pixel-btn secondary" data-action="sfx-up">\u97F3\u6548+</button>
+        </div>
+        <div class="modal-actions">
+          <button class="pixel-btn secondary" data-action="preview-bgm">\u8BD5\u542C BGM</button>
+          <button class="pixel-btn secondary" data-action="test-sfx">\u6D4B\u8BD5\u97F3\u6548</button>
+        </div>
+        <div class="modal-actions">
+          <button class="pixel-btn secondary" data-action="export-save">\u5BFC\u51FA\u5B58\u6863</button>
+          <button class="pixel-btn secondary" data-action="import-save">\u5BFC\u5165\u5B58\u6863</button>
+          <button class="pixel-btn secondary" data-action="reset">\u91CD\u7F6E\u5B58\u6863</button>
+          ${installPwaButton()}
+        </div>
+        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
+      </div>
+    `);
+    }
+    function showTitle() {
+      const state = getState();
+      state.screen = "title";
+      hud.classList.add("hidden");
+      openModal(`
+      <div class="modal-box" style="width:min(720px,94vw);text-align:center;">
+        <div class="modal-title">\u6CE8\u4F1A\u7EAA\u5143</div>
+        <div class="modal-text">\u8BB0\u8D26\u5927\u9646 \xB7 M3 \u4F53\u9A8C\u7248 v${GAME_VERSION2}</div>
+        <div class="save-hint">${BUILD_LABEL2}</div>
+        <div class="title-subjects">
+          <span class="subject-chip" style="background:#d4a017;">\u4F1A\u8BA1</span>
+          <span class="subject-chip" style="background:#4169e1;">\u5BA1\u8BA1</span>
+          <span class="subject-chip" style="background:#2e8b57;">\u8D22\u7BA1</span>
+          <span class="subject-chip" style="background:#e4572e;">\u7A0E\u6CD5</span>
+          <span class="subject-chip" style="background:#6b5b95;">\u7ECF\u6D4E\u6CD5</span>
+          <span class="subject-chip" style="background:#3a8fb7;">\u6218\u7565</span>
+        </div>
+        <div class="modal-actions" style="justify-content:center;">
+          <button class="pixel-btn" data-action="start">\u5F00\u59CB\u65B0\u5192\u9669</button>
+          <button class="pixel-btn secondary" data-action="continue">\u7EE7\u7EED\u5192\u9669</button>
+          <button class="pixel-btn secondary" data-action="report">\u5B66\u4E60\u62A5\u544A</button>
+          <button class="pixel-btn secondary" data-action="toggle-sound">\u97F3\u6548\uFF1A${state.soundEnabled ? "\u5F00" : "\u5173"}</button>
+          ${installPwaButton()}
+          <button class="pixel-btn secondary" data-action="about">\u5173\u4E8E</button>
+        </div>
+      </div>
+    `);
+    }
+    return { openModal, closeModal, showToast, openSettings, showTitle };
+  }
+
   // src/game.js
   (() => {
     "use strict";
@@ -1802,11 +2539,26 @@
     });
     let state = loadSave() || defaultState();
     bindAudio(() => state);
+    const uiSystem = createUiSystem({
+      modal,
+      toast,
+      getState: () => state,
+      decorateModalButtons,
+      hideTooltip,
+      flushPendingStory,
+      GAME_VERSION,
+      BUILD_LABEL,
+      installPwaButton,
+      hud
+    });
+    const { openModal, closeModal, showToast, openSettings, showTitle } = uiSystem;
     const quizSystem = createQuizSystem({
       getState: () => state,
       getRandomQuestions
     });
     const { getAdaptiveQuestions, shuffleQuestion, isCorrectAnswer, getQuizTimeLimit } = quizSystem;
+    let openQuizRef = () => {
+    };
     const battleUi = createBattleUi({
       getState: () => state,
       openModal,
@@ -1866,7 +2618,7 @@
       openBattleModal,
       openSkillSelect,
       openItemSelect,
-      openQuiz,
+      openQuiz: (q) => openQuizRef(q),
       openModal,
       closeModal,
       showToast,
@@ -1898,6 +2650,43 @@
       getSkills: () => SKILLS
     });
     const { startBattle, useItem, selectSkill, playerBattleAction } = battleSystem;
+    const economySystem = createEconomySystem({
+      getState: () => state,
+      openModal,
+      showToast,
+      save,
+      updateHUD,
+      sfx,
+      updateTask,
+      unlockAchievement,
+      getWeaponAtk,
+      getArmorDef,
+      isSystemUnlocked,
+      systemLockTip
+    });
+    const { openShop, buyItem, openCraft, craftItem, openEnhance, enhanceItem } = economySystem;
+    const learningSystem = createLearningSystem({
+      getState: () => state,
+      openModal,
+      closeModal,
+      modal,
+      shuffleQuestion,
+      isCorrectAnswer,
+      getQuizTimeLimit,
+      pointSubject,
+      REVIEW_INTERVALS,
+      POINT_QUIZ_TASK,
+      POINTS,
+      updateTask,
+      unlockAchievement,
+      maybeLevelUp,
+      gainPartnerExp,
+      sfx,
+      save,
+      showToast
+    });
+    const { openQuiz, startQuizTimer, resolveAnswer, continueQuiz } = learningSystem;
+    openQuizRef = openQuiz;
     if (state.soundEnabled === void 0) state.soundEnabled = true;
     if (!state.weapon) state.weapon = { id: "pencil_sword", name: "\u94C5\u7B14\u77ED\u5251", atk: 5 };
     if (!state.armor) state.armor = { id: "apprentice_robe", name: "\u5B66\u5F92\u5E03\u8863", def: 2 };
@@ -2240,6 +3029,21 @@
     const MAP_W = 60;
     const MAP_H = 34;
     const TILE = 16;
+    const mapTilesRenderer = createMapTilesRenderer({
+      ctx,
+      assets,
+      TILE,
+      MAP_W,
+      MAP_H,
+      getState: () => state,
+      getCurrentMapGrid,
+      getCurrentBuildingRegions,
+      DECOR_TILES,
+      entities,
+      SCENE_OBSTACLES,
+      drawSceneCover
+    });
+    const { drawTileMap, drawDecorations } = mapTilesRenderer;
     const MAP_BUILDING_REGIONS = [
       { y0: 9, y1: 11, x0: 32, x1: 35 },
       { y0: 13, y1: 16, x0: 39, x1: 44 },
@@ -2617,92 +3421,6 @@
     function isWalkablePixel(x, y) {
       return isWalkableTile(Math.floor(x / TILE), Math.floor(y / TILE));
     }
-    function getTileSource(code, x, y) {
-      if (code === 0) {
-        const variants = [
-          { col: 0, row: 0 },
-          { col: 1, row: 0 },
-          { col: 0, row: 0 }
-        ];
-        return variants[(x + y) % variants.length];
-      }
-      if (code === 1) {
-        const variants = [
-          { col: 0, row: 1 },
-          { col: 1, row: 1 },
-          { col: 0, row: 2 },
-          { col: 1, row: 2 }
-        ];
-        return variants[(x * 3 + y) % variants.length];
-      }
-      if (code === 2) {
-        const variants = [
-          { col: 0, row: 4 },
-          { col: 1, row: 4 },
-          { col: 0, row: 5 },
-          { col: 1, row: 5 }
-        ];
-        return variants[(x + y) % variants.length];
-      }
-      if (code === 4) {
-        const variants = [
-          { col: 2, row: 0 },
-          { col: 3, row: 0 },
-          { col: 9, row: 0 },
-          { col: 11, row: 0 }
-        ];
-        return variants[(x * 5 + y * 3) % variants.length];
-      }
-      if (code === 6) return { col: 7, row: 3 };
-      if (code === 3) {
-        const variants = [
-          { col: 4, row: 0 },
-          { col: 5, row: 0 },
-          { col: 7, row: 0 }
-        ];
-        return variants[(x + y) % variants.length];
-      }
-      if (code === 7) return { col: 1, row: 0 };
-      return null;
-    }
-    function getFormalTileSource(code, x, y) {
-      if (code === 0) {
-        const variants = [
-          { tx: 9, ty: 6 },
-          { tx: 1, ty: 4 },
-          { tx: 4, ty: 4 }
-        ];
-        return variants[(x + y) % variants.length];
-      }
-      if (code === 1) {
-        const variants = [
-          { tx: 1, ty: 4 },
-          { tx: 4, ty: 4 },
-          { tx: 1, ty: 5 },
-          { tx: 2, ty: 5 }
-        ];
-        return variants[(x * 2 + y) % variants.length];
-      }
-      if (code === 2) {
-        const variants = [
-          { tx: 7, ty: 8 },
-          { tx: 8, ty: 8 },
-          { tx: 7, ty: 9 }
-        ];
-        return variants[(x + y) % variants.length];
-      }
-      if (code === 3 || code === 4) {
-        const variants = [
-          { tx: 4, ty: 7 },
-          { tx: 5, ty: 7 },
-          { tx: 6, ty: 7 }
-        ];
-        return variants[(x * 3 + y) % variants.length];
-      }
-      if (code === 6) return { tx: 4, ty: 7 };
-      if (code === 7) return { tx: 1, ty: 8 };
-      return null;
-    }
     function drawFormalTile(tx, ty, dx, dy) {
       const img = getFormalTileset();
       if (!img) return;
@@ -2717,73 +3435,6 @@
     }
     function getFormalTileset() {
       return state.zone && assets.formalTilesets[state.zone] || assets.formalTileset;
-    }
-    function drawTileMap() {
-      if (!assets.tinyTilemap) {
-        drawSceneCover();
-        return;
-      }
-      const officialOverlay = state.zone === "gold_field" && !!assets.scene;
-      const formalMode = !officialOverlay && !!getFormalTileset();
-      ctx.imageSmoothingEnabled = false;
-      for (let y = 0; y < MAP_H; y++) {
-        for (let x = 0; x < MAP_W; x++) {
-          const code = getCurrentMapGrid()[y][x];
-          if (officialOverlay && (code === 3 || code === 5)) continue;
-          const baseCode = code === 5 ? 1 : code;
-          const px = x * TILE;
-          const py = y * TILE;
-          if (formalMode) {
-            const fsrc = getFormalTileSource(baseCode, x, y);
-            if (fsrc) drawFormalTile(fsrc.tx, fsrc.ty, px, py);
-          } else {
-            const src = getTileSource(baseCode, x, y);
-            if (!src) continue;
-            ctx.drawImage(assets.tinyTilemap, src.col * 17, src.row * 17, TILE, TILE, px, py, TILE, TILE);
-          }
-        }
-      }
-      if (formalMode) drawFormalBuildings();
-      else if (!officialOverlay) drawKenneyBuildings();
-    }
-    function drawTinyTile(col, row, dx, dy, scale = 1) {
-      ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(assets.tinyTilemap, col * 17, row * 17, TILE, TILE, dx, dy, TILE * scale, TILE * scale);
-    }
-    function drawKenneyBuildings() {
-      if (!assets.tinyTilemap) return;
-      ctx.imageSmoothingEnabled = false;
-      for (const region of getCurrentBuildingRegions()) {
-        const width = region.x1 - region.x0 + 1;
-        const houseCount = Math.max(1, Math.min(3, Math.floor(width / 3)));
-        const step = Math.floor(width / houseCount);
-        const roofY = region.y0 * TILE;
-        const wallY = roofY + TILE;
-        for (let i = 0; i < houseCount; i++) {
-          const hx = (region.x0 + i * step) * TILE;
-          drawTinyTile(4, 5, hx, roofY);
-          drawTinyTile(5, 5, hx + TILE, roofY);
-          drawTinyTile(0, 7, hx, wallY);
-          drawTinyTile(1, 7, hx + TILE, wallY);
-        }
-      }
-    }
-    function drawFormalBuildings() {
-      if (!getFormalTileset()) return;
-      ctx.imageSmoothingEnabled = false;
-      for (const region of getCurrentBuildingRegions()) {
-        const width = region.x1 - region.x0 + 1;
-        const buildingCount = Math.max(1, Math.min(3, Math.floor(width / 3)));
-        const step = Math.floor(width / buildingCount);
-        const y0 = region.y0 * TILE;
-        for (let i = 0; i < buildingCount; i++) {
-          const hx = (region.x0 + i * step) * TILE;
-          drawFormalTile(0, 8, hx, y0);
-          drawFormalTile(1, 8, hx + TILE, y0);
-          drawFormalTile(2, 8, hx, y0 + TILE);
-          drawFormalTile(3, 8, hx + TILE, y0 + TILE);
-        }
-      }
     }
     function drawPixelTree(px, py) {
       ctx.fillStyle = "rgba(30, 20, 10, 0.16)";
@@ -3151,20 +3802,6 @@
       clearSave();
       state = defaultState();
     }
-    function openModal(html) {
-      modal.innerHTML = html;
-      modal.classList.remove("hidden");
-      if (state.screen === "battle") modal.classList.add("battle-mode");
-      else modal.classList.remove("battle-mode");
-      decorateModalButtons();
-    }
-    function closeModal() {
-      hideTooltip();
-      modal.classList.add("hidden");
-      modal.classList.remove("battle-mode");
-      modal.innerHTML = "";
-      if (state._pendingMainStory) setTimeout(flushPendingStory, 120);
-    }
     const ACTION_TIP = {
       start: "<b>\u5F00\u59CB\u65B0\u5192\u9669</b><br>\u521B\u5EFA\u65B0\u5B58\u6863\u5E76\u8FDB\u5165\u65B0\u624B\u5F15\u5BFC",
       continue: "<b>\u7EE7\u7EED\u5192\u9669</b><br>\u8BFB\u53D6\u5F53\u524D\u81EA\u52A8\u4FDD\u5B58\u7684\u8FDB\u5EA6",
@@ -3367,13 +4004,6 @@
         setTimeout(() => el.classList.remove("show"), 130);
       }, 130);
     }
-    function showToast(msg, ms = 1800) {
-      if (showToast._t) clearTimeout(showToast._t);
-      toast.classList.remove("achievement", "levelup");
-      toast.textContent = msg;
-      toast.classList.remove("hidden");
-      showToast._t = setTimeout(() => toast.classList.add("hidden"), ms);
-    }
     function showAchievementToast(a) {
       const reward = a.reward || {};
       const parts = [];
@@ -3416,49 +4046,6 @@
       const sh = H / scale;
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, 0, 0, W, H);
-    }
-    function decorHash(x, y) {
-      let h = x * 374761393 + y * 668265263 | 0;
-      h = (h ^ h >> 13) * 1274126177;
-      return ((h ^ h >> 16) >>> 0) / 4294967295;
-    }
-    function drawDecorations() {
-      if (state.zone !== "gold_field") return;
-      if (!assets.tinyTilemap) return;
-      ctx.imageSmoothingEnabled = false;
-      for (let ty = 3; ty < MAP_H - 3; ty++) {
-        for (let tx = 3; tx < MAP_W - 3; tx++) {
-          if (getCurrentMapGrid()[ty][tx] !== 0) continue;
-          const r = decorHash(tx, ty);
-          if (r > (state.lowQuality ? 0.022 : 0.045)) continue;
-          const px = tx * TILE;
-          const py = ty * TILE;
-          const cx = px + 8;
-          const cy = py + 8;
-          let blocked = false;
-          for (const e of entities) {
-            if (Math.abs(e.x - cx) < 34 && Math.abs(e.y - cy) < 34) {
-              blocked = true;
-              break;
-            }
-          }
-          if (!blocked) {
-            for (const ob of SCENE_OBSTACLES) {
-              if (cx > ob.x - 20 && cx < ob.x + ob.w + 20 && cy > ob.y - 20 && cy < ob.y + ob.h + 20) {
-                blocked = true;
-                break;
-              }
-            }
-          }
-          if (blocked) continue;
-          const variant = r < 0.012 ? "grass" : r < 0.024 ? "flower" : "bush";
-          const list = DECOR_TILES[variant];
-          const tile = list[Math.floor(decorHash(tx + 7, ty + 13) * list.length)];
-          const sx = tile.col * 17;
-          const sy = tile.row * 17;
-          ctx.drawImage(assets.tinyTilemap, sx, sy, 16, 16, px + 4, py + 5, 20, 20);
-        }
-      }
     }
     function drawFrame(img, x, y, dw, dh, frame = 0) {
       ctx.imageSmoothingEnabled = false;
@@ -5309,193 +5896,6 @@
       if (from === "skill-tree") openSkillTree();
       else openEquip();
     }
-    function openShop() {
-      if (!isSystemUnlocked("shop")) {
-        showToast(systemLockTip("shop", "\u5546\u5E97") + " \u89E3\u9501");
-        return;
-      }
-      const ownedWeapon = state.weapon.id === "compounding_dagger";
-      const ownedArmor = state.armor.id === "audit_light_armor";
-      const items = [
-        { id: "hp_potion", name: "\u521D\u7EA7\u56DE\u590D\u836F\u6C34", desc: "\u6062\u590D 30 HP", price: 20, disabled: false },
-        { id: "mp_potion", name: "\u4EE5\u592A\u4E4B\u9732", desc: "\u6062\u590D 30 MP", price: 15, disabled: false },
-        { id: "compounding_dagger", name: "\u590D\u5229\u5315\u9996", desc: "ATK +8", price: 120, disabled: ownedWeapon },
-        { id: "audit_light_armor", name: "\u5BA1\u94C1\u8F7B\u7532", desc: "DEF +4", price: 150, disabled: ownedArmor },
-        { id: "job_token_finance", name: "\u8D22\u7BA1\u6E38\u4FA0\u804C\u4E1A\u51ED\u8BC1", desc: "\u89E3\u9501\u8D22\u7BA1\u6E38\u4FA0", price: 200, disabled: state.jobs.unlocked.includes("finance") },
-        { id: "job_token_tax", name: "\u7A0E\u6CD5\u5F13\u624B\u804C\u4E1A\u51ED\u8BC1", desc: "\u89E3\u9501\u7A0E\u6CD5\u5F13\u624B", price: 200, disabled: state.jobs.unlocked.includes("tax") },
-        { id: "job_token_law", name: "\u7ECF\u6D4E\u6CD5\u796D\u53F8\u804C\u4E1A\u51ED\u8BC1", desc: "\u89E3\u9501\u7ECF\u6D4E\u6CD5\u796D\u53F8", price: 200, disabled: state.jobs.unlocked.includes("law") },
-        { id: "job_token_strategy", name: "\u6218\u7565\u53EC\u5524\u5E08\u804C\u4E1A\u51ED\u8BC1", desc: "\u89E3\u9501\u6218\u7565\u53EC\u5524\u5E08", price: 200, disabled: state.jobs.unlocked.includes("strategy") }
-      ];
-      const rows = items.map(
-        (item) => {
-          const compare = item.id === "compounding_dagger" ? ` \xB7 \u5F53\u524D ${state.weapon.name} ATK ${getWeaponAtk()} \u2192 8` : item.id === "audit_light_armor" ? ` \xB7 \u5F53\u524D ${state.armor.name} DEF ${getArmorDef()} \u2192 4` : "";
-          return `
-          <div class="book-card" style="display:flex;justify-content:space-between;align-items:center;gap:10px;" data-tip="${item.name}\uFF1A${item.desc}${compare} \xB7 ${item.price} G">
-            <div><b>${item.name}</b><br><span class="caption">${item.desc} \xB7 ${item.price} G${item.disabled ? " \xB7 \u5DF2\u62E5\u6709" : ""}</span></div>
-            ${item.disabled ? "" : `<button class="pixel-btn small" data-action="shop-buy" data-item="${item.id}">\u8D2D\u4E70</button>`}
-          </div>
-        `;
-        }
-      ).join("");
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u5BA1\u660E\u6742\u8D27\u94FA</div>
-        <div class="modal-text">\u5F53\u524D\u91D1\u5E01\uFF1A${state.player.gold} G</div>
-        ${rows}
-        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u79BB\u5F00</button></div>
-      </div>
-    `);
-    }
-    function buyItem(itemId) {
-      const prices = {
-        hp_potion: 20,
-        mp_potion: 15,
-        compounding_dagger: 120,
-        audit_light_armor: 150,
-        job_token_finance: 200,
-        job_token_tax: 200,
-        job_token_law: 200,
-        job_token_strategy: 200
-      };
-      const price = prices[itemId];
-      if (price === void 0) return;
-      if (state.player.gold < price) {
-        showToast("\u91D1\u5E01\u4E0D\u8DB3");
-        return;
-      }
-      state.player.gold -= price;
-      if (itemId === "hp_potion") state.inventory.hpPotion = (state.inventory.hpPotion || 0) + 1;
-      else if (itemId === "mp_potion") state.inventory.mpPotion = (state.inventory.mpPotion || 0) + 1;
-      else if (itemId === "compounding_dagger") state.weapon = { id: "compounding_dagger", name: "\u590D\u5229\u5315\u9996", atk: 8 };
-      else if (itemId === "audit_light_armor") state.armor = { id: "audit_light_armor", name: "\u5BA1\u94C1\u8F7B\u7532", def: 4 };
-      else if (itemId === "job_token_finance" && !state.jobs.unlocked.includes("finance")) state.jobs.unlocked.push("finance");
-      else if (itemId === "job_token_tax" && !state.jobs.unlocked.includes("tax")) state.jobs.unlocked.push("tax");
-      else if (itemId === "job_token_law" && !state.jobs.unlocked.includes("law")) state.jobs.unlocked.push("law");
-      else if (itemId === "job_token_strategy" && !state.jobs.unlocked.includes("strategy")) state.jobs.unlocked.push("strategy");
-      if (state.jobs.unlocked.length >= 6) unlockAchievement("all_jobs");
-      updateTask("shop_task", 1);
-      save();
-      updateHUD();
-      sfx("item");
-      sfx("gold");
-      showToast("\u8D2D\u4E70\u6210\u529F");
-      openShop();
-    }
-    function openCraft() {
-      if (!isSystemUnlocked("craft")) {
-        showToast(systemLockTip("craft", "\u6253\u9020") + " \u89E3\u9501");
-        return;
-      }
-      const m = state.inventory.materials;
-      const recipes = [
-        { id: "hp_potion_craft", name: "\u9AD8\u7EA7\u56DE\u590D\u836F\u6C34", desc: "\u58A8\u6E0D\u6B8B\u9875 \xD71 \u2192 \u56DE\u590D\u836F\u6C34 \xD72", price: { ink: 1 }, disabled: m.ink < 1 },
-        { id: "mp_potion_craft", name: "\u4EE5\u592A\u836F\u5305", desc: "\u7B97\u76D8\u73E0 \xD71 \u2192 \u4EE5\u592A\u4E4B\u9732 \xD72", price: { beads: 1 }, disabled: m.beads < 1 },
-        { id: "craft_dagger", name: "\u590D\u5229\u5315\u9996", desc: "\u91D1\u7B97\u77F3 \xD72 + \u58A8\u6E0D\u6B8B\u9875 \xD71", price: { stone: 2, ink: 1 }, disabled: state.weapon.id === "compounding_dagger" || m.stone < 2 || m.ink < 1 },
-        { id: "craft_armor", name: "\u5BA1\u94C1\u8F7B\u7532", desc: "\u7B97\u76D8\u73E0 \xD72 + \u91D1\u7B97\u77F3 \xD71", price: { beads: 2, stone: 1 }, disabled: state.armor.id === "audit_light_armor" || m.beads < 2 || m.stone < 1 }
-      ];
-      const rows = recipes.map(
-        (r) => `
-          <div class="book-card" style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
-            <div><b>${r.name}</b><br><span class="caption">${r.desc}</span></div>
-            ${r.disabled ? "" : `<button class="pixel-btn small" data-action="craft-item" data-item="${r.id}">\u6253\u9020</button>`}
-          </div>
-        `
-      ).join("");
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u6253\u9020\u5DE5\u574A</div>
-        <div class="modal-text">
-          \u91D1\u7B97\u77F3 \xD7${m.stone || 0} \xB7 \u58A8\u6E0D\u6B8B\u9875 \xD7${m.ink || 0} \xB7 \u7B97\u76D8\u73E0 \xD7${m.beads || 0} \xB7 \u5408\u5E76\u51ED\u8BC1 \xD7${m.credential || 0}
-        </div>
-        ${rows}
-        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
-      </div>
-    `);
-    }
-    function craftItem(itemId) {
-      const recipes = {
-        hp_potion_craft: { name: "\u9AD8\u7EA7\u56DE\u590D\u836F\u6C34", price: { ink: 1 } },
-        mp_potion_craft: { name: "\u4EE5\u592A\u836F\u5305", price: { beads: 1 } },
-        craft_dagger: { name: "\u590D\u5229\u5315\u9996", price: { stone: 2, ink: 1 } },
-        craft_armor: { name: "\u5BA1\u94C1\u8F7B\u7532", price: { beads: 2, stone: 1 } }
-      };
-      const recipe = recipes[itemId];
-      if (!recipe) return;
-      const m = state.inventory.materials;
-      for (const [key, count] of Object.entries(recipe.price)) {
-        if ((m[key] || 0) < count) {
-          showToast("\u6750\u6599\u4E0D\u8DB3");
-          return;
-        }
-      }
-      for (const [key, count] of Object.entries(recipe.price)) m[key] -= count;
-      if (itemId === "hp_potion_craft") state.inventory.hpPotion = (state.inventory.hpPotion || 0) + 2;
-      else if (itemId === "mp_potion_craft") state.inventory.mpPotion = (state.inventory.mpPotion || 0) + 2;
-      else if (itemId === "craft_dagger") state.weapon = { id: "compounding_dagger", name: "\u590D\u5229\u5315\u9996", atk: 8 };
-      else if (itemId === "craft_armor") state.armor = { id: "audit_light_armor", name: "\u5BA1\u94C1\u8F7B\u7532", def: 4 };
-      updateTask("craft_task", 1);
-      save();
-      updateHUD();
-      sfx("craft");
-      sfx("levelup");
-      showToast("\u6253\u9020\u6210\u529F\uFF1A" + recipe.name);
-      openCraft();
-    }
-    function openEnhance() {
-      if (!isSystemUnlocked("enhance")) {
-        showToast(systemLockTip("enhance", "\u88C5\u5907\u5F3A\u5316") + " \u89E3\u9501");
-        return;
-      }
-      const m = state.inventory.materials;
-      const wLevel = state.equipmentLevels.weapon || 0;
-      const aLevel = state.equipmentLevels.armor || 0;
-      const weaponCost = wLevel >= 5 ? null : { stone: 2 + wLevel, beads: 1, gold: 30 * (wLevel + 1) };
-      const armorCost = aLevel >= 5 ? null : { beads: 2 + aLevel, ink: 1, gold: 30 * (aLevel + 1) };
-      const weaponRow = weaponCost ? `<button class="pixel-btn small" data-action="enhance-item" data-slot="weapon">\u5F3A\u5316\u6B66\u5668</button>` : `<span style="color:#2f7a35;">\u5DF2\u6EE1\u7EA7</span>`;
-      const armorRow = armorCost ? `<button class="pixel-btn small" data-action="enhance-item" data-slot="armor">\u5F3A\u5316\u9632\u5177</button>` : `<span style="color:#2f7a35;">\u5DF2\u6EE1\u7EA7</span>`;
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u88C5\u5907\u5F3A\u5316</div>
-        <div class="modal-text">
-          \u91D1\u7B97\u77F3 \xD7${m.stone || 0} \xB7 \u58A8\u6E0D\u6B8B\u9875 \xD7${m.ink || 0} \xB7 \u7B97\u76D8\u73E0 \xD7${m.beads || 0} \xB7 \u91D1\u5E01 ${state.player.gold}
-        </div>
-        <div class="book-card">
-          <b>${state.weapon.name}</b> \xB7 \u5F3A\u5316 +${wLevel}\uFF08\u5F53\u524D ATK ${getWeaponAtk()}\uFF09
-          ${weaponCost ? `<div class="caption">\u6D88\u8017\uFF1A\u91D1\u7B97\u77F3 \xD7${weaponCost.stone} \xB7 \u7B97\u76D8\u73E0 \xD7${weaponCost.beads} \xB7 ${weaponCost.gold} G</div>` : ""}
-          ${weaponRow}
-        </div>
-        <div class="book-card">
-          <b>${state.armor.name}</b> \xB7 \u5F3A\u5316 +${aLevel}\uFF08\u5F53\u524D DEF ${getArmorDef()}\uFF09
-          ${armorCost ? `<div class="caption">\u6D88\u8017\uFF1A\u7B97\u76D8\u73E0 \xD7${armorCost.beads} \xB7 \u58A8\u6E0D\u6B8B\u9875 \xD7${armorCost.ink} \xB7 ${armorCost.gold} G</div>` : ""}
-          ${armorRow}
-        </div>
-        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
-      </div>
-    `);
-    }
-    function enhanceItem(slot) {
-      const level = state.equipmentLevels[slot] || 0;
-      if (level >= 5) return;
-      const m = state.inventory.materials;
-      const cost = slot === "weapon" ? { stone: 2 + level, beads: 1, gold: 30 * (level + 1) } : { beads: 2 + level, ink: 1, gold: 30 * (level + 1) };
-      if ((m.stone || 0) < (cost.stone || 0) || (m.beads || 0) < (cost.beads || 0) || (m.ink || 0) < (cost.ink || 0) || state.player.gold < cost.gold) {
-        showToast("\u6750\u6599\u6216\u91D1\u5E01\u4E0D\u8DB3");
-        return;
-      }
-      if (cost.stone) m.stone -= cost.stone;
-      if (cost.beads) m.beads -= cost.beads;
-      if (cost.ink) m.ink -= cost.ink;
-      state.player.gold -= cost.gold;
-      state.equipmentLevels[slot] = level + 1;
-      updateTask("enhance_task", 1);
-      unlockAchievement("enhance1");
-      save();
-      updateHUD();
-      sfx("enhance");
-      sfx("levelup");
-      showToast(`${slot === "weapon" ? state.weapon.name : state.armor.name} \u5F3A\u5316\u81F3 +${level + 1}`);
-      openEnhance();
-    }
     function openTasks() {
       const rows = state.tasks.map((t) => {
         const reward = t.reward || { gold: 30, exp: 40, skillPoints: 1 };
@@ -5856,45 +6256,6 @@
     `);
       state.challenge = null;
     }
-    function openSettings() {
-      const s = state.settings;
-      const pct = (v) => Math.round(v * 100);
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u8BBE\u7F6E \xB7 \u97F3\u9891</div>
-        <div class="modal-text">
-          \u5168\u5C40\u97F3\u9891\uFF1A${state.soundEnabled ? "\u5F00" : "\u5173"}<br>
-          \u97F3\u4E50\uFF1A${s.musicEnabled ? "\u5F00" : "\u5173"} \u8DEF \u97F3\u91CF ${pct(s.musicVolume)}%<br>
-          \u97F3\u6548\uFF1A${s.sfxEnabled ? "\u5F00" : "\u5173"} \u8DEF \u97F3\u91CF ${pct(s.sfxVolume)}%<br>
-          \u5C4F\u5E55\u9707\u52A8\uFF1A${s.shake !== false ? "\u5F00" : "\u5173"}<br>
-          \u753B\u8D28\uFF1A${state.lowQuality ? "\u4F4E\uFF08\u81EA\u52A8\uFF09" : "\u9AD8\uFF08\u81EA\u52A8\uFF09"} \xB7 \u5B58\u6863\u7248\u672C\uFF1A${state.saveVersion || 3}
-        </div>
-        <div class="modal-actions">
-          <button class="pixel-btn" data-action="toggle-sound">\u5168\u5C40\u97F3\u9891</button>
-          <button class="pixel-btn secondary" data-action="toggle-music">\u97F3\u4E50</button>
-          <button class="pixel-btn secondary" data-action="toggle-sfx">\u97F3\u6548</button>
-          <button class="pixel-btn secondary" data-action="toggle-shake">\u5207\u6362\u9707\u52A8</button>
-        </div>
-        <div class="modal-actions">
-          <button class="pixel-btn secondary" data-action="music-down">\u97F3\u4E50-</button>
-          <button class="pixel-btn secondary" data-action="music-up">\u97F3\u4E50+</button>
-          <button class="pixel-btn secondary" data-action="sfx-down">\u97F3\u6548-</button>
-          <button class="pixel-btn secondary" data-action="sfx-up">\u97F3\u6548+</button>
-        </div>
-        <div class="modal-actions">
-          <button class="pixel-btn secondary" data-action="preview-bgm">\u8BD5\u542C BGM</button>
-          <button class="pixel-btn secondary" data-action="test-sfx">\u6D4B\u8BD5\u97F3\u6548</button>
-        </div>
-        <div class="modal-actions">
-          <button class="pixel-btn secondary" data-action="export-save">\u5BFC\u51FA\u5B58\u6863</button>
-          <button class="pixel-btn secondary" data-action="import-save">\u5BFC\u5165\u5B58\u6863</button>
-          <button class="pixel-btn secondary" data-action="reset">\u91CD\u7F6E\u5B58\u6863</button>
-          ${installPwaButton()}
-        </div>
-        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
-      </div>
-    `);
-    }
     function openExportSave() {
       save();
       const json = JSON.stringify(state, null, 2);
@@ -6057,170 +6418,6 @@
         }
       }
       if (unlocked.length) showToast(unlocked.join(" \xB7 "), 3e3);
-    }
-    function openQuiz(q) {
-      q = shuffleQuestion(q);
-      if (state.quiz) state.quiz.q = q;
-      const isMulti = q.type === "multiple";
-      const timeLimit = getQuizTimeLimit();
-      const letters = ["A", "B", "C", "D"];
-      const optionsHtml = q.options.map(
-        (opt, i) => `
-          <button class="option${isMulti ? " multi-option" : ""}" data-answer="${i}"${isMulti ? ' data-multi="1"' : ""}>
-            <span class="tag">${letters[i]}</span>
-            ${opt}
-          </button>
-        `
-      ).join("");
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u77E5\u8BC6\u8BD5\u70BC</div>
-        <div class="quiz-timer" id="quizTimer">${timeLimit}s</div>
-        <div class="quiz-question">
-          <span class="quiz-point">\u8003\u70B9 \xB7 ${q.point}${q.type === "judge" ? " \xB7 \u5224\u65AD\u9898" : q.type === "multiple" ? " \xB7 \u591A\u9009\u9898" : ""}</span>
-          <div class="quiz-text">${q.q}</div>
-        </div>
-        <div class="quiz-options">${optionsHtml}</div>
-        ${isMulti ? `<div class="modal-actions"><button class="pixel-btn" data-action="quiz-confirm">\u786E\u8BA4\u7B54\u6848</button></div>` : ""}
-      </div>
-    `);
-      startQuizTimer();
-    }
-    function startQuizTimer() {
-      const quiz = state.quiz;
-      if (!quiz) return;
-      if (quiz.timer) clearInterval(quiz.timer);
-      quiz.timeLeft = getQuizTimeLimit();
-      quiz.resolved = false;
-      const el = document.getElementById("quizTimer");
-      quiz.timer = setInterval(() => {
-        if (!state.quiz || state.quiz !== quiz) {
-          clearInterval(quiz.timer);
-          return;
-        }
-        quiz.timeLeft -= 0.25;
-        const secs = Math.max(0, Math.ceil(quiz.timeLeft));
-        if (el) el.textContent = secs + "s";
-        modal.classList.toggle("quiz-danger", secs <= 5);
-        if (quiz.timeLeft <= 0) {
-          clearInterval(quiz.timer);
-          quiz.timer = null;
-          if (!quiz.resolved) resolveAnswer(quiz.q.type === "multiple" ? [] : -1);
-        }
-      }, 250);
-    }
-    function resolveAnswer(selected) {
-      const quiz = state.quiz;
-      if (!quiz) return;
-      if (quiz.resolved) return;
-      quiz.resolved = true;
-      if (quiz.timer) {
-        clearInterval(quiz.timer);
-        quiz.timer = null;
-      }
-      modal.classList.remove("quiz-danger");
-      const q = quiz.q;
-      if (q.type === "multiple" && !Array.isArray(selected)) selected = [];
-      const correct = isCorrectAnswer(selected, q.answer);
-      state.answered += 1;
-      state.quizHistory = state.quizHistory || [];
-      state.quizHistory.push({ id: q.id, correct, at: Date.now() });
-      if (state.quizHistory.length > 60) state.quizHistory = state.quizHistory.slice(-60);
-      state.week.answered = (state.week.answered || 0) + 1;
-      state.daily.answered += 1;
-      if (!state.daily.done && state.daily.answered >= state.daily.target) {
-        state.daily.done = true;
-        state.player.gold += 20;
-        state.player.exp += 10;
-        maybeLevelUp();
-        showToast("\u4ECA\u65E5\u5B66\u4E60\u76EE\u6807\u5B8C\u6210\uFF01\u83B7\u5F97 20 \u91D1\u5E01\u300110 \u7ECF\u9A8C");
-      }
-      state.pointProgress[q.point] = (state.pointProgress[q.point] || 0) + 1;
-      if (correct) state.pointCorrect[q.point] = (state.pointCorrect[q.point] || 0) + 1;
-      if (correct) {
-        state.correct += 1;
-        state.quizStreak = (state.quizStreak || 0) + 1;
-        state.week.correct = (state.week.correct || 0) + 1;
-        const subject = pointSubject(q.point);
-        state.week.subjects[subject] = (state.week.subjects[subject] || 0) + 1;
-        state.partner.mood = Math.min(100, state.partner.mood + 3);
-        gainPartnerExp(5);
-        updateTask("answer10", 1);
-        if (POINT_QUIZ_TASK[q.point]) updateTask(POINT_QUIZ_TASK[q.point], 1);
-        if (state.correct >= 10) unlockAchievement("answer10");
-        if (state.correct >= 50) unlockAchievement("answer50");
-        if (state.correct >= 100) unlockAchievement("answer100");
-        if (state.quizStreak >= 10) unlockAchievement("streak10");
-        if (state.week.answered >= 20) unlockAchievement("weekly20");
-        const coverage = Math.round(Object.keys(state.pointProgress).length / Math.max(1, POINTS.length) * 100);
-        if (coverage >= 60) unlockAchievement("coverage60");
-        if (coverage >= 90) unlockAchievement("coverage90");
-        state.player.exp += 2;
-        state._lastLearningGain = 2;
-        maybeLevelUp();
-        const rec = state.reviewMap[q.id];
-        if (rec && state.wrongQuestions.includes(q.id)) {
-          rec.count += 1;
-          const interval = REVIEW_INTERVALS[Math.min(rec.count - 1, REVIEW_INTERVALS.length - 1)];
-          rec.next = Date.now() + interval * 864e5;
-          if (rec.count >= 5) {
-            state.wrongQuestions = state.wrongQuestions.filter((id) => id !== q.id);
-            rec.mastered = true;
-            unlockAchievement("wrong_zero");
-            showToast("\u9519\u9898\u5DF2\u638C\u63E1\uFF1A" + q.point);
-          }
-        }
-      } else {
-        state.quizStreak = 0;
-        if (!state.reviewMap[q.id]) state.reviewMap[q.id] = { count: 0, mastered: false, next: Date.now() + 864e5 };
-        const rec = state.reviewMap[q.id];
-        rec.count = 0;
-        rec.mastered = false;
-        rec.next = Date.now() + 864e5;
-        if (!state.wrongQuestions.includes(q.id)) state.wrongQuestions.push(q.id);
-        if (state.battle && state.battle.bossMechanicInfo && state.battle.bossMechanicInfo.key === "audit_boss" && state.battle.auditMarkActive) {
-          state.battle.auditMarkActive = false;
-          state.player.hp = Math.max(1, state.player.hp - 6);
-          state.battle.feedback += "<br>\u5BA1\u8BA1\u6807\u8BB0\u53CD\u566C\uFF0C\u53D7\u5230 6 \u70B9\u4F24\u5BB3\u3002";
-        }
-      }
-      sfx(correct ? "correct" : "wrong");
-      save();
-      const letters = ["A", "B", "C", "D"];
-      const selectedList = Array.isArray(selected) ? selected : [selected];
-      const answerList = Array.isArray(q.answer) ? q.answer : [q.answer];
-      const isChosen = (i) => selectedList.includes(i);
-      const isAnswer = (i) => answerList.includes(i);
-      const optionsHtml = q.options.map((opt, i) => {
-        let cls = "option";
-        if (isAnswer(i)) cls += " correct";
-        else if (isChosen(i) && !correct) cls += " wrong";
-        const mark = isAnswer(i) ? "\u6B63\u786E\u7B54\u6848" : isChosen(i) ? "\u4F60\u7684\u9009\u62E9" : "";
-        return `<div class="${cls} answer-item"><span class="tag">${letters[i]}</span><span>${opt}</span><span class="answer-mark${isChosen(i) && !correct && !isAnswer(i) ? " wrong-mark" : ""}">${mark}</span></div>`;
-      }).join("");
-      openModal(`
-      <div class="modal-box">
-        <div class="modal-title">\u77E5\u8BC6\u8BD5\u70BC \xB7 \u7ED3\u679C</div>
-        <div class="result-banner ${correct ? "correct" : "wrong"}">${correct ? "\u56DE\u7B54\u6B63\u786E" : "\u56DE\u7B54\u9519\u8BEF"} \xB7 \u5DF2\u8BA1\u5165\u5B66\u4E60\u8BB0\u5F55</div>
-        ${correct ? `<div class="learning-gain">\u5B66\u4E60\u7ECF\u9A8C +${state._lastLearningGain || 2}</div>` : ""}
-        <div class="answer-review">
-          <div class="answer-list">${optionsHtml}</div>
-          <div class="feedback-card feedback">${q.explain}</div>
-        </div>
-        <div class="modal-actions">
-          <button class="pixel-btn" data-action="quiz-continue">\u7EE7\u7EED\u6218\u6597</button>
-        </div>
-      </div>
-    `);
-    }
-    function continueQuiz() {
-      const quiz = state.quiz;
-      if (!quiz) return;
-      const callback = quiz.callback;
-      const answeredCorrectly = state._lastQuizCorrect;
-      state.quiz = null;
-      closeModal();
-      if (callback) callback(answeredCorrectly);
     }
     function openBook() {
       if (!isSystemUnlocked("book")) {
@@ -6519,33 +6716,6 @@
         }
         deferredInstallPrompt = null;
       });
-    }
-    function showTitle() {
-      state.screen = "title";
-      hud.classList.add("hidden");
-      openModal(`
-        <div class="modal-box" style="width:min(720px,94vw);text-align:center;">
-          <div class="modal-title">\u6CE8\u4F1A\u7EAA\u5143</div>
-          <div class="modal-text">\u8BB0\u8D26\u5927\u9646 \xB7 M3 \u4F53\u9A8C\u7248 v${GAME_VERSION}</div>
-          <div class="save-hint">${BUILD_LABEL}</div>
-          <div class="title-subjects">
-            <span class="subject-chip" style="background:#d4a017;">\u4F1A\u8BA1</span>
-            <span class="subject-chip" style="background:#4169e1;">\u5BA1\u8BA1</span>
-            <span class="subject-chip" style="background:#2e8b57;">\u8D22\u7BA1</span>
-            <span class="subject-chip" style="background:#e4572e;">\u7A0E\u6CD5</span>
-            <span class="subject-chip" style="background:#6b5b95;">\u7ECF\u6D4E\u6CD5</span>
-            <span class="subject-chip" style="background:#3a8fb7;">\u6218\u7565</span>
-          </div>
-          <div class="modal-actions" style="justify-content:center;">
-          <button class="pixel-btn" data-action="start">\u5F00\u59CB\u65B0\u5192\u9669</button>
-          <button class="pixel-btn secondary" data-action="continue">\u7EE7\u7EED\u5192\u9669</button>
-          <button class="pixel-btn secondary" data-action="report">\u5B66\u4E60\u62A5\u544A</button>
-          <button class="pixel-btn secondary" data-action="toggle-sound">\u97F3\u6548\uFF1A${state.soundEnabled ? "\u5F00" : "\u5173"}</button>
-          ${installPwaButton()}
-          <button class="pixel-btn secondary" data-action="about">\u5173\u4E8E</button>
-        </div>
-      </div>
-    `);
     }
     function startGame() {
       state = defaultState();
