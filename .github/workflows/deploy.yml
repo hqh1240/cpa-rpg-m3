@@ -29,12 +29,16 @@ jobs:
           node-version: 22
           cache: npm
       - name: Install dependencies
+        if: hashFiles('package-lock.json') != ''
         run: npm ci
       - name: Lint
+        if: hashFiles('package.json') != ''
         run: npm run lint
       - name: Unit tests
+        if: hashFiles('package.json') != ''
         run: npm run unit
       - name: Build
+        if: hashFiles('package.json') != ''
         run: npm run build
       - name: Validate bundle
         run: node --check game.js
