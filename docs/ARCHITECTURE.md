@@ -61,7 +61,23 @@ npm run build
 npm test
 ```
 
-`npm test` 会先重新构建，再执行 `file://` 冒烟测试和 PWA 离线测试。
+`npm test` 会执行单元测试、重新构建、`file://` 冒烟测试和 PWA 离线测试。
+
+## 工程检查
+
+```powershell
+npm run lint
+npm run typecheck
+npm run format:check
+```
+
+- `lint`：ESLint
+- `typecheck`：TypeScript 对核心工具/存档模块做 JSDoc 检查
+- `format:check`：Prettier 格式检查
+
+## CI 自动部署
+
+`.github/workflows/deploy.yml` 会在推送到 `main` 后校验 `game.js` 并自动部署 GitHub Pages。
 
 ## 本地开发
 
@@ -79,5 +95,5 @@ npm run dev
 
 ## 后续拆分计划
 
-1. 将 `handleAction` 进一步拆为按模块分发的 action 表。
-2. 增加类型检查、Lint、单元测试和 CI 自动部署。
+1. 扩展单元测试覆盖率，覆盖系统模块和渲染模块。
+2. 增加更严格的类型检查与模块边界测试。

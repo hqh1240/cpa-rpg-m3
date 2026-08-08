@@ -2,5 +2,5 @@
   "version": "0.9.0",
   "build": "M3 Phase 3 Preview",
   "date": "2026-08-06",
-  "notes": "工程重构完成主体拆分：地图/房间、角色绘制、面板 UI、事件分发、经济、学习记录均已拆为独立模块。"
+  "notes": "工程收尾完成：action 表、ESLint、Prettier、TypeScript 检查、单元测试、CI 自动部署均已接入。"
 }

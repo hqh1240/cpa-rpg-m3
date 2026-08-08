@@ -734,14 +734,7 @@
 
   // src/systems/achievements.js
   function createAchievementSystem(deps) {
-    const {
-      getState,
-      save,
-      updateHUD,
-      maybeLevelUp,
-      sfx: sfx2,
-      showAchievementToast
-    } = deps;
+    const { getState, save, updateHUD, maybeLevelUp, sfx: sfx2, showAchievementToast } = deps;
     function unlockAchievement(id) {
       const state = getState();
       if (state.achievements.includes(id)) return;
@@ -763,15 +756,7 @@
 
   // src/systems/playerGrowth.js
   function createPlayerGrowthSystem(deps) {
-    const {
-      getState,
-      save,
-      sfx: sfx2,
-      showLevelUpToast,
-      notifySystemUnlocks,
-      showToast,
-      unlockAchievement
-    } = deps;
+    const { getState, save, sfx: sfx2, showLevelUpToast, notifySystemUnlocks, showToast, unlockAchievement } = deps;
     function getLevelTitle(level) {
       if (level >= 50) return "\u516D\u57DF\u5B97\u5E08";
       if (level >= 40) return "\u6CE8\u4F1A\u4F20\u5947";
@@ -854,7 +839,9 @@
       const usedIds = new Set(recentIds);
       for (const point of points) {
         if (selected.length >= target) break;
-        const pointQuestions = QUESTIONS.filter((q) => q.point === point && !usedIds.has(q.id)).sort((a, b) => DIFFICULTY_ORDER[a.difficulty] - DIFFICULTY_ORDER[b.difficulty]);
+        const pointQuestions = QUESTIONS.filter((q) => q.point === point && !usedIds.has(q.id)).sort(
+          (a, b) => DIFFICULTY_ORDER[a.difficulty] - DIFFICULTY_ORDER[b.difficulty]
+        );
         for (const q of pointQuestions) {
           if (selected.length >= target) break;
           selected.push(q);
@@ -1175,7 +1162,10 @@
       const state = getState();
       if (action === "attack") {
         const crit = Math.random() < 0.15;
-        let dmg = Math.max(1, state.player.attack + getWeaponAtk() + getJobBonus("atk") - 4 + Math.floor(Math.random() * 4));
+        let dmg = Math.max(
+          1,
+          state.player.attack + getWeaponAtk() + getJobBonus("atk") - 4 + Math.floor(Math.random() * 4)
+        );
         if (crit) dmg = Math.round(dmg * 1.5);
         applyPlayerDamage(dmg, crit ? "\u66B4\u51FB\u547D\u4E2D" : "\u666E\u901A\u653B\u51FB\u547D\u4E2D", crit);
         if (!state.battle) return;
@@ -1261,7 +1251,9 @@
         }
         state.battle.feedback += `<br>${bossName}\u8FDB\u5165\u7B2C\u4E8C\u9636\u6BB5${state.battle.bossMechanicInfo ? "\uFF1A" + state.battle.bossMechanicInfo.name : "\uFF1A\u62A5\u8868\u9519\u4E71"}\uFF01\u653B\u51FB\u529B\u63D0\u5347\u3002${state.battle.bossMechanicInfo ? " \u4E13\u5C5E\u673A\u5236\uFF1A" + state.battle.bossMechanicInfo.desc : ""}`;
         sfx2("wrong");
-        showToast(`${bossName}\u8FDB\u5165\u7B2C\u4E8C\u9636\u6BB5${state.battle.bossMechanicInfo ? "\uFF1A" + state.battle.bossMechanicInfo.name : "\uFF1A\u62A5\u8868\u9519\u4E71"}`);
+        showToast(
+          `${bossName}\u8FDB\u5165\u7B2C\u4E8C\u9636\u6BB5${state.battle.bossMechanicInfo ? "\uFF1A" + state.battle.bossMechanicInfo.name : "\uFF1A\u62A5\u8868\u9519\u4E71"}`
+        );
       }
       if (state.battle.isBoss && state.battle.phase2 && !state.battle.phase3 && state.battle.hp <= state.battle.maxHp * 0.2) {
         state.battle.phase3 = true;
@@ -1275,7 +1267,10 @@
       if (state.battle.isBoss && state.battle.bossMechanicInfo) {
         applyBossMechanicTurnEffects();
       }
-      const dmg = Math.max(1, state.battle.monster.attack - state.player.defense - getArmorDef() - getJobBonus("def") + Math.floor(Math.random() * 4) - 2);
+      const dmg = Math.max(
+        1,
+        state.battle.monster.attack - state.player.defense - getArmorDef() - getJobBonus("def") + Math.floor(Math.random() * 4) - 2
+      );
       const surgeBonus = state.battle.strategySurge ? 4 : 0;
       const finalDmg = dmg + surgeBonus;
       state.player.hp -= finalDmg;
@@ -1383,14 +1378,18 @@
           state.monstersKilledIds.push(b.monster.id);
           if (ZONE_MONSTER_TASK[b.monster.id]) updateTask(ZONE_MONSTER_TASK[b.monster.id], 1);
           if (["audit_monster_1", "audit_monster_2"].includes(b.monster.id)) {
-            const auditKills = state.monstersKilledIds.filter((id) => ["audit_monster_1", "audit_monster_2"].includes(id));
+            const auditKills = state.monstersKilledIds.filter(
+              (id) => ["audit_monster_1", "audit_monster_2"].includes(id)
+            );
             if (auditKills.length >= 2 && !state.auditCleared) {
               state.auditCleared = true;
               showToast("\u5BA1\u8BA1\u94C1\u5821\u5DF2\u8083\u6E05\uFF0C\u8D44\u672C\u5BC6\u6797\u5165\u53E3\u5F00\u542F");
             }
           }
           if (["capital_monster_1", "capital_monster_2"].includes(b.monster.id)) {
-            const capitalKills = state.monstersKilledIds.filter((id) => ["capital_monster_1", "capital_monster_2"].includes(id));
+            const capitalKills = state.monstersKilledIds.filter(
+              (id) => ["capital_monster_1", "capital_monster_2"].includes(id)
+            );
             if (capitalKills.length >= 2 && !state.capitalCleared) {
               state.capitalCleared = true;
               showToast("\u8D44\u672C\u5BC6\u6797\u5DF2\u8083\u6E05\uFF0C\u7A0E\u7387\u8352\u539F\u5165\u53E3\u5F00\u542F");
@@ -1411,7 +1410,9 @@
             }
           }
           if (["strategy_monster_1", "strategy_monster_2"].includes(b.monster.id)) {
-            const strategyKills = state.monstersKilledIds.filter((id) => ["strategy_monster_1", "strategy_monster_2"].includes(id));
+            const strategyKills = state.monstersKilledIds.filter(
+              (id) => ["strategy_monster_1", "strategy_monster_2"].includes(id)
+            );
             if (strategyKills.length >= 2 && !state.strategyCleared) {
               state.strategyCleared = true;
               showToast("\u6218\u7565\u661F\u5854\u5DF2\u8083\u6E05\uFF0C\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\u73B0\u8EAB");
@@ -1498,10 +1499,34 @@
         { id: "mp_potion", name: "\u4EE5\u592A\u4E4B\u9732", desc: "\u6062\u590D 30 MP", price: 15, disabled: false },
         { id: "compounding_dagger", name: "\u590D\u5229\u5315\u9996", desc: "ATK +8", price: 120, disabled: ownedWeapon },
         { id: "audit_light_armor", name: "\u5BA1\u94C1\u8F7B\u7532", desc: "DEF +4", price: 150, disabled: ownedArmor },
-        { id: "job_token_finance", name: "\u8D22\u7BA1\u6E38\u4FA0\u804C\u4E1A\u51ED\u8BC1", desc: "\u89E3\u9501\u8D22\u7BA1\u6E38\u4FA0", price: 200, disabled: state.jobs.unlocked.includes("finance") },
-        { id: "job_token_tax", name: "\u7A0E\u6CD5\u5F13\u624B\u804C\u4E1A\u51ED\u8BC1", desc: "\u89E3\u9501\u7A0E\u6CD5\u5F13\u624B", price: 200, disabled: state.jobs.unlocked.includes("tax") },
-        { id: "job_token_law", name: "\u7ECF\u6D4E\u6CD5\u796D\u53F8\u804C\u4E1A\u51ED\u8BC1", desc: "\u89E3\u9501\u7ECF\u6D4E\u6CD5\u796D\u53F8", price: 200, disabled: state.jobs.unlocked.includes("law") },
-        { id: "job_token_strategy", name: "\u6218\u7565\u53EC\u5524\u5E08\u804C\u4E1A\u51ED\u8BC1", desc: "\u89E3\u9501\u6218\u7565\u53EC\u5524\u5E08", price: 200, disabled: state.jobs.unlocked.includes("strategy") }
+        {
+          id: "job_token_finance",
+          name: "\u8D22\u7BA1\u6E38\u4FA0\u804C\u4E1A\u51ED\u8BC1",
+          desc: "\u89E3\u9501\u8D22\u7BA1\u6E38\u4FA0",
+          price: 200,
+          disabled: state.jobs.unlocked.includes("finance")
+        },
+        {
+          id: "job_token_tax",
+          name: "\u7A0E\u6CD5\u5F13\u624B\u804C\u4E1A\u51ED\u8BC1",
+          desc: "\u89E3\u9501\u7A0E\u6CD5\u5F13\u624B",
+          price: 200,
+          disabled: state.jobs.unlocked.includes("tax")
+        },
+        {
+          id: "job_token_law",
+          name: "\u7ECF\u6D4E\u6CD5\u796D\u53F8\u804C\u4E1A\u51ED\u8BC1",
+          desc: "\u89E3\u9501\u7ECF\u6D4E\u6CD5\u796D\u53F8",
+          price: 200,
+          disabled: state.jobs.unlocked.includes("law")
+        },
+        {
+          id: "job_token_strategy",
+          name: "\u6218\u7565\u53EC\u5524\u5E08\u804C\u4E1A\u51ED\u8BC1",
+          desc: "\u89E3\u9501\u6218\u7565\u53EC\u5524\u5E08",
+          price: 200,
+          disabled: state.jobs.unlocked.includes("strategy")
+        }
       ];
       const rows = items.map((item) => {
         const compare = item.id === "compounding_dagger" ? ` \xB7 \u5F53\u524D ${state.weapon.name} ATK ${getWeaponAtk()} \u2192 8` : item.id === "audit_light_armor" ? ` \xB7 \u5F53\u524D ${state.armor.name} DEF ${getArmorDef()} \u2192 4` : "";
@@ -1544,10 +1569,12 @@
       else if (itemId === "mp_potion") state.inventory.mpPotion = (state.inventory.mpPotion || 0) + 1;
       else if (itemId === "compounding_dagger") state.weapon = { id: "compounding_dagger", name: "\u590D\u5229\u5315\u9996", atk: 8 };
       else if (itemId === "audit_light_armor") state.armor = { id: "audit_light_armor", name: "\u5BA1\u94C1\u8F7B\u7532", def: 4 };
-      else if (itemId === "job_token_finance" && !state.jobs.unlocked.includes("finance")) state.jobs.unlocked.push("finance");
+      else if (itemId === "job_token_finance" && !state.jobs.unlocked.includes("finance"))
+        state.jobs.unlocked.push("finance");
       else if (itemId === "job_token_tax" && !state.jobs.unlocked.includes("tax")) state.jobs.unlocked.push("tax");
       else if (itemId === "job_token_law" && !state.jobs.unlocked.includes("law")) state.jobs.unlocked.push("law");
-      else if (itemId === "job_token_strategy" && !state.jobs.unlocked.includes("strategy")) state.jobs.unlocked.push("strategy");
+      else if (itemId === "job_token_strategy" && !state.jobs.unlocked.includes("strategy"))
+        state.jobs.unlocked.push("strategy");
       if (state.jobs.unlocked.length >= 6) unlockAchievement("all_jobs");
       updateTask("shop_task", 1);
       save();
@@ -1565,17 +1592,43 @@
       }
       const m = state.inventory.materials;
       const recipes = [
-        { id: "hp_potion_craft", name: "\u9AD8\u7EA7\u56DE\u590D\u836F\u6C34", desc: "\u58A8\u6E0D\u6B8B\u9875 \xD71 \u2192 \u56DE\u590D\u836F\u6C34 \xD72", price: { ink: 1 }, disabled: m.ink < 1 },
-        { id: "mp_potion_craft", name: "\u4EE5\u592A\u836F\u5305", desc: "\u7B97\u76D8\u73E0 \xD71 \u2192 \u4EE5\u592A\u4E4B\u9732 \xD72", price: { beads: 1 }, disabled: m.beads < 1 },
-        { id: "craft_dagger", name: "\u590D\u5229\u5315\u9996", desc: "\u91D1\u7B97\u77F3 \xD72 + \u58A8\u6E0D\u6B8B\u9875 \xD71", price: { stone: 2, ink: 1 }, disabled: state.weapon.id === "compounding_dagger" || m.stone < 2 || m.ink < 1 },
-        { id: "craft_armor", name: "\u5BA1\u94C1\u8F7B\u7532", desc: "\u7B97\u76D8\u73E0 \xD72 + \u91D1\u7B97\u77F3 \xD71", price: { beads: 2, stone: 1 }, disabled: state.armor.id === "audit_light_armor" || m.beads < 2 || m.stone < 1 }
+        {
+          id: "hp_potion_craft",
+          name: "\u9AD8\u7EA7\u56DE\u590D\u836F\u6C34",
+          desc: "\u58A8\u6E0D\u6B8B\u9875 \xD71 \u2192 \u56DE\u590D\u836F\u6C34 \xD72",
+          price: { ink: 1 },
+          disabled: m.ink < 1
+        },
+        {
+          id: "mp_potion_craft",
+          name: "\u4EE5\u592A\u836F\u5305",
+          desc: "\u7B97\u76D8\u73E0 \xD71 \u2192 \u4EE5\u592A\u4E4B\u9732 \xD72",
+          price: { beads: 1 },
+          disabled: m.beads < 1
+        },
+        {
+          id: "craft_dagger",
+          name: "\u590D\u5229\u5315\u9996",
+          desc: "\u91D1\u7B97\u77F3 \xD72 + \u58A8\u6E0D\u6B8B\u9875 \xD71",
+          price: { stone: 2, ink: 1 },
+          disabled: state.weapon.id === "compounding_dagger" || m.stone < 2 || m.ink < 1
+        },
+        {
+          id: "craft_armor",
+          name: "\u5BA1\u94C1\u8F7B\u7532",
+          desc: "\u7B97\u76D8\u73E0 \xD72 + \u91D1\u7B97\u77F3 \xD71",
+          price: { beads: 2, stone: 1 },
+          disabled: state.armor.id === "audit_light_armor" || m.beads < 2 || m.stone < 1
+        }
       ];
-      const rows = recipes.map((r) => `
+      const rows = recipes.map(
+        (r) => `
         <div class="book-card" style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
           <div><b>${r.name}</b><br><span class="caption">${r.desc}</span></div>
           ${r.disabled ? "" : `<button class="pixel-btn small" data-action="craft-item" data-item="${r.id}">\u6253\u9020</button>`}
         </div>
-      `).join("");
+      `
+      ).join("");
       openModal(`
       <div class="modal-box">
         <div class="modal-title">\u6253\u9020\u5DE5\u574A</div>
@@ -2875,12 +2928,14 @@
             </div>
           `;
       }).join("") : `<div class="book-card caption">\u6682\u65E0</div>`;
-      const columnsHtml = columns.map((col) => `
+      const columnsHtml = columns.map(
+        (col) => `
         <div class="book-column">
           <div class="book-column-title">${col.title} \xB7 ${col.items.length}</div>
           ${renderBookItems(col.items, col.title === "\u5DF2\u638C\u63E1")}
         </div>
-      `).join("");
+      `
+      ).join("");
       openModal(`
       <div class="modal-box">
         <div class="modal-title">\u9519\u9898\u672C \xB7 ${wrong.length} \u9053</div>
@@ -2916,8 +2971,16 @@
             </div>
           `;
       }).join("") : `<div class="report-card"><div class="num">\u2014</div><div>\u6682\u65E0\u8584\u5F31\u70B9</div></div>`;
-      const historyCards = state.examHistory.length ? state.examHistory.slice(-3).map((h) => `<div class="report-card"><div class="num">${h.acc}%</div><div>${h.date} \xB7 ${h.correct}/${h.total}</div></div>`).join("") : `<div class="report-card"><div class="num">\u2014</div><div>\u6682\u65E0\u590D\u4E60\u6311\u6218</div></div>`;
-      const clearedZones = [state.auditCleared, state.capitalCleared, state.taxCleared, state.lawCleared, state.strategyCleared].filter(Boolean).length;
+      const historyCards = state.examHistory.length ? state.examHistory.slice(-3).map(
+        (h) => `<div class="report-card"><div class="num">${h.acc}%</div><div>${h.date} \xB7 ${h.correct}/${h.total}</div></div>`
+      ).join("") : `<div class="report-card"><div class="num">\u2014</div><div>\u6682\u65E0\u590D\u4E60\u6311\u6218</div></div>`;
+      const clearedZones = [
+        state.auditCleared,
+        state.capitalCleared,
+        state.taxCleared,
+        state.lawCleared,
+        state.strategyCleared
+      ].filter(Boolean).length;
       openModal(`
       <div class="modal-box">
         <div class="modal-title">\u5B66\u4E60\u62A5\u544A \xB7 ${getCurrentJob().name}</div>
@@ -2977,7 +3040,10 @@
       c.fillText("\u5468\u8D77\u59CB " + state.week.weekStart, 28, 84);
       const stats = [
         { label: "\u7B54\u9898", value: state.week.answered || 0 },
-        { label: "\u6B63\u786E\u7387", value: state.week.answered ? Math.round(state.week.correct / state.week.answered * 100) + "%" : "0%" },
+        {
+          label: "\u6B63\u786E\u7387",
+          value: state.week.answered ? Math.round(state.week.correct / state.week.answered * 100) + "%" : "0%"
+        },
         { label: "\u65F6\u957F", value: formatDuration2(state.week.playSeconds) }
       ];
       stats.forEach((s, i) => {
@@ -3097,14 +3163,7 @@
     room_strategy_ma_npc: "strategy"
   };
   function createCharacterRenderer(deps) {
-    const {
-      ctx,
-      assets,
-      getState,
-      getKeys,
-      getTouch,
-      getMonsterType
-    } = deps;
+    const { ctx, assets, getState, getKeys, getTouch, getMonsterType } = deps;
     function drawFrame(img, x, y, dw, dh, frame = 0) {
       ctx.imageSmoothingEnabled = false;
       const b = img._box || { x: 0, y: 0, w: 96, h: 64 };
@@ -3367,18 +3426,50 @@
       const state = getState();
       const regions = [
         { name: "\u91D1\u7B97\u539F\u91CE", subject: "\u4F1A\u8BA1", status: "\u5DF2\u5F00\u653E \xB7 5\u4E2A\u5BA4\u5185\u8BD5\u70BC\u70B9", color: "#d4a017", zone: "gold_field" },
-        { name: "\u5BA1\u8BA1\u94C1\u5821", subject: "\u5BA1\u8BA1", status: state.auditBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.bossKilled ? "\u5DF2\u5F00\u653E" : "\u51FB\u8D25\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u540E\u89E3\u9501", color: "#4169e1", zone: state.bossKilled ? "audit_tower" : null },
-        { name: "\u8D44\u672C\u5BC6\u6797", subject: "\u8D22\u7BA1", status: state.capitalBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.auditCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u5BA1\u8BA1\u94C1\u5821\u540E\u89E3\u9501", color: "#2e8b57", zone: state.auditCleared ? "capital_forest" : null },
-        { name: "\u7A0E\u7387\u8352\u539F", subject: "\u7A0E\u6CD5", status: state.taxBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.capitalCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u8D44\u672C\u5BC6\u6797\u540E\u89E3\u9501", color: "#e4572e", zone: state.capitalCleared ? "tax_wasteland" : null },
-        { name: "\u6CD5\u6761\u795E\u6BBF", subject: "\u7ECF\u6D4E\u6CD5", status: state.lawBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.taxCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u7A0E\u7387\u8352\u539F\u540E\u89E3\u9501", color: "#6b5b95", zone: state.taxCleared ? "law_temple" : null },
-        { name: "\u6218\u7565\u661F\u5854", subject: "\u6218\u7565", status: state.gameCompleted ? "\u5DF2\u901A\u5173" : state.strategyBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.lawCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u6CD5\u6761\u795E\u6BBF\u540E\u89E3\u9501", color: "#3a8fb7", zone: state.lawCleared || state.gameCompleted ? "strategy_star" : null }
+        {
+          name: "\u5BA1\u8BA1\u94C1\u5821",
+          subject: "\u5BA1\u8BA1",
+          status: state.auditBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.bossKilled ? "\u5DF2\u5F00\u653E" : "\u51FB\u8D25\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u540E\u89E3\u9501",
+          color: "#4169e1",
+          zone: state.bossKilled ? "audit_tower" : null
+        },
+        {
+          name: "\u8D44\u672C\u5BC6\u6797",
+          subject: "\u8D22\u7BA1",
+          status: state.capitalBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.auditCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u5BA1\u8BA1\u94C1\u5821\u540E\u89E3\u9501",
+          color: "#2e8b57",
+          zone: state.auditCleared ? "capital_forest" : null
+        },
+        {
+          name: "\u7A0E\u7387\u8352\u539F",
+          subject: "\u7A0E\u6CD5",
+          status: state.taxBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.capitalCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u8D44\u672C\u5BC6\u6797\u540E\u89E3\u9501",
+          color: "#e4572e",
+          zone: state.capitalCleared ? "tax_wasteland" : null
+        },
+        {
+          name: "\u6CD5\u6761\u795E\u6BBF",
+          subject: "\u7ECF\u6D4E\u6CD5",
+          status: state.lawBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.taxCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u7A0E\u7387\u8352\u539F\u540E\u89E3\u9501",
+          color: "#6b5b95",
+          zone: state.taxCleared ? "law_temple" : null
+        },
+        {
+          name: "\u6218\u7565\u661F\u5854",
+          subject: "\u6218\u7565",
+          status: state.gameCompleted ? "\u5DF2\u901A\u5173" : state.strategyBossKilled ? "\u5DF2\u5F00\u653E \xB7 \u533A\u57DF Boss \u5DF2\u8BA8\u4F10" : state.lawCleared ? "\u5DF2\u5F00\u653E" : "\u8083\u6E05\u6CD5\u6761\u795E\u6BBF\u540E\u89E3\u9501",
+          color: "#3a8fb7",
+          zone: state.lawCleared || state.gameCompleted ? "strategy_star" : null
+        }
       ];
-      const cards = regions.map((r) => `
+      const cards = regions.map(
+        (r) => `
         <div class="panel-light" style="padding:12px;margin-bottom:8px;border-left:6px solid ${r.color};">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;"><b>${r.name}</b> \xB7 ${r.subject}${r.zone ? `<button class="pixel-btn small" data-action="world-zone" data-zone="${r.zone}">\u524D\u5F80</button>` : ""}</div>
           <div class="caption">${r.status}</div>
         </div>
-      `).join("");
+      `
+      ).join("");
       openModal(`
       <div class="modal-box">
         <div class="modal-title">\u8BB0\u8D26\u5927\u9646 \xB7 \u4E16\u754C\u5730\u56FE</div>
@@ -3423,7 +3514,9 @@
       const quiz = state.jobQuiz;
       if (!quiz) return;
       const item = JOB_QUESTIONS2[quiz.idx];
-      const options = item.options.map((opt, i) => `<button class="pixel-btn option" data-action="job-quiz-answer" data-value="${opt.value}"><span class="tag">${String.fromCharCode(65 + i)}</span>${opt.label}</button>`).join("");
+      const options = item.options.map(
+        (opt, i) => `<button class="pixel-btn option" data-action="job-quiz-answer" data-value="${opt.value}"><span class="tag">${String.fromCharCode(65 + i)}</span>${opt.label}</button>`
+      ).join("");
       openModal(`
       <div class="modal-box">
         <div class="modal-title">\u804C\u4E1A\u63A8\u8350 \xB7 \u7B2C ${quiz.idx + 1}/${JOB_QUESTIONS2.length} \u9898</div>
@@ -3468,7 +3561,9 @@
       const state = getState();
       const plan = state.plan;
       const progress = Math.min(100, Math.round(state.daily.answered / Math.max(1, state.daily.target) * 100));
-      const targetBtns = [5, 10, 15, 20].map((n) => `<button class="pixel-btn small ${plan.dailyTarget === n ? "" : "secondary"}" data-action="plan-target" data-target="${n}">${n}\u9898</button>`).join("");
+      const targetBtns = [5, 10, 15, 20].map(
+        (n) => `<button class="pixel-btn small ${plan.dailyTarget === n ? "" : "secondary"}" data-action="plan-target" data-target="${n}">${n}\u9898</button>`
+      ).join("");
       const subjectBtns = [
         `<button class="pixel-btn small ${plan.subjects.length === 0 ? "" : "secondary"}" data-action="plan-subject" data-subject="__all">\u5168\u90E8\u79D1\u76EE</button>`,
         ...Object.keys(PLAN_SUBJECT_POINTS).map(
@@ -3497,7 +3592,9 @@
     }
     function openPointMap() {
       const sections = Object.entries(PLAN_SUBJECT_POINTS).map(([subject, points]) => {
-        const chips = points.map((point) => `<button class="pixel-btn small point-chip" data-action="point-quiz" data-point="${point}">${point}</button>`).join("");
+        const chips = points.map(
+          (point) => `<button class="pixel-btn small point-chip" data-action="point-quiz" data-point="${point}">${point}</button>`
+        ).join("");
         return `
           <div class="book-card">
             <span class="book-point">${subject}</span>
@@ -3597,7 +3694,8 @@
           const quizContinue = modal.querySelector('[data-action="quiz-continue"]');
           if (storyNext) storyNext.click();
           else if (quizContinue) quizContinue.click();
-          else if (state.screen === "title" && modal.querySelector('[data-action="start"]')) modal.querySelector('[data-action="start"]').click();
+          else if (state.screen === "title" && modal.querySelector('[data-action="start"]'))
+            modal.querySelector('[data-action="start"]').click();
           e.preventDefault();
         }
       });
@@ -7112,45 +7210,57 @@
       startBgm();
       updateHUD();
     }
-    function handleAction(action, dataset) {
-      var _a, _b, _c;
-      if (action === "start") startGame();
-      else if (action === "continue") continueGame();
-      else if (action === "about") openAbout();
-      else if (action === "ending") showEnding();
-      else if (action === "check-update") checkForUpdates();
-      else if (action === "install-pwa") installPwa();
-      else if (action === "close") {
+    const ACTION_HANDLERS = {
+      "start": (dataset) => startGame(),
+      "continue": (dataset) => continueGame(),
+      "about": (dataset) => openAbout(),
+      "ending": (dataset) => showEnding(),
+      "check-update": (dataset) => checkForUpdates(),
+      "install-pwa": (dataset) => installPwa(),
+      "close": (dataset) => {
         closeModal();
         if (state.screen === "battle") openBattleModal();
-      } else if (action === "learn") {
+      },
+      "learn": (dataset) => {
         showToast("\u63D0\u793A\uFF1A\u8D44\u4EA7 = \u8D1F\u503A + \u6240\u6709\u8005\u6743\u76CA");
         closeModal();
-      } else if (action === "stone-quiz") {
+      },
+      "stone-quiz": (dataset) => {
         const q = getQuestionsByPoint(dataset.point, 1)[0];
         state.quiz = { q, callback: () => showToast("\u77E5\u8BC6\u7891\u8BD5\u70BC\u5B8C\u6210") };
         openQuiz(q);
-      } else if (action === "battle-attack") {
+      },
+      "battle-attack": (dataset) => {
         playerBattleAction("attack");
-      } else if (action === "battle-skill") {
+      },
+      "battle-skill": (dataset) => {
         openSkillSelect();
-      } else if (action === "skill-use") {
+      },
+      "skill-use": (dataset) => {
         selectSkill(dataset.skill);
-      } else if (action === "battle-cancel") {
+      },
+      "battle-cancel": (dataset) => {
         openBattleModal();
-      } else if (action === "use-item") {
+      },
+      "use-item": (dataset) => {
         useItem(dataset.item);
-      } else if (action === "shop") {
+      },
+      "shop": (dataset) => {
         openShop();
-      } else if (action === "shop-buy") {
+      },
+      "shop-buy": (dataset) => {
         buyItem(dataset.item);
-      } else if (action === "learn-skill") {
+      },
+      "learn-skill": (dataset) => {
         learnSkill(dataset.skill, dataset.from);
-      } else if (action === "switch-job") {
+      },
+      "switch-job": (dataset) => {
         switchJob(dataset.job);
-      } else if (action === "job-quiz") {
+      },
+      "job-quiz": (dataset) => {
         openJobQuiz();
-      } else if (action === "job-quiz-answer") {
+      },
+      "job-quiz-answer": (dataset) => {
         const quiz = state.jobQuiz;
         if (!quiz) return;
         for (const jobId of dataset.value.split(",")) {
@@ -7159,30 +7269,40 @@
         quiz.idx += 1;
         if (quiz.idx >= JOB_QUESTIONS.length) finishJobQuiz();
         else renderJobQuestion();
-      } else if (action === "job-recommend-continue") {
+      },
+      "job-recommend-continue": (dataset) => {
         openEquip();
-      } else if (action === "job-story-continue") {
+      },
+      "job-story-continue": (dataset) => {
         openEquip();
-      } else if (action === "battle-item") {
+      },
+      "battle-item": (dataset) => {
         playerBattleAction("item");
-      } else if (action === "battle-run") {
+      },
+      "battle-run": (dataset) => {
         playerBattleAction("run");
-      } else if (action === "boss-start") {
+      },
+      "boss-start": (dataset) => {
         const boss = getActiveEntities().find((e) => e.id === dataset.boss);
         if (boss) startBattle(boss, true);
-      } else if (action === "enter-audit-tower") {
+      },
+      "enter-audit-tower": (dataset) => {
         changeZone("audit_tower");
-      } else if (action === "quiz-confirm") {
+      },
+      "quiz-confirm": (dataset) => {
         const quiz = state.quiz;
         if (!quiz || quiz.q.type !== "multiple") return;
         const selected = Array.from(modal.querySelectorAll(".option.selected")).map((el) => Number(el.dataset.answer));
         state._lastQuizCorrect = isCorrectAnswer(selected, quiz.q.answer);
         resolveAnswer(selected);
-      } else if (action === "quiz-continue") {
+      },
+      "quiz-continue": (dataset) => {
         continueQuiz();
-      } else if (action === "book") {
+      },
+      "book": (dataset) => {
         openBook();
-      } else if (action === "menu") {
+      },
+      "menu": (dataset) => {
         openModal(`
         <div class="modal-box">
           <div class="modal-title">\u83DC\u5355</div>
@@ -7209,34 +7329,48 @@
           </div>
         </div>
       `);
-      } else if (action === "report") {
+      },
+      "report": (dataset) => {
         openReport();
-      } else if (action === "tasks") {
+      },
+      "tasks": (dataset) => {
         openTasks();
-      } else if (action === "equip") {
+      },
+      "equip": (dataset) => {
         openEquip();
-      } else if (action === "skill-tree") {
+      },
+      "skill-tree": (dataset) => {
         openSkillTree();
-      } else if (action === "craft") {
+      },
+      "craft": (dataset) => {
         openCraft();
-      } else if (action === "craft-item") {
+      },
+      "craft-item": (dataset) => {
         craftItem(dataset.item);
-      } else if (action === "enhance") {
+      },
+      "enhance": (dataset) => {
         openEnhance();
-      } else if (action === "enhance-item") {
+      },
+      "enhance-item": (dataset) => {
         enhanceItem(dataset.slot);
-      } else if (action === "achievements") {
+      },
+      "achievements": (dataset) => {
         openAchievements();
-      } else if (action === "world-map") {
+      },
+      "world-map": (dataset) => {
         openWorldMap();
-      } else if (action === "world-zone") {
+      },
+      "world-zone": (dataset) => {
         changeZone(dataset.zone);
-      } else if (action === "partner") {
+      },
+      "partner": (dataset) => {
         openPartner();
-      } else if (action === "title") {
+      },
+      "title": (dataset) => {
         save();
         showTitle();
-      } else if (action === "toggle-sound") {
+      },
+      "toggle-sound": (dataset) => {
         state.soundEnabled = !state.soundEnabled;
         state.settings.musicEnabled = state.soundEnabled;
         state.settings.sfxEnabled = state.soundEnabled;
@@ -7251,7 +7385,8 @@
         showToast(state.soundEnabled ? "\u97F3\u6548\u5DF2\u5F00\u542F" : "\u97F3\u6548\u5DF2\u5173\u95ED");
         if (state.screen === "title") showTitle();
         else openSettings();
-      } else if (action === "toggle-music") {
+      },
+      "toggle-music": (dataset) => {
         state.settings.musicEnabled = !state.settings.musicEnabled;
         save();
         if (state.settings.musicEnabled) {
@@ -7262,78 +7397,97 @@
         }
         sfx("switch");
         openSettings();
-      } else if (action === "toggle-sfx") {
+      },
+      "toggle-sfx": (dataset) => {
         state.settings.sfxEnabled = !state.settings.sfxEnabled;
         save();
         sfx("switch");
         openSettings();
-      } else if (action === "music-down") {
+      },
+      "music-down": (dataset) => {
         state.settings.musicVolume = Math.max(0, Math.round((state.settings.musicVolume - 0.1) * 10) / 10);
         save();
         playZoneBgm(state.zone || "gold_field");
         sfx("click");
         openSettings();
-      } else if (action === "music-up") {
+      },
+      "music-up": (dataset) => {
         state.settings.musicVolume = Math.min(1, Math.round((state.settings.musicVolume + 0.1) * 10) / 10);
         save();
         playZoneBgm(state.zone || "gold_field");
         sfx("click");
         openSettings();
-      } else if (action === "sfx-down") {
+      },
+      "sfx-down": (dataset) => {
         state.settings.sfxVolume = Math.max(0, Math.round((state.settings.sfxVolume - 0.1) * 10) / 10);
         save();
         sfx("click");
         openSettings();
-      } else if (action === "sfx-up") {
+      },
+      "sfx-up": (dataset) => {
         state.settings.sfxVolume = Math.min(1, Math.round((state.settings.sfxVolume + 0.1) * 10) / 10);
         save();
         sfx("click");
         openSettings();
-      } else if (action === "preview-bgm") {
+      },
+      "preview-bgm": (dataset) => {
         playZoneBgm(state.zone || "gold_field");
         showToast("\u6B63\u5728\u64AD\u653E\u5F53\u524D\u533A\u57DF BGM");
         openSettings();
-      } else if (action === "test-sfx") {
+      },
+      "test-sfx": (dataset) => {
         sfx("hit");
         sfx("correct");
         showToast("\u97F3\u6548\u6D4B\u8BD5");
         openSettings();
-      } else if (action === "toggle-shake") {
+      },
+      "toggle-shake": (dataset) => {
         state.settings.shake = state.settings.shake === false;
         save();
         showToast(state.settings.shake ? "\u5C4F\u5E55\u9707\u52A8\u5DF2\u5F00\u542F" : "\u5C4F\u5E55\u9707\u52A8\u5DF2\u5173\u95ED");
         openSettings();
-      } else if (action === "volume-down") {
+      },
+      "volume-down": (dataset) => {
         state.settings.volume = Math.max(0, Math.round((state.settings.volume - 0.1) * 10) / 10);
         save();
         sfx("click");
         openSettings();
-      } else if (action === "volume-up") {
+      },
+      "volume-up": (dataset) => {
         state.settings.volume = Math.min(1, Math.round((state.settings.volume + 0.1) * 10) / 10);
         save();
         sfx("click");
         openSettings();
-      } else if (action === "settings") {
+      },
+      "settings": (dataset) => {
         openSettings();
-      } else if (action === "settings-back") {
+      },
+      "settings-back": (dataset) => {
         openSettings();
-      } else if (action === "challenge") {
+      },
+      "challenge": (dataset) => {
         openChallengeSetup();
-      } else if (action === "challenge-start") {
+      },
+      "challenge-start": (dataset) => {
         startChallenge(dataset.mode);
-      } else if (action === "plan") {
+      },
+      "plan": (dataset) => {
         openPlan();
-      } else if (action === "point-map") {
+      },
+      "point-map": (dataset) => {
         openPointMap();
-      } else if (action === "point-quiz") {
+      },
+      "point-quiz": (dataset) => {
         const q = getQuestionsByPoint(dataset.point, 1)[0];
         if (q) {
           state.quiz = { q, callback: () => showToast("\u8003\u70B9\u590D\u4E60\u5B8C\u6210\uFF1A" + dataset.point) };
           openQuiz(q);
         }
-      } else if (action === "weekly-report") {
+      },
+      "weekly-report": (dataset) => {
         openWeeklyReport();
-      } else if (action === "download-weekly") {
+      },
+      "download-weekly": (dataset) => {
         const canvas2 = document.getElementById("weeklyCanvas");
         if (!canvas2) return;
         const a = document.createElement("a");
@@ -7341,7 +7495,8 @@
         a.download = "cpa_rpg_weekly_report.png";
         a.click();
         showToast("\u5B66\u4E60\u5468\u62A5\u5DF2\u4E0B\u8F7D");
-      } else if (action === "share-weekly") {
+      },
+      "share-weekly": (dataset) => {
         const week = state.week;
         const acc = week.answered ? Math.round(week.correct / week.answered * 100) : 0;
         const subjects = Object.entries(week.subjects || {}).sort((a, b) => b[1] - a[1]);
@@ -7356,13 +7511,15 @@
         } else {
           showToast("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u81EA\u52A8\u590D\u5236");
         }
-      } else if (action === "plan-target") {
+      },
+      "plan-target": (dataset) => {
         state.plan.dailyTarget = Number(dataset.target) || 5;
         state.daily.target = state.plan.dailyTarget;
         save();
         sfx("click");
         openPlan();
-      } else if (action === "plan-subject") {
+      },
+      "plan-subject": (dataset) => {
         if (dataset.subject === "__all") {
           state.plan.subjects = [];
         } else if (state.plan.subjects.includes(dataset.subject)) {
@@ -7373,24 +7530,32 @@
         save();
         sfx("click");
         openPlan();
-      } else if (action === "review-question") {
+      },
+      "review-question": (dataset) => {
         const q = QUESTIONS.find((item) => item.id === Number(dataset.id));
         if (q) {
           state.quiz = { q, callback: () => showToast("\u590D\u4E60\u5B8C\u6210\uFF0C\u7EE7\u7EED\u5DE9\u56FA") };
           openQuiz(q);
         }
-      } else if (action === "tutorial") {
+      },
+      "tutorial": (dataset) => {
         openTutorial();
-      } else if (action === "story-next") {
+      },
+      "story-next": (dataset) => {
         storyNext();
-      } else if (action === "deliver-task") {
+      },
+      "deliver-task": (dataset) => {
         deliverTask(dataset.task);
-      } else if (action === "npc-return") {
+      },
+      "npc-return": (dataset) => {
         const npc = getActiveEntities().find((e) => e.id === dataset.npc);
         if (npc) openNpcDialog(npc);
-      } else if (action === "export-save") {
+      },
+      "export-save": (dataset) => {
         openExportSave();
-      } else if (action === "copy-save") {
+      },
+      "copy-save": (dataset) => {
+        var _a;
         const text = (_a = document.getElementById("saveExportText")) == null ? void 0 : _a.value;
         if (!text) return;
         if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -7401,8 +7566,10 @@
           document.execCommand("copy");
           showToast("\u5B58\u6863\u5DF2\u590D\u5236");
         }
-      } else if (action === "download-save") {
-        const text = (_b = document.getElementById("saveExportText")) == null ? void 0 : _b.value;
+      },
+      "download-save": (dataset) => {
+        var _a;
+        const text = (_a = document.getElementById("saveExportText")) == null ? void 0 : _a.value;
         if (!text) return;
         const blob = new Blob([text], { type: "application/json" });
         const a = document.createElement("a");
@@ -7411,10 +7578,13 @@
         a.click();
         URL.revokeObjectURL(a.href);
         showToast("\u5B58\u6863\u5DF2\u4E0B\u8F7D");
-      } else if (action === "import-save") {
+      },
+      "import-save": (dataset) => {
         openImportSave();
-      } else if (action === "import-save-confirm") {
-        const raw = (_c = document.getElementById("saveImportText")) == null ? void 0 : _c.value.trim();
+      },
+      "import-save-confirm": (dataset) => {
+        var _a;
+        const raw = (_a = document.getElementById("saveImportText")) == null ? void 0 : _a.value.trim();
         if (!raw) {
           showToast("\u8BF7\u5148\u7C98\u8D34\u5B58\u6863\u6570\u636E");
           return;
@@ -7428,10 +7598,15 @@
         } catch (e) {
           showToast("\u5BFC\u5165\u5931\u8D25\uFF1A\u5B58\u6863\u683C\u5F0F\u4E0D\u6B63\u786E");
         }
-      } else if (action === "reset") {
+      },
+      "reset": (dataset) => {
         resetSave();
         showTitle();
       }
+    };
+    function handleAction(action, dataset) {
+      const handler = ACTION_HANDLERS[action];
+      if (handler) return handler(dataset);
     }
     const eventDispatcher = createEventDispatcher({
       window,
