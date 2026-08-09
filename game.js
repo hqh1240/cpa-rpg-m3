@@ -505,12 +505,12 @@
     { id: 642, point: "\u4F01\u4E1A\u6240\u5F97\u7A0E", q: "\u4F01\u4E1A\u6240\u5F97\u7A0E\u7A0E\u524D\u9650\u989D\u6263\u9664\u9879\u76EE\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u804C\u5DE5\u798F\u5229\u8D39", "\u5DE5\u4F1A\u7ECF\u8D39", "\u804C\u5DE5\u6559\u80B2\u7ECF\u8D39", "\u516C\u76CA\u6027\u6350\u8D60"], answer: [0, 1, 2, 3], explain: "\u804C\u5DE5\u798F\u5229\u8D39\u3001\u5DE5\u4F1A\u7ECF\u8D39\u3001\u804C\u5DE5\u6559\u80B2\u7ECF\u8D39\u548C\u516C\u76CA\u6027\u6350\u8D60\u5747\u6709\u7A0E\u524D\u6263\u9664\u9650\u989D\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 643, point: "\u4E2A\u4EBA\u6240\u5F97\u7A0E", q: "\u5C45\u6C11\u4E2A\u4EBA\u7EFC\u5408\u6240\u5F97\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u5DE5\u8D44\u85AA\u91D1\u6240\u5F97", "\u52B3\u52A1\u62A5\u916C\u6240\u5F97", "\u7A3F\u916C\u6240\u5F97", "\u7279\u8BB8\u6743\u4F7F\u7528\u8D39\u6240\u5F97"], answer: [0, 1, 2, 3], explain: "\u7EFC\u5408\u6240\u5F97\u5305\u62EC\u5DE5\u8D44\u85AA\u91D1\u3001\u52B3\u52A1\u62A5\u916C\u3001\u7A3F\u916C\u548C\u7279\u8BB8\u6743\u4F7F\u7528\u8D39\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 644, point: "\u4E2A\u4EBA\u6240\u5F97\u7A0E", q: "\u4E2A\u4EBA\u6240\u5F97\u7A0E\u4E13\u9879\u9644\u52A0\u6263\u9664\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u5B50\u5973\u6559\u80B2", "\u7EE7\u7EED\u6559\u80B2", "\u4F4F\u623F\u8D37\u6B3E\u5229\u606F", "\u8D61\u517B\u8001\u4EBA"], answer: [0, 1, 2, 3], explain: "\u4E13\u9879\u9644\u52A0\u6263\u9664\u5305\u62EC\u5B50\u5973\u6559\u80B2\u3001\u7EE7\u7EED\u6559\u80B2\u3001\u5927\u75C5\u533B\u7597\u3001\u4F4F\u623F\u8D37\u6B3E\u5229\u606F\u3001\u4F4F\u623F\u79DF\u91D1\u3001\u8D61\u517B\u8001\u4EBA\u548C\u5A74\u5E7C\u513F\u7167\u62A4\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
-    { id: 645, point: "\u5370\u82B1\u7A0E", q: "\u5370\u82B1\u7A0E\u5F81\u7A0E\u8303\u56F4\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u5E94\u7A0E\u5408\u540C", "\u4EA7\u6743\u8F6C\u79FB\u4E66\u636E", "\u8425\u4E1A\u8D26\u7C3F", "\u6743\u5229\u8BB8\u53EF\u8BC1\u7167"], answer: [0, 1, 2, 3], explain: "\u5370\u82B1\u7A0E\u5F81\u7A0E\u8303\u56F4\u5305\u62EC\u5408\u540C\u3001\u4EA7\u6743\u8F6C\u79FB\u4E66\u636E\u3001\u8425\u4E1A\u8D26\u7C3F\u548C\u6743\u5229\u8BB8\u53EF\u8BC1\u7167\u7B49\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
+    { id: 645, point: "\u5370\u82B1\u7A0E", q: "\u73B0\u884C\u5370\u82B1\u7A0E\u5F81\u7A0E\u8303\u56F4\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u5E94\u7A0E\u5408\u540C", "\u4EA7\u6743\u8F6C\u79FB\u4E66\u636E", "\u8425\u4E1A\u8D26\u7C3F", "\u6743\u5229\u8BB8\u53EF\u8BC1\u7167"], answer: [0, 1, 2], explain: "\u73B0\u884C\u5370\u82B1\u7A0E\u5F81\u7A0E\u8303\u56F4\u5305\u62EC\u5408\u540C\u3001\u4EA7\u6743\u8F6C\u79FB\u4E66\u636E\u3001\u8425\u4E1A\u8D26\u7C3F\u548C\u8BC1\u5238\u4EA4\u6613\uFF1B\u6743\u5229\u8BB8\u53EF\u8BC1\u7167\u5DF2\u4E0D\u518D\u5F81\u6536\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 646, point: "\u7A0E\u6536\u5F81\u7BA1", q: "\u7A0E\u52A1\u673A\u5173\u5B9E\u65BD\u7A0E\u6536\u4FDD\u5168\u65F6\uFF0C\u53EF\u4EE5\u8D23\u4EE4\u7EB3\u7A0E\u4EBA\u63D0\u4F9B\u7684\u62C5\u4FDD\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u7EB3\u7A0E\u62C5\u4FDD", "\u884C\u653F\u62D8\u7559", "\u62B5\u62BC", "\u4FDD\u8BC1"], answer: [0, 2, 3], explain: "\u7EB3\u7A0E\u62C5\u4FDD\u53EF\u4EE5\u91C7\u53D6\u4FDD\u8BC1\u3001\u62B5\u62BC\u6216\u8D28\u62BC\u7B49\u65B9\u5F0F\uFF1B\u884C\u653F\u62D8\u7559\u4E0D\u662F\u7EB3\u7A0E\u62C5\u4FDD\u3002", subject: "\u7A0E\u6CD5", difficulty: "expert", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 647, point: "\u7A0E\u6536\u5F81\u7BA1", q: "\u7A0E\u6536\u5F3A\u5236\u6267\u884C\u63AA\u65BD\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u6263\u7F34\u7A0E\u6B3E", "\u62CD\u5356\u53D8\u5356\u8D22\u4EA7", "\u51BB\u7ED3\u5B58\u6B3E", "\u8D23\u4EE4\u63D0\u4F9B\u62C5\u4FDD"], answer: [0, 1], explain: "\u5F3A\u5236\u6267\u884C\u5305\u62EC\u6263\u7F34\u7A0E\u6B3E\u3001\u62CD\u5356\u53D8\u5356\u8D22\u4EA7\uFF1B\u51BB\u7ED3\u5B58\u6B3E\u548C\u8D23\u4EE4\u62C5\u4FDD\u5C5E\u4E8E\u4FDD\u5168\u63AA\u65BD\u3002", subject: "\u7A0E\u6CD5", difficulty: "expert", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
-    { id: 648, point: "\u571F\u5730\u589E\u503C\u7A0E", q: "\u623F\u5730\u4EA7\u5F00\u53D1\u4F01\u4E1A\u9500\u552E\u65B0\u5EFA\u623F\u65F6\uFF0C\u53EF\u4EAB\u53D7\u571F\u5730\u589E\u503C\u7A0E\u52A0\u8BA1\u6263\u9664\u7684\u60C5\u5F62\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u6309\u53D6\u5F97\u571F\u5730\u4F7F\u7528\u6743\u652F\u4ED8\u7684\u91D1\u989D", "\u6309\u623F\u5730\u4EA7\u5F00\u53D1\u6210\u672C", "\u9500\u552E\u65B0\u5EFA\u623F", "\u4E2A\u4EBA\u8F6C\u8BA9\u4F4F\u623F"], answer: [0, 1, 2], explain: "\u623F\u5730\u4EA7\u5F00\u53D1\u4F01\u4E1A\u9500\u552E\u65B0\u5EFA\u623F\u65F6\uFF0C\u53EF\u6309\u53D6\u5F97\u571F\u5730\u548C\u5F00\u53D1\u6210\u672C\u4E4B\u548C\u768420%\u52A0\u8BA1\u6263\u9664\uFF1B\u4E2A\u4EBA\u8F6C\u8BA9\u4F4F\u623F\u901A\u5E38\u4E0D\u9002\u7528\u3002", subject: "\u7A0E\u6CD5", difficulty: "expert", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
+    { id: 648, point: "\u571F\u5730\u589E\u503C\u7A0E", q: "\u623F\u5730\u4EA7\u5F00\u53D1\u4F01\u4E1A\u9500\u552E\u65B0\u5EFA\u623F\u65F6\uFF0C\u571F\u5730\u589E\u503C\u7A0E\u52A0\u8BA1\u6263\u9664\u7684\u8BA1\u7B97\u57FA\u7840\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u53D6\u5F97\u571F\u5730\u4F7F\u7528\u6743\u652F\u4ED8\u7684\u91D1\u989D", "\u623F\u5730\u4EA7\u5F00\u53D1\u6210\u672C", "\u623F\u5730\u4EA7\u5F00\u53D1\u8D39\u7528", "\u4E2A\u4EBA\u8F6C\u8BA9\u4F4F\u623F"], answer: [0, 1], explain: "\u623F\u5730\u4EA7\u5F00\u53D1\u4F01\u4E1A\u9500\u552E\u65B0\u5EFA\u623F\u65F6\uFF0C\u53EF\u6309\u53D6\u5F97\u571F\u5730\u4F7F\u7528\u6743\u652F\u4ED8\u7684\u91D1\u989D\u548C\u623F\u5730\u4EA7\u5F00\u53D1\u6210\u672C\u4E4B\u548C\u768420%\u52A0\u8BA1\u6263\u9664\u3002", subject: "\u7A0E\u6CD5", difficulty: "expert", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 649, point: "\u6D88\u8D39\u7A0E", q: "\u6D88\u8D39\u7A0E\u5E94\u7A0E\u6D88\u8D39\u54C1\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u70DF", "\u9152", "\u9AD8\u6863\u5316\u5986\u54C1", "\u5C0F\u6C7D\u8F66"], answer: [0, 1, 2, 3], explain: "\u70DF\u3001\u9152\u3001\u9AD8\u6863\u5316\u5986\u54C1\u548C\u5C0F\u6C7D\u8F66\u5747\u5C5E\u4E8E\u6D88\u8D39\u7A0E\u5E94\u7A0E\u6D88\u8D39\u54C1\u3002", subject: "\u7A0E\u6CD5", difficulty: "basic", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
-    { id: 650, point: "\u7A0E\u6536\u6CD5\u5F8B\u5173\u7CFB", q: "\u7A0E\u6536\u6CD5\u5F8B\u5173\u7CFB\u8981\u7D20\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u5F81\u7A0E\u4E3B\u4F53", "\u7EB3\u7A0E\u4E3B\u4F53", "\u5F81\u7A0E\u5BF9\u8C61", "\u7A0E\u7387"], answer: [0, 1, 2, 3], explain: "\u7A0E\u6536\u6CD5\u5F8B\u5173\u7CFB\u7531\u4E3B\u4F53\u3001\u5185\u5BB9\u548C\u5BA2\u4F53\u6784\u6210\uFF0C\u5F81\u7A0E\u5BF9\u8C61\u548C\u7A0E\u7387\u5C5E\u4E8E\u7A0E\u6CD5\u8981\u7D20\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
+    { id: 650, point: "\u7A0E\u6536\u6CD5\u5F8B\u5173\u7CFB", q: "\u7A0E\u6536\u6CD5\u5F8B\u5173\u7CFB\u7531\uFF08\u3000\uFF09\u6784\u6210\u3002", options: ["\u4E3B\u4F53", "\u5185\u5BB9", "\u5BA2\u4F53", "\u7A0E\u7387"], answer: [0, 1, 2], explain: "\u7A0E\u6536\u6CD5\u5F8B\u5173\u7CFB\u7531\u4E3B\u4F53\u3001\u5185\u5BB9\u548C\u5BA2\u4F53\u4E09\u8981\u7D20\u6784\u6210\uFF1B\u7A0E\u7387\u5C5E\u4E8E\u7A0E\u6CD5\u8981\u7D20\uFF0C\u4E0D\u662F\u6CD5\u5F8B\u5173\u7CFB\u6784\u6210\u8981\u7D20\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 651, point: "\u6C11\u6CD5\u57FA\u7840", q: "\u6CD5\u4EBA\u7C7B\u578B\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u8425\u5229\u6CD5\u4EBA", "\u975E\u8425\u5229\u6CD5\u4EBA", "\u7279\u522B\u6CD5\u4EBA", "\u975E\u6CD5\u4EBA\u7EC4\u7EC7"], answer: [0, 1, 2], explain: "\u6CD5\u4EBA\u5305\u62EC\u8425\u5229\u6CD5\u4EBA\u3001\u975E\u8425\u5229\u6CD5\u4EBA\u548C\u7279\u522B\u6CD5\u4EBA\uFF1B\u975E\u6CD5\u4EBA\u7EC4\u7EC7\u4E0D\u662F\u6CD5\u4EBA\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 652, point: "\u516C\u53F8\u6CD5", q: "\u6709\u9650\u8D23\u4EFB\u516C\u53F8\u80A1\u4E1C\u4F1A\u7279\u522B\u51B3\u8BAE\u4E8B\u9879\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u4FEE\u6539\u516C\u53F8\u7AE0\u7A0B", "\u589E\u52A0\u6CE8\u518C\u8D44\u672C", "\u51CF\u5C11\u6CE8\u518C\u8D44\u672C", "\u516C\u53F8\u5408\u5E76\u5206\u7ACB\u89E3\u6563"], answer: [0, 1, 2, 3], explain: "\u4FEE\u6539\u7AE0\u7A0B\u3001\u589E\u51CF\u6CE8\u518C\u8D44\u672C\u3001\u5408\u5E76\u5206\u7ACB\u89E3\u6563\u7B49\u5C5E\u4E8E\u80A1\u4E1C\u4F1A\u7279\u522B\u51B3\u8BAE\u4E8B\u9879\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 653, point: "\u516C\u53F8\u6CBB\u7406", q: "\u6709\u9650\u8D23\u4EFB\u516C\u53F8\u8463\u4E8B\u4F1A\u804C\u6743\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u8058\u4EFB\u6216\u89E3\u8058\u7ECF\u7406", "\u51B3\u5B9A\u5185\u90E8\u7BA1\u7406\u673A\u6784\u8BBE\u7F6E", "\u5236\u5B9A\u516C\u53F8\u57FA\u672C\u7BA1\u7406\u5236\u5EA6", "\u4FEE\u6539\u516C\u53F8\u7AE0\u7A0B"], answer: [0, 1, 2], explain: "\u8463\u4E8B\u4F1A\u8D1F\u8D23\u8058\u4EFB\u7ECF\u7406\u3001\u51B3\u5B9A\u5185\u90E8\u673A\u6784\u8BBE\u7F6E\u548C\u5236\u5B9A\u57FA\u672C\u7BA1\u7406\u5236\u5EA6\uFF1B\u4FEE\u6539\u7AE0\u7A0B\u5C5E\u4E8E\u80A1\u4E1C\u4F1A\u804C\u6743\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
@@ -526,7 +526,7 @@
     { id: 663, point: "\u5408\u4F19\u4F01\u4E1A\u6CD5", q: "\u5408\u4F19\u4F01\u4E1A\u7C7B\u578B\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u666E\u901A\u5408\u4F19\u4F01\u4E1A", "\u6709\u9650\u5408\u4F19\u4F01\u4E1A", "\u6709\u9650\u8D23\u4EFB\u516C\u53F8", "\u80A1\u4EFD\u6709\u9650\u516C\u53F8"], answer: [0, 1], explain: "\u5408\u4F19\u4F01\u4E1A\u5206\u4E3A\u666E\u901A\u5408\u4F19\u4F01\u4E1A\u548C\u6709\u9650\u5408\u4F19\u4F01\u4E1A\uFF1B\u516C\u53F8\u548C\u5408\u4F19\u4F01\u4E1A\u662F\u4E0D\u540C\u4F01\u4E1A\u5F62\u6001\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 664, point: "\u62C5\u4FDD\u6CD5\u5F8B\u5236\u5EA6", q: "\u5408\u540C\u62C5\u4FDD\u65B9\u5F0F\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u4FDD\u8BC1", "\u62B5\u62BC", "\u8D28\u62BC", "\u5B9A\u91D1"], answer: [0, 1, 2, 3], explain: "\u62C5\u4FDD\u65B9\u5F0F\u5305\u62EC\u4FDD\u8BC1\u3001\u62B5\u62BC\u3001\u8D28\u62BC\u3001\u7559\u7F6E\u548C\u5B9A\u91D1\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 665, point: "\u516C\u53F8\u6218\u7565\u7C7B\u578B", q: "\u516C\u53F8\u6218\u7565\u5C42\u6B21\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u603B\u4F53\u6218\u7565", "\u4E1A\u52A1\u5355\u4F4D\u6218\u7565", "\u804C\u80FD\u6218\u7565", "\u8D22\u52A1\u6218\u7565"], answer: [0, 1, 2], explain: "\u516C\u53F8\u6218\u7565\u5C42\u6B21\u5305\u62EC\u603B\u4F53\u6218\u7565\u3001\u4E1A\u52A1\u5355\u4F4D\u6218\u7565\u548C\u804C\u80FD\u6218\u7565\uFF1B\u8D22\u52A1\u6218\u7565\u5C5E\u4E8E\u804C\u80FD\u6218\u7565\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
-    { id: 666, point: "\u516C\u53F8\u6218\u7565\u7C7B\u578B", q: "\u4E00\u4F53\u5316\u6218\u7565\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u7EB5\u5411\u4E00\u4F53\u5316", "\u6A2A\u5411\u4E00\u4F53\u5316", "\u6DF7\u5408\u4E00\u4F53\u5316", "\u591A\u5143\u5316"], answer: [0, 1, 2], explain: "\u4E00\u4F53\u5316\u6218\u7565\u5305\u62EC\u7EB5\u5411\u4E00\u4F53\u5316\u3001\u6A2A\u5411\u4E00\u4F53\u5316\u548C\u6DF7\u5408\u4E00\u4F53\u5316\uFF1B\u591A\u5143\u5316\u4E0D\u662F\u4E00\u4F53\u5316\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
+    { id: 666, point: "\u516C\u53F8\u6218\u7565\u7C7B\u578B", q: "\u4E00\u4F53\u5316\u6218\u7565\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u524D\u5411\u4E00\u4F53\u5316", "\u540E\u5411\u4E00\u4F53\u5316", "\u6A2A\u5411\u4E00\u4F53\u5316", "\u591A\u5143\u5316"], answer: [0, 1, 2], explain: "\u7EB5\u5411\u4E00\u4F53\u5316\u53EF\u8FDB\u4E00\u6B65\u5206\u4E3A\u524D\u5411\u4E00\u4F53\u5316\u548C\u540E\u5411\u4E00\u4F53\u5316\uFF1B\u6A2A\u5411\u4E00\u4F53\u5316\u6307\u5E76\u8D2D\u540C\u884C\u4E1A\u7ADE\u4E89\u8005\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 667, point: "\u4E94\u529B\u6A21\u578B", q: "\u6CE2\u7279\u4E94\u529B\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u73B0\u6709\u7ADE\u4E89\u8005", "\u6F5C\u5728\u8FDB\u5165\u8005", "\u66FF\u4EE3\u54C1", "\u4F9B\u5E94\u5546\u8BAE\u4EF7\u80FD\u529B"], answer: [0, 1, 2, 3], explain: "\u4E94\u529B\u5305\u62EC\u73B0\u6709\u7ADE\u4E89\u3001\u6F5C\u5728\u8FDB\u5165\u8005\u3001\u66FF\u4EE3\u54C1\u3001\u4F9B\u5E94\u5546\u548C\u8D2D\u4E70\u8005\u8BAE\u4EF7\u80FD\u529B\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 668, point: "\u4EF7\u503C\u94FE", q: "\u4EF7\u503C\u94FE\u57FA\u672C\u6D3B\u52A8\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u5185\u90E8\u540E\u52E4", "\u751F\u4EA7\u8FD0\u8425", "\u5916\u90E8\u540E\u52E4", "\u5E02\u573A\u9500\u552E"], answer: [0, 1, 2, 3], explain: "\u57FA\u672C\u6D3B\u52A8\u5305\u62EC\u5185\u90E8\u540E\u52E4\u3001\u751F\u4EA7\u8FD0\u8425\u3001\u5916\u90E8\u540E\u52E4\u3001\u5E02\u573A\u9500\u552E\u548C\u670D\u52A1\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 669, point: "\u4EF7\u503C\u94FE", q: "\u4EF7\u503C\u94FE\u652F\u6301\u6D3B\u52A8\u5305\u62EC\uFF08\u3000\uFF09\u3002", options: ["\u91C7\u8D2D", "\u6280\u672F\u5F00\u53D1", "\u4EBA\u529B\u8D44\u6E90\u7BA1\u7406", "\u4F01\u4E1A\u57FA\u7840\u8BBE\u65BD"], answer: [0, 1, 2, 3], explain: "\u652F\u6301\u6D3B\u52A8\u5305\u62EC\u91C7\u8D2D\u3001\u6280\u672F\u5F00\u53D1\u3001\u4EBA\u529B\u8D44\u6E90\u7BA1\u7406\u548C\u4F01\u4E1A\u57FA\u7840\u8BBE\u65BD\u3002", subject: "\u6218\u7565", difficulty: "advanced", type: "multiple", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
@@ -563,7 +563,7 @@
     { id: 700, point: "\u623F\u4EA7\u7A0E", q: "\u4E2A\u4EBA\u51FA\u79DF\u4F4F\u623F\uFF0C\u623F\u4EA7\u7A0E\u4ECE\u79DF\u8BA1\u5F81\u7A0E\u7387\u901A\u5E38\u4E3A\uFF08\u3000\uFF09%\u3002", options: [], answer: "4", numeric: true, tolerance: 0.01, explain: "\u4E2A\u4EBA\u51FA\u79DF\u4F4F\u623F\u63094%\u5F81\u6536\u623F\u4EA7\u7A0E\u3002", subject: "\u7A0E\u6CD5", difficulty: "advanced", type: "fill", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 701, point: "\u516C\u53F8\u6CBB\u7406", q: "\u73B0\u884C\u516C\u53F8\u6CD5\u4E0B\uFF0C\u6709\u9650\u8D23\u4EFB\u516C\u53F8\u8463\u4E8B\u4F1A\u6210\u5458\u4EBA\u6570\u81F3\u5C11\u4E3A\uFF08\u3000\uFF09\u4EBA\u3002", options: [], answer: "3", numeric: true, tolerance: 0.01, explain: "\u73B0\u884C\u516C\u53F8\u6CD5\u8981\u6C42\u6709\u9650\u8D23\u4EFB\u516C\u53F8\u8463\u4E8B\u4F1A\u6210\u5458\u4E09\u4EBA\u4EE5\u4E0A\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "fill", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 702, point: "\u5408\u4F19\u4F01\u4E1A\u6CD5", q: "\u666E\u901A\u5408\u4F19\u4EBA\u5BF9\u5408\u4F19\u4F01\u4E1A\u503A\u52A1\u627F\u62C5\uFF08\u3000\uFF09\u8D23\u4EFB\u3002", options: [], answer: "\u65E0\u9650\u8FDE\u5E26", accept: ["\u65E0\u9650\u8FDE\u5E26\u8D23\u4EFB"], explain: "\u666E\u901A\u5408\u4F19\u4EBA\u5BF9\u5408\u4F19\u4F01\u4E1A\u503A\u52A1\u627F\u62C5\u65E0\u9650\u8FDE\u5E26\u8D23\u4EFB\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "fill", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
-    { id: 703, point: "\u7269\u6743\u6CD5", q: "\u4E0D\u52A8\u4EA7\u62B5\u62BC\u6743\u901A\u5E38\u81EA\uFF08\u3000\uFF09\u65F6\u8BBE\u7ACB\u3002", options: [], answer: "\u767B\u8BB0", explain: "\u4E0D\u52A8\u4EA7\u62B5\u62BC\u6743\u4EE5\u767B\u8BB0\u4E3A\u8BBE\u7ACB\u8981\u4EF6\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "fill", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
+    { id: 703, point: "\u7269\u6743\u6CD5", q: "\u52A8\u4EA7\u7269\u6743\u4E00\u822C\u81EA\uFF08\u3000\uFF09\u65F6\u53D1\u751F\u53D8\u52A8\u3002", options: [], answer: "\u4EA4\u4ED8", accept: ["\u4EA4\u4ED8\u65F6"], explain: "\u52A8\u4EA7\u7269\u6743\u53D8\u52A8\u4E00\u822C\u4EE5\u4EA4\u4ED8\u4E3A\u516C\u793A\u65B9\u5F0F\uFF0C\u6CD5\u5F8B\u53E6\u6709\u89C4\u5B9A\u9664\u5916\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "advanced", type: "fill", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 704, point: "\u8BC1\u5238\u6CD5", q: "\u6211\u56FD\u8BC1\u5238\u516C\u5F00\u53D1\u884C\u5B9E\u884C\uFF08\u3000\uFF09\u5236\u3002", options: [], answer: "\u6CE8\u518C", explain: "\u516C\u5F00\u53D1\u884C\u8BC1\u5238\u5B9E\u884C\u6CE8\u518C\u5236\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "fill", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 705, point: "\u7968\u636E\u6CD5", q: "\u6C47\u7968\u4ED8\u6B3E\u8BF7\u6C42\u6743\u901A\u5E38\u5411\uFF08\u3000\uFF09\u884C\u4F7F\u3002", options: [], answer: "\u4ED8\u6B3E\u4EBA", accept: ["\u627F\u5151\u4EBA"], explain: "\u6C47\u7968\u7684\u4ED8\u6B3E\u8BF7\u6C42\u6743\u901A\u5E38\u5411\u4ED8\u6B3E\u4EBA\u6216\u627F\u5151\u4EBA\u884C\u4F7F\u3002", subject: "\u7ECF\u6D4E\u6CD5", difficulty: "basic", type: "fill", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
     { id: 706, point: "SWOT", q: "SWOT\u5206\u6790\u4E2D\uFF0CW\u4EE3\u8868\uFF08\u3000\uFF09\u3002", options: [], answer: "\u52A3\u52BF", explain: "W=Weaknesses\uFF0C\u4EE3\u8868\u52A3\u52BF\u3002", subject: "\u6218\u7565", difficulty: "basic", type: "fill", year: "2026", source: "CPA Pro \u8865\u5145\u5377" },
@@ -730,9 +730,6 @@
     const shuffled = [...source].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, Math.max(1, count));
   }
-  function getRandomQuestions(count) {
-    return [...QUESTIONS].sort(() => Math.random() - 0.5).slice(0, Math.max(1, count));
-  }
   var QUESTIONS = [
     ...QUESTIONS_BASE,
     ...QUESTIONS_EXTRA,
@@ -743,11 +740,31 @@
     ...QUESTIONS_M7
   ];
   var POINTS = [...new Set(QUESTIONS.map((q) => q.point))];
+  function inferQuestionDifficulty(q) {
+    const text = String(q.point) + String(q.q);
+    if (/合并报表|每股收益|企业价值|土地增值税|破产|证券|并购|平衡计分卡|波士顿/.test(text)) return "expert";
+    if (/凭证|账簿|会计等式|借贷方向|科目分类|试算平衡|审计目标|审计证据|货币时间价值|风险与报酬|增值税|公司法|合同法|票据法|SWOT|五力|价值链/.test(
+      text
+    ))
+      return "basic";
+    return "advanced";
+  }
+  for (const q of QUESTIONS) {
+    if (!q.difficulty) q.difficulty = inferQuestionDifficulty(q);
+  }
+  function getRandomQuestions(count) {
+    const arr = [...QUESTIONS];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr.slice(0, Math.max(1, count));
+  }
   Object.assign(globalThis, { QUESTIONS, POINTS, getQuestionsByPoint, getRandomQuestions });
 
   // src/core/config.js
   var GAME_VERSION = "0.10.0";
-  var BUILD_LABEL = "M3 \u9898\u5E93\u4E0E\u5B66\u4E60\u5347\u7EA7 \xB7 2026-08-08";
+  var BUILD_LABEL = "M3 \u9898\u5E93\u4E0E\u5B66\u4E60\u5347\u7EA7 \xB7 2026-08-09";
   var SAVE_KEY = "cpa_rpg_m3_save_v1";
   var SYSTEM_UNLOCK_LEVELS = {
     skill: 3,
@@ -849,6 +866,8 @@
         battle: void 0,
         challenge: void 0,
         dungeon: void 0,
+        jobQuiz: void 0,
+        pendingSkill: void 0,
         _lastQuizCorrect: void 0,
         _lastLearningGain: void 0,
         player: { ...state.player, moveTarget: null }
@@ -860,13 +879,114 @@
   function clearSave() {
     try {
       localStorage.removeItem(SAVE_KEY);
+      localStorage.removeItem(LEGACY_SAVE_KEY);
     } catch (e) {
     }
   }
 
   // src/systems/audio.js
-  var BGM_MAP = "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES02.ogg";
-  var BGM_BATTLE = "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES08.ogg";
+  var BGM_BATTLE = "battle";
+  var BGM_THEMES = {
+    gold_field: {
+      root: 130.81,
+      chords: [
+        [261.63, 329.63, 392],
+        [293.66, 349.23, 440],
+        [220, 261.63, 329.63],
+        [196, 246.94, 293.66]
+      ],
+      bass: [130.81, 146.83, 110, 98],
+      arp: [523.25, 659.25, 783.99, 659.25],
+      gain: 0.105,
+      stepMs: 360
+    },
+    audit_tower: {
+      root: 110,
+      chords: [
+        [220, 261.63, 329.63],
+        [196, 246.94, 293.66],
+        [174.61, 220, 261.63],
+        [185, 233.08, 277.18]
+      ],
+      bass: [110, 98, 87.31, 92.5],
+      arp: [440, 523.25, 659.25, 587.33],
+      gain: 0.09,
+      stepMs: 420
+    },
+    capital_forest: {
+      root: 98,
+      chords: [
+        [196, 246.94, 293.66],
+        [174.61, 220, 261.63],
+        [146.83, 185, 220],
+        [174.61, 220, 261.63]
+      ],
+      bass: [98, 87.31, 73.42, 87.31],
+      arp: [392, 493.88, 587.33, 493.88],
+      gain: 0.1,
+      stepMs: 400
+    },
+    tax_wasteland: {
+      root: 116.54,
+      chords: [
+        [233.08, 277.18, 349.23],
+        [207.65, 246.94, 311.13],
+        [174.61, 220, 261.63],
+        [207.65, 246.94, 311.13]
+      ],
+      bass: [116.54, 103.83, 87.31, 103.83],
+      arp: [466.16, 554.37, 698.46, 554.37],
+      gain: 0.085,
+      stepMs: 430
+    },
+    law_temple: {
+      root: 82.41,
+      chords: [
+        [164.81, 207.65, 246.94],
+        [155.56, 196, 233.08],
+        [130.81, 164.81, 196],
+        [146.83, 185, 220]
+      ],
+      bass: [82.41, 77.78, 65.41, 73.42],
+      arp: [329.63, 415.3, 493.88, 440],
+      gain: 0.085,
+      stepMs: 460
+    },
+    strategy_star: {
+      root: 87.31,
+      chords: [
+        [174.61, 220, 261.63],
+        [164.81, 207.65, 246.94],
+        [146.83, 185, 220],
+        [164.81, 207.65, 261.63]
+      ],
+      bass: [87.31, 82.41, 73.42, 82.41],
+      arp: [349.23, 440, 523.25, 493.88],
+      gain: 0.09,
+      stepMs: 420
+    },
+    battle: {
+      root: 110,
+      chords: [
+        [220, 261.63, 329.63],
+        [174.61, 220, 261.63],
+        [196, 246.94, 293.66],
+        [164.81, 207.65, 246.94]
+      ],
+      bass: [110, 87.31, 98, 82.41],
+      arp: [440, 523.25, 659.25, 587.33],
+      gain: 0.11,
+      stepMs: 320
+    }
+  };
+  var BGM_BY_ZONE = {
+    gold_field: "gold_field",
+    audit_tower: "audit_tower",
+    capital_forest: "capital_forest",
+    tax_wasteland: "tax_wasteland",
+    law_temple: "law_temple",
+    strategy_star: "strategy_star"
+  };
   var KENNEY_SFX = {
     click: "assets/audio/kenney_ui-audio/Audio/click1.ogg",
     switch: "assets/audio/kenney_ui-audio/Audio/switch1.ogg",
@@ -888,18 +1008,11 @@
     levelup: "assets/audio/kenney_music-jingles/Audio/Hit jingles/jingles_HIT00.ogg",
     win: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES00.ogg"
   };
-  var BGM_BY_ZONE = {
-    gold_field: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES02.ogg",
-    audit_tower: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES08.ogg",
-    capital_forest: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES04.ogg",
-    tax_wasteland: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES06.ogg",
-    law_temple: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES10.ogg",
-    strategy_star: "assets/audio/kenney_music-jingles/Audio/8-Bit jingles/jingles_NES12.ogg"
-  };
   var getAudioState = () => ({ soundEnabled: true, settings: {} });
   var audioCtx = null;
   var bgmTimer = null;
-  var bgmAudio = null;
+  var bgmMode = null;
+  var bgmNodes = null;
   var audioCache = {};
   function bindAudio(getState) {
     getAudioState = getState;
@@ -973,40 +1086,91 @@
       [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone(f, 0.22, "triangle", 0.04, i * 0.14));
     }
   }
-  function playBgm(src) {
+  function scheduleBgmStep(nodes, step) {
+    const ctx = nodes.ctx;
+    const theme = nodes.theme;
+    const chord = theme.chords[step % theme.chords.length];
+    const t = ctx.currentTime + 0.04;
+    chord.forEach((freq) => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.value = freq;
+      g.gain.setValueAtTime(1e-4, t);
+      g.gain.exponentialRampToValueAtTime(0.014 * theme.gain * 10, t + 0.4);
+      g.gain.exponentialRampToValueAtTime(1e-4, t + 2.8);
+      osc.connect(g);
+      g.connect(nodes.master);
+      osc.start(t);
+      osc.stop(t + 3);
+    });
+    const bassOsc = ctx.createOscillator();
+    const bassGain = ctx.createGain();
+    bassOsc.type = "sine";
+    bassOsc.frequency.value = theme.bass[step % theme.bass.length];
+    bassGain.gain.setValueAtTime(1e-4, t);
+    bassGain.gain.exponentialRampToValueAtTime(0.028 * theme.gain * 10, t + 0.18);
+    bassGain.gain.exponentialRampToValueAtTime(1e-4, t + 1.8);
+    bassOsc.connect(bassGain);
+    bassGain.connect(nodes.master);
+    bassOsc.start(t);
+    bassOsc.stop(t + 2);
+    if (step % 2 === 0) {
+      const arpOsc = ctx.createOscillator();
+      const arpGain = ctx.createGain();
+      arpOsc.type = "triangle";
+      arpOsc.frequency.value = theme.arp[Math.floor(step / 2) % theme.arp.length];
+      arpGain.gain.setValueAtTime(1e-4, t + 0.12);
+      arpGain.gain.exponentialRampToValueAtTime(0.012 * theme.gain * 10, t + 0.28);
+      arpGain.gain.exponentialRampToValueAtTime(1e-4, t + 0.9);
+      arpOsc.connect(arpGain);
+      arpGain.connect(nodes.master);
+      arpOsc.start(t + 0.12);
+      arpOsc.stop(t + 1.1);
+    }
+  }
+  function startBgm(mode) {
     const s = getAudioState();
     if (!s.soundEnabled || s.settings.musicEnabled === false) return;
-    if (bgmAudio && bgmAudio.src && bgmAudio.src.endsWith(src)) {
-      if (bgmAudio.paused) bgmAudio.play().catch(() => {
-      });
-      return;
-    }
-    stopBgm();
+    const theme = BGM_THEMES[mode] || BGM_THEMES.gold_field;
     try {
-      bgmAudio = new Audio(src);
-      bgmAudio.loop = true;
-      bgmAudio.volume = Math.max(0.08, (s.settings.volume || 0.8) * (s.settings.musicVolume || 0.5) * 0.55);
-      const promise = bgmAudio.play();
-      if (promise && promise.catch) promise.catch(() => {
-      });
+      const ctx = ensureAudio();
+      const master = ctx.createGain();
+      master.gain.value = Math.max(0.018, (s.settings.volume || 0.8) * (s.settings.musicVolume || 0.5) * theme.gain);
+      master.connect(ctx.destination);
+      bgmMode = mode;
+      bgmNodes = { ctx, master, theme, step: 0 };
+      scheduleBgmStep(bgmNodes, 0);
+      bgmTimer = setInterval(() => {
+        if (!bgmNodes) return;
+        bgmNodes.step += 1;
+        scheduleBgmStep(bgmNodes, bgmNodes.step);
+      }, theme.stepMs);
     } catch (e) {
     }
   }
+  function playBgm(mode) {
+    if (!mode) return;
+    if (bgmMode === mode && bgmNodes) return;
+    stopBgm();
+    startBgm(mode);
+  }
   function playZoneBgm(zone) {
-    playBgm(BGM_BY_ZONE[zone] || BGM_MAP);
+    playBgm(BGM_BY_ZONE[zone] || "gold_field");
   }
   function stopBgm() {
     if (bgmTimer) {
       clearInterval(bgmTimer);
       bgmTimer = null;
     }
-    if (bgmAudio) {
+    if (bgmNodes) {
       try {
-        bgmAudio.pause();
+        bgmNodes.master.disconnect();
       } catch (e) {
       }
-      bgmAudio = null;
+      bgmNodes = null;
     }
+    bgmMode = null;
   }
 
   // src/data/regionTasks.js
@@ -1283,7 +1447,8 @@
       if (q.type === "fill") {
         const targetAnswer = (_a = q.answer) != null ? _a : answer;
         if (q.numeric) {
-          const input = Number(String(selected).replace(/[^0-9.-]/g, ""));
+          const asciiInput = String(selected).replace(/[０-９]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 65248)).replace(/[，,]/g, "");
+          const input = Number(asciiInput.replace(/[^0-9.-]/g, ""));
           const target = Number(targetAnswer);
           if (!Number.isFinite(input) || !Number.isFinite(target)) return false;
           return Math.abs(input - target) <= (q.tolerance || 1e-3);
@@ -1299,8 +1464,13 @@
       return selected === answer;
     }
     function getQuizTimeLimit() {
-      const b = getState().battle;
+      const state = getState();
+      const b = state.battle;
       if (b && b.isBoss && b.bossMechanicInfo && b.bossMechanicInfo.key === "tax_boss") return 25;
+      const q = state.quiz && state.quiz.q;
+      if (!q) return 45;
+      if (q.type === "judge") return 30;
+      if (q.type === "multiple" || q.type === "fill") return 60;
       return 45;
     }
     return { getAdaptiveQuestions, shuffleQuestion, isCorrectAnswer, getQuizTimeLimit };
@@ -1308,6 +1478,7 @@
 
   // src/render/battle.js
   function createBattleUi(deps) {
+    const WEEKLY_BOSS_POINTS = ["\u4F1A\u8BA1\u7B49\u5F0F", "\u5BA1\u8BA1\u76EE\u6807", "\u8D44\u672C\u9884\u7B97", "\u589E\u503C\u7A0E", "\u5408\u540C\u6CD5", "SWOT"];
     const {
       getState,
       openModal,
@@ -1327,7 +1498,8 @@
       const hpPct = Math.max(0, Math.min(100, Math.round(b.hp / b.maxHp * 100)));
       const maxMp = state.player.maxMp + getJobBonus("mp");
       const phaseLabel = b.isBoss ? b.bossPhase === 3 ? "\u6700\u7EC8\u9636\u6BB5 \xB7 \u501F\u8D37\u5931\u8861" : b.bossPhase === 2 ? "\u9636\u6BB5 2 \xB7 " + (b.bossMechanicInfo ? b.bossMechanicInfo.name : "\u62A5\u8868\u9519\u4E71") : "\u9636\u6BB5 1" : "\u666E\u901A\u906D\u9047";
-      const weakPoint = b.isBoss && b.bossMechanicInfo && b.bossMechanicInfo.key === "final_boss" && b.finalWeakIndex !== null ? FINAL_BOSS_WEAK_POINTS[b.finalWeakIndex] : m.point;
+      const weeklyPoint = b.isWeeklyBoss ? WEEKLY_BOSS_POINTS[b.weeklySubjectIndex || 0] : null;
+      const weakPoint = weeklyPoint || (b.isBoss && b.bossMechanicInfo && b.bossMechanicInfo.key === "final_boss" && b.finalWeakIndex !== null ? FINAL_BOSS_WEAK_POINTS[b.finalWeakIndex] : m.point);
       openModal(`
       <div class="modal-box">
         <div class="battle-panel">
@@ -1411,6 +1583,7 @@
 
   // src/systems/battle.js
   function createBattleSystem(deps) {
+    const WEEKLY_BOSS_POINTS = ["\u4F1A\u8BA1\u7B49\u5F0F", "\u5BA1\u8BA1\u76EE\u6807", "\u8D44\u672C\u9884\u7B97", "\u589E\u503C\u7A0E", "\u5408\u540C\u6CD5", "SWOT"];
     const {
       getState,
       getMonsterType,
@@ -1482,6 +1655,7 @@
         phase2: false,
         phase3: false,
         bossMechanicInfo: null,
+        weeklySubjectIndex: 0,
         auditMarkActive: false,
         strategySurge: false,
         finalWeakIndex: null,
@@ -1498,6 +1672,13 @@
           playerHit: 0
         }
       };
+      if (monster.isWeeklyBoss) {
+        state.battle.bossMechanicInfo = {
+          name: "\u516D\u79D1\u8F6E\u8F6C",
+          desc: "\u6BCF\u56DE\u5408\u8F6E\u6362\u51FA\u9898\u79D1\u76EE\uFF0C\u9700\u8981\u5747\u8861\u638C\u63E1\u516D\u79D1\u77E5\u8BC6",
+          key: "weekly_boss"
+        };
+      }
       hud.classList.add("hidden");
       touchControls.classList.add("hidden");
       openBattleModal();
@@ -1537,7 +1718,7 @@
       }
       state.player.mp -= skill.mp;
       state.pendingSkill = skill;
-      const weakPoint = state.battle && state.battle.bossMechanicInfo && state.battle.bossMechanicInfo.key === "final_boss" && state.battle.finalWeakIndex !== null ? FINAL_BOSS_WEAK_POINTS[state.battle.finalWeakIndex] : skill.point;
+      const weakPoint = state.battle && state.battle.isWeeklyBoss ? WEEKLY_BOSS_POINTS[state.battle.weeklySubjectIndex || 0] : state.battle && state.battle.bossMechanicInfo && state.battle.bossMechanicInfo.key === "final_boss" && state.battle.finalWeakIndex !== null ? FINAL_BOSS_WEAK_POINTS[state.battle.finalWeakIndex] : skill.point;
       const wrongPool = state.battle && state.battle.isWrongBoss ? getWrongQuestionsForPoint(weakPoint) : [];
       const q = wrongPool[0] || getQuestionsByPoint2(weakPoint, 1)[0] || getRandomQuestions2(1)[0];
       state.quiz = {
@@ -1777,6 +1958,9 @@
       } else if (key === "wrong_boss") {
         b.wrongCharge = (b.wrongCharge || 0) + 1;
         b.feedback += "<br>\u9519\u9898\u5370\u8BB0\u51DD\u805A\uFF0C\u9B54\u50CF\u53CD\u51FB\u529B\u63D0\u5347\u3002";
+      } else if (key === "weekly_boss") {
+        b.weeklySubjectIndex = ((b.weeklySubjectIndex || 0) + 1) % WEEKLY_BOSS_POINTS.length;
+        b.feedback += `<br>\u516D\u79D1\u8F6E\u8F6C\uFF0C\u5F53\u524D\u51FA\u9898\u79D1\u76EE\uFF1A${WEEKLY_BOSS_POINTS[b.weeklySubjectIndex]}\u3002`;
       }
     }
     function endBattle(win) {
@@ -2327,7 +2511,8 @@
         if (quiz.timeLeft <= 0) {
           clearInterval(quiz.timer);
           quiz.timer = null;
-          if (!quiz.resolved) resolveAnswer(quiz.q.type === "multiple" ? [] : -1);
+          if (!quiz.resolved)
+            resolveAnswer(quiz.q.type === "fill" ? "" : quiz.q.type === "multiple" ? [] : -1);
         }
       }, 250);
     }
@@ -2387,7 +2572,7 @@
           rec.count += 1;
           const interval = REVIEW_INTERVALS[Math.min(rec.count - 1, REVIEW_INTERVALS.length - 1)];
           rec.next = Date.now() + interval * 864e5;
-          if (rec.count >= 5) {
+          if (rec.count >= 6) {
             state.wrongQuestions = state.wrongQuestions.filter((id) => id !== q.id);
             rec.mastered = true;
             unlockAchievement("wrong_zero");
@@ -3333,6 +3518,7 @@
           \u5C4F\u5E55\u9707\u52A8\uFF1A${s.shake !== false ? "\u5F00" : "\u5173"}<br>
           \u753B\u8D28\uFF1A${state.lowQuality ? "\u4F4E\uFF08\u81EA\u52A8\uFF09" : "\u9AD8\uFF08\u81EA\u52A8\uFF09"} \xB7 \u5B58\u6863\u7248\u672C\uFF1A${state.saveVersion || 3}
         </div>
+        <div class="save-hint">\u7F51\u9875\u7248\u3001PWA \u4E0E\u684C\u9762\u7248\u5B58\u6863\u4E92\u76F8\u72EC\u7ACB\uFF1B\u5207\u6362\u5E73\u53F0\u65F6\u8BF7\u4F7F\u7528\u5BFC\u51FA/\u5BFC\u5165\u5B58\u6863\u3002</div>
         <div class="modal-actions">
           <button class="pixel-btn" data-action="toggle-sound">\u5168\u5C40\u97F3\u9891</button>
           <button class="pixel-btn secondary" data-action="toggle-music">\u97F3\u4E50</button>
@@ -6556,6 +6742,7 @@
         name: "\u5BA1\u8BA1\u7EDF\u9886"
       },
       { id: "audit_chest", type: "chest", x: 650, y: 300, label: "\u5BA1\u8BA1\u6218\u5229\u7BB1", reward: 60 },
+      { id: "audit_collect", type: "collect", x: 420, y: 330, label: "\u5BA1\u8BC1\u6B8B\u9875", material: "ink", amount: 1 },
       {
         id: "audit_stone",
         type: "stone",
@@ -6660,6 +6847,7 @@
         name: "\u8D22\u7BA1\u5BFC\u5E08"
       },
       { id: "capital_chest", type: "chest", x: 650, y: 300, label: "\u8D44\u672C\u6218\u5229\u7BB1", reward: 70 },
+      { id: "capital_collect", type: "collect", x: 420, y: 330, label: "\u590D\u5229\u79CD\u5B50", material: "beads", amount: 1 },
       {
         id: "capital_stone",
         type: "stone",
@@ -6771,6 +6959,7 @@
         name: "\u7A0E\u52A1\u5B98"
       },
       { id: "tax_chest", type: "chest", x: 650, y: 300, label: "\u7A0E\u6536\u6218\u5229\u7BB1", reward: 80 },
+      { id: "tax_collect", type: "collect", x: 420, y: 330, label: "\u7A0E\u5355\u6B8B\u9875", material: "stone", amount: 1 },
       {
         id: "tax_stone",
         type: "stone",
@@ -6875,6 +7064,7 @@
         name: "\u6CD5\u52A1\u5B98"
       },
       { id: "law_chest", type: "chest", x: 650, y: 300, label: "\u6CD5\u6761\u6218\u5229\u7BB1", reward: 90 },
+      { id: "law_collect", type: "collect", x: 420, y: 330, label: "\u6CD5\u5178\u62D3\u7247", material: "ink", amount: 1 },
       {
         id: "law_stone",
         type: "stone",
@@ -6978,6 +7168,7 @@
         name: "\u6218\u7565\u5B98"
       },
       { id: "strategy_chest", type: "chest", x: 650, y: 300, label: "\u6218\u7565\u6218\u5229\u7BB1", reward: 100 },
+      { id: "strategy_collect", type: "collect", x: 420, y: 330, label: "\u6218\u7565\u661F\u5C18", material: "beads", amount: 1 },
       {
         id: "strategy_stone",
         type: "stone",
@@ -7123,7 +7314,7 @@
     }
     function getWrongBossMonster() {
       const wrongCount = Math.max(1, state.wrongQuestions.length || 1);
-      const levelScale = 1 + (state.player.level - 1) * 0.08;
+      const levelScale = 1 + (state.player.level - 1) * 0.16;
       return {
         id: "wrong_boss",
         type: "boss",
@@ -7132,13 +7323,17 @@
         label: "\u9519\u9898\u9B54\u50CF",
         point: getWorstWrongPoint(),
         hp: Math.round((90 + wrongCount * 14) * levelScale),
-        attack: 12 + Math.floor(wrongCount / 3) + Math.floor(state.player.level * 0.5),
+        attack: 12 + Math.floor(wrongCount / 3) + Math.floor(state.player.level * 1),
         exp: 70 + wrongCount * 14,
         gold: 60 + wrongCount * 10
       };
     }
     function getWeeklyBossMonster() {
-      const weekNo = Math.max(1, Math.floor(Date.now() / 6048e5) % 100);
+      const weekParts = currentWeekKey().split("-").map(Number);
+      const weekStart = new Date(weekParts[0], weekParts[1] - 1, weekParts[2]);
+      const epochMonday = new Date(2026, 0, 5);
+      const weekNo = Math.max(1, Math.floor((weekStart - epochMonday) / 6048e5) + 1);
+      const weekTier = Math.min(6, 1 + Math.floor((weekNo - 1) / 4));
       const level = state.player.level || 1;
       return {
         id: "weekly_boss",
@@ -7146,29 +7341,29 @@
         isWeeklyBoss: true,
         label: "\u5468\u8003\u5DE8\u50CF",
         point: "\u516D\u79D1\u5468\u8003",
-        hp: Math.round(220 + weekNo * 10 + level * 8),
-        attack: 22 + Math.floor(level * 0.8),
-        exp: 220 + weekNo * 20,
-        gold: 180 + weekNo * 20
+        hp: Math.round((220 + weekTier * 45) * (1 + (level - 1) * 0.1)),
+        attack: 20 + weekTier * 2 + Math.floor(level * 1),
+        exp: 220 + weekTier * 60,
+        gold: 180 + weekTier * 45
       };
     }
     function generateDungeonWaves() {
       const zone = state.zone || "gold_field";
       const pool = DUNGEON_POOL[zone] || DUNGEON_POOL.gold_field;
-      const levelScale = 1 + (state.player.level - 1) * 0.07;
+      const levelScale = 1 + (state.player.level - 1) * 0.15;
       const waves = pool.normals.slice(0, 4).map((m, i) => ({
         ...m,
         id: `dungeon_${zone}_${i + 1}`,
         type: "monster",
         hp: Math.round(m.hp * levelScale),
-        attack: m.attack + Math.floor(state.player.level * 0.4)
+        attack: m.attack + Math.floor(state.player.level * 1.1)
       }));
       waves.push({
         ...pool.boss,
         id: `dungeon_${zone}_boss`,
         type: "boss",
         hp: Math.round(pool.boss.hp * levelScale),
-        attack: pool.boss.attack + Math.floor(state.player.level * 0.7)
+        attack: pool.boss.attack + Math.floor(state.player.level * 1.4)
       });
       return waves;
     }
@@ -7336,14 +7531,23 @@
       return arr;
     }
     function generateMockExamQuestions() {
-      const singles = QUESTIONS.filter((q) => q.type === "single");
-      const multiples = QUESTIONS.filter((q) => q.type === "multiple");
-      const others = QUESTIONS.filter((q) => q.type === "fill" || q.type === "judge");
-      return shuffleArray([
-        ...shuffleArray(singles).slice(0, 12),
-        ...shuffleArray(multiples).slice(0, 5),
-        ...shuffleArray(others).slice(0, 3)
-      ]);
+      const recentIds = new Set((state.quizHistory || []).slice(-40).map((h) => h.id));
+      const subjects = Object.keys(PLAN_SUBJECT_POINTS);
+      const selected = [];
+      const pick = (source, count) => {
+        const pool = source.filter((q) => !selected.some((x) => x.id === q.id) && !recentIds.has(q.id));
+        return shuffleArray(pool.length ? pool : source.filter((q) => !selected.some((x) => x.id === q.id))).slice(0, count);
+      };
+      for (const subject of subjects) {
+        const pool = QUESTIONS.filter((q) => pointSubject(q.point) === subject);
+        const singles = pool.filter((q) => q.type === "single");
+        const specials = pool.filter((q) => q.type === "multiple" || q.type === "fill" || q.type === "judge");
+        selected.push(...pick(singles, 2));
+        selected.push(...pick(specials, 1));
+      }
+      const remaining = QUESTIONS.filter((q) => !selected.some((x) => x.id === q.id) && !recentIds.has(q.id));
+      selected.push(...shuffleArray(remaining).slice(0, Math.max(0, 20 - selected.length)));
+      return shuffleArray(selected.slice(0, 20));
     }
     function getDueReviewCount() {
       const now = Date.now();
@@ -7362,7 +7566,7 @@
       }
       return "\u7EFC\u5408";
     }
-    function inferQuestionDifficulty(q) {
+    function inferQuestionDifficulty2(q) {
       const text = String(q.point) + String(q.q);
       if (/合并报表|每股收益|企业价值|土地增值税|破产|证券|并购|平衡计分卡|波士顿/.test(text)) return "expert";
       if (/凭证|账簿|会计等式|借贷方向|科目分类|试算平衡|审计目标|审计证据|货币时间价值|风险与报酬|增值税|公司法|合同法|票据法|SWOT|五力|价值链/.test(
@@ -7374,7 +7578,7 @@
     function ensureQuestionMetadata() {
       QUESTIONS.forEach((q) => {
         if (!q.subject) q.subject = pointSubject(q.point);
-        if (!q.difficulty) q.difficulty = inferQuestionDifficulty(q);
+        if (!q.difficulty) q.difficulty = inferQuestionDifficulty2(q);
         if (!q.type) q.type = "single";
         if (!q.year) q.year = q.id >= 589 ? "2026" : q.id >= 469 ? "2025" : q.id >= 349 ? "2025" : "2024";
         if (!q.source)
@@ -7477,7 +7681,7 @@
     const touch = { up: false, down: false, left: false, right: false };
     const mapEffects = [];
     let lastTime = 0;
-    function startBgm() {
+    function startBgm2() {
       playZoneBgm(state.zone || "gold_field");
     }
     function updateLoadingProgress() {
@@ -9081,7 +9285,7 @@
       <div class="modal-box">
         <div class="modal-title">\u590D\u4E60\u6311\u6218</div>
         <div class="modal-text">
-          \u5B8C\u6210 5 \u9053\u9898\u53EF\u83B7\u5F97\u5956\u52B1\uFF0C\u6A21\u62DF\u8003\u4E3A 20 \u9898\u6574\u5377\u5E76\u542B 20 \u5206\u949F\u5012\u8BA1\u65F6\u3002\u4ECA\u65E5\u5269\u4F59\u5168\u989D\u5956\u52B1\u6B21\u6570\uFF1A${left}\u3002\u524D 3 \u6B21\u83B7\u5F97 20 \u91D1\u5E01\u300110 \u7ECF\u9A8C\uFF1B\u6B63\u786E\u7387\u8FBE\u5230 80% \u989D\u5916\u83B7\u5F97 1 \u6280\u80FD\u70B9\u3002\u4E4B\u540E\u4ECD\u53EF\u7EE7\u7EED\u5237\u9898\uFF0C\u4F46\u53EA\u83B7\u5F97 5 \u91D1\u5E01\u3002
+          \u5B8C\u6210 5 \u9053\u9898\u53EF\u83B7\u5F97\u5956\u52B1\uFF0C\u6A21\u62DF\u8003\u4E3A 20 \u9898\u6574\u5377\uFF1A\u516D\u79D1\u5404\u81F3\u5C11 3 \u9898\u3001\u542B 20 \u5206\u949F\u5012\u8BA1\u65F6\u4E0E 60 \u5206\u53CA\u683C\u7EBF\u3002\u4ECA\u65E5\u5269\u4F59\u5168\u989D\u5956\u52B1\u6B21\u6570\uFF1A${left}\u3002\u524D 3 \u6B21\u83B7\u5F97 20 \u91D1\u5E01\u300110 \u7ECF\u9A8C\uFF1B\u8FBE\u6807\u540E\u989D\u5916\u83B7\u5F97 1 \u6280\u80FD\u70B9\u3002\u4E4B\u540E\u4ECD\u53EF\u7EE7\u7EED\u5237\u9898\uFF0C\u4F46\u53EA\u83B7\u5F97 5 \u91D1\u5E01\u3002
         </div>
         <div class="modal-actions">
           <button class="pixel-btn" data-action="challenge-start" data-mode="wrong">\u9519\u9898\u4E13\u7EC3</button>
@@ -9326,6 +9530,16 @@
       const c = state.challenge;
       const acc = Math.round(c.correct / c.total * 100);
       const durationSec = Math.max(1, Math.round((Date.now() - (c.startedAt || Date.now())) / 1e3));
+      let examTotal = 0;
+      let examScore = 0;
+      if (c.mode === "mock") {
+        for (const item of c.results || []) {
+          const weight = item.q.type === "multiple" ? 2 : 1;
+          examTotal += weight;
+          if (item.correct) examScore += weight;
+        }
+      }
+      const passed = c.mode === "mock" ? examScore >= Math.ceil(examTotal * 0.6) : acc >= 80;
       const used = state.daily.challengeCount || 0;
       const fullReward = used < 3;
       state.daily.challengeCount = used + 1;
@@ -9334,7 +9548,7 @@
       state.player.gold += goldGain;
       state.player.exp += expGain;
       let skillBonus = 0;
-      if (fullReward && c.correct >= Math.ceil(c.total * 0.8)) {
+      if (fullReward && passed) {
         state.player.skillPoints += 1;
         skillBonus = 1;
       }
@@ -9358,7 +9572,9 @@
         acc,
         durationSec,
         typeCounts,
-        subjectCounts
+        subjectCounts,
+        examTotal,
+        examScore
       });
       if (state.examHistory.length > 5) state.examHistory.shift();
       maybeLevelUp();
@@ -9378,14 +9594,14 @@
       openModal(`
       <div class="modal-box">
         <div class="modal-title">${c.mode === "mock" ? "\u6A21\u62DF\u8003\u5B8C\u6210" : "\u590D\u4E60\u6311\u6218\u5B8C\u6210"}</div>
-        <div class="result-banner ${acc >= 80 ? "correct" : "wrong"}">\u6B63\u786E ${c.correct} / ${c.total} \xB7 \u6B63\u786E\u7387 ${acc}%</div>
+        <div class="result-banner ${passed ? "correct" : "wrong"}">${c.mode === "mock" ? `\u6210\u7EE9 ${examScore} / ${examTotal} \xB7 \u6B63\u786E ${c.correct} / ${c.total}` : `\u6B63\u786E ${c.correct} / ${c.total} \xB7 \u6B63\u786E\u7387 ${acc}%`}</div>
         <div class="reward-grid">
           <div class="report-card"><div class="num">${goldGain} G</div><div>\u91D1\u5E01</div></div>
           <div class="report-card"><div class="num">${expGain || "\u2014"}</div><div>\u7ECF\u9A8C</div></div>
           <div class="report-card"><div class="num">${skillBonus ? "+1" : "\u2014"}</div><div>\u6280\u80FD\u70B9</div></div>
         </div>
         ${examAnalysis}
-        <div class="info-card">${fullReward ? acc >= 80 ? "\u6B63\u786E\u7387\u8FBE\u5230 80%\uFF0C\u83B7\u5F97\u989D\u5916\u6280\u80FD\u70B9\u3002\u8584\u5F31\u8003\u70B9\u5DF2\u540C\u6B65\u5230\u5B66\u4E60\u62A5\u544A\u3002" : "\u7EE7\u7EED\u9488\u5BF9\u8584\u5F31\u8003\u70B9\u590D\u4E60\uFF0C\u4E0B\u6B21\u8FBE\u5230 80% \u53EF\u83B7\u5F97\u989D\u5916\u6280\u80FD\u70B9\u3002" : "\u4ECA\u65E5\u5168\u989D\u5956\u52B1\u5DF2\u7528\u5B8C\uFF0C\u7EE7\u7EED\u5237\u9898\u53EA\u83B7\u5F97\u5C11\u91CF\u91D1\u5E01\u3002\u7B54\u9898\u672C\u8EAB\u4ECD\u4F1A\u8BA1\u5165\u5B66\u4E60\u8BB0\u5F55\u548C\u7ECF\u9A8C\u3002"}</div>
+        <div class="info-card">${fullReward ? passed ? c.mode === "mock" ? "\u6A21\u62DF\u8003\u8FBE\u5230 60 \u5206\u53CA\u683C\u7EBF\uFF0C\u83B7\u5F97\u989D\u5916\u6280\u80FD\u70B9\u3002\u8584\u5F31\u8003\u70B9\u5DF2\u540C\u6B65\u5230\u5B66\u4E60\u62A5\u544A\u3002" : "\u6B63\u786E\u7387\u8FBE\u5230 80%\uFF0C\u83B7\u5F97\u989D\u5916\u6280\u80FD\u70B9\u3002\u8584\u5F31\u8003\u70B9\u5DF2\u540C\u6B65\u5230\u5B66\u4E60\u62A5\u544A\u3002" : "\u7EE7\u7EED\u9488\u5BF9\u8584\u5F31\u8003\u70B9\u590D\u4E60\uFF0C\u8FBE\u5230\u53CA\u683C\u7EBF\u540E\u53EF\u83B7\u5F97\u989D\u5916\u6280\u80FD\u70B9\u3002" : "\u4ECA\u65E5\u5168\u989D\u5956\u52B1\u5DF2\u7528\u5B8C\uFF0C\u7EE7\u7EED\u5237\u9898\u53EA\u83B7\u5F97\u5C11\u91CF\u91D1\u5E01\u3002\u7B54\u9898\u672C\u8EAB\u4ECD\u4F1A\u8BA1\u5165\u5B66\u4E60\u8BB0\u5F55\u548C\u7ECF\u9A8C\u3002"}</div>
         <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
       </div>
     `);
@@ -9644,7 +9860,7 @@
       hud.classList.remove("hidden");
       showTouchIfCoarse();
       updateHUD();
-      startBgm();
+      startBgm2();
       playStory(
         [
           { speaker: "\u5C0F\u5206", text: "\u4F60\u7EC8\u4E8E\u6765\u4E86\uFF01\u501F\u8D37\u5931\u8861\u540E\uFF0C\u91D1\u7B97\u539F\u91CE\u7684\u77E5\u8BC6\u5F00\u59CB\u626D\u66F2\u3002\u5148\u79FB\u52A8\u51E0\u6B65\uFF0C\u6D3B\u52A8\u4E00\u4E0B\u8EAB\u4F53\u3002" },
@@ -9660,7 +9876,7 @@
       closeModal();
       hud.classList.remove("hidden");
       showTouchIfCoarse();
-      startBgm();
+      startBgm2();
       updateHUD();
     }
     const ACTION_HANDLERS = {
@@ -9848,7 +10064,7 @@
         save();
         if (state.soundEnabled) {
           if (state.screen === "battle") playBgm(BGM_BATTLE);
-          else startBgm();
+          else startBgm2();
         } else {
           stopBgm();
         }
@@ -10154,7 +10370,46 @@
     });
     let fpsFrames = 0;
     let fpsLast = performance.now();
+    let lastRolloverDate = todayString();
+    function checkDateRollover() {
+      const today = todayString();
+      if (lastRolloverDate === today) return;
+      lastRolloverDate = today;
+      if (state.week.weekStart !== currentWeekKey()) {
+        state.weeklyHistory.unshift({ ...state.week });
+        state.weeklyHistory = state.weeklyHistory.slice(0, 8);
+        state.week = { weekStart: currentWeekKey(), answered: 0, correct: 0, subjects: {}, playSeconds: 0 };
+      }
+      if (state.daily && state.daily.date !== today) {
+        if (state.daily.date === dateStringOffset(-1) && (state.daily.answered || 0) >= (state.daily.target || 1)) {
+          state.plan.streakDays = (state.plan.streakDays || 0) + 1;
+        } else {
+          state.plan.streakDays = 0;
+        }
+        state.daily = {
+          date: today,
+          answered: 0,
+          target: state.plan.dailyTarget || 5,
+          done: false,
+          challengeCount: 0,
+          trainingCount: 0,
+          dungeonCleared: false,
+          dungeonBestWave: 0,
+          wrongBossDefeated: false
+        };
+      }
+      if (!state.weeklyBoss || state.weeklyBoss.weekStart !== currentWeekKey()) {
+        state.weeklyBoss = { weekStart: currentWeekKey(), defeated: false, bestTimeSec: 0 };
+      }
+      if (state.dailyRespawnDate !== today) {
+        state.dailyRespawnDate = today;
+        state.monstersKilledIds = [];
+        state.collectedMaterialIds = [];
+      }
+      save();
+    }
     function loop(t) {
+      checkDateRollover();
       fpsFrames += 1;
       if (t - fpsLast >= 500) {
         document.body.dataset.fps = Math.round(fpsFrames * 1e3 / Math.max(1, t - fpsLast));
