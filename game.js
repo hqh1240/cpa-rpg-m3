@@ -840,7 +840,10 @@
     final_clear: { name: "\u516D\u57DF\u5E73\u8861", desc: "\u51FB\u8D25\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\uFF0C\u5B8C\u6210\u6700\u7EC8\u8BD5\u70BC", type: "\u7EC8\u5C40", reward: { gold: 500, exp: 500, skillPoints: 5 } },
     wrong_boss_clear: { name: "\u9519\u9898\u514B\u661F", desc: "\u51FB\u8D25\u7531\u81EA\u8EAB\u9519\u9898\u51DD\u805A\u7684\u9519\u9898\u9B54\u50CF", type: "\u5B66\u4E60", reward: { gold: 80, exp: 120, skillPoints: 1 } },
     dungeon_clear: { name: "\u5730\u7262\u5F81\u670D\u8005", desc: "\u5355\u65E5\u901A\u5173\u6BCF\u65E5\u6311\u6218\u5730\u7262\u5168\u90E8 5 \u5C42", type: "\u533A\u57DF", reward: { gold: 150, exp: 150, skillPoints: 2 } },
-    weekly_boss_clear: { name: "\u5468\u8003\u738B\u8005", desc: "\u51FB\u8D25\u5F53\u5468\u5468\u8003\u5DE8\u50CF", type: "\u6210\u957F", reward: { gold: 200, exp: 250, skillPoints: 2 } }
+    weekly_boss_clear: { name: "\u5468\u8003\u738B\u8005", desc: "\u51FB\u8D25\u5F53\u5468\u5468\u8003\u5DE8\u50CF", type: "\u6210\u957F", reward: { gold: 200, exp: 250, skillPoints: 2 } },
+    endless5: { name: "\u5730\u7262\u65B0\u661F", desc: "\u65E0\u5C3D\u5730\u7262\u7A81\u7834\u81F3\u7B2C 5 \u5C42", type: "\u7EC8\u5C40", reward: { gold: 100, exp: 120, skillPoints: 1 } },
+    endless10: { name: "\u5730\u7262\u7CBE\u82F1", desc: "\u65E0\u5C3D\u5730\u7262\u7A81\u7834\u81F3\u7B2C 10 \u5C42", type: "\u7EC8\u5C40", reward: { gold: 200, exp: 220, skillPoints: 2 } },
+    endless20: { name: "\u5730\u7262\u4F20\u8BF4", desc: "\u65E0\u5C3D\u5730\u7262\u7A81\u7834\u81F3\u7B2C 20 \u5C42", type: "\u7EC8\u5C40", reward: { gold: 400, exp: 450, skillPoints: 3 } }
   };
 
   // src/systems/save.js
@@ -866,6 +869,7 @@
         battle: void 0,
         challenge: void 0,
         dungeon: void 0,
+        endless: void 0,
         jobQuiz: void 0,
         pendingSkill: void 0,
         _lastQuizCorrect: void 0,
@@ -1511,6 +1515,7 @@
             <div class="battle-tag">\u6218\u6597</div>
           </div>
           ${b.bossMechanicInfo ? `<div class="boss-mechanic">${b.bossMechanicInfo.name} \xB7 ${b.bossMechanicInfo.desc}</div>` : ""}
+          ${b.isEndless && b.modifiers && b.modifiers.length ? `<div class="boss-mechanic">\u8BCD\u7F00\uFF1A${b.modifiers.join(" \xB7 ")}</div>` : ""}
           <div class="battle-weak">
             <span>\u5F31\u70B9\uFF1A${weakPoint}</span>
             <span>\u653B\u51FB ${state.player.attack + getWeaponAtk() + getJobBonus("atk")}</span>
@@ -1627,12 +1632,13 @@
       REGION_BOSS_INTRO,
       getSkills
     } = deps;
-    function startBattle(monster, isBoss, isTraining = false, isDungeon = false) {
+    function startBattle(monster, isBoss, isTraining = false, isDungeon = false, isEndless = false) {
       const state = getState();
       state.screen = "battle";
       playBgm2(BGM_BATTLE2);
       let regionInfo = BATTLE_REGIONS[getMonsterType(monster.id)] || BATTLE_REGIONS.paper_crane;
       if (isDungeon) regionInfo = { id: "dungeon", bg: null, label: "\u6BCF\u65E5\u6311\u6218\u5730\u7262" };
+      else if (isEndless) regionInfo = { id: "endless", bg: null, label: "\u65E0\u5C3D\u5730\u7262" };
       else if (monster.isWrongBoss) regionInfo = { id: "wrong", bg: null, label: "\u9519\u9898\u9B54\u50CF" };
       else if (monster.isWeeklyBoss) regionInfo = { id: "weekly", bg: null, label: "\u5468\u8003\u5DE8\u50CF" };
       const battleMonster = { ...monster };
@@ -1641,6 +1647,7 @@
         isBoss,
         isTraining,
         isDungeon,
+        isEndless,
         isWrongBoss: !!monster.isWrongBoss,
         isWeeklyBoss: !!monster.isWeeklyBoss,
         wrongSolved: 0,
@@ -1656,6 +1663,8 @@
         phase3: false,
         bossMechanicInfo: null,
         weeklySubjectIndex: 0,
+        modifiers: Array.isArray(monster.modifiers) ? monster.modifiers : [],
+        chargeCounter: 0,
         auditMarkActive: false,
         strategySurge: false,
         finalWeakIndex: null,
@@ -1804,6 +1813,7 @@
         if (Math.random() < 0.7) {
           showToast("\u6210\u529F\u9003\u8DD1");
           if (state.dungeon) state.dungeon = null;
+          if (state.endless) state.endless = null;
           state.screen = "map";
           playZoneBgm2(state.zone || "gold_field");
           delete state.battle;
@@ -1901,6 +1911,18 @@
       if (state.battle.isBoss && state.battle.bossMechanicInfo) {
         applyBossMechanicTurnEffects();
       }
+      if (state.battle.modifiers && state.battle.modifiers.includes("\u5438\u8840")) {
+        const heal = Math.max(2, Math.round(state.battle.maxHp * 0.04));
+        state.battle.hp = Math.min(state.battle.maxHp, state.battle.hp + heal);
+        state.battle.feedback += `<br>\u5438\u8840\u8BCD\u7F00\u751F\u6548\uFF0C\u602A\u7269\u6062\u590D ${heal} HP\u3002`;
+      }
+      if (state.battle.modifiers && state.battle.modifiers.includes("\u84C4\u529B")) {
+        state.battle.chargeCounter = (state.battle.chargeCounter || 0) + 1;
+        if (state.battle.chargeCounter % 3 === 0) {
+          state.battle.strategySurge = true;
+          state.battle.feedback += "<br>\u84C4\u529B\u8BCD\u7F00\u751F\u6548\uFF0C\u672C\u56DE\u5408\u8FFD\u52A0\u4F24\u5BB3\u3002";
+        }
+      }
       const levelScale = Math.max(0, state.player.level - 1);
       const scaledAttack = Math.round(
         state.battle.monster.attack + levelScale * (state.battle.isBoss ? 1.8 : 0.5)
@@ -1923,9 +1945,10 @@
         const lostGold = Math.floor(state.player.gold * 0.1);
         state.player.gold -= lostGold;
         showToast(
-          state.dungeon ? "\u6BCF\u65E5\u5730\u7262\u6311\u6218\u5931\u8D25\uFF0C\u635F\u5931 " + lostGold + " \u91D1\u5E01\u540E\u6062\u590D 50% HP" : `\u6218\u6597\u5931\u8D25\uFF0C\u635F\u5931 ${lostGold} \u91D1\u5E01\u540E\u6062\u590D 50% HP`
+          state.dungeon ? "\u6BCF\u65E5\u5730\u7262\u6311\u6218\u5931\u8D25\uFF0C\u635F\u5931 " + lostGold + " \u91D1\u5E01\u540E\u6062\u590D 50% HP" : state.endless ? "\u65E0\u5C3D\u5730\u7262\u6311\u6218\u5931\u8D25\uFF0C\u635F\u5931 " + lostGold + " \u91D1\u5E01\u540E\u6062\u590D 50% HP" : `\u6218\u6597\u5931\u8D25\uFF0C\u635F\u5931 ${lostGold} \u91D1\u5E01\u540E\u6062\u590D 50% HP`
         );
         if (state.dungeon) state.dungeon = null;
+        if (state.endless) state.endless = null;
         state.screen = "map";
         playZoneBgm2(state.zone || "gold_field");
         delete state.battle;
@@ -1972,11 +1995,12 @@
         const p = state.player;
         const isTraining = !!state.battle.isTraining;
         const isDungeon = !!state.battle.isDungeon;
+        const isEndless = !!state.battle.isEndless;
         const isWrongBoss = !!state.battle.isWrongBoss;
         const isWeeklyBoss = !!state.battle.isWeeklyBoss;
         const trainingUsed = state.daily.trainingCount || 0;
         const fullTrainingReward = !isTraining || trainingUsed < 3;
-        const fixedReward = fullTrainingReward && !isDungeon && !isWrongBoss && !isWeeklyBoss;
+        const fixedReward = fullTrainingReward && !isDungeon && !isEndless && !isWrongBoss && !isWeeklyBoss;
         if (isTraining) state.daily.trainingCount = trainingUsed + 1;
         if (fixedReward) {
           state.partner.mood = Math.min(100, state.partner.mood + 4);
@@ -2057,6 +2081,20 @@
           } else {
             showToast("\u672C\u5468\u5468 Boss \u5956\u52B1\u5DF2\u9886\u53D6\uFF0C\u672C\u573A\u4E0D\u518D\u53D1\u653E\u989D\u5916\u5956\u52B1");
           }
+        } else if (isEndless) {
+          const floor = state.endless ? state.endless.floor : 1;
+          const goldGain = b.monster.gold || 0;
+          const expGain = b.monster.exp || 0;
+          p.gold += goldGain;
+          p.exp += expGain;
+          if (state.endless) {
+            state.endless.totalGold = (state.endless.totalGold || 0) + goldGain;
+            state.endless.totalExp = (state.endless.totalExp || 0) + expGain;
+          }
+          state.endlessBestFloor = Math.max(state.endlessBestFloor || 0, floor);
+          if (floor >= 20) unlockAchievement("endless20");
+          else if (floor >= 10) unlockAchievement("endless10");
+          else if (floor >= 5) unlockAchievement("endless5");
         } else if (isDungeon) {
         } else if (!isTraining) {
           state.monstersKilled = (state.monstersKilled || 0) + 1;
@@ -2105,7 +2143,7 @@
             }
           }
         }
-        if (!isTraining && !isDungeon && !isWrongBoss && !isWeeklyBoss) {
+        if (!isTraining && !isDungeon && !isEndless && !isWrongBoss && !isWeeklyBoss) {
           if (b.monster.id === "boss_1") updateTask("main", 1);
           else if (!b.isBoss) updateTask("defeat3", 1);
           if (!b.isBoss && b.monster.id === "monster_2") updateTask("defeat_ink", 1);
@@ -2121,11 +2159,12 @@
         const shownExp = fixedReward ? b.monster.exp : 0;
         const shownGold = fixedReward ? b.monster.gold : 0;
         const isFinalDungeonWave = isDungeon && state.dungeon && state.dungeon.index + 1 >= state.dungeon.waves.length;
-        const victoryTitle = isDungeon ? "\u6BCF\u65E5\u5730\u7262 \xB7 \u7A81\u7834" : isWrongBoss ? "\u9519\u9898\u9B54\u50CF\u8BA8\u4F10" : isWeeklyBoss ? "\u5468\u8003\u5DE8\u50CF\u8BA8\u4F10" : "\u6218\u6597\u80DC\u5229";
-        const victoryBanner = isDungeon ? `\u7A81\u7834\u7B2C ${state.dungeon.index + 1} / ${state.dungeon.waves.length} \u5C42` : `\u51FB\u8D25 ${b.monster.label}`;
-        const victoryInfo = isDungeon ? isFinalDungeonWave ? "\u4F60\u5DF2\u7A81\u7834\u5730\u7262\u6700\u540E\u4E00\u5C42\uFF0C\u9886\u53D6\u901A\u5173\u5956\u52B1\u540E\u5C06\u5B8C\u6210\u4ECA\u65E5\u6311\u6218\u3002" : `\u4E0B\u4E00\u5C42\u5C06\u51FA\u73B0\u66F4\u5F3A\u654C\u4EBA\uFF0C\u6218\u6597\u5956\u52B1\u7EDF\u4E00\u5728\u901A\u5173\u540E\u7ED3\u7B97\u3002` : isWrongBoss ? `\u9519\u9898\u9B54\u50CF\u5DF2\u88AB\u51FB\u8D25\uFF0C${state.battle.wrongSolved || 0} \u9053\u9519\u9898\u5370\u8BB0\u5728\u6218\u6597\u4E2D\u6D88\u9664\u3002` : isWeeklyBoss ? "\u5468\u8003\u5DE8\u50CF\u5DF2\u88AB\u51FB\u8D25\uFF0C\u516D\u79D1\u7EFC\u5408\u80FD\u529B\u901A\u8FC7\u672C\u5468\u8003\u6838\u3002" : b.monster.id === "final_boss" ? "\u4F60\u51FB\u8D25\u4E86\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\u3002\u4F1A\u8BA1\u3001\u5BA1\u8BA1\u3001\u8D22\u7BA1\u3001\u7A0E\u6CD5\u3001\u7ECF\u6D4E\u6CD5\u548C\u6218\u7565\u516D\u57DF\u91CD\u65B0\u5E73\u8861\uFF0C\u8BB0\u8D26\u5927\u9646\u6062\u590D\u4E86\u79E9\u5E8F\u3002" : b.monster.id === "boss_1" ? "\u4F60\u51FB\u8D25\u4E86\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u3002\u5C0F\u5206\uFF1A\u501F\u8D37\u91CD\u65B0\u5E73\u8861\u4E86\uFF0C\u8C22\u8C22\u4F60\uFF0C\u4F1A\u8BA1\u52C7\u8005\u3002<br>\u4E0B\u4E00\u7AD9\uFF1A\u5BA1\u8BA1\u94C1\u5821\u3002\u5B8C\u6574\u533A\u57DF\u7684\u5192\u9669\u5C06\u5728\u540E\u7EED\u7248\u672C\u89E3\u9501\u3002" : ZONE_BOSS_STATE[b.monster.id] ? `\u4F60\u51FB\u8D25\u4E86${b.monster.label}\u3002${((_a = REGION_BOSS_INTRO[b.monster.id]) == null ? void 0 : _a.text) || "\u533A\u57DF\u79E9\u5E8F\u6B63\u5728\u6062\u590D\u3002"}` : state.zone === "strategy_star" ? "\u6218\u7565\u661F\u5854\u7684\u8FF7\u96FE\u6B63\u5728\u6D88\u6563\uFF0C\u4F60\u5DF2\u63A5\u8FD1\u516D\u57DF\u5E73\u8861\u3002" : state.zone === "law_temple" ? "\u6CD5\u6761\u795E\u6BBF\u7684\u89C4\u5219\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u5DE9\u56FA\u7ECF\u6D4E\u6CD5\u77E5\u8BC6\u3002" : state.zone === "tax_wasteland" ? "\u7A0E\u7387\u8352\u539F\u7684\u7533\u62A5\u79E9\u5E8F\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u638C\u63E1\u7A0E\u6CD5\u89C4\u5219\u3002" : state.zone === "capital_forest" ? "\u8D44\u672C\u5BC6\u6797\u4E2D\u7684\u8D22\u52A1\u5F02\u5E38\u6B63\u5728\u6D88\u9000\uFF0C\u7EE7\u7EED\u6DF1\u5316\u8D22\u7BA1\u77E5\u8BC6\u3002" : state.zone === "audit_tower" ? "\u5BA1\u8BA1\u94C1\u5821\u7684\u8BC1\u636E\u94FE\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u68C0\u67E5\u5269\u4F59\u5F02\u5E38\u3002" : "\u7EE7\u7EED\u63A2\u7D22\u91D1\u7B97\u539F\u91CE\u3002";
+        const victoryTitle = isDungeon ? "\u6BCF\u65E5\u5730\u7262 \xB7 \u7A81\u7834" : isEndless ? "\u65E0\u5C3D\u5730\u7262 \xB7 \u7A81\u7834" : isWrongBoss ? "\u9519\u9898\u9B54\u50CF\u8BA8\u4F10" : isWeeklyBoss ? "\u5468\u8003\u5DE8\u50CF\u8BA8\u4F10" : "\u6218\u6597\u80DC\u5229";
+        const victoryBanner = isDungeon ? `\u7A81\u7834\u7B2C ${state.dungeon.index + 1} / ${state.dungeon.waves.length} \u5C42` : isEndless ? `\u7A81\u7834\u65E0\u5C3D\u5730\u7262\u7B2C ${state.endless ? state.endless.floor : 1} \u5C42` : `\u51FB\u8D25 ${b.monster.label}`;
+        const victoryInfo = isDungeon ? isFinalDungeonWave ? "\u4F60\u5DF2\u7A81\u7834\u5730\u7262\u6700\u540E\u4E00\u5C42\uFF0C\u9886\u53D6\u901A\u5173\u5956\u52B1\u540E\u5C06\u5B8C\u6210\u4ECA\u65E5\u6311\u6218\u3002" : `\u4E0B\u4E00\u5C42\u5C06\u51FA\u73B0\u66F4\u5F3A\u654C\u4EBA\uFF0C\u6218\u6597\u5956\u52B1\u7EDF\u4E00\u5728\u901A\u5173\u540E\u7ED3\u7B97\u3002` : isEndless ? `\u8BCD\u7F00\uFF1A${b.modifiers && b.modifiers.join("\u3001") || "\u65E0"}\u3002\u7EE7\u7EED\u6DF1\u5165\u4F1A\u83B7\u5F97\u66F4\u9AD8\u91D1\u5E01\u4E0E\u7ECF\u9A8C\uFF0C\u6BCF 5 \u5C42\u4E3A Boss \u5C42\u3002` : isWrongBoss ? `\u9519\u9898\u9B54\u50CF\u5DF2\u88AB\u51FB\u8D25\uFF0C${state.battle.wrongSolved || 0} \u9053\u9519\u9898\u5370\u8BB0\u5728\u6218\u6597\u4E2D\u6D88\u9664\u3002` : isWeeklyBoss ? "\u5468\u8003\u5DE8\u50CF\u5DF2\u88AB\u51FB\u8D25\uFF0C\u516D\u79D1\u7EFC\u5408\u80FD\u529B\u901A\u8FC7\u672C\u5468\u8003\u6838\u3002" : b.monster.id === "final_boss" ? "\u4F60\u51FB\u8D25\u4E86\u516D\u57DF\u5931\u8861\u4E4B\u4E3B\u3002\u4F1A\u8BA1\u3001\u5BA1\u8BA1\u3001\u8D22\u7BA1\u3001\u7A0E\u6CD5\u3001\u7ECF\u6D4E\u6CD5\u548C\u6218\u7565\u516D\u57DF\u91CD\u65B0\u5E73\u8861\uFF0C\u8BB0\u8D26\u5927\u9646\u6062\u590D\u4E86\u79E9\u5E8F\u3002" : b.monster.id === "boss_1" ? "\u4F60\u51FB\u8D25\u4E86\u5408\u5E76\u62A5\u8868\u5DE8\u50CF\u3002\u5C0F\u5206\uFF1A\u501F\u8D37\u91CD\u65B0\u5E73\u8861\u4E86\uFF0C\u8C22\u8C22\u4F60\uFF0C\u4F1A\u8BA1\u52C7\u8005\u3002<br>\u4E0B\u4E00\u7AD9\uFF1A\u5BA1\u8BA1\u94C1\u5821\u3002\u5B8C\u6574\u533A\u57DF\u7684\u5192\u9669\u5C06\u5728\u540E\u7EED\u7248\u672C\u89E3\u9501\u3002" : ZONE_BOSS_STATE[b.monster.id] ? `\u4F60\u51FB\u8D25\u4E86${b.monster.label}\u3002${((_a = REGION_BOSS_INTRO[b.monster.id]) == null ? void 0 : _a.text) || "\u533A\u57DF\u79E9\u5E8F\u6B63\u5728\u6062\u590D\u3002"}` : state.zone === "strategy_star" ? "\u6218\u7565\u661F\u5854\u7684\u8FF7\u96FE\u6B63\u5728\u6D88\u6563\uFF0C\u4F60\u5DF2\u63A5\u8FD1\u516D\u57DF\u5E73\u8861\u3002" : state.zone === "law_temple" ? "\u6CD5\u6761\u795E\u6BBF\u7684\u89C4\u5219\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u5DE9\u56FA\u7ECF\u6D4E\u6CD5\u77E5\u8BC6\u3002" : state.zone === "tax_wasteland" ? "\u7A0E\u7387\u8352\u539F\u7684\u7533\u62A5\u79E9\u5E8F\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u638C\u63E1\u7A0E\u6CD5\u89C4\u5219\u3002" : state.zone === "capital_forest" ? "\u8D44\u672C\u5BC6\u6797\u4E2D\u7684\u8D22\u52A1\u5F02\u5E38\u6B63\u5728\u6D88\u9000\uFF0C\u7EE7\u7EED\u6DF1\u5316\u8D22\u7BA1\u77E5\u8BC6\u3002" : state.zone === "audit_tower" ? "\u5BA1\u8BA1\u94C1\u5821\u7684\u8BC1\u636E\u94FE\u6B63\u5728\u6062\u590D\uFF0C\u7EE7\u7EED\u68C0\u67E5\u5269\u4F59\u5F02\u5E38\u3002" : "\u7EE7\u7EED\u63A2\u7D22\u91D1\u7B97\u539F\u91CE\u3002";
         const victoryActions = isDungeon ? `${isFinalDungeonWave ? '<button class="pixel-btn" data-action="dungeon-finish">\u9886\u53D6\u901A\u5173\u5956\u52B1</button>' : '<button class="pixel-btn" data-action="dungeon-next">\u8FDB\u5165\u4E0B\u4E00\u5C42</button>'}
-           <button class="pixel-btn secondary" data-action="dungeon-leave">\u79BB\u5F00\u5730\u7262</button>` : `<button class="pixel-btn" data-action="close">\u8FD4\u56DE\u5730\u56FE</button>
+           <button class="pixel-btn secondary" data-action="dungeon-leave">\u79BB\u5F00\u5730\u7262</button>` : isEndless ? `<button class="pixel-btn" data-action="endless-next">\u7EE7\u7EED\u4E0B\u4E00\u5C42</button>
+             <button class="pixel-btn secondary" data-action="endless-finish">\u7ED3\u7B97\u79BB\u5F00</button>` : `<button class="pixel-btn" data-action="close">\u8FD4\u56DE\u5730\u56FE</button>
            ${b.monster.id === "final_boss" ? '<button class="pixel-btn secondary" data-action="ending">\u67E5\u770B\u7ED3\u5C40</button>' : ""}`;
         openModal(`
         <div class="modal-box victory">
@@ -2140,7 +2179,7 @@
           <div class="modal-actions">${victoryActions}</div>
         </div>
       `);
-        if (!isDungeon && !isWrongBoss && !isWeeklyBoss) {
+        if (!isDungeon && !isEndless && !isWrongBoss && !isWeeklyBoss) {
           if (state.gameCompleted) advanceMainStory(8);
           else if (state.strategyCleared) advanceMainStory(7);
           else if (state.lawCleared) advanceMainStory(6);
@@ -5025,6 +5064,8 @@
       weeklyHistory: [],
       weeklyBoss: { weekStart: currentWeekKey(), defeated: false, bestTimeSec: 0 },
       dailyRespawnDate: todayString(),
+      endless: null,
+      endlessBestFloor: 0,
       lowQuality: false,
       _unlockAll: false,
       notifiedSystems: []
@@ -5359,6 +5400,7 @@
       state.monstersKilledIds = [];
       state.collectedMaterialIds = [];
     }
+    if (!state.endlessBestFloor) state.endlessBestFloor = 0;
     if (!state.collectCount) state.collectCount = 0;
     if (!state.tasks.some((t) => t.id === "defeat_ink")) {
       const inkTask = defaultState().tasks.find((t) => t.id === "defeat_ink");
@@ -7609,6 +7651,11 @@
       if (id === "final_boss") return "final_boss";
       if (id === "wrong_boss") return "final_boss";
       if (id === "weekly_boss") return "final_boss";
+      if (id.startsWith("endless_")) {
+        const floor = Number(id.split("_")[1]) || 1;
+        if (floor % 5 === 0) return "final_boss";
+        return ["paper_crane", "ink_blob", "abacus_golem", "trial_ghost", "merge_giant"][floor % 5];
+      }
       if (id.startsWith("dungeon_")) {
         if (id.includes("audit")) return "ink_blob";
         if (id.includes("capital")) return "abacus_golem";
@@ -8371,7 +8418,8 @@
         strategy: { sky: ["#1f4b61", "#0c1a22"], accent: "#aee8ff", hill: "#285267", wall: "#356a80" },
         dungeon: { sky: ["#181b2a", "#0c0d15"], accent: "#6fa8ff", hill: "#23263a", wall: "#2f3550" },
         wrong: { sky: ["#2b1d34", "#120d18"], accent: "#b06cff", hill: "#3b2b47", wall: "#5a3f70" },
-        weekly: { sky: ["#3a2a1f", "#17100d"], accent: "#ffd166", hill: "#4b3829", wall: "#6b4f35" }
+        weekly: { sky: ["#3a2a1f", "#17100d"], accent: "#ffd166", hill: "#4b3829", wall: "#6b4f35" },
+        endless: { sky: ["#101626", "#080b12"], accent: "#7fdbff", hill: "#182033", wall: "#26334d" }
       };
       const theme = battleThemes[region.id] || battleThemes.dungeon;
       const grad = ctx.createLinearGradient(0, 0, 0, H2);
@@ -8427,7 +8475,8 @@
         strategy: { count: 18, tint: "rgba(235, 248, 255, 0.8)" },
         dungeon: { count: 14, tint: "rgba(111, 168, 255, 0.72)" },
         wrong: { count: 16, tint: "rgba(176, 108, 255, 0.76)" },
-        weekly: { count: 16, tint: "rgba(255, 209, 102, 0.78)" }
+        weekly: { count: 16, tint: "rgba(255, 209, 102, 0.78)" },
+        endless: { count: 18, tint: "rgba(127, 219, 255, 0.74)" }
       };
       const cfg = particleConfig[region.id] || particleConfig.accounting;
       if (assets.dust) {
@@ -9294,6 +9343,7 @@
           <button class="pixel-btn secondary" data-action="challenge-start" data-mode="mock">\u6A21\u62DF\u8003 20 \u9898</button>
           <button class="pixel-btn secondary" data-action="training-start">\u6BCF\u65E5\u8BAD\u7EC3\u573A</button>
           <button class="pixel-btn secondary" data-action="dungeon">\u6BCF\u65E5\u6311\u6218\u5730\u7262</button>
+          <button class="pixel-btn secondary" data-action="endless">\u65E0\u5C3D\u5730\u7262</button>
           <button class="pixel-btn secondary" data-action="wrong-boss">\u9519\u9898 Boss</button>
           <button class="pixel-btn secondary" data-action="weekly-boss">\u5468 Boss</button>
         </div>
@@ -9464,6 +9514,99 @@
       state.dungeon = null;
       closeModal();
       showToast("\u5DF2\u79BB\u5F00\u6BCF\u65E5\u6311\u6218\u5730\u7262");
+    }
+    function generateEndlessMonster(floor) {
+      const zoneKeys = Object.keys(DUNGEON_POOL);
+      const zone = zoneKeys[(floor - 1) % zoneKeys.length];
+      const pool = DUNGEON_POOL[zone];
+      const isBossFloor = floor % 5 === 0;
+      const base = isBossFloor ? pool.boss : pool.normals[floor * 7 % pool.normals.length];
+      const levelScale = 1 + (state.player.level - 1) * 0.15;
+      const floorScale = 1 + (floor - 1) * 0.1;
+      const modifiers = [];
+      if (floor >= 3) modifiers.push("\u94C1\u58C1");
+      if (floor >= 6) modifiers.push("\u72C2\u66B4");
+      if (floor >= 9) modifiers.push("\u5438\u8840");
+      if (floor >= 12) modifiers.push("\u84C4\u529B");
+      const hpMod = modifiers.includes("\u94C1\u58C1") ? 1.25 : 1;
+      const atkMod = modifiers.includes("\u72C2\u66B4") ? 1.2 : 1;
+      return {
+        id: `endless_${floor}`,
+        type: isBossFloor ? "boss" : "monster",
+        isEndlessMonster: true,
+        label: `${base.label} \xB7 \u65E0\u5C3D ${floor} \u5C42`,
+        point: base.point,
+        hp: Math.round(base.hp * floorScale * levelScale * hpMod),
+        attack: Math.round((base.attack + Math.floor(state.player.level * 1.2)) * (1 + floor * 0.06) * atkMod),
+        exp: Math.round((base.exp || 40) * (1 + floor * 0.08)),
+        gold: Math.round((base.gold || 30) * (1 + floor * 0.08)),
+        modifiers
+      };
+    }
+    function openEndlessSetup() {
+      if (!state.gameCompleted) {
+        showToast("\u901A\u5173\u4E3B\u7EBF\u540E\u89E3\u9501\u65E0\u5C3D\u5730\u7262");
+        return;
+      }
+      const current = state.endless;
+      openModal(`
+      <div class="modal-box">
+        <div class="modal-title">\u65E0\u5C3D\u5730\u7262 \xB7 \u7EC8\u5C40\u6311\u6218</div>
+        <div class="info-card">
+          \u901A\u5173\u540E\u5F00\u653E\u7684\u9AD8\u5C42\u6311\u6218\u3002\u6BCF\u5C42\u968F\u673A\u751F\u6210\u8BCD\u7F00\u602A\u7269\uFF0C\u5C42\u6570\u8D8A\u9AD8\u654C\u4EBA\u8D8A\u5F3A\uFF1B\u6BCF 5 \u5C42\u4E3A Boss \u5C42\u3002<br><br>
+          \u5386\u53F2\u6700\u4F73\u5C42\u6570\uFF1A${state.endlessBestFloor || 0} \u5C42${current ? ` \xB7 \u5F53\u524D\u6311\u6218\uFF1A\u7B2C ${current.floor} \u5C42` : ""}
+        </div>
+        <div class="modal-actions">
+          <button class="pixel-btn" data-action="endless-start">${current ? "\u7EE7\u7EED\u5F53\u524D\u6311\u6218" : "\u8FDB\u5165\u65E0\u5C3D\u5730\u7262"}</button>
+          <button class="pixel-btn secondary" data-action="close">\u8FD4\u56DE</button>
+        </div>
+      </div>
+    `);
+    }
+    function startEndlessFloor(floor) {
+      if (!state.gameCompleted) {
+        showToast("\u901A\u5173\u4E3B\u7EBF\u540E\u89E3\u9501\u65E0\u5C3D\u5730\u7262");
+        return;
+      }
+      if (!state.endless) {
+        state.endless = { floor, startedAt: Date.now(), totalGold: 0, totalExp: 0 };
+      } else {
+        state.endless.floor = floor;
+      }
+      const monster = generateEndlessMonster(floor);
+      startBattle(monster, floor % 5 === 0, false, false, true);
+    }
+    function endlessNext() {
+      const e = state.endless;
+      if (!e) return;
+      closeModal();
+      startEndlessFloor(e.floor + 1);
+    }
+    function finishEndless() {
+      const e = state.endless;
+      if (!e) return;
+      state.endlessBestFloor = Math.max(state.endlessBestFloor || 0, e.floor);
+      const gold = e.totalGold || 0;
+      const exp = e.totalExp || 0;
+      save();
+      state.endless = null;
+      openModal(`
+      <div class="modal-box victory">
+        <div class="modal-title">\u65E0\u5C3D\u5730\u7262 \xB7 \u7ED3\u7B97</div>
+        <div class="result-banner correct">\u672C\u6B21\u63A8\u8FDB\u81F3\u7B2C ${Math.max(1, e.floor)} \u5C42</div>
+        <div class="reward-grid">
+          <div class="report-card"><div class="num">${gold} G</div><div>\u7D2F\u8BA1\u91D1\u5E01</div></div>
+          <div class="report-card"><div class="num">${exp}</div><div>\u7D2F\u8BA1\u7ECF\u9A8C</div></div>
+          <div class="report-card"><div class="num">${state.endlessBestFloor}</div><div>\u5386\u53F2\u6700\u4F73\u5C42\u6570</div></div>
+        </div>
+        <div class="modal-actions"><button class="pixel-btn" data-action="close">\u8FD4\u56DE</button></div>
+      </div>
+    `);
+    }
+    function endlessLeave() {
+      state.endless = null;
+      closeModal();
+      showToast("\u5DF2\u79BB\u5F00\u65E0\u5C3D\u5730\u7262");
     }
     function startChallenge(mode) {
       if (mode === "plan" && !state.plan.enabled) {
@@ -9996,6 +10139,7 @@
             ${menuButton("\u590D\u4E60\u6311\u6218", "challenge", "challenge")}
             ${menuButton("\u6BCF\u65E5\u8BAD\u7EC3", "training-start", "challenge")}
             ${menuButton("\u6BCF\u65E5\u5730\u7262", "dungeon", "challenge")}
+            ${menuButton("\u65E0\u5C3D\u5730\u7262", "endless")}
             ${menuButton("\u9519\u9898 Boss", "wrong-boss", "book")}
             ${menuButton("\u5468 Boss", "weekly-boss", "challenge")}
             <button class="pixel-btn secondary" data-action="plan">\u5B66\u4E60\u8BA1\u5212</button>
@@ -10190,6 +10334,21 @@
       },
       "dungeon-leave": (dataset) => {
         dungeonLeave();
+      },
+      endless: (dataset) => {
+        openEndlessSetup();
+      },
+      "endless-start": (dataset) => {
+        startEndlessFloor(state.endless && state.endless.floor || 1);
+      },
+      "endless-next": (dataset) => {
+        endlessNext();
+      },
+      "endless-finish": (dataset) => {
+        finishEndless();
+      },
+      "endless-leave": (dataset) => {
+        endlessLeave();
       },
       plan: (dataset) => {
         openPlan();
@@ -10517,6 +10676,10 @@
       startDailyDungeon,
       dungeonNext,
       finishDungeon,
+      openEndlessSetup,
+      startEndlessFloor,
+      endlessNext,
+      finishEndless,
       openPlan,
       openWeeklyReport,
       openPointMap,
